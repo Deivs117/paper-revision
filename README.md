@@ -1,3 +1,6 @@
+> **Looking for a general-understanding overview in Spanish?** See `RESUMEN.md`. This document
+> stays the authoritative technical spec — `RESUMEN.md` is a companion, not a replacement.
+
 ## Technical Summary: Architecture & Pipeline Overview
 
 ### 1. Core Challenge & Technical Requirements

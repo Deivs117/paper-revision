@@ -61,6 +61,8 @@ every change it produced has reached `applied` or later.
 ## Key files
 
 - `README.md` — full architecture, script specs, file formats. Treat as the spec to implement against.
+- `RESUMEN.md` — Spanish-language general-understanding companion doc. Not the spec; README.md wins on
+  any conflict. Update it when a change affects what it describes (deadline, status, folder roles).
 - `OUTLINE.md` — hand-maintained global summary (abstract, per-section one-liner, key terms, cross-references).
   Read this, not the monolith, for context.
 - `PROGRESS.md` — status per reviewer requirement (`pending` → `drafted` → `applied` → `synced-to-overleaf`). Check
