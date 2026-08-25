@@ -1,0 +1,15 @@
+% PATCH: R2-01 (9/12, block A -- methodology.tex)
+% Reviewer: 2
+% Target section: sections/methodology.tex
+% Requirement: Merge unified metric definitions -- Table~\ref{table:Locom_NN} had 7
+%   synaptic-weight rows duplicated by copy-paste (omega_Gpe_G->X4, omega_Gpe_R->X4,
+%   omega_L->X, omega_X3->X7, omega_X4->X7, omega_X5->X7, omega_X3->X8), each appearing
+%   twice with a stray omega_Gpe->X1 row breaking up the block. Removed the second
+%   occurrence of each row; values were identical in both copies (confirmed against the
+%   equations before deleting).
+% Status: applied
+
+$\omega_{X_3 \rightarrow X_8}$ & 10.0 \\ \hline
+$\omega_{Gpe \rightarrow X_1}$ & 1.0 \\ \hline
+
+$\theta_{p}$ & 90.0 \\ \hline
