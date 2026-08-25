@@ -245,6 +245,7 @@ Note that while the simulated sloped terrain visually approximates a continuous 
 \end{figure}
 
 \subsubsection{Quantitative Performance in Variable Topographies}
+\label{sssec:variable_topo_quant}
 
 \begin{figure*}[t]
     \centering
@@ -288,23 +289,14 @@ on mode-switching behaviour, a dedicated stability analysis was
 conducted covering the Quadrupedal Walking gait and all six pairwise transitions
 among the three locomotion modes.
 
+\paragraph{Stability metrics.}
 
-\paragraph{Stability metric definitions.}
-
-%
-The \emph{Normalised Stability Margin} ($SM$) is the shortest
-horizontal distance from the projection of the centre of mass (CoM)
-onto the ground plane to the boundary of the support polygon formed
-by the feet currently in contact with the ground.
-The \emph{Tipover Risk} index is $TR = 1 - SM / r_{in}$, where
-$r_{in}$ is the inradius of the support polygon;
-$TR = 0$ denotes maximum structural safety and $TR = 1$ marks the
-critical overturning boundary.
-These definitions are consistent with those adopted in the
-variable-topography stability analysis reported in the preceding
-subsubsection of the manuscript, and the metrics were derived
-frame-by-frame from the foot-contact positions logged during
-simulation.
+The Normalised Stability Margin ($SM$) and Tipover Risk
+($TR = 1 - SM/r_{in}$) are defined in
+Section~\ref{sssec:variable_topo_quant}. Here, the same metrics were
+derived frame-by-frame from the foot-contact positions logged during
+simulation for the Quadrupedal Walking gait and all six pairwise
+mode transitions.
 
 
 \paragraph{Quadrupedal Walking gait stability.}

@@ -1,0 +1,26 @@
+% PATCH: R2-01 (4/12)
+% Reviewer: 2
+% Target section: sections/results.tex
+% Requirement: Merge unified metric definitions — the formal TR/SM definition
+%   (formula + explanation) was stated in full twice, 17 lines apart, with the second
+%   instance self-acknowledging the redundancy. Added a \label to the first (canonical)
+%   definition's subsubsection and replaced the second full definition with a short
+%   cross-reference, keeping only the genuinely new detail (frame-by-frame derivation
+%   for this specific gait/transition set).
+% Status: applied
+
+\subsubsection{\revblue{Quantitative Performance in Variable Topographies}}
+\label{sssec:variable_topo_quant}
+
+...
+
+\paragraph{\revblue{Stability metrics.}}
+
+\revblue{%
+The Normalised Stability Margin ($SM$) and Tipover Risk
+($TR = 1 - SM/r_{in}$) are defined in
+Section~\ref{sssec:variable_topo_quant}. Here, the same metrics were
+derived frame-by-frame from the foot-contact positions logged during
+simulation for the Quadrupedal Walking gait and all six pairwise
+mode transitions.
+}
