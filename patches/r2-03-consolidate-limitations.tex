@@ -1,0 +1,32 @@
+% PATCH: R2-03
+% Reviewer: 2
+% Target section: sections/results.tex, sections/conclusions.tex
+% Requirement: Consolidate limitations into one dedicated section -- the manuscript carried
+%   two separate limitations discussions: results.tex's "Limitations of the Present Work"
+%   subsection (Section~\ref{ssec:Limitations}: low-torque/open-loop hardware envelope, lab-only
+%   experimental scope, and the symbolic/non-benchmarked Gazebo warehouse world) and an unlabeled
+%   paragraph in conclusions.tex (manual parameter tuning, no hardware-failure/sensory-dropout
+%   resilience testing, no formal sensor-fusion framework, illumination-dependent color
+%   segmentation, empirical noise robustness). No top-level \section was added/removed, so
+%   introduction.tex's hardcoded "Section 2/3/4" roadmap paragraph did not need updating.
+%   Moved the conclusions.tex content into a new third paragraph of results.tex's existing
+%   Limitations subsection (no content dropped, no new claims added), and replaced the
+%   conclusions.tex paragraph with a short pointer to Section~\ref{ssec:Limitations} plus the
+%   original forward-looking closing sentence.
+% Status: applied
+
+% Before (sections/conclusions.tex): full ~200-word limitations paragraph (manual tuning,
+%   resilience testing, sensor fusion, illumination, noise robustness -- see git history for
+%   exact prior text, superseded by this patch).
+% After (sections/conclusions.tex):
+%   "Several limitations of the present work are acknowledged and discussed in detail in
+%   Section~\ref{ssec:Limitations}, spanning the physical platform's hardware envelope, the
+%   scope of experimental validation, manual parameter tuning, and the absence of a formal
+%   sensor-fusion framework. These constraints do not invalidate the results but indicate that
+%   the next development stage should focus on validating the proposed architecture in a
+%   prototype that includes robustness and adaptability tests under real, non-controlled
+%   conditions."
+%
+% sections/results.tex: appended a third \revblue{} paragraph to the existing Limitations
+%   subsection carrying the moved content verbatim (manual tuning, resilience testing, sensor
+%   fusion, illumination, noise robustness). See git diff for full text.
