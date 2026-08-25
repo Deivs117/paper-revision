@@ -109,6 +109,29 @@ la ruta exacta que va a usar el LaTeX (se niega a sobreescribir algo que ya exis
 use `--force`). De ahí en adelante es un parche normal: se referencia la imagen en `sections/`, se
 redacta el texto, y se sincroniza con Overleaf como cualquier otro cambio.
 
+## Convención de color por ronda de revisión — `\revblue{...}`
+
+El manuscrito usa `\revblue{...}` (definido en `sections/preamble.tex`) para pintar de azul en el
+PDF compilado el texto agregado o cambiado **en la ronda de revisión actual**, así los editores/
+revisores ven de un vistazo qué es nuevo sin comparar manualmente contra el envío anterior.
+
+**Regla, de aquí en adelante, en cada ronda**: todo texto nuevo o cambiado de forma sustancial que
+se escriba en `sections/*.tex` —correcciones de revisores, redacciones de `intake/`, correcciones
+sueltas— se envuelve en `\revblue{...}`. Un typo sin cambio de significado puede omitirlo; por
+defecto, envolver siempre — marcar de más es mejor que ocultar un cambio real a los revisores.
+
+**Al empezar una ronda nueva** (no a mitad de ronda), el `\revblue{}` de la ronda *anterior* pasa a
+ser texto base aceptado y se quita (se conserva el texto, se elimina solo la envoltura), para no
+confundirlo con lo nuevo de esta ronda. Esto se hizo el 25 de agosto de 2026 con
+`scripts/strip_revblue.py --apply`: se quitaron **265 envolturas** en todo el manuscrito
+(`preamble.tex`: 1, `introduction.tex`: 7, `methodology.tex`: 24, `results.tex`: 229,
+`conclusions.tex`: 4), verificado con `reassemble.py` → `validate_tex.sh` → `check_roundtrip.sh`
+(todo pasó), y registrado como `C-02` en `PROGRESS.md` con su resumen de auditoría en
+`patches/c-02-strip-revblue.md`. La definición del macro (`\newcommand{\revblue}...`) no se tocó.
+
+**Ahora mismo no queda ningún `\revblue{}` en el manuscrito** — todo lo que se agregue de aquí en
+adelante en esta ronda es lo que hay que envolver en azul.
+
 ## Huecos menores ya resueltos (25 de agosto)
 
 Cuatro huecos de diseño de bajo riesgo (dado que tú eres quien más escribe) pero reales, resueltos

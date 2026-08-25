@@ -6,12 +6,24 @@ basal-ganglia-inspired neural arbitration circuit to select gaits/behaviors for 
 inspection tasks, validated in Gazebo simulation and on physical hardware.
 
 ## Revision convention: `\revblue{...}`
-Text wrapped in `\revblue{...}` was added/changed in a **previous** revision round (rendered in blue
-in the compiled PDF) — it's not this round's work. A large fraction of `results.tex` is already
-`\revblue{}`, meaning a prior revision cycle already responded to earlier reviewer comments. Don't
-assume `\revblue{}` content is untouched original text; it's already-negotiated revision material.
-When this round adds new text, keep using `\revblue{}` for it (matches existing convention) unless
-told otherwise.
+`\revblue{...}` (defined in `sections/preamble.tex`: `\newcommand{\revblue}[1]{\textcolor{blue}{#1}}`)
+marks text added/changed in the **current** revision round, rendered blue in the compiled PDF so
+reviewers/editors can spot what's new. At the **start of each new revision round**, all `\revblue{}`
+from the previous round is stripped (wrapper removed, text kept) — it's now accepted baseline text,
+not "new" anymore — and the round's own new/changed text gets wrapped in fresh `\revblue{}`.
+
+**Hard rule (applies to every patch from here on, every round): any new or materially changed
+sentence/paragraph/value written into `sections/*.tex` — reviewer-requirement content, `intake/`
+write-ups, corrections, everything — must be wrapped in `\revblue{...}`.** A pure prose polish that
+changes zero meaning can skip it if truly trivial (e.g. a typo fix), but default to wrapping;
+under-marking is the risky direction, since it hides real changes from reviewers.
+
+**Current state (as of 2026-08-25, this round's start):** `scripts/strip_revblue.py --apply` was run
+once — 265 wrappers from the R1 round were stripped repo-wide (`patches/c-02-strip-revblue.md`,
+`PROGRESS.md` row `C-02`). **Zero `\revblue{}` remain in `sections/*.tex` right now** — every
+occurrence you add going forward is this round's own new content. Re-run
+`scripts/strip_revblue.py --apply` at the start of the *next* round after this one is submitted,
+not before.
 
 ## Sections
 
@@ -58,8 +70,9 @@ neuronal control circuits, (4) physical construction. Four subsections:
     winner-take-all circuit after \citet{sarvestani2013computational}, Eqs.~\eqref{eq:stn}–\eqref{eq:str},
     hyperparameters in Table~\ref{table:Ganglia} (all weights currently 1.0, only time constants
     differ: $\tau_{STN}=\tau_{Gpe}=\tau_{STR}=2.0$, $\tau_{Gpi}=1.0$). **Important for framing R3-01/
-    R3-02**: an existing `\revblue{}` paragraph (line 200, already written in a *prior* revision
-    round) already argues the architecture's merits vs. RL/MPC — citing \citet{Gurney2001a,Gurney2001b,
+    R3-02**: an existing paragraph (line 200, written in the prior R1 round, now plain baseline
+    text after the 2026-08-25 `\revblue{}` strip — see revision-convention note above) already
+    argues the architecture's merits vs. RL/MPC — citing \citet{Gurney2001a,Gurney2001b,
     Prescott2006Robot} as "canonical arbitration circuits validated in computational neuroscience" and
     citing a measured **decision latency of ~47 ms** (cross-referenced as "Section~3", i.e.
     results.tex) as evidence of real-time operation without training/inference infrastructure. This is
@@ -71,7 +84,7 @@ neuronal control circuits, (4) physical construction. Four subsections:
   - `\subsubsection{Locomotion Module}` (line 202) — sensory/integrative/decisional sublayers,
     $\theta_s$/$\theta_p$ direction encoding, explicit **20° threshold** on units $X_5$/$X_6$ defining
     "frontal zone", stop signal from unit $X_{17}$ gated by `Ar = 28.0` (pinhole-camera-derived, full
-    derivation given in a `\revblue{}` paragraph at line 305). **Relevant to R3-02**: this module
+    derivation given in the paragraph at line 305, R1-round text, now baseline). **Relevant to R3-02**: this module
     already uses explicit hard thresholds (the 20° frontal cone, `Ar`) as part of its own design —
     i.e. the paper already mixes WTA (basal ganglia) with threshold logic (locomotion module) in
     different places, which could be leveraged when framing a "WTA vs. threshold-only" comparison,
@@ -88,8 +101,8 @@ neuronal control circuits, (4) physical construction. Four subsections:
   line 447) — N20 wheel motors (104 RPM), MG996R leg servos (11 kg·cm), ESP32-S3 Zero MCU,
   PCA9685 + mini-L298N drivers, MPU-6050 IMU, HMC5883L magnetometer, Logitech C270 camera, 7.2V/
   3300mAh Li-ion battery, PLA/PETG 3D-printed structure. Physical test terrains: a 20° incline +
-  flat platform rig, and a **physically fabricated** Perlin-noise terrain (`\revblue{}`, line 485)
-  matching the simulated one 1:1 — laser-cut MDF, $1300\times900$mm, $250\times250$ grid, reported
+  flat platform rig, and a **physically fabricated** Perlin-noise terrain (line 485, R1-round text,
+  now baseline) matching the simulated one 1:1 — laser-cut MDF, $1300\times900$mm, $250\times250$ grid, reported
   stats ($\sigma_h=2.339$mm, $R_q=2.339$mm, mean slope 0.155). This is the real-world counterpart to
   the simulated Perlin terrain in Gazebo Simulation above — relevant if R3-04 (noise robustness) or
   R3-01/R3-02 ablations need a physical (not just simulated) validation terrain.
@@ -142,7 +155,8 @@ by a **Quantitative Performance Analysis (Physical)** subsection and a **Limitat
 
 ### conclusions.tex — fully read this round
 Summary of findings, comparison against \citet{sarvestani2013computational}, a **second, separate**
-limitations paragraph, forward-looking remarks, and a closing `\revblue{}` summary paragraph. Also
+limitations paragraph, forward-looking remarks, and a closing summary paragraph (R1-round text, now
+baseline). Also
 contains the paper's trailing unnumbered backmatter as `\section*{}` blocks in the same file
 (Acknowledgements, Author Contributions, Declaration of Competing Interest, AI-assisted writing
 disclosure) — these aren't split out separately since `split_sections.py` only splits on non-starred
@@ -157,7 +171,7 @@ disclosure) — these aren't split out separately since `split_sections.py` only
   two different lists, not deleting a duplicate** — the content itself doesn't overlap much.
 - **Found a real inconsistency (candidate `C-xx` correction, independent of R2-03)**: this paragraph
   states *"Classification metrics for strengthening the MLP-based terrain classifier were also not
-  evaluated"* — but results.tex's `\revblue{}` MLP subsection **already reports** accuracy/precision/
+  evaluated"* — but results.tex's MLP subsection (R1-round text, now baseline) **already reports** accuracy/precision/
   recall/F1/ROC-AUC and a full ablation+classifier-comparison study. This sentence is stale, almost
   certainly left over from before that content was added in a prior revision round. Needs a fix
   independent of the reviewer checklist — flag as `C-01` (see PROGRESS.md).
@@ -181,7 +195,7 @@ disclosure) — these aren't split out separately since `split_sections.py` only
 - The MLP ablation/classifier-comparison work in results.tex's "Evaluation of the MLP-based terrain
   classifier" is self-contained (references methodology's gait-decision module by section label
   `ssec:Gait_Decision_Module`, confirmed at methodology.tex line 313).
-- methodology.tex's basal-ganglia `\revblue{}` justification paragraph (line 200) cross-references
+- methodology.tex's basal-ganglia justification paragraph (line 200, R1-round text) cross-references
   "Section 3" for the ~47ms decision-latency figure — that number lives in results.tex, not
   methodology.tex; verify it before reusing it in R3-01/R3-02 text.
 - introduction.tex's closing paragraph hardcodes "Section 2/3/4" for methodology/results/conclusions,
@@ -190,9 +204,12 @@ disclosure) — these aren't split out separately since `split_sections.py` only
   R2-03 promoting Limitations to its own section). `scripts/check_hardcoded_refs.sh` detects both
   automatically (advisory, run before push — see README.md §10.1).
 - conclusions.tex's stale "MLP metrics not evaluated" sentence contradicts results.tex's own
-  `\revblue{}` MLP evaluation subsection — see `C-01` in PROGRESS.md.
+  MLP evaluation subsection (R1-round text) — see `C-01` in PROGRESS.md.
 - All four sections (introduction.tex, methodology.tex, results.tex, conclusions.tex) have now been
   fully read at least once this round. `methodology.tex`'s full read confirms R3-01/R3-02 are real
   gaps (no BG ablation, no WTA-vs-threshold study) but surfaces reusable groundwork: the existing
-  `\revblue{}` justification paragraph (citations + 47ms latency) and the locomotion module's own use
+  justification paragraph (citations + 47ms latency, R1-round text) and the locomotion module's own use
   of explicit thresholds (20° frontal cone, `Ar=28.0`) as a natural "threshold logic" contrast point.
+- **`\revblue{}` was stripped repo-wide on 2026-08-25** (`C-02`, `patches/c-02-strip-revblue.md`) —
+  every "R1-round text" reference above describes content that is now plain, uncolored baseline
+  text; it was blue only in the R1 round's compiled PDF, not in the current working copy.

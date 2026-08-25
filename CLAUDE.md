@@ -74,6 +74,13 @@ to `experiments/<id>-<slug>/` and follow README.md §9 before touching `sections
 - Run `scripts/install_hooks.sh` once per clone (and again if `scripts/hooks/pre-commit` changes) — installs the
   pre-commit hook that regenerates `source/main_monolithic.tex` and runs `validate_tex.sh`/`check_roundtrip.sh`
   whenever a commit touches `sections/` or `source/`. See README.md §10.2.
+- **Revision-round color convention**: any new or materially changed text written into `sections/*.tex` this
+  round — reviewer fixes, `intake/` write-ups, corrections, everything — must be wrapped in `\revblue{...}`
+  (defined in `sections/preamble.tex`). Pure typo fixes with zero meaning change can skip it; default to
+  wrapping otherwise. At the *start* of the *next* revision round (not this one), run
+  `scripts/strip_revblue.py --apply` once to turn this round's accepted `\revblue{}` back into plain baseline
+  text before that round's new edits begin. See OUTLINE.md's "Revision convention" section for full detail and
+  current state.
 
 ## Key files
 

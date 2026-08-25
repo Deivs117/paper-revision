@@ -92,7 +92,8 @@ paper-revision/
 │   ├── next_id.sh                # next available N-xx/C-xx ID (§10.3)
 │   ├── check_target_conflicts.sh # advisory: other rows targeting the same section (§10.4)
 │   ├── install_hooks.sh          # one-time: installs the pre-commit hook (§10.2)
-│   └── hooks/pre-commit          # template copied into .git/hooks/ by install_hooks.sh
+│   ├── hooks/pre-commit          # template copied into .git/hooks/ by install_hooks.sh
+│   └── strip_revblue.py          # start-of-round: unwrap last round's \revblue{} (§11)
 ├── PROGRESS.md
 ├── README.md
 └── CLAUDE.md
@@ -351,6 +352,8 @@ One file per patch: `patches/<id>-<slug>.tex` (lowercase ID, e.g. `patches/r3-02
 <the new/changed LaTeX content, exactly as inserted into the target section file>
 ```
 
+The pasted content itself must be wrapped in `\revblue{...}` — see §11's revision-round color convention. A patch resulting from a repo-wide structural operation rather than a single-section content change (e.g. `C-02`, stripping `\revblue{}` at the start of this round) records a `.md` summary instead of a content copy — see `patches/c-02-strip-revblue.md` for the precedent.
+
 Commit convention: stage the modified `sections/<slug>.tex` (and/or `assets/` files), the new `patches/<id>-<slug>.tex`, and the `PROGRESS.md` status update, in one commit: `patch: <ID> <short summary>` (e.g. `patch: R3-02 add WTA ablation comparison`).
 
 ---
@@ -451,6 +454,23 @@ Bypass deliberately with `git commit --no-verify` (e.g. a deliberate WIP commit)
 #### 10.4 `scripts/check_target_conflicts.sh` — same-section advisory
 
 `scripts/check_target_conflicts.sh <slug>` greps `PROGRESS.md` for rows mentioning `<slug>.tex` that aren't yet `synced-to-overleaf`, and prints them. Run before starting work on a section to see whether another in-flight item already claims the same file. This is deliberately coarse (it matches anywhere in the row, including the `Requirement` prose column, not just `Target section(s)` — so it can over-report) rather than a real lock: with one primary writer, the practical fix for an actual overlap is just to finish and commit one item before starting the other, not build file-level locking into a git-based pipeline.
+
+---
+
+### 11. Revision-Round Color Convention — `\revblue{...}`
+
+`\revblue{...}` is defined once in `sections/preamble.tex` (`\newcommand{\revblue}[1]{\textcolor{blue}{#1}}`) and marks text added or materially changed **in the current revision round**, rendering it blue in the compiled PDF so editors/reviewers can see what's new without a manual diff against the previous submission.
+
+**The rule, every round, every patch:** any new or materially changed sentence/paragraph/value written into `sections/*.tex` — reviewer-requirement content, `intake/` write-ups, corrections — gets wrapped in `\revblue{...}`. A pure typo fix with zero meaning change can skip it; default to wrapping otherwise, since under-marking hides real changes from reviewers, which is the worse failure mode.
+
+**At the start of a new round** (not mid-round), the *previous* round's `\revblue{}` becomes accepted baseline text and must be stripped back to plain, so the new round's own colored text isn't confused with old already-negotiated material:
+
+1. `python3 scripts/strip_revblue.py` — dry run, reports what would change per file.
+2. `python3 scripts/strip_revblue.py --apply` — writes the stripped files. Balanced-brace matching (same escape handling as `validate_tex.sh`: a backslash escapes the next character) unwraps `\revblue{X}` → `X`, keeping the inner text; loops until no `\revblue{` remains, so nested wrappers are handled too. The `\newcommand{\revblue}...` definition itself is never touched — its text contains `\revblue}`, not the literal `\revblue{` the script searches for.
+3. `scripts/reassemble.py` → `scripts/validate_tex.sh` → `scripts/check_roundtrip.sh` to confirm the new baseline is still valid LaTeX and splits/reassembles cleanly.
+4. Record it as a `C-xx` row in `PROGRESS.md` (get the ID from `scripts/next_id.sh C`) with a `.md` patch summary (not a content copy — see §7) listing wrapper counts per file, per the precedent in `patches/c-02-strip-revblue.md`.
+
+This repo's round stripped 265 wrappers on 2026-08-25 (`C-02`) — see `OUTLINE.md`'s "Revision convention" section for the live state and per-section pointers to what used to be `\revblue{}`.
 
 ---
 
