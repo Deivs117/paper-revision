@@ -1346,17 +1346,25 @@ A similar behavior is observed in the experiment with the physical robot (Figure
 
 To further consolidate the physical validation under complex, multi-section topographies, a dedicated testing suite of 15 continuous repetitive trials was conducted over an experimental track whose structural layout systematically combines four topographic segments: a double-ascent ramp, a horizontal elevated plane, a controlled descent ramp, and a rough terrain section characterised by stochastic, non-uniform height variations generated via Perlin noise. The sequential adaptation of the locomotion arbitration network throughout this compound course is documented in Figure~\ref{fig:real_variable_topography_sequence}, which maps the chronological gait-switching decisions enforced by the bio-inspired basal-ganglia controller across six representative frames.
 
-In Frame~1 (Figure~\ref{fig:real_terrain_frame1}), the platform initialises its operational trajectory in quadrupedal walking mode. This articulated gait is deliberately selected by the neural arbitration network to guarantee static stability and adequate traction during the ascending phase of the double ramp. The elevated support polygon and the positive grip force exerted by the four articulated limbs ensure that the centre-of-mass projection remains well within the stability boundary throughout the climb.
+\begin{table}[htbp]
+\centering
+\caption{Gait-mode transitions across the six-frame compound-terrain sequence (Figure~\ref{fig:real_variable_topography_sequence}), replicated across 15 continuous trials.}
+\label{tab:terrain_sequence}
+\begin{tabularx}{\textwidth}{c l l X}
+\toprule
+\textbf{Frame} & \textbf{Terrain segment} & \textbf{Mode} & \textbf{Trigger / mechanism} \\
+\midrule
+1 & Double-ramp ascent & Quadrupedal walking & Static stability \& traction priority; elevated support polygon keeps CoM within bound during climb \\
+2 & Transition to flat elevated segment & $\rightarrow$ Differential rolling & MLP-detected drop in vertical-IMU acceleration std.\ dev.\ below threshold suppresses quadrupedal salience, disinhibits rolling channel \\
+3 & Horizontal elevated plane & Differential rolling (sustained) & Energy-conservative wheeled traversal; rolling channel remains stable \\
+4 & Controlled ramp descent & Differential rolling (sustained) & Pitch disturbance stays below quadrupedal re-engagement threshold ($\approx 5^{\circ}$) \\
+5 & Perlin-noise rough terrain & Rolling $\rightarrow$ stagnation & Wheels lose traction on high-variance surface; MLP stagnation channel triggers sustained signal \\
+6 & Rough terrain (recovery) & $\rightarrow$ Quadrupedal walking & Stagnation triggers reactive disinhibition of quadrupedal channel; limbs redeploy, restoring support polygon \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-In Frame~2 (Figure~\ref{fig:real_terrain_frame2}), as the platform completes the ramp ascent and transitions onto the horizontal elevated segment, the MLP-based terrain classifier registers a rapid decrease in the standard deviation of the vertical IMU acceleration. This drop below the defined threshold suppresses the quadrupedal-mode salience channel within the basal ganglia circuit, disinhibiting the differential rolling channel. The arbitration network consequently issues a reconfiguration command, and the limbs actively retract to their compact rolling configuration, transitioning the platform to differential mobile mode.
-
-Frame~3 (Figure~\ref{fig:real_terrain_frame3}) captures the platform sustaining high-efficiency, energy-conservative navigation across the elevated planar section. In this mode, the omnidirectional wheels serve as the primary locomotor effectors, minimising joint torque expenditure and maximising forward displacement speed relative to the quadrupedal gait. The neural arbitration network maintains the differential rolling channel in a stable, uninhibited state throughout this segment, confirming the platform's capacity for sustained wheeled traversal on structured horizontal surfaces.
-
-Frame~4 (Figure~\ref{fig:real_terrain_frame4}) demonstrates that the differential mobile mode is preserved consistently during the controlled descent of the complementary ramp. The onboard inertial readings confirm that the pitch disturbance induced by the slope remains below the neural excitation threshold for quadrupedal re-engagement (${\approx}5^{\circ}$), allowing the wheels to maintain traction and the rolling mode to persist uninterrupted throughout the descent manoeuvre.
-
-Frame~5 (Figure~\ref{fig:real_terrain_frame5}) represents the most demanding phase of the experimental course. Upon transitioning from the ramp terminus to the Perlin-noise rough terrain, the wheels encounter a surface characterised by high-variance height fluctuations and non-uniform contact geometry. Under these conditions, the rolling effectors experience critical slippage and a severe loss of traction, resulting in a measurable stagnation state: the platform's forward progress index drops sharply, and the MLP outputs trigger a sustained high-activity signal in the stagnation detection channel. This adverse traction event is precisely the destabilising input that the basal-ganglia network is designed to detect and resolve.
-
-In Frame~6 (Figure~\ref{fig:real_terrain_frame6}), upon detecting the prolonged stagnation condition and the associated collapse of the locomotion progress metrics, the basal-ganglia-inspired arbitration architecture executes a reactive state transition, disinhibiting the quadrupedal walking channel and suppressing the differential rolling channel. The limbs deploy from their retracted configuration, re-establishing the full four-point articulated contact posture. This reconfiguration restores the support polygon, eliminates the wheel-slip condition, and enables the platform to traverse the rough Perlin-noise terrain successfully. This closed-loop reactive switching sequence---observed across all 15 experimental trials---empirically confirms that the bio-inspired controller reliably detects locomotion failure and autonomously recovers the optimal gait mode without external intervention, demonstrating the real-world robustness of the proposed neural arbitration architecture under stochastic, non-structured terrain conditions.
+Across the compound course (double-ascent ramp $\rightarrow$ elevated plane $\rightarrow$ descent ramp $\rightarrow$ Perlin-noise rough terrain, 15 trials), the arbitration network autonomously transitions through the gait sequence summarised in Table~\ref{tab:terrain_sequence} (Figure~\ref{fig:real_variable_topography_sequence}). The critical event occurs in Frames 5--6: rolling-mode wheel slip on the stochastic rough segment triggers a sustained stagnation signal, resolved by reactively redeploying the quadrupedal gait, which restores the support polygon and completes traversal. This closed-loop reactive switching was observed across all 15 trials, confirming reliable, autonomous failure detection and gait recovery under stochastic, non-structured terrain conditions.
 
 \begin{figure*}[t]
   \centering
