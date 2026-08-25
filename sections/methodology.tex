@@ -215,7 +215,7 @@ The sensory layer processes all inputs derived from visual stimuli and their dir
 {L}_{4}   \big[\theta_p - \theta_s - 20\big] \right)_+
 \label{eq:Z_6}
 \end{align}
-where $\tau$ (s) is the common neuron time constant (see Table~\ref{table:Locom_NN}); $\omega_{L\rightarrow X}$ is the synaptic amplification weight from the LiDAR integrator to the locomotion neurons; $\text{L}_2$ and $L_4$ denote the left/right directional quadrant neuron and the LiDAR accumulator neuron from Equations~\eqref{eq:L2} and~\eqref{eq:L4}, respectively; and the bracketed term encodes a $20^\circ$ angular margin defining the frontal zone of the robot's field of view.
+where $\text{L}_2$ and $L_4$ denote the left/right directional quadrant neuron and the LiDAR accumulator neuron from Equations~\eqref{eq:L2} and~\eqref{eq:L4}, respectively, and the bracketed term encodes a $20^\circ$ angular margin defining the frontal zone of the robot's field of view ($\tau$ and $\omega_{L\rightarrow X}$ are defined in Table~\ref{table:Locom_NN}'s notation below).
 
 \begin{figure}[t]
     \centering
@@ -243,7 +243,7 @@ The differential equations~\eqref{eq:Z_3}–\eqref{eq:Z_17} describing the dynam
 \tau \frac{dz_{17}}{dt} =& -z_{17} + (Gpe_{B} - \text{Ar})_+\label{eq:Z_17}
 \end{align}
 
-In Equations~\eqref{eq:Z_3}–\eqref{eq:Z_17}: $Gpe_B$, $Gpe_G$, and $Gpe_R$ are the external globus pallidus outputs for the obstacle (Blue), appetitive (Green), and aversive (Red) behavioral channels, respectively; $\omega_{GpeR}$ is a synaptic weight applied to the $Gpe_R$ channel (value: 2.0); $w$ is a global inhibitory synaptic weight used consistently in locomotion equations (value: 10.0); and $\text{Ar}$ is the approach-stop threshold applied to unit $X_{17}$ (see Table~\ref{table:Locom_NN}).
+In Equations~\eqref{eq:Z_3}–\eqref{eq:Z_17}: $Gpe_B$, $Gpe_G$, and $Gpe_R$ are the external globus pallidus outputs for the obstacle (Blue), appetitive (Green), and aversive (Red) behavioral channels, respectively ($\omega_{GpeR}$, $w$, and $Ar$ are defined in Table~\ref{table:Locom_NN}'s notation below).
 
 \begin{table}[t]
 \centering

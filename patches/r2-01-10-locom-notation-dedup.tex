@@ -1,0 +1,17 @@
+% PATCH: R2-01 (10/12, block B -- methodology.tex)
+% Reviewer: 2
+% Target section: sections/methodology.tex
+% Requirement: Merge unified metric definitions -- three separate notation paragraphs
+%   (after Eq. Z5/Z6 at line 218, after Eq. Z3-Z17 at line 246, and after
+%   Table~\ref{table:Locom_NN} at lines 299-303) collectively covered the same table's
+%   symbols, with tau/omega_L->X (218 & 299) and omega_GpeR/w/Ar (246 & 299-303)
+%   defined near-verbatim in two places each. Kept the comprehensive table-notation
+%   paragraph (299-303) as canonical, trimmed the two equation-block paragraphs to only
+%   their locally-unique symbols with a cross-reference for the rest.
+% Status: applied
+
+\revblue{where $\text{L}_2$ and $L_4$ denote the left/right directional quadrant neuron and the LiDAR accumulator neuron from Equations~\eqref{eq:L2} and~\eqref{eq:L4}, respectively, and the bracketed term encodes a $20^\circ$ angular margin defining the frontal zone of the robot's field of view ($\tau$ and $\omega_{L\rightarrow X}$ are defined in Table~\ref{table:Locom_NN}'s notation below).}
+
+...
+
+\revblue{In Equations~\eqref{eq:Z_3}–\eqref{eq:Z_17}: $Gpe_B$, $Gpe_G$, and $Gpe_R$ are the external globus pallidus outputs for the obstacle (Blue), appetitive (Green), and aversive (Red) behavioral channels, respectively ($\omega_{GpeR}$, $w$, and $Ar$ are defined in Table~\ref{table:Locom_NN}'s notation below).}
