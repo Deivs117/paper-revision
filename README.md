@@ -61,6 +61,10 @@ paper-revision/
 │   └── paper.pdf
 ├── patches/
 │   └── <id>-<slug>.tex          # audit copy of each applied change
+├── intake/                      # raw material you or teammates drop in (§8)
+│   ├── pending/                 # not yet turned into PROGRESS.md rows
+│   ├── processed/                # moved here once processed, kept for audit
+│   └── SOURCES.md               # registry of sibling repos the agent may read (read-only)
 ├── scripts/
 │   ├── config.sh
 │   ├── pull_from_overleaf.sh
@@ -283,9 +287,17 @@ All shared paths (`OVERLEAF_DIR`, `OVERLEAF_MAIN_FILE`, `MIRROR_FILE`, `ASSETS_D
 
 ---
 
-### 6. `PROGRESS.md` — Reviewer Checklist Tracking
+### 6. `PROGRESS.md` — Unified Change Tracking
 
-A markdown table at the repo root, one row per reviewer requirement, IDs fixed as below (do not renumber — these IDs are referenced by patch filenames and commit messages):
+A markdown table at the repo root, one row per change — of **any** origin. Three ID namespaces share this one table and one pipeline:
+
+* `R2-xx` / `R3-xx` — reviewer-mandated items, fixed list below (do not renumber).
+* `N-xx` — new content, from an `intake/` doc describing something to write about (e.g. a teammate's implementation). Numbered sequentially as they're created, never reused.
+* `C-xx` — standalone corrections/edits that don't map to a reviewer item. Same numbering rule.
+
+Every row — regardless of namespace — goes through the identical flow: identify target section(s), edit, record in `patches/`, update status, push. There is no separate tracking file for `intake/`-originated work; see §8.
+
+The `R2-xx`/`R3-xx` rows are fixed at the outset (do not renumber — these IDs are referenced by patch filenames and commit messages):
 
 | ID | Reviewer | Requirement (short) | Target section(s) | Status | Patch file |
 |---|---|---|---|---|---|
@@ -323,6 +335,33 @@ Commit convention: stage the modified `sections/<slug>.tex` (and/or `assets/` fi
 
 ---
 
+### 8. `intake/` — Turning Raw Docs into Patches
+
+The entry point for anything that isn't a reviewer requirement: context on a new system a teammate built (to be written up in, say, the Results section), a loose list of corrections, notes copied from elsewhere. This is the repo owner's primary way of feeding work into the pipeline.
+
+#### 8.1 Dropping in a document
+Place a markdown file in `intake/pending/`. No fixed format required — it can be freeform notes, a bullet list of corrections, a teammate's existing doc pasted in as-is. If it references material from another repo (e.g. firmware/simulation findings), say so in the doc and/or check `intake/SOURCES.md` for the right path — don't inline large external content, point at it.
+
+#### 8.2 Processing a pending document
+1. Read `OUTLINE.md` first (§4) for global context — same discipline as any other patch.
+2. Read the `intake/pending/<doc>.md` file in full.
+3. If it references an external repo, read only the specific files it points to from that repo (via `intake/SOURCES.md`) — read-only, never edit anything outside `paper-revision/`.
+4. Decide which target section(s) in `sections/` this belongs to (using `OUTLINE.md`'s per-section descriptions; read the actual target section file(s) to see how the new material should fit stylistically).
+5. For each distinct change identified in the document, add one row to `PROGRESS.md` with the next available `N-xx` (new content) or `C-xx` (correction) ID, its target section(s), and status `pending`.
+6. From there, each row follows the normal flow (§5, §6, §7): draft → `sections/` edit → `patches/<id>-<slug>.tex` → `applied` → `reassemble` → `push` → `synced-to-overleaf`.
+7. Once every change extracted from the document has reached `applied` or later, move the file from `intake/pending/` to `intake/processed/` (git `mv`, so history is preserved) — this is the record that the document was fully triaged, not just read.
+
+#### 8.3 `intake/SOURCES.md`
+A short registry of sibling repositories the agent may read from (never write to) when an intake document references implementation details it doesn't fully restate. One line per repo:
+
+```markdown
+- PETER_SIMULATION — ../PETER_SIMULATION — firmware, ROS 2 simulation, hardware findings. Read-only.
+```
+
+Add a line here whenever a new external repo becomes relevant as source material. This list is intentionally small — it's a pointer registry, not a mirror; nothing from these repos is copied into `paper-revision`.
+
+---
+
 ## Repository Setup & Execution Guide
 
 ### Current state
@@ -330,7 +369,8 @@ Commit convention: stage the modified `sections/<slug>.tex` (and/or `assets/` fi
 Both repositories exist and are linked:
 
 * Overleaf mirror cloned at a sibling path (e.g. `~/Documents/Paper/<overleaf-project-id>/`), git token cached via `git config --global credential.helper store`. **Sync-only** — never edited by hand.
-* This repo (`paper-revision`) initialized, linked to `origin` on GitHub, with `README.md`, `CLAUDE.md`, `.gitignore`, and empty `source/`, `sections/`, `assets/`, `patches/`, `scripts/`, `build/` (gitignored) directories, baseline committed and pushed.
+* This repo (`paper-revision`) initialized, linked to `origin` on GitHub, with `README.md`, `CLAUDE.md`, `.gitignore`, and empty `source/`, `sections/`, `assets/`, `patches/`, `intake/pending/`, `intake/processed/`, `scripts/`, `build/` (gitignored) directories, baseline committed and pushed.
+* A sibling repo `../PETER_SIMULATION` also exists (firmware/ROS 2 simulation) — read-only reference material for `intake/` documents, registered in `intake/SOURCES.md`.
 
 Remaining setup (implementation phase, not yet done):
 
@@ -339,6 +379,7 @@ Remaining setup (implementation phase, not yet done):
 3. Create `PROGRESS.md` at the repo root using the table in §6, and a first-pass `OUTLINE.md` (§4.3) once the real manuscript structure is known.
 4. Run `scripts/pull_from_overleaf.sh` once to produce the first real `source/main_monolithic.tex`, `sections/*.tex`, and populated `assets/` from the actual manuscript project.
 5. Run `scripts/check_roundtrip.sh` once right after step 4 to confirm the split boundaries are byte-exact for the real manuscript before relying on the pipeline.
+6. Populate `intake/SOURCES.md` (§8.3) with any sibling repos currently relevant (e.g. `PETER_SIMULATION`).
 
 ### Daily revision loop (once scripts exist)
 

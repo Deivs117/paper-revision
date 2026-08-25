@@ -17,6 +17,15 @@ target `sections/<slug>.tex` file(s). Do not read `source/main_monolithic.tex` a
 monolith and defeats the point of `sections/`. Only read additional section files, or the monolith, when the
 requirement itself genuinely spans sections and `OUTLINE.md` doesn't resolve it.
 
+## Processing an `intake/` document
+
+`intake/pending/*.md` is the entry point for anything that isn't a reviewer requirement — new content to write up
+(e.g. a teammate's implementation) or a loose list of corrections. Read `OUTLINE.md` first, then the doc, then (only
+if it references one) the specific files it points to in a repo listed in `intake/SOURCES.md` — read-only, never
+edit outside `paper-revision/`. For each distinct change found, add a `PROGRESS.md` row with the next `N-xx` (new
+content) or `C-xx` (correction) ID, then follow the normal patch flow. `git mv` the doc to `intake/processed/` once
+every change it produced has reached `applied` or later.
+
 ## Hard rules
 
 - Never edit `source/main_monolithic.tex` by hand. It is generated: written by `scripts/pull_from_overleaf.sh`
@@ -58,6 +67,8 @@ requirement itself genuinely spans sections and `OUTLINE.md` doesn't resolve it.
   before starting new patch work; update after.
 - `patches/<id>-<slug>.tex` — audit copy of each applied change, not the live file (that's `sections/<slug>.tex`
   or `assets/`).
+- `intake/pending/` / `intake/processed/` — raw docs waiting to be triaged into `PROGRESS.md` rows / already fully
+  triaged. `intake/SOURCES.md` — registry of sibling repos readable (not writable) as reference material.
 - `build/` — gitignored, disposable compile output. Never commit anything from it.
 
 ## Commands
