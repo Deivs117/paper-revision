@@ -3,15 +3,19 @@
 One row per change, of any origin (`R2-xx`/`R3-xx` reviewer items, `N-xx` new content, `C-xx` corrections). See
 README.md §6. Status values: `pending` → `drafted` → `applied` → `synced-to-overleaf`.
 
+`Target section(s)` below reflects a full read of `results.tex` and a targeted grep of `methodology.tex`
+(see `OUTLINE.md` for details) — more informed than a first-pass guess, but `introduction.tex` and
+`conclusions.tex` are still only skimmed.
+
 | ID | Reviewer | Requirement (short) | Target section(s) | Status | Patch file |
 |---|---|---|---|---|---|
-| R2-01 | 2 | Condense repetitive text / remove duplicate plots / merge metric definitions / shorten warehouse sim section | results.tex | pending | — |
-| R2-02 | 2 | Add FSM gait arbitration baseline comparison | methodology.tex, results.tex | pending | — |
-| R2-03 | 2 | Consolidate limitations into one dedicated section | conclusions.tex (new subsection or section) | pending | — |
-| R2-04 | 2 | Add multi-mode energy consumption + onboard MLP compute overhead analysis | results.tex | pending | — |
-| R3-01 | 3 | Ablation analysis on basal ganglia arbitration network | methodology.tex, results.tex | pending | — |
-| R3-02 | 3 | Comparative tests removing neural layers/inhibitory connections to justify WTA over threshold logic | methodology.tex, results.tex | pending | — |
-| R3-03 | 3 | Control/compensation strategies for low-torque servo constraints and open-loop gait instability | methodology.tex or new section | pending | — |
-| R3-04 | 3 | Perception-decision noise robustness experiments (IMU drift, LiDAR noise, camera illumination distortion) | results.tex | pending | — |
-| R3-05 | 3 | Inspection task performance metrics (tracking accuracy, coverage rate, autonomous re-planning) | results.tex | pending | — |
-| R3-06 | 3 | Literature review comparative tables: Basal Ganglia vs CPG vs RL-based action selection | introduction.tex | pending | — |
+| R2-01 | 2 | Condense repetitive text / remove duplicate plots / merge metric definitions / shorten warehouse sim section | results.tex — sim vs hardware quantitative-validation subsections tell the same 4-scenario story twice with parallel figure sets | pending | — |
+| R2-02 | 2 | Add FSM gait arbitration baseline comparison | methodology.tex (baseline description, new), results.tex (comparison data, new) — confirmed no existing FSM content anywhere | pending | — |
+| R2-03 | 2 | Consolidate limitations into one dedicated section | results.tex §"Limitations of the Present Work" already exists — may already be largely satisfied; verify no limitations text is duplicated elsewhere (introduction/conclusions not yet checked) and decide if it should be promoted from `\subsection` to a top-level `\section` | pending | — |
+| R2-04 | 2 | Add multi-mode energy consumption + onboard MLP compute overhead analysis | MLP compute overhead: **already present** in results.tex ("Evaluation of the MLP-based terrain classifier" — per-sample latency vs SVM/RF/LogReg). Multi-mode long-term average energy: results.tex only has per-transition energy cost, not steady-state per-mode average — likely a real gap | pending | — |
+| R3-01 | 3 | Ablation analysis on basal ganglia arbitration network | methodology.tex §"Basal Ganglia Module" (~line 154, STN/GPe/GPi WTA circuit) for the ablation methodology; results.tex for the ablation results — confirmed no existing content, genuine gap | pending | — |
+| R3-02 | 3 | Comparative tests removing neural layers/inhibitory connections to justify WTA over threshold logic | same as R3-01 — methodology.tex + results.tex, genuine gap, no existing content | pending | — |
+| R3-03 | 3 | Control/compensation strategies for low-torque servo constraints and open-loop gait instability | results.tex §"Limitations" already *acknowledges* this constraint but proposes no compensation strategy — the strategy itself is new content, likely belongs in methodology.tex | pending | — |
+| R3-04 | 3 | Perception-decision noise robustness experiments (IMU drift, LiDAR noise, camera illumination distortion) | results.tex already has noise-robustness data across σ∈[0,4] for all 4 simulation scenarios — **verify whether this is generic sensor noise or specifically framed as IMU drift/LiDAR noise/illumination**, since the reviewer names specific noise sources | pending | — |
+| R3-05 | 3 | Inspection task performance metrics (tracking accuracy, coverage rate, autonomous re-planning) | results.tex — no coverage-rate or autonomous-replanning metrics found; genuine gap | pending | — |
+| R3-06 | 3 | Literature review comparative tables: Basal Ganglia vs CPG vs RL-based action selection | introduction.tex — not yet verified by full read | pending | — |
