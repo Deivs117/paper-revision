@@ -1,0 +1,21 @@
+% PATCH: R2-01 (13/12, conclusions.tex condensing pass)
+% Reviewer: 2
+% Target section: sections/conclusions.tex
+% Requirement: Condense repetitive text -- conclusions.tex closed with three separate
+%   paragraphs all restating the same top-level claim ("this architecture lets the robot
+%   navigate/stabilize/decide robustly, validated in simulation and physical experiments"):
+%   the \revblue{} "highly efficient baseline" paragraph, the "Overall, this work
+%   demonstrates..." paragraph, and (further down, left untouched here) the closing
+%   \revblue{} "In conclusion, this paper presented..." paragraph. Likewise, extensibility/
+%   future-work content was split across two separate paragraphs (new sensor modalities in
+%   the "modular nature" paragraph; NDT modalities/field validation in the following one)
+%   with no distinct content justifying the split.
+%   Merged the "Overall, this work demonstrates..." paragraph into the \revblue{} baseline
+%   paragraph (same claim, kept every distinct sub-claim: operational-range expansion,
+%   low-latency multi-sensor integration, energy-efficiency argument, real-world deployment
+%   framing), and merged the "modular nature"/sensor-extensibility paragraph into the
+%   NDT/future-work paragraph. Five paragraphs -> two. No numeric result, citation, or
+%   distinct claim was removed.
+% Status: applied
+
+% Full before/after text: see git diff for this commit (sections/conclusions.tex).
