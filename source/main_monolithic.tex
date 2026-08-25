@@ -1237,7 +1237,7 @@ To justify the choice of architecture, an ablation study compared the proposed 1
     \label{fig:architecture_ablation}
 \end{figure}
 
-The MLP was further benchmarked against alternative classifiers (Logistic Regression, SVM with RBF kernel, and Random Forest) under the same cross-validation protocol. Logistic Regression underperformed ($\text{F1} = 0.692$), reflecting the non-linear separability of the IMU features, while SVM-RBF ($\text{F1} = 0.900$) and Random Forest ($\text{F1} = 0.995$) achieved higher raw scores. As summarised in Figure~\ref{fig:classifier_comparison}, the MLP was nonetheless selected as the configuration offering the best accuracy-to-latency trade-off for deployment within the real-time constraints of the neural-arbitration pipeline running on resource-constrained hardware.
+The MLP was further benchmarked against alternative classifiers (Logistic Regression, SVM with RBF kernel, and Random Forest) under the same cross-validation protocol. Logistic Regression underperformed ($\text{F1} = 0.692$), reflecting the non-linear separability of the IMU features, while SVM-RBF ($\text{F1} = 0.900$) and Random Forest ($\text{F1} = 0.995$) achieved higher raw scores (Figure~\ref{fig:classifier_comparison}); the rationale for nonetheless selecting the MLP is given below, alongside the per-sample latency comparison.
 
 \begin{figure}[htbp]
     \centering

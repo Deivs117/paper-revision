@@ -1,0 +1,11 @@
+% PATCH: R2-01 (8/12, found during final verification pass)
+% Reviewer: 2
+% Target section: sections/results.tex
+% Requirement: Condense repetitive text -- the "MLP selected for best accuracy-to-latency
+%   trade-off despite lower raw F1" conclusion was stated twice: once unsupported
+%   (immediately after the classifier-comparison paragraph) and once with the actual
+%   latency numbers that justify it (two paragraphs later). Cut the premature/unsupported
+%   restatement, left the justified one as the sole place the conclusion is drawn.
+% Status: applied
+
+\revblue{The MLP was further benchmarked against alternative classifiers (Logistic Regression, SVM with RBF kernel, and Random Forest) under the same cross-validation protocol. Logistic Regression underperformed ($\text{F1} = 0.692$), reflecting the non-linear separability of the IMU features, while SVM-RBF ($\text{F1} = 0.900$) and Random Forest ($\text{F1} = 0.995$) achieved higher raw scores (Figure~\ref{fig:classifier_comparison}); the rationale for nonetheless selecting the MLP is given below, alongside the per-sample latency comparison.}
