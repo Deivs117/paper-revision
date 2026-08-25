@@ -1,0 +1,23 @@
+% PATCH: R2-01 (1/12)
+% Reviewer: 2
+% Target section: sections/results.tex
+% Requirement: Condense repetitive text — the "symbolic warehouse" disclaimer was stated in
+%   full three times (Results intro paragraph, figure caption, Limitations). Kept the full
+%   disclaimer once (Limitations, unchanged) and shortened the intro paragraph + figure caption
+%   to short cross-references instead of restating the argument.
+% Status: applied
+
+\revblue{Additionally, to contextualize the simulation within its intended inspection application domain, a Gazebo environment inspired by the spatial layout of an industrial warehouse was constructed (Figure~\ref{fig:depot_simulation}); its scope and caveats as a symbolic, non-certified test arena are discussed in Section~\ref{ssec:Limitations}.}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Depot_simulation.jpeg}
+    \caption{%
+        \revblue{Gazebo simulation environment used for stimulus-response
+        experiments, inspired by the general spatial organisation of an
+        industrial storage facility (open corridors, distributed obstacle
+        elements, defined navigation zones). See Section~\ref{ssec:Limitations}
+        for the scope and caveats of this representation.}%
+    }
+    \label{fig:depot_simulation}
+\end{figure}

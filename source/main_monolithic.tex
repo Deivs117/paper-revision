@@ -639,23 +639,17 @@ Initially, simulations of the platform were performed in the Gazebo environment 
 
 In the first phase, the robot's behavior was analyzed under a single type of stimulus, following an approach similar to that presented by \citet{sarvestani2013computational}. Then, to assess performance in more complex environments, the platform was exposed to multiple stimuli of different modalities. Simulations were performed to verify that the selected gait corresponded to the most appropriate mode based on the perceived terrain. This stage emphasized the analysis of neuronal responses in the obstacle sensory module, the locomotor decision network, and the locomotion-mode decision network.
 
-Additionally, to contextualize the simulation within its intended inspection application domain, a Gazebo environment inspired by the spatial layout of an industrial warehouse was constructed (Figure~\ref{fig:depot_simulation}). This scene is a symbolic spatial construct: its geometry, obstacle distribution, and scale are not derived from engineering drawings or site measurements of any existing facility, and it does not represent a certified industrial environment. It is employed exclusively as a controlled test arena in which to evaluate the stimulus-response and locomotion-arbitration behaviors of the platform under spatially representative but simplified conditions. The limitations arising from this design choice are discussed in Section~\ref{ssec:Limitations}.
+Additionally, to contextualize the simulation within its intended inspection application domain, a Gazebo environment inspired by the spatial layout of an industrial warehouse was constructed (Figure~\ref{fig:depot_simulation}); its scope and caveats as a symbolic, non-certified test arena are discussed in Section~\ref{ssec:Limitations}.
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.75\textwidth]{Depot_simulation.jpeg}
     \caption{%
-        Gazebo simulation environment used for stimulus-response experiments.
-        The world is a symbolic three-dimensional construct whose layout
-        was \emph{inspired by} the general spatial organisation of an
+        Gazebo simulation environment used for stimulus-response
+        experiments, inspired by the general spatial organisation of an
         industrial storage facility (open corridors, distributed obstacle
-        elements, defined navigation zones).
-        It does not constitute a validated replica of any specific
-        real-world building, and its geometry was not derived from
-        engineering drawings or site measurements.
-        Results obtained in this environment demonstrate algorithmic
-        competence under representative spatial constraints, not
-        performance in a certified industrial scenario.%
+        elements, defined navigation zones). See Section~\ref{ssec:Limitations}
+        for the scope and caveats of this representation.%
     }
     \label{fig:depot_simulation}
 \end{figure}
