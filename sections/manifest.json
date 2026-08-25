@@ -1,0 +1,26 @@
+[
+  {
+    "file": "preamble.tex",
+    "title": null
+  },
+  {
+    "file": "introduction.tex",
+    "title": "Introduction"
+  },
+  {
+    "file": "methodology.tex",
+    "title": "Methodology"
+  },
+  {
+    "file": "results.tex",
+    "title": "Results"
+  },
+  {
+    "file": "conclusions.tex",
+    "title": "Conclusions"
+  },
+  {
+    "file": "closing.tex",
+    "title": null
+  }
+]

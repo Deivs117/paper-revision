@@ -1,0 +1,115 @@
+%% 
+%% Copyright 2007-2025 Elsevier Ltd
+%% 
+%% This file is part of the 'Elsarticle Bundle'.
+%% ---------------------------------------------
+%% 
+%% It may be distributed under the conditions of the LaTeX Project Public
+%% License, either version 1.3 of this license or (at your option) any
+%% later version.  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%% 
+%% The list of all files belonging to the 'Elsarticle Bundle' is
+%% given in the file `manifest.txt'.
+%% 
+%% Template article for Elsevier's document class `elsarticle'
+%% with harvard style bibliographic references
+
+\documentclass[preprint,12pt]{elsarticle}
+\usepackage{subcaption}
+\usepackage{hyperref}
+%% Use the option review to obtain double line spacing
+%% \documentclass[preprint,review,12pt]{elsarticle}
+
+%% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
+%% for a journal layout:
+%% \documentclass[final,1p,times]{elsarticle}
+%% \documentclass[final,1p,times,twocolumn]{elsarticle}
+%% \documentclass[final,3p,times]{elsarticle}
+%% \documentclass[final,3p,times,twocolumn]{elsarticle}
+%% \documentclass[final,5p,times]{elsarticle}
+%% \documentclass[final,5p,times,twocolumn]{elsarticle}
+
+%% For including figures, graphicx.sty has been loaded in
+%% elsarticle.cls. If you prefer to use the old commands
+%% please give \usepackage{epsfig}
+
+
+%% The amssymb package provides various useful mathematical symbols
+\usepackage{amssymb}
+%% The amsmath package provides various useful equation environments.
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\newcommand{\revblue}[1]{\textcolor{blue}{#1}}
+%% The amsthm package provides extended theorem environments
+%% \usepackage{amsthm}
+
+%% The lineno packages adds line numbers. Start line numbering with
+%% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
+%% for the whole article with \linenumbers.
+%% \usepackage{lineno}
+
+\journal{Robotics and Autonomous Systems}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Multimodal robot with bio-inspired gait arbitration across simulated and real environments} %% Article title
+
+\author{Samuel Federico Carlos-Rodríguez\fnref{depA}}
+\author{Diego Alejandro Caro-Vaca\fnref{depA}}
+\author{David Caicedo-Samboní\fnref{depA}}
+\author{Sebastián Grajales-Pulgarín\fnref{depA}}
+\author{Julián Hurtado-López\corref{cor1}}
+\ead{jhurtado@uao.edu.co}
+\cortext[cor1]{Corresponding author}
+\author{David Fernando Ramírez-Moreno}
+
+\affiliation{organization={Faculty of Engineering and Basic Sciences, Universidad Autónoma de Occidente},
+            addressline={Cll 25 \# 115-85 Km 2 Vía Cali - Jamundí},
+            city={Cali},
+            postcode={760030},
+            state={Valle},
+            country={Colombia}}
+
+\fntext[depA]{Mechatronic Engineering}
+
+%% Abstract
+\begin{abstract}
+This work presents the design, simulation, and implementation of a bio-inspired quadruped robotic platform equipped with a hybrid wheel-leg locomotion system and controlled through a neural architecture modeled after basal ganglia mechanisms. The platform integrates sensory modules for environmental perception, arbitration modules for behavioral decision-making, and locomotor modules for gait generation, enabling adaptive responses to diverse stimuli and terrain conditions. Simulation and implementation demonstrate the robot's ability to switch autonomously between locomotion modes ---quadrupedal walking, differential rolling, and omnidirectional motion--- when facing obstacles, appetitive stimuli, or aversive conditions. \revblue{The proposed framework demonstrates the robustness and reliability of a bio-inspired neural architecture for multi-stimulus mode arbitration, providing a dependable algorithmic foundation for autonomous systems operating under uncertainty and dynamic environmental conditions. Across simulated and real-robot trials, the controller consistently avoided critical instability and produced terrain-specific, repeatable locomotion signatures, highlighting its potential as a reliable framework for gait selection and laying the groundwork for scaling toward robust real-world infrastructure inspection and operation in complex, unstructured environments.}
+\end{abstract}
+
+%%Graphical abstract
+\begin{graphicalabstract}
+\includegraphics[width=\textwidth]{GRAPHICAL_ABSTRACT}
+\end{graphicalabstract}
+
+%%Research highlights
+\begin{highlights}
+\item Hybrid wheel-leg quadruped enables adaptive locomotion in complex environments.
+\item Multimodal sensing (camera, LiDAR, IMU) drives context-aware gait selection.
+\item A bio-inspired neural architecture arbitrates behaviors via winner-take-all dynamics.
+\item The controller switches adaptively among rolling, quadrupedal, and omnidirectional modes in response to sensory context.
+\item Results show consistent behavior selection under changing stimuli and environmental conditions.
+\end{highlights}
+
+%% Keywords
+\begin{keyword}
+
+Wheel-legged quadruped \sep Hybrid locomotion \sep Gait mode switching \sep Arbitration \sep Basal ganglia model \sep Multimodal sensing
+
+\end{keyword}
+
+\end{frontmatter}
+
+%% Add \usepackage{lineno} before \begin{document} and uncomment 
+%% following line to enable line numbers
+%% \linenumbers
+
+%% main text
+%%

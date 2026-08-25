@@ -1,0 +1,501 @@
+\section{Methodology}
+
+This study was structured around four main components. First, the robot was designed with a morphology enabling transformation among quadrupedal, differential-driving, and omnidirectional mobile modes. Second, the platform was simulated in the Gazebo environment, integrating the sensors required to perform the assigned tasks. Third, the neuronal control circuits were developed, including modules responsible for obstacle detection via LiDAR, motion-direction definition, and locomotion-mode selection. Additionally, a multilayer perceptron network was implemented to detect terrain instability and adjust the gait mode accordingly. Finally, the physical robot was constructed and implemented following the platform previously designed for simulation, which served as the definitive morphological reference. Manufacturing and assembly insights from the prior engineering development by \citet{Grajales_Des_2025} were incorporated to streamline the fabrication process; however, the simulation design was adopted as the baseline to ensure consistency between the virtual and physical systems. 
+
+\subsection{Platform Design}
+\label{ssec:Platform_Design}
+
+During the design phase, the main focus was placed on the four limbs, as they needed to incorporate a structure capable of housing the actuators responsible for both articulated motion and rolling displacement through omnidirectional wheels. Based on the previously established criteria, the model shown in Figure~\ref{fig:pata} was developed. The overall 3D design of the quadruped robotic platform is shown in Figure~\ref{fig:robot}.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.5\textwidth, angle=-7]{robot.png}
+    \caption{3D design of the quadruped robotic platform.}
+    \label{fig:robot}
+\end{figure} 
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.4\textwidth]{pata.png}
+    \caption{3D design of the robotic limb.}
+    \label{fig:pata}
+\end{figure}
+
+This structure enables three degrees of freedom for each limb, maintaining the same design across the robot’s four legs. Each limb includes three servomotors responsible for executing articulated movements, while an additional geared motor serves as the actuator for rolling motion. This motor is located at the distal end of the femur and is directly coupled to a mecanum wheel, allowing smooth transitions between articulated and rolling modes. 
+
+The robot's body integrates the primary navigation sensor suite, consisting of a LiDAR unit, a camera, and inertial sensors, all essential for fulfilling the assigned tasks. The camera captures visual stimuli from the environment, the LiDAR provides information regarding the presence and position of obstacles, and the inertial sensors supply data on platform stability. Furthermore, the robot’s center of mass is placed at the lower central region of the chassis to ensure greater stability. In that same area, a passive wheel was added to act as an additional support point during rolling locomotion modes.  
+
+\subsection{Gazebo Simulation}
+
+Starting from the 3D model of the platform generated in SolidWorks, the design was converted into URDF format for integration into the Gazebo Harmonic simulation environment. After successfully completing the conversion process, the corresponding controllers for the limbs and wheels were developed, and the necessary libraries for sensor simulation were incorporated. 
+
+To evaluate the stability of the platform on irregular terrains, a synthetic terrain was designed featuring multiple inclinations and roughness levels. The platform successfully traversed these surfaces thanks to its mechanical structure and the adaptability of its dynamic gaits. This environment includes three main topologies (Figure~\ref{fig:TERR_IMU}): a first section with flat terrain, a second with gravel-like roughness, and a third consisting of a slope with progressive inclinations of $5^\circ$, $10^{\circ}$, $25^{\circ}$, and $45^{\circ}$ relative to the horizontal. To systematically evaluate the performance of the neural arbitration network, the multi-body physical simulations were strictly restricted to structured topographies, including calibrated inclines, procedurally generated Perlin-noise surfaces, and simple non-dynamic obstacles. This layout ensures a highly controlled and reproducible virtual environment to validate the algorithmic response of the controller before its embedded physical implementation.   
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.55\textwidth]{TERR_IMU.PNG}
+\caption{3D model in Blender to test the response on different terrains.}
+    \label{fig:TERR_IMU}
+\end{figure}
+
+In the simulation, visual stimuli captured by the camera were represented using red and blue 3D models (Figure~\ref{fig:estimulos}), emulating the embedded knowledge required for detecting anomalies and hazards in structures and large-scale works.
+
+\begin{figure}[t]
+  \centering
+  \begin{subfigure}[t]{0.23\textwidth}
+    \includegraphics[width=\linewidth]{estimulo_apetente.png}
+    \caption{Appetitive stimulus}
+    \label{fig:stim-app}
+  \end{subfigure}
+  \hspace{0.01\textwidth}
+  \begin{subfigure}[t]{0.23\textwidth}
+    \includegraphics[width=\linewidth]{estimulo_adversivo.png}
+    \caption{Aversive stimulus}
+    \label{fig:stim-adv}
+  \end{subfigure}
+  \caption{Stimuli within the simulation.}
+  \label{fig:estimulos}
+\end{figure}
+
+\subsection{Neuronal Control System}
+
+Three principal behaviors were defined. When presented with an appetitive stimulus, the robot advanced using differential rolling mode, allowing for controlled approach. When encountering an aversive stimulus, it selected the quadrupedal mode, enabling rapid escape behaviors across various types of terrain. Finally, for obstacle detection, it employed the omnidirectional mode, which facilitated more precise and efficient avoidance maneuvers. 
+
+To ensure greater stability in locomotion, threshold roll and pitch angles were defined so that on steeply inclined terrains the robot selects the most stable and efficient gait, which in such cases corresponds to differential rolling mode. Furthermore, parameters such as the standard deviation of linear acceleration along the $Z$-axis were also incorporated, as they provide an indication of terrain instability.  
+
+Based on the behavioral principles described, the network presented below was designed in a modular manner to solve the processes of sensory transformation, behavioral decision-making according to the nature of the stimulus, directional and locomotion control, and selection of the most suitable locomotion mode. The four modules corresponding to these functions, in that order, are: obstacle-sensory module, basal-ganglia module, locomotion module, and gait-decision module. 
+
+\subsubsection{Obstacle Sensory Module}
+
+To perceive appetitive and aversive stimuli, a visual input was implemented through a camera, which provided information on localization and, thanks to image processing, allows determining the nature of the presented visual stimulus. 
+
+For obstacle detection, a LiDAR sensor was used, as it provides precise information regarding the obstacle’s position. To achieve a sensory transformation of the sensor’s output into neural activations suitable for processing by the corresponding network module, a ring of neurons was implemented to represent the orientation of the detected obstacle. This structure is based on the study by \citet{pardo2022bio}, in which a neural ring encoding the angular orientation of a specific target is proposed. Although inspired by its functionality, the module developed here differs mainly in the Gaussian activations used for the input neurons ---explained later--- and in the inclusion of a decoding structure that determines the intensity of the motor response. The ring consists of 16 units, each responding with maximal amplitude to a preferred angle, indicating the direction in which the obstacle is located.
+
+Additionally, directional groups were defined (Figure~\ref{fig:lidar-combined}) to represent stimuli located in the front, rear, left, and right sectors. This classification provides a more precise estimate of the obstacle's position, which is used by the tank neurons of the integrator stage, specifically units $L_0,$ $L_1,$ $L_2,$ and $L_3$ (Figure~\ref{fig:IntLidar}). 
+
+\begin{figure}[t]%[!b]
+  \centering
+  \begin{subfigure}[t]{0.46\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{NeuLidarFB.png}
+    \caption{Front–rear neurons (blue: front; yellow: rear).}
+    \label{fig:lidar-fb}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.46\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{NeuLidarLR.png}
+    \caption{Right–left neurons (purple: right; gray: left).}
+    \label{fig:lidar-lr}
+  \end{subfigure}
+  \caption{Neuron Ring Graph for obstacle encoding with LiDAR: (a) front vs. rear and (b) right vs. left.}
+  \label{fig:lidar-combined}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.5\textwidth]{IntegrationLidar.png}
+    \caption{Integrating Neural Network.}
+    \label{fig:IntLidar}
+\end{figure}
+
+A Gaussian activation function was implemented in the sensory ring, where $\theta_j$ denotes the preferred angle of the $j$-th neuron. Differential equation~\eqref{eq:ring} describes the ring’s dynamics, considering $\theta_{\text{Obstacle}}$ as the angle of the detected obstacle and $Z_j$ as the $j$-th unit of the sensory input layer. All hyperparameters of the differential equations, including $\sigma_Z$, were selected heuristically. These values are presented at the end of each neural module, and for this circuit they are summarized in Table~\ref{table:LiDAR}.
+
+\begin{equation}\label{eq:ring}
+\frac{d Z_j}{d t} = \frac{1}{\tau_Z} \left( -Z_j + \exp\left( -\frac{(\theta_j - \theta_{\text{Obstacle}})^2}{2\sigma_{Z}^2} \right) \right)
+\end{equation}
+\revblue{where $\tau_Z$ (s) is the integration time constant of the ring neurons, and $\sigma_Z$ (deg) is the Gaussian tuning width controlling the angular selectivity of each unit (see Table~\ref{table:LiDAR}).}
+
+\begin{table}[t]
+\centering
+\caption{LiDAR network hyperparameters.}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Parameter} & \textbf{Value} \\ \hline
+$\tau_{Z}$ & 1.0 \\ \hline
+$\tau_{L}$ & 10.0 \\ \hline
+$\tau_{IRA}$ & 5.0 \\ \hline
+$\omega_{Z\rightarrow L}$ & 1.0 \\\hline
+$\omega_{L\rightarrow L}$ & 1.0 \\ \hline
+$\sigma_{Z}$ & 0.06 \\ \hline
+$W_{Z\rightarrow I}$ & 1.0 \\ \hline
+$W_{I\rightarrow R}$ & 1.0 \\ \hline
+$W_{R\rightarrow A}$ & 1.0 \\ \hline
+$W_{A\rightarrow L_4}$ & 1.0 \\ \hline
+\end{tabular}
+\label{table:LiDAR}
+\end{table}
+
+\revblue{In Table~\ref{table:LiDAR}, the time constants are: $\tau_{Z}$ (s) governs the ring neurons (Equations~\eqref{eq:L0}–\eqref{eq:L4}), $\tau_{L}$ (s) governs the directional integrator neurons ($L_0$–$L_4$); and $\tau_{IRA}$ (s) is the shared time constant of the input ($I_n$), response ($R_n$), and auxiliary ($A_n$) layers.
+The synaptic parameters are: $\sigma_{Z}$ (deg) is the Gaussian tuning width $\omega_{Z\rightarrow L}$ and $\omega_{L\rightarrow L}$ are the unitless weights from the sensory ring to the integrator neurons and within the integrator, respectively. These weights are fixed uniform values derived from the basal-ganglia inspired architecture \citep{sarvestani2013computational}.
+The inter-layer synaptic weight matrices $W_{Z\rightarrow I}$, $W_{I\rightarrow R}$, $W_{R\rightarrow A}$, and $W_{A\rightarrow L_4}$ connect the ring, input, response, auxiliary, and accumulator layers.}
+
+The activations of the sensory ring are processed by three integrator layers: input, response, and auxiliary (Figure~\ref{fig:IntLidar}). Cross-connections between the input and response layers encode the direction of the evasive movement, while the backward excitatory projections between the response and auxiliary layers define the intensity of the obstacle-related stimulus. These layers determine the predominance of the evasive action ---information that is stored in the accumulator neuron $L_4$. In the following equations, the subscript $(\cdot)_+$ denotes a rectifying operator (positive-part function): for any scalar $x$, $(x)_+ = \max(x,0)$. This ensures that only nonnegative inputs contribute to the layer dynamics, preventing negative net drive from decreasing the activity through this term. The dynamics of this system are described by differential equations (Equations~\eqref{eq:L0}–\eqref{eq:L4}) shown below. 
+
+\begin{align}
+\frac{d\, \text{L}_0}{dt} &= \frac{1}{\tau_{L}} \left( -\text{L}_0 + \left( \sum_{i=0}^{3} Z_i + \sum_{i=12}^{15} Z_i - \text{L}_1 \right)_+ \right)\label{eq:L0}\\
+\frac{d\, \text{L}_1}{dt} &= \frac{1}{\tau_{L}} \left( -\text{L}_1 + \left( \sum_{i=4}^{11} Z_i - \text{L}_0 \right)_+ \right)\label{eq:L1}\\
+\frac{d\, \text{L}_2}{dt} &= \frac{1}{\tau_{L}} \left( -\text{L}_2 + \left( \sum_{i=0}^{7} Z_i - \text{L}_3 \right)_+ \right)\label{eq:L2}\\
+\frac{d\, \text{L}_3}{dt} &= \frac{1}{\tau_{L}} \left( -\text{L}_3 + \left( \sum_{i=8}^{15} Z_i - \text{L}_2 \right)_+ \right)\label{eq:L3}\\
+\frac{d\, I_n}{dt} &= \frac{1}{\tau_{IRA}} \left( -I_n + Z_i \right)\label{eq:InputL}\\
+\frac{d\, R_n}{dt} &= \frac{1}{\tau_{IRA}} \left( -R_n + \left(\sum_{i=0}^{15} W^{(IR)}_{n,i} \cdot A_i + \sum_{j=0}^{15} W^{(RR)}_{n,j} \cdot R_j \right)_+\right)\label{eq:ResL}\\
+\frac{d\, A_n}{dt} &= \frac{1}{\tau_{IRA}} \left( -A_n + \left(\sum_{j=0}^{15} W^{(RA)}_{n,j} \cdot R_j \right)_+ \right)\label{eq:AuxL}\\
+\frac{d\, L_4}{dt} &= \frac{1}{\tau_L} \left( -L_4 + \left(\sum_{r=0}^{15} A_n \right) _+\right)\label{eq:L4}
+\end{align}
+
+In Equations~\eqref{eq:L0}–\eqref{eq:L4} the subscripts are used to enumerate the neurons in each layer of the obstacle sensory module. The variable $Z_i$ denotes the activity of the $i$-th neuron of the LiDAR-associated sensory ring, with $i$ ordered angularly around the robot. The summations $\sum_{i=a}^{b} Z_i$ group contiguous subsets of ring neurons that encode directional sectors (front, back, left, and right); the tank neurons $L_0,\dots,L_3$ integrate these groupings and store the predominance of each directional quadrant (Figure~\ref{fig:lidar-combined}).
+
+Likewise, the indices $n$ and $r$ enumerate the neurons in the input, response, and auxiliary integrating layers, so that $I_n$, $R_n$, and $A_n$ represent the activity of the $n$-th neuron in each of these layers. In Equations~\eqref{eq:ResL}–\eqref{eq:AuxL}, each neuron $R_n$ and $A_n$ receives weighted contributions from all other neurons through the synaptic weights $W^{(\mathrm{IR})}_{n,i}$, $W^{(\mathrm{RR})}_{n,j}$, and $W^{(\mathrm{RA})}_{n,j}$, where the indices $i$ and $j$ are used only as summation variables. Finally, in Equation~\eqref{eq:L4} the index $r$ runs over all units $A_n$ to accumulate their activity in neuron $L_4$, which acts as a global integrator of the obstacle-stimulus intensity.
+
+\revblue{The matrices $W^{(IR)}$, $W^{(RR)}$, and $W^{(RA)}$ denote connectivity weight matrices (binary or fixed patterns). They represent fixed structural inter-neuron connectivity in the Integrating Neural Network (see Fig.~\ref{fig:IntLidar}). In this implementation, $W$ matrices are fixed and uniform according to connectivity patterns adapted from \citet{sarvestani2013computational}.}
+
+\revblue{The time constant $\tau_L$ (s) governs the dynamics of the directional tank neurons $L_0$--$L_4$, while $\tau_{IRA}$ (s) is the shared integration time constant of the input ($I_n$), response ($R_n$), and auxiliary ($A_n$) layers (see Table~\ref{table:LiDAR}).}
+
+\subsubsection{Basal Ganglia Module}
+
+The structure of this module is based on the work of \citet{sarvestani2013computational}, which proposed a bio-inspired decision-making network capable of responding to the most intense immediate stimuli. The model operates through the subthalamic nucleus (STN), the external globus pallidus (GPe), and the internal globus pallidus (GPi), which function together as a winner-take-all network designed with repeated inhibitory loops to resolve conflicts between competing behaviors (see graph in Figure~\ref{fig:ganglios}). 
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.65\textwidth]{ganglios.png}
+    \caption{Basal Ganglia Module. Structure proposed after \citet{sarvestani2013computational}.}
+    \label{fig:ganglios}
+\end{figure}
+
+The STN processes incoming signals from the visual centers and determines which stimulus has the greatest relevance when multiple stimuli are present. The GPe inhibits lower-intensity behaviors and reinforces the prioritized action, while the GPi complements this mechanism by suppressing competing responses to ensure that only a single action is executed. This iterative mechanism of inhibition and competition guarantees the effective selection of one type of stimulus. The differential equations~\eqref{eq:stn}–\eqref{eq:str} that describe the dynamics of the STN, GPi, GPe, and striatum (STR) connections, along with the hyperparameters of the structure (see Table~\ref{table:Ganglia}), are presented below. 
+
+\begin{align}
+\tau_{STN}\frac{d \text{STN}[i]}{dt} &= -\text{STN}[i] + \textcolor{blue}{\text{Stimuli}_i} - \text{Gpi}[i] - \sum_{j} \text{Gpe}[j] + \text{Gpe}[i]\label{eq:stn} \\
+\tau_{Gpi}\frac{d \text{Gpi}[i]}{dt} &= - \text{Gpi}[i] + \sum_{j} \text{STN}[j]-\text{STN}[i] - \text{Gpe}[i] - \text{STR}[i]\\
+\tau_{Gpe}\frac{d \text{Gpe}[i]}{dt} &= - \text{Gpe}[i] + \text{STN}[i] \\
+\tau_{STR}\frac{d \text{STR}[i]}{dt} &= - \text{STR}[i] + \text{STN}[i]
+\label{eq:str}
+\end{align}
+
+\revblue{where $\text{STN}[i]$, $\text{Gpi}[i]$, $\text{Gpe}[i]$, and $\text{STR}[i]$ are the activities of the $i$-th neuron in the subthalamic nucleus, internal globus pallidus, external globus pallidus, and striatum, respectively; $\text{Stimuli}_i$ is the input stimulus strength (sensory drive from visual processing) to the $i$-th STN channel; the index $j$ represents summation across all neurons in the respective structure (summation variable); and $\tau_{STN}$, $\tau_{Gpi}$, $\tau_{Gpe}$, $\tau_{STR}$ (s) are the corresponding time constants listed in Table~\ref{table:Ganglia}.}
+
+\begin{table}[t]
+\centering
+\caption{Basal Ganglia Network parameters.}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Parameter} & \textbf{Value} \\ \hline
+$\tau_{Gpi}$ & 1.0 \\ \hline
+$\tau_{Gpe}$ & 2.0 \\ \hline
+$\tau_{STN}$ & 2.0 \\ \hline
+$\tau_{STR}$ & 2.0 \\ \hline
+$\omega_{Gpi\rightarrow STN}$ & 1.0 \\ \hline
+$\omega_{STN\rightarrow Gpi}$ & 1.0 \\ \hline
+$\omega_{STR\rightarrow Gpi}$ & 1.0 \\ \hline
+$\omega_{Gpe\rightarrow Gpi}$ & 1.0 \\ \hline
+$\omega_{STN\rightarrow Gpe}$ & 1.0 \\ \hline
+$\omega_{STN\rightarrow STR}$ & 1.0 \\ \hline
+\end{tabular}
+\label{table:Ganglia}
+\end{table}
+
+\revblue{In Table~\ref{table:Ganglia}: $\tau_{STN}$, $\tau_{Gpi}$, $\tau_{Gpe}$, and $\tau_{STR}$ (s) are the time constants of the subthalamic nucleus, internal globus pallidus, external globus pallidus, and striatum, respectively (Equations~\eqref{eq:stn}--\eqref{eq:str}).
+Each $\omega_{X\rightarrow Y}$ is the unitless synaptic weight of the projection from nucleus $X$ to nucleus $Y$.}
+
+\revblue{The architectural framework of the basal ganglia model adopted here is grounded in canonical arbitration circuits widely validated in computational neuroscience for multi-stimulus action selection \citep{Gurney2001a,Gurney2001b,Prescott2006Robot}. Its decentralized winner-take-all dynamics enable low-latency conflict resolution between competing sensory drives. As evidenced by the decision latency of approximately $47$~ms measured across all experimental trials (Section~3), the architecture operates within real-time constraints on resource-constrained embedded hardware, without requiring the training cycles or inference infrastructure associated with deep reinforcement learning or model predictive control frameworks, making interpretability and low runtime overhead intrinsic properties of the proposed design.}
+
+\subsubsection{Locomotion Module}
+
+This module determines the robot’s movement direction by considering both the nature of the presented stimulus and its perceived direction. It processes the outputs of the GPe together with the sensed direction, generating the magnitude and direction of the robot’s command velocities, ultimately resulting in evasive, fleeing, or approach behaviors. This module can be divided into three main sublayers: sensory, integrative, and decisional. 
+
+The sensory layer processes all inputs derived from visual stimuli and their direction (represented as $\theta_s$ and platform orientation $\theta_p$ in Figure~\ref{fig:Decisiones_Locomotoras}), allowing the system to determine both the nature and relative location of the stimuli with respect to the robot. The thresholds used in units $X_5$ and $X_6$ imply that the robot considers an object to be in front when it lies within twenty degrees of the center of the visual field. This is shown in Equations~\eqref{eq:Z_5} and~\eqref{eq:Z_6} as inhibitory thresholds on the activation of those neurons.
+
+\begin{align}
+\tau \frac{dz_5}{dt} &= -z_5 +
+\left(\; \omega_{L \rightarrow X}   \text{L}_{2} +
+{L}_{4}   \big[\theta_s - \theta_p - 20\big] \right)_+
+\label{eq:Z_5}\\
+\tau \frac{dz_6}{dt} &= -z_6 +
+\left(\; \omega_{L \rightarrow X}   \text{L}_{2} +
+{L}_{4}   \big[\theta_p - \theta_s - 20\big] \right)_+
+\label{eq:Z_6}
+\end{align}
+\revblue{where $\tau$ (s) is the common neuron time constant (see Table~\ref{table:Locom_NN}); $\omega_{L\rightarrow X}$ is the synaptic amplification weight from the LiDAR integrator to the locomotion neurons; $\text{L}_2$ and $L_4$ denote the left/right directional quadrant neuron and the LiDAR accumulator neuron from Equations~\eqref{eq:L2} and~\eqref{eq:L4}, respectively; and the bracketed term encodes a $20^\circ$ angular margin defining the frontal zone of the robot's field of view.}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Decisiones_Locomotoras.png}
+    \caption{Locomotion Module.}
+    \label{fig:Decisiones_Locomotoras}
+\end{figure}
+
+The integrative layer processes the outputs of the sensory layer, producing a preferred movement direction. Finally, the decisional layer decodes these directional neural activations together with information from units $L_0$, $L_1$, $L_2$, and $L_3$ ---from the obstacle sensory module--- to generate directional commands (linear, angular, and lateral commands for quadrupedal mode) executed by the robot. It is important to emphasize that the stop signal during approach toward an appetitive stimulus originates from neuron $X_{17}$, which activates when the stimulus is sufficiently close for proper inspection. 
+
+The differential equations~\eqref{eq:Z_3}–\eqref{eq:Z_17} describing the dynamics of the locomotion decision module, as well as the corresponding hyperparameters in Table~\ref{table:Locom_NN}, are presented below. In Equation~\eqref{eq:Z_13}, $HI$ denotes an intrinsic hunting drive that provides a baseline forward/exploratory motivation, allowing the platform to keep moving and exploring even in the absence of external stimuli.
+
+\begin{align}
+\tau \frac{dz_3}{dt} =& -z_3 + (Gpe_{B})_+\label{eq:Z_3}\\
+\tau \frac{dz_4}{dt} =& -z_4 + (Gpe_{G} + \textcolor{blue}{\omega_{GpeR}}   Gpe_{R})_+\\
+\tau \frac{dz_7}{dt} =& -z_7 + (z_5 + z_3 - w   z_4)_+\\
+\tau \frac{dz_8}{dt} =& -z_8 + (z_5 + z_4 - w   z_3)_+\\
+\tau \frac{dz_9}{dt} =& -z_9 + (z_4 + z_6 - w   z_3)_+\\
+\tau \frac{dz_{10}}{dt} =& -z_{10} + (z_3 + z_6 - w   z_4)_+
+\end{align}
+\begin{align}
+\tau \frac{dz_{11}}{dt} =& -z_{11} + (z_7 + z_9)_+\\
+\tau \frac{dz_{12}}{dt} =& -z_{12} + (z_{10} + z_8)_+\\
+\tau \frac{dz_{13}}{dt} =& -z_{13} + (-w z_{11} - w z_{12}- w z_{17} + HI + Gpe_{B} )_+\label{eq:Z_13}\\
+\tau \frac{dz_{17}}{dt} =& -z_{17} + (Gpe_{B} - \text{Ar})_+\label{eq:Z_17}
+\end{align}
+
+\revblue{In Equations~\eqref{eq:Z_3}–\eqref{eq:Z_17}: $Gpe_B$, $Gpe_G$, and $Gpe_R$ are the external globus pallidus outputs for the obstacle (Blue), appetitive (Green), and aversive (Red) behavioral channels, respectively; $\omega_{GpeR}$ is a synaptic weight applied to the $Gpe_R$ channel (value: 2.0); $w$ is a global inhibitory synaptic weight used consistently in locomotion equations (value: 10.0); and $\text{Ar}$ is the approach-stop threshold applied to unit $X_{17}$ (see Table~\ref{table:Locom_NN}).}
+
+\begin{table}[t]
+\centering
+\caption{Arbitration of locomotion modes Networks parameters.}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Parameter} & \textbf{Value} \\ \hline
+$\tau$ & 1.0 \\ \hline
+
+$\omega_{Gpe_G \rightarrow X_4}$ & 1.0 \\ \hline
+$\omega_{Gpe_R \rightarrow X_4}$ & 2.0 \\ \hline
+
+$\omega_{L \rightarrow X}$ & 160.0 \\ \hline
+
+$\omega_{X_3 \rightarrow X_7}$ & 1.0 \\ \hline
+$\omega_{X_4 \rightarrow X_7}$ & 10.0 \\ \hline
+$\omega_{X_5 \rightarrow X_7}$ & 1.0 \\ \hline
+
+$\omega_{X_3 \rightarrow X_8}$ & 10.0 \\ \hline
+$\omega_{Gpe \rightarrow X_1}$ & 1.0 \\ \hline
+
+$\omega_{Gpe_G \rightarrow X_4}$ & 1.0 \\ \hline
+$\omega_{Gpe_R \rightarrow X_4}$ & 2.0 \\ \hline
+
+$\omega_{L \rightarrow X}$ & 160.0 \\ \hline
+
+
+
+$\omega_{X_3 \rightarrow X_7}$ & 1.0 \\ \hline
+$\omega_{X_4 \rightarrow X_7}$ & 10.0 \\ \hline
+$\omega_{X_5 \rightarrow X_7}$ & 1.0 \\ \hline
+
+$\omega_{X_3 \rightarrow X_8}$ & 10.0 \\ \hline
+
+$\theta_{p}$ & 90.0 \\ \hline
+
+\revblue{$\omega_{GpeR}$} & \revblue{2.0} \\ \hline
+\revblue{$w$} & \revblue{10.0} \\ \hline
+
+$HI$ & 3.0 \\ \hline
+
+$U_{\sigma_{az}}$ & 3.7 \\ \hline
+$U_{Pitch}$ & 15.0 \\ \hline
+$U_{Roll}$ & 15.0 \\ \hline
+$A\ $ & 5.0 \\ \hline
+$ Ar $ & 28.0 \\ \hline
+$\sigma_{M}\ $ & 0.3 \\ \hline
+$\sigma_{I}\ $ & 1.5 \\ \hline
+\end{tabular}
+\label{table:Locom_NN}
+\end{table}
+
+\revblue{In Table~\ref{table:Locom_NN}: $\tau$ (s) is the common time constant of the locomotion decision neurons (Equations~\eqref{eq:Z_5}--\eqref{eq:Z_6}); $\omega_{L\rightarrow X}$ is the synaptic amplification weight from the LiDAR integrator to the locomotion neurons; $\theta_{p}$ (deg) is the initial platform heading; and $HI$ is the dimensionless hunting-instinct baseline drive.
+$\omega_{GpeR}$ is a synaptic weight applied to the GPe\_R channel (value: 2.0).
+$w$ denotes a global inhibitory synaptic weight used consistently in locomotion equations (value: 10.0).
+The terrain-instability thresholds are: $U_{\sigma_{az}}$ (m/s$^2$), $U_{Pitch}$ (deg), and $U_{Roll}$ (deg).
+The Naka--Rushton parameters are: $A$ is the saturation amplitude; $Ar$ is the approach-stop threshold for unit $X_{17}$; and $\sigma_{M}$, $\sigma_{I}$ are the half-saturation constants for the mode-selection and IMU pathways, respectively (Equation~\eqref{eq:Naka}).}
+
+\revblue{The inhibition threshold parameter $Ar = 28.0$ was derived analytically using the pinhole camera model based on the focal geometry of the Logitech C270 camera. For an image resolution of $640 \times 480$, the horizontal focal length $f_x$ is approximately $554$ pixels. Assuming a standard inspection target width of $W_{obj} = 10$ cm, and a designated safe stopping distance of $Z = 31$ cm to prevent collisions, the perceived pixel width $w_{px}$ is calculated as $w_{px} = (f_x \cdot W_{obj}) / Z \approx 179$ pixels. Normalizing this value against the total image width ($W_{img} = 640$) yields $(179 / 640) \times 100 \approx 28.0\%$. Thus, $Ar = 28.0$ represents the critical threshold where the target occupies $28\%$ of the horizontal field of view, at which point the inhibitory visual stimulus successfully balances the forward motor excitation, halting the robot at the optimal inspection distance.}
+
+\revblue{Regarding the design rationale for key numerical parameters: the high gain $\omega_{L\rightarrow X} = 160.0$ ensures LiDAR-driven avoidance acts as an unconditional reflex, immediately overriding other behaviors to protect the robot. The asymmetry $\omega_{Gpe_R\rightarrow X_4} = 2.0$ versus $\omega_{Gpe_G\rightarrow X_4} = 1.0$ is intentional: the aversive (red) channel receives double weight to model higher priority urgency for avoidance compared to the appetitive (green) channel. The gains $\omega_{X_4\rightarrow X_7}$ and $\omega_{X_3\rightarrow X_8} = 10.0$ provide sufficient command amplification to overcome robot inertia and produce quick evasive turns.}
+
+\revblue{The parameter $Ar = 28.0$ was derived analytically using the pinhole camera model (see justification above). $HI = 3.0$ defines a baseline forward bias to overcome motor static friction. The Naka--Rushton half-saturation constants $\sigma_M = 0.3$ and $\sigma_I = 1.5$ serve distinct roles: $\sigma_M$ provides rapid mode switching through a narrow saturation range, while $\sigma_I$ affords greater noise tolerance in the IMU pathway. Finally, the MLP thresholds for gait switching were empirically determined based on the observed distribution of $\sigma_{az}$ values during stable versus unstable locomotion, ensuring a clear decision boundary while minimizing false positives. These parameter choices reflect a balance between biological plausibility, computational efficiency, and practical performance requirements for the target application domain.}
+
+
+\subsubsection{Gait Decision Module}
+\label{ssec:Gait_Decision_Module}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{Modos_Locomocion.png}
+    \caption{Gait Decision Module.}
+    \label{fig:Modos_Locomocion}
+\end{figure}
+
+The gait-decision module, implemented in the simulation (see graph in Figure~\ref{fig:Modos_Locomocion}), processes signals from the GPi and GPe together with IMU outputs to determine, according to the nature of the presented stimulus, the most appropriate locomotion mode. The omnidirectional mode is used to avoid obstacles and maintain continuous forward motion in the absence of stimuli. The differential-drive rolling mode enables approach toward appetitive stimuli and performs best on inclined terrain. Finally, the quadrupedal mode is used to avoid aversive stimuli or when gait stability is compromised. 
+
+Units $z_0$--$z_2$ and $z_{14}$--$z_{16}$ use a second-order Naka--Rushton nonlinearity to transform their net input into a bounded activation. The general form is given in Equation~\eqref{eq:Naka}, where $(\cdot)_+$ denotes the rectified (positive-part) operator.
+
+\begin{equation}
+f(x;\sigma) = \frac{A x_+^2}{\sigma^2 + x_+^2}
+\label{eq:Naka}
+\end{equation}
+
+\revblue{where $x$ is the net input to the neuron; $x_+ = \max(x,0)$ is the rectified input; $A$ is the saturation amplitude of the function; and $\sigma$ is the half-saturation constant controlling the sensitivity of the nonlinearity (see Table~\ref{table:Locom_NN}).}
+
+Based on this general formulation, two task-specific activation functions are defined by instantiating Equation~\eqref{eq:Naka} with different sensitivity parameters. Specifically, $f_{\mathrm{Imu}}(\cdot)$ and $f_{\mathrm{Mode}}(\cdot)$ (Equations~\eqref{eq:NakaImu} and~\eqref{eq:NakaMode}) share the same second-order Naka--Rushton structure, but use different saturation constants ($\sigma_I$ and $\sigma_M$) to match the dynamic range required by each neuronal pathway:
+
+\begin{equation}
+f_{\mathrm{Imu}}(x) = \frac{\mathrm{A}\, x_+^2}{\sigma_{I}^2 + x_+^2}
+\label{eq:NakaImu}
+\end{equation}
+
+
+\begin{equation}
+f_{\mathrm{Mode}}(x) = \frac{\mathrm{A}\, x_+^2}{\sigma_{M}^2 + x_+^2}
+\label{eq:NakaMode}
+\end{equation}
+
+
+The differential equations~\eqref{eq:Z0}–\eqref{eq:Z16} describing the dynamics of the gait-mode network, along with the hyperparameters in Table~\ref{table:Locom_NN}, are presented below. 
+
+\begin{align}
+\tau \frac{dz_0}{dt} &= -z_0 + f_{Imu}(\sigma_{az} - U_{\sigma_{az}})
+\label{eq:Z0}
+\\
+\tau \frac{dz_1}{dt} &= -z_1 +  f_{Imu}( Roll - U_{Roll})
+\\
+\tau \frac{dz_2}{dt} &= -z_2 +  f_{Imu}( Pitch - U_{Pitch})
+\\
+\tau \frac{dz_{14}}{dt} &= -z_{14} +  f_{Mode}(100 G_{pe,y} - w G_{pi,x}  - w G_{pi,z} - w z_{15} - w z_{16})
+\\
+\tau \frac{dz_{15}}{dt} &= -z_{15} +f_{Mode}( -G_{pe,y} - 0.5HI + 2z_3 \notag\\
+&\hspace*{6cm}+ 20z_0 - 1.5wz_{14} - wz_{16})
+\\
+\tau \frac{dz_{16}}{dt} &= -z_{16} +  f_{Mode}( z_4 - wG_{pe,y} - 1.5wz_{14}\notag\\
+&\hspace{5cm}+ 0.7z_1 + 0.7z_2 - 1.5wz_{15} + HI)
+\label{eq:Z16}
+\end{align}
+
+\revblue{In Equations~\eqref{eq:Z0}–\eqref{eq:Z16}: $\sigma_{az}$ (m/s$^2$) is the standard deviation of the linear acceleration along the $Z$~axis over the current sensing window; $U_{\sigma_{az}}$, $U_{Roll}$, and $U_{Pitch}$ are the corresponding activation thresholds for terrain-instability detection; and $Roll$ and $Pitch$ (deg) are the roll and pitch angles measured by the IMU.
+The neural pathway signals are: $G_{pe,y}$ is the GPe output of the appetitive behavioral channel; $G_{pi,x}$ and $G_{pi,z}$ are the GPi outputs of the obstacle and aversive channels, respectively; and $w$ is a generic unitless inhibitory synaptic weight.}
+
+\revblue{To enhance terrain classification and stagnation detection, a Multi-Layer Perceptron (MLP) was integrated into the sensing pipeline \citep{Grajales_Des_2025} (Figure~\ref{fig:MLP}). The MLP does not replace the physical IMU; rather, it processes raw inertial telemetry ---specifically variations in roll, pitch, and the standard deviation of the Z-axis acceleration--- transforming low-level sensor signals into high-level geometric classifications that inform mode transitions. This network includes two hidden layers of 150 and 80 units, respectively. The integration was motivated by the fact that, in rough-terrain tests, direct thresholding of roll, pitch, and $\sigma_{az}$ was not sufficient for the level of repeatability required by the application; training the MLP on real inertial data from different terrains is expected to enable more reliable terrain-state classification than fixed-threshold heuristics.}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.6\textwidth]{MLP.PNG}
+    \caption{Structure of the Multilayer Perceptron for detecting flat and sloping terrain.}
+    \label{fig:MLP}
+\end{figure}
+
+The input layer consists of a nine-dimensional vector (Figure~\ref{fig:DATOSMLP}). The first five values come from the IMU: linear accelerations in the $x$, $y$, and $z$ axes, and angular accelerations in the $x$ and $y$ axes. The next three values represent the movement direction encoded in three logical bits, defining five possible states: forward, left turn, right turn, backward, and static. The corresponding decoding is shown in Table~\ref{table:DIR_BINARY}. 
+
+\begin{table}[t]
+\centering
+\caption{3-bit motion code mapping (DIR2–DIR0).}
+\begin{tabular}{|c|c|c|c|}
+\hline
+DIR2 & DIR1 & DIR0 & Motion state \\
+\hline
+0 & 0 & 0 & Static (idle) \\ \hline
+0 & 0 & 1 & Forward \\ \hline
+0 & 1 & 0 & Turn left \\ \hline
+0 & 1 & 1 & Turn right \\ \hline
+1 & 0 & 0 & Backward \\ \hline
+\end{tabular}
+\label{table:DIR_BINARY}
+\end{table}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.8\textwidth]{VENTANA_DATOS.png}
+    \caption{Vector presented in the input layer of the MLP.}
+    \label{fig:DATOSMLP}
+\end{figure}
+
+The ninth position includes a binary value distinguishing between differential-drive rolling and quadrupedal locomotion. From this data window, fifteen sequential samples are taken to form the network’s input vector, \revblue{yielding a total input dimensionality of $9 \times 15 = 135$ values fed to the neural network.} Output neurons $N_0$ and $N_1$ represent the probability of the terrain being flat or inclined, respectively. Additionally, a binary value indicating whether the robot is stuck was generated ($1 = \text{stuck},$ $0 = \text{not stuck}$). This parameter, obtained from linear and angular accelerations, is represented in unit $N_2$, used as a notion of robot stagnation. 
+
+Using the new information, the gait-decision network was adjusted (Figure~\ref{fig:Modos_LocomocionV2}). In this version, the connections of units $X_0$–$X_2$ were modified, with unit $X_2$ removed from the design. This unit becomes unnecessary only in the physical implementation, because one output of the MLP identifies whether the robotic platform is tilted in both roll and pitch. Thus, for the physical gait-decision module, input $X_2$ becomes obsolete. This distinction results in separate gait-decision modules for simulation and physical implementation. Inputs $X_0$ and $X_1$ now correspond to outputs $N_0$ and $N_1$, respectively. 
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{Modos_LocomocionV2.png}
+    \caption{Gait Decision Module Processing Signals from the MLP network.}
+    \label{fig:Modos_LocomocionV2}
+\end{figure}
+
+This information is amplified through a synaptic weight and limited by a threshold, enabling the activations of $X_0$ and $X_1$. Furthermore, the value $N_2$ acts as an excitatory neuromodulator on the synaptic connection between output neuron $N_0$ and unit $X_0$. Thus, when stagnation is detected, the connection is enabled; otherwise, it remains inactive. 
+
+The hyperparameters (Table~\ref{table:Locom_MLP}) and the Equations~\eqref{eq:Z0V2}–\eqref{eq:Z16V2} reflecting the changes between the first and the newly proposed network structure are presented below. 
+
+\begin{align}
+\tau \frac{dz_0}{dt} &= -z_0 + f_{Imu}(9 N_{0} N_{2} - U_{N_{0}})
+\label{eq:Z0V2}
+\\
+\tau \frac{dz_1}{dt} &= -z_1 +  f_{Imu}(8 N_{1} - U_{N_{1}})
+\\
+\tau \frac{dz_{16}}{dt} &= -z_{16} +  f_{Mode}( z_4 - wG_{pe,y} - 1.5wz_{14}  + 0.7z_1 - 1.5wz_{15} + HI)
+\label{eq:Z16V2}
+\end{align}
+
+\revblue{In Equations~\eqref{eq:Z0V2}–\eqref{eq:Z16V2}: $N_0$ is the MLP output probability of flat terrain; $N_1$ is the MLP output probability of inclined terrain; $N_2$ is the binary stagnation indicator ($1 ={}$stuck, $0 ={}$not stuck); and $U_{N_0}$, $U_{N_1}$ are the corresponding activation thresholds (see Table~\ref{table:Locom_MLP}).}
+
+\begin{table}%[t]
+\centering
+\caption{Arbitration of locomotion modes with MLP Network parameters.}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Parameter} & \textbf{Value} \\ \hline
+
+$U_{N_{0}}$ & 3.7 \\ \hline
+$U_{N_{1}}$ & 7.8 \\ \hline
+
+\end{tabular}
+\label{table:Locom_MLP}
+\end{table}
+
+\revblue{In Table~\ref{table:Locom_MLP}: $U_{N_0}$ and $U_{N_1}$ are the activation thresholds applied to MLP outputs $N_0$ (flat-terrain probability) and $N_1$ (inclined-terrain probability), respectively, used in Equations~\eqref{eq:Z0V2}--\eqref{eq:Z16V2}.}
+
+\subsection{Physical Platform Construction and Experimental Setup}
+\label{ssec:Construction}
+
+Based on the design presented in subsection~\ref{ssec:Platform_Design} and in Figure~\ref{fig:robot}, the physical construction of the robot was carried out following the implementation specifications detailed in \citep{Grajales_Des_2025}. The actuation of the limbs was achieved using N20 motors rated at $104$~RPM, responsible for driving the wheels located at the distal end of the tibia. Joint mobility was provided by MG996R servomotors with a nominal torque of $11~\text{kg·cm}$. 
+
+The ESP32-S3 Zero microcontroller was used as the main control and processing unit, responsible for sensor acquisition and actuator control. The latter was intermediated by the PCA9685 servo controller and the mini-L298N module, which regulated the speed of the N20 DC motors. 
+
+The network inputs were implemented through an MPU-6050 inertial sensor, an HMC5883L magnetometer, and a Logitech C270 camera, used for capturing sensory stimuli. Power was supplied by a 7.2 V, 3300 mAh lithium-ion battery. 
+
+The structural components of the limbs and chassis were manufactured using 3D printing. Polylactic acid (PLA), filament was employed for parts not subjected to significant mechanical loads, while polyethylene terephthalate glycol-modified was used for the limbs and the central chassis section exposed to higher stresses during locomotion. Additionally, a rubber stopper was incorporated at the end of each limb, at the ground contact point, to increase traction during quadrupedal gait. The fully assembled robot is shown in Figure~\ref{fig:robot_real}. 
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.475\textwidth]{PETER.jpeg}
+    \caption{The robotic platform.}
+    \label{fig:robot_real}
+\end{figure}
+
+Visual-stimulus locomotion tests were performed in an enclosed facility under controlled lighting conditions, used to calibrate the color filters of the detection system. The stimuli employed are shown in Figure~\ref{fig:estimulos_reales}. 
+
+\begin{figure}[t]
+  \centering
+  \begin{subfigure}[t]{0.23\textwidth}
+    \includegraphics[width=\linewidth]{estimulo_apetente_real.jpeg}
+    \caption{Appetitive stimulus}
+  \end{subfigure}   
+  \hspace{0.01\textwidth}
+  \begin{subfigure}[t]{0.23\textwidth}
+    \includegraphics[width=\linewidth]{estimulo_adversivo_real.jpeg}
+    \caption{Aversive stimulus}
+  \end{subfigure}
+  \caption{Stimuli within the real experiments.}
+  \label{fig:estimulos_reales}
+\end{figure}
+
+For the experiments involving the network responsible for switching locomotion modes in response to steep slopes, a testing structure was designed with a 20° incline relative to the horizontal and a maximum height of 30 cm at its farthest point from the ground. After this inclined section, a 60 cm long and 90 cm wide flat platform, parallel to the ground surface, was installed. 
+
+
+\revblue{To robustly verify the generality of the proposed method, the irregular terrain was procedurally generated using a multi-scale combination of two-dimensional Perlin noise, allowing full reproducibility via a fixed seed. The resulting terrain was subsequently normalized to obtain a mean height close to zero, ensuring the presence of both elevations and depressions relative to the reference plane. The physical dimensions of the terrain were $1300 \times 900$ mm, discretized over a $250 \times 250$ grid. The final geometry presented the following statistical metrics: mean height $\mu_h \approx 0.0$ mm, variance $\sigma_h^2 = 5.469 \text{ mm}^2$, standard deviation $\sigma_h = 2.339$ mm, maximum height $8.129$ mm, minimum height $-8.983$ mm, and RMS roughness $R_q = 2.339$ mm. Additionally, the mean slope of the terrain was $0.155$, with a maximum slope of $0.689$, providing sufficiently pronounced geometric irregularities to evaluate the system's performance under non-ideal conditions. The terrain was discretized into multiple horizontal layers and manufactured using laser-cut MDF sheets, physically reconstructing the computationally generated height map. The irregular test terrain is shown in Figure~\ref{fig:Terreno_irre}, while the inclined setup is shown in Figure~\ref{fig:Terreno_incli}.}
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.48\textwidth]{TERRENO_IRREGULAR.jpeg}
+    \caption{Irregular terrain.}
+    \label{fig:Terreno_irre}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.48\textwidth]{TERRENO_INCLINADO.jpeg}
+    \caption{Tilted terrain.}
+    \label{fig:Terreno_incli}
+\end{figure}
+
