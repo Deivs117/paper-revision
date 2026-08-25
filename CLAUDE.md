@@ -2,83 +2,39 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Repository status
+## What this repo is
 
-This repository currently contains only `README.md`, which documents the intended setup for a paper-revision
-workflow. None of the directory structure or scripts it describes (`source/`, `sections/`, `patches/`, `scripts/`,
-`.gitignore`, git remote, etc.) have been created yet — see "Repository Setup & Execution Guide" in the README for
-the exact commands to bootstrap them.
+Revision-tracking + AI-patching layer for manuscript `ROBOT-D-26-00122R1` (*Robotics and Autonomous Systems*),
+deadline **August 31, 2026**. The manuscript is edited by non-technical co-authors on Overleaf. This repo bridges
+Overleaf and a reviewer-response checklist via two sibling git repos. Full spec: **README.md — read it before
+implementing any script here**, it is the source of truth for file formats, script behavior, and naming.
 
-## Purpose of this repository
+## Hard rules
 
-This repo manages the revision of a manuscript ("Manuscript ROBOT-D-26-00122R1", journal *Robotics and Autonomous
-Systems*) that is undergoing major revision. Resubmission deadline: **September 3, 2026**.
+- Never edit `source/main_monolithic.tex` by hand. It is a generated artifact: written by
+  `scripts/pull_from_overleaf.sh` (from Overleaf) or `scripts/reassemble.py` (from `sections/`).
+- Never edit `sections/*.tex` filenames or structure by hand outside `scripts/split_sections.py` — it fully
+  regenerates `sections/` on every run. Edit section **content** in place, not the split itself.
+- All scripts read shared paths from `scripts/config.sh` — never hardcode `OVERLEAF_DIR`, the Overleaf filename, or
+  `source/main_monolithic.tex` elsewhere.
+- Never write the Overleaf git token (`olp_...`) into any file in either repo. It lives only in
+  `~/.git-credentials` via `git config --global credential.helper store`.
+- `scripts/push_to_overleaf.sh` must always `git pull` the Overleaf repo first and abort on new commits — never
+  force-push, never auto-merge a conflict.
+- Scripts are bash + Python 3 stdlib only. No LaTeX parser, no external dependencies — splitting/reassembly is
+  regex/line-based on `\section{...}` boundaries by design (see README §5).
+- Keep `sync:` commits (from pulling Overleaf) and `patch:` commits (from applying a reviewer fix) separate —
+  never combine them in one commit.
 
-The manuscript itself is authored and edited collaboratively by non-technical co-authors in Overleaf as a single
-monolithic `.tex` file. This repo exists to layer git-based change tracking and AI-assisted section patching on top
-of that Overleaf workflow, without requiring co-authors to use git.
+## Key files
 
-## Architecture: the hybrid automation pipeline
+- `README.md` — full architecture, script specs, file formats (`sections/manifest.json`, `patches/*.tex` header,
+  `PROGRESS.md` table). Treat as the spec to implement against.
+- `PROGRESS.md` — status per reviewer requirement (`pending` → `drafted` → `applied` → `synced-to-overleaf`). Check
+  before starting new patch work; update after.
+- `patches/<id>-<slug>.tex` — audit copy of each applied change, not the live file (that's `sections/NN_*.tex`).
 
-```
-[Overleaf Monolithic File] --(Manual Export)--> [Local Repository Source]
-                                                         |
-                                               (Git Diff Tracking)
-                                                         |
-                                                         v
-                                             [Upward-Scanning Script]
-                                                         |
-                                                         v
-                                            [AI Agent Section Patching]
-                                                         |
-                                                         v
-                                             [Monolithic Reassembly]
-                                                         |
-                                                         v
-                                            [Paste Back to Overleaf]
-```
+## Commands
 
-- **Version isolation:** The monolithic `.tex` file is periodically exported from Overleaf and placed at
-  `source/main_monolithic.tex`. This local file is the git-tracked snapshot of the manuscript.
-- **Upward-scanning logic:** Because Overleaf edits cause arbitrary line shifts (reordering, insertions, block
-  deletions), locating which `\section{...}` a changed line belongs to isn't a fixed-line-number problem. Scripts
-  under `scripts/` are meant to scan `git diff` output and walk upward from each changed line to find its parent
-  section header, rather than relying on stable line numbers.
-- **AI ambiguity resolution:** Because the diffs aren't clean adds/deletes (sections get moved, not just edited), the
-  AI agent's job when patching is to distinguish a *moved* section from an *added/deleted* one before generating a
-  LaTeX patch block — don't naively diff line ranges when helping with this.
-- **No syntax-level LaTeX parser:** the design intentionally avoids a rigid LaTeX parser in favor of structural-delta
-  reasoning by the agent. Keep that approach when extending the scripts.
-
-## Daily revision workflow
-
-1. Overwrite `source/main_monolithic.tex` with the latest export from Overleaf.
-2. `git diff source/main_monolithic.tex` to see what co-authors changed.
-3. Commit that snapshot on its own (`sync: updated monolithic file from Overleaf edits`) before making any AI-assisted
-   edits — keeps sync commits separate from patch commits.
-4. Isolate the target section (e.g. `03_related_work.tex`, `05_experiments.tex`), and apply the relevant reviewer
-   requirement (below) as a patch directly in `source/main_monolithic.tex`. Paste the result back into Overleaf.
-
-`.gitignore` should exclude LaTeX build artifacts: `*.aux *.log *.out *.toc *.bbl *.blg *.pdf *.synctex.gz`.
-
-## Reviewer requirements driving the current revision
-
-**Reviewer 2 (streamlining / minor additions):**
-- Condense repetitive text; remove duplicate neural raster plots and identical stability curves between simulation
-  and hardware tests; merge metric definitions; shorten the symbolic warehouse simulation section.
-- Add FSM (Finite State Machine) gait arbitration baseline comparisons.
-- Consolidate all limitations into one dedicated section.
-- Add multi-mode long-term average energy consumption data and onboard MLP computing overhead analysis.
-
-**Reviewer 3 (major structural/experimental additions — high priority):**
-- Explicit ablation analysis on the basal ganglia arbitration network.
-- Comparative tests removing key neural layers or inhibitory connections to justify Winner-Take-All (WTA) over
-  threshold logic.
-- Supplement control strategies/compensation algorithms for low-torque servo constraints and open-loop gait
-  instability.
-- Perception-decision noise robustness experiments (IMU drift, LiDAR noise, camera illumination distortion).
-- Add inspection task performance metrics (target tracking accuracy, coverage rate, autonomous re-planning).
-- Revise the literature review with horizontal comparative tables contrasting Basal Ganglia, CPG, and RL-based action
-  selection algorithms.
-
-When patching a section, tie the change explicitly to the reviewer item it addresses.
+Not yet implemented — see README.md §"Repository Setup & Execution Guide" for what to build and the intended daily
+loop (`pull_from_overleaf.sh` → `find_section.py` → edit `sections/` → `reassemble.py` → `push_to_overleaf.sh`).
