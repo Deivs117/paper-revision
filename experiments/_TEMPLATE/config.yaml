@@ -1,0 +1,4 @@
+# Run parameters for this experiment, kept out of scripts/ so a rerun is exact and diffable.
+# Delete this file if the experiment genuinely has no parameters worth tracking.
+
+seed: 42

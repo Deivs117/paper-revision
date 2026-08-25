@@ -85,20 +85,49 @@ Si tienes un documento markdown (de un compañero, tuyo, sobre un hallazgo de
 paper encaja, y crea las filas correspondientes en `PROGRESS.md`. De ahí en adelante sigue el
 mismo camino que cualquier otro cambio.
 
+## `experiments/` — cómo entran figuras/datos que todavía no existen
+
+Varios ítems grandes del checklist (R3-01 ablación, R3-04 robustez a ruido, R3-05 métricas de
+inspección) no piden solo redactar texto: piden una figura o número que **todavía no existe**, y
+que probablemente sale de correr simulaciones (a veces usando `PETER_SIMULATION` como referencia)
+o de reprocesar datos del robot físico.
+
+Para eso existe `experiments/<ID>-<slug>/` (mismo ID que la fila de `PROGRESS.md`, p. ej.
+`experiments/R3-01-basal-ganglia-ablation/`):
+
+- `README.md` — qué produce, con qué parámetros/semilla, de dónde salen los datos (si depende de
+  `PETER_SIMULATION`, se anota el commit exacto usado, porque ese repo sigue cambiando por su
+  cuenta), y cómo volver a generarlo.
+- `scripts/` — el código que genera la figura. Aquí sí se permite usar numpy/matplotlib/pandas/
+  ROS 2, a diferencia del resto de `scripts/` que es solo bash/Python estándar.
+- `data/` — salida cruda (rosbags, logs, video). **No se versiona en git** — se regenera corriendo
+  el script de nuevo.
+- `output/` — el resultado final ya procesado (CSVs pequeños, la figura misma). **Sí se versiona.**
+
+Cuando la figura está lista, `scripts/promote_figure.sh` la copia de `output/` hacia `assets/` en
+la ruta exacta que va a usar el LaTeX (se niega a sobreescribir algo que ya exista salvo que se
+use `--force`). De ahí en adelante es un parche normal: se referencia la imagen en `sections/`, se
+redacta el texto, y se sincroniza con Overleaf como cualquier otro cambio.
+
 ## `OUTLINE.md` — el mapa barato del paper
 
 Un archivo corto que resume qué trata cada sección, términos clave, y qué referencias cruzadas
 hay entre secciones. El agente lo lee siempre antes de tocar una sección puntual, para tener
 contexto global sin tener que leer el manuscrito completo.
 
-## Estado actual (al 24 de agosto de 2026)
+## Estado actual (al 25 de agosto de 2026)
 
 - El pipeline completo está **implementado y probado** contra el manuscrito real: primer `pull`
   exitoso trajo las 4 secciones (`introduction`, `methodology`, `results`, `conclusions`), ~90
   imágenes, la bibliografía y la plantilla de la revista.
-- Se hizo una lectura completa de `introduction.tex`, `results.tex` y `conclusions.tex` (falta
-  `methodology.tex` completo, solo se revisó por palabras clave). Hallazgos importantes ya
-  registrados en `PROGRESS.md`/`OUTLINE.md`:
+- Se diseñó e implementó `experiments/` (25 de agosto) — la laguna de "cómo entran figuras/datos
+  que todavía no existen" ya está cerrada: `scripts/promote_figure.sh` probado con casos de éxito
+  y de rechazo (no sobreescribe sin `--force`, no acepta archivos fuera de `output/`). `PROGRESS.md`
+  tiene ahora una columna `Data source` marcando qué ítems del checklist necesitan esto (R3-01,
+  R3-02, R3-05 confirmados; R2-02, R2-04, R3-03, R3-04 posibles según se verifiquen los huecos).
+- Se hizo una lectura completa de `introduction.tex`, `results.tex`, `conclusions.tex` y, el 25 de
+  agosto, también `methodology.tex` (501 líneas). Hallazgos importantes ya registrados en
+  `PROGRESS.md`/`OUTLINE.md`:
   - **R3-06** (tabla comparativa de literatura) es más barato de lo esperado: la comparación ya
     existe como texto narrativo en la introducción, probablemente solo falta convertirla a tabla.
   - **R2-03** (consolidar limitaciones) es más complejo de lo esperado: hay **dos** discusiones
@@ -107,8 +136,12 @@ contexto global sin tener que leer el manuscrito completo.
   - **R2-04** (overhead de cómputo del MLP) está **parcialmente resuelto ya** — la comparación de
     latencia del MLP contra otros clasificadores ya existe en Resultados.
   - **R3-01/R3-02** (ablación de la red basal ganglia / WTA vs threshold) son **huecos reales**,
-    confirmado por grep en `methodology.tex` — no existe nada todavía. Es el trabajo más grande
-    y de mayor prioridad para el Revisor 3.
+    confirmado ahora con lectura completa de `methodology.tex` — no existe ablación ni comparación
+    formal todavía. Sí hay material reutilizable: un párrafo `\revblue{}` ya escrito (justifica la
+    arquitectura citando literatura y una latencia de decisión de ~47ms) y el hecho de que el
+    módulo de locomoción ya usa lógica de umbral explícito (20°, `Ar=28.0`) en otra parte del
+    circuito — un punto de contraste natural para la comparación WTA-vs-umbral. Sigue siendo el
+    trabajo más grande y de mayor prioridad para el Revisor 3.
   - Se encontró una **inconsistencia real** en el texto: Conclusiones dice que las métricas del
     MLP "no fueron evaluadas", pero Resultados ya las tiene — registrado como `C-01`.
 

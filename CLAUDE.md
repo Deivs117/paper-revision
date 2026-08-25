@@ -23,8 +23,10 @@ requirement itself genuinely spans sections and `OUTLINE.md` doesn't resolve it.
 (e.g. a teammate's implementation) or a loose list of corrections. Read `OUTLINE.md` first, then the doc, then (only
 if it references one) the specific files it points to in a repo listed in `intake/SOURCES.md` — read-only, never
 edit outside `paper-revision/`. For each distinct change found, add a `PROGRESS.md` row with the next `N-xx` (new
-content) or `C-xx` (correction) ID, then follow the normal patch flow. `git mv` the doc to `intake/processed/` once
-every change it produced has reached `applied` or later.
+content) or `C-xx` (correction) ID, then follow the normal patch flow. If the change needs a figure/plot that
+doesn't exist yet (common for write-ups of a teammate's simulation/hardware work), set that row's `Data source`
+to `experiments/<id>-<slug>/` and follow README.md §9 before touching `sections/`. `git mv` the doc to
+`intake/processed/` once every change it produced has reached `applied` or later.
 
 ## Hard rules
 
@@ -53,8 +55,15 @@ every change it produced has reached `applied` or later.
 - Never write the Overleaf git token (`olp_...`) into any file in either repo — it lives only in
   `~/.git-credentials` via `git config --global credential.helper store`.
 - Text-processing scripts (`split_sections.py`, `reassemble.py`, `find_section.py`, `validate_tex.sh`,
-  `check_roundtrip.sh`) are bash/Python-stdlib only — no LaTeX parser. `compile_pdf.sh` is the only script allowed
-  to depend on external tooling (a LaTeX distribution).
+  `check_roundtrip.sh`) are bash/Python-stdlib only — no LaTeX parser. `compile_pdf.sh` and scripts under
+  `experiments/*/scripts/` are the only ones allowed to depend on external tooling (LaTeX distribution;
+  numpy/matplotlib/pandas/ROS 2/etc. respectively).
+- A `PROGRESS.md` row that needs a figure/number that doesn't exist yet gets a `Data source` value pointing at
+  `experiments/<id>-<slug>/` — never generate that data ad hoc outside `experiments/`, and never place a new
+  file directly into `assets/` by hand. `scripts/promote_figure.sh` is the only path from
+  `experiments/*/output/` into `assets/`; it refuses to overwrite an existing asset without `--force`.
+  `experiments/*/data/` is gitignored (raw/regenerable); `experiments/*/output/` (final figures/CSVs) is
+  committed. See README.md §9.
 - Keep `sync:` commits (pulling Overleaf), `patch:` commits (applying a reviewer fix), and `chore: mark synced`
   commits (marking a push) separate — never combine them.
 
@@ -71,6 +80,9 @@ every change it produced has reached `applied` or later.
   or `assets/`).
 - `intake/pending/` / `intake/processed/` — raw docs waiting to be triaged into `PROGRESS.md` rows / already fully
   triaged. `intake/SOURCES.md` — registry of sibling repos readable (not writable) as reference material.
+- `experiments/<id>-<slug>/` — scripts/notebooks/data that generate a figure or table that doesn't exist yet,
+  before it's promoted into `assets/`. `experiments/README.md` — short pointer + layout. `_TEMPLATE/` — copy to
+  start a new one.
 - `build/` — gitignored, disposable compile output. Never commit anything from it.
 
 ## Commands

@@ -68,6 +68,15 @@ paper-revision/
 │   ├── pending/                 # not yet turned into PROGRESS.md rows
 │   ├── processed/                # moved here once processed, kept for audit
 │   └── SOURCES.md               # registry of sibling repos the agent may read (read-only)
+├── experiments/                 # generates figures/data that don't exist yet (§9)
+│   ├── README.md
+│   ├── _TEMPLATE/                # copy this to start a new experiment
+│   └── <ID>-<slug>/
+│       ├── README.md            # goal, params/seed, data provenance, how to regenerate
+│       ├── config.yaml
+│       ├── scripts/              # numpy/matplotlib/ROS2/etc. allowed here (exempt from stdlib-only)
+│       ├── data/                 # gitignored — raw sim/hardware output, regenerable
+│       └── output/               # committed — final CSVs/figures, source for promote_figure.sh
 ├── scripts/
 │   ├── config.sh
 │   ├── pull_from_overleaf.sh
@@ -77,7 +86,8 @@ paper-revision/
 │   ├── find_section.py
 │   ├── validate_tex.sh
 │   ├── compile_pdf.sh
-│   └── check_roundtrip.sh
+│   ├── check_roundtrip.sh
+│   └── promote_figure.sh        # experiments/<id>/output/* -> assets/ (§9)
 ├── PROGRESS.md
 ├── README.md
 └── CLAUDE.md
@@ -302,20 +312,22 @@ Every row — regardless of namespace — goes through the identical flow: ident
 
 The `R2-xx`/`R3-xx` rows are fixed at the outset (do not renumber — these IDs are referenced by patch filenames and commit messages):
 
-| ID | Reviewer | Requirement (short) | Target section(s) | Status | Patch file |
-|---|---|---|---|---|---|
-| R2-01 | 2 | Condense repetitive text / remove duplicate plots / merge metric definitions / shorten warehouse sim section | TBD | pending | — |
-| R2-02 | 2 | Add FSM gait arbitration baseline comparison | TBD | pending | — |
-| R2-03 | 2 | Consolidate limitations into one dedicated section | TBD | pending | — |
-| R2-04 | 2 | Add multi-mode energy consumption + onboard MLP compute overhead analysis | TBD | pending | — |
-| R3-01 | 3 | Ablation analysis on basal ganglia arbitration network | TBD | pending | — |
-| R3-02 | 3 | Comparative tests removing neural layers/inhibitory connections to justify WTA over threshold logic | TBD | pending | — |
-| R3-03 | 3 | Control/compensation strategies for low-torque servo constraints and open-loop gait instability | TBD | pending | — |
-| R3-04 | 3 | Perception-decision noise robustness experiments (IMU drift, LiDAR noise, camera illumination distortion) | TBD | pending | — |
-| R3-05 | 3 | Inspection task performance metrics (tracking accuracy, coverage rate, autonomous re-planning) | TBD | pending | — |
-| R3-06 | 3 | Literature review comparative tables: Basal Ganglia vs CPG vs RL-based action selection | TBD | pending | — |
+| ID | Reviewer | Requirement (short) | Target section(s) | Data source | Status | Patch file |
+|---|---|---|---|---|---|---|
+| R2-01 | 2 | Condense repetitive text / remove duplicate plots / merge metric definitions / shorten warehouse sim section | TBD | — | pending | — |
+| R2-02 | 2 | Add FSM gait arbitration baseline comparison | TBD | TBD | pending | — |
+| R2-03 | 2 | Consolidate limitations into one dedicated section | TBD | — | pending | — |
+| R2-04 | 2 | Add multi-mode energy consumption + onboard MLP compute overhead analysis | TBD | TBD | pending | — |
+| R3-01 | 3 | Ablation analysis on basal ganglia arbitration network | TBD | TBD | pending | — |
+| R3-02 | 3 | Comparative tests removing neural layers/inhibitory connections to justify WTA over threshold logic | TBD | TBD | pending | — |
+| R3-03 | 3 | Control/compensation strategies for low-torque servo constraints and open-loop gait instability | TBD | TBD | pending | — |
+| R3-04 | 3 | Perception-decision noise robustness experiments (IMU drift, LiDAR noise, camera illumination distortion) | TBD | TBD | pending | — |
+| R3-05 | 3 | Inspection task performance metrics (tracking accuracy, coverage rate, autonomous re-planning) | TBD | TBD | pending | — |
+| R3-06 | 3 | Literature review comparative tables: Basal Ganglia vs CPG vs RL-based action selection | TBD | — | pending | — |
 
 Status values (exactly these strings, lowercase): `pending` → `drafted` → `applied` → `synced-to-overleaf`. `applied` means committed locally but **not yet pushed to Overleaf**. Update `Target section(s)` with the actual `sections/<slug>.tex` file(s) once identified.
+
+`Data source` is `—` for rows that are pure prose/reorganization, and points at `experiments/<ID>-<slug>/` for rows that need a figure/number that doesn't exist yet — see §9.
 
 ---
 
@@ -365,6 +377,47 @@ Add a line here whenever a new external repo becomes relevant as source material
 
 ---
 
+### 9. `experiments/` — Generating New Figures/Data
+
+§§5–8 all assume the figure or number being written about already exists somewhere reachable (`assets/`, the manuscript's own prior text). Several checklist items don't work that way: `R3-01` (basal-ganglia ablation), `R3-04` (noise-robustness sweeps), `R3-05` (inspection metrics), and potentially `R2-02`/`R2-04`/`R3-02`/`R3-03` need a figure or table that **does not exist yet**, likely produced by running new simulations (possibly via `PETER_SIMULATION`) or reprocessing real hardware logs. `experiments/` is where that generation work happens, strictly upstream of `assets/` and `sections/`.
+
+#### 9.1 Layout
+
+```
+experiments/
+├── README.md                    # short pointer version of this section
+├── _TEMPLATE/                   # copy this to start a new experiment
+└── <ID>-<slug>/                 # e.g. R3-01-basal-ganglia-ablation/
+    ├── README.md                # goal, method, parameters/seed, data provenance, how to regenerate, output list
+    ├── config.yaml               # run parameters, kept out of code so a rerun is exact/diffable
+    ├── scripts/                  # generation code
+    ├── data/                     # gitignored — raw sim/hardware output (bags, logs, video); regenerable
+    └── output/                   # committed — final small CSVs + the exact figure files
+```
+
+* Directory name reuses the `PROGRESS.md` ID, same convention as `patches/<id>-<slug>.tex`.
+* `data/` is gitignored repo-wide (`experiments/*/data/` in `.gitignore`) — never commit raw rosbags/video/logs. If a run isn't reproducible from `scripts/` + `config.yaml` alone (e.g. it needed a live hardware run), the experiment's `README.md` must say exactly what manual step produced `data/` instead of a script.
+* `output/` **is** committed. It stays small by construction (summary CSVs, the final PNG/PDF figure files) and is the only place `scripts/promote_figure.sh` is allowed to copy from.
+
+#### 9.2 External dependencies — second exemption from stdlib-only
+
+Scripts under `experiments/*/scripts/` are exempt from the repo-wide "bash/Python-stdlib only" rule (§5) — they may use numpy/matplotlib/pandas/ROS 2/whatever the analysis genuinely needs. This is the second explicit exception alongside `compile_pdf.sh`; every script directly under `scripts/` (other than `compile_pdf.sh`) stays stdlib-only.
+
+#### 9.3 Workflow
+
+1. When a `PROGRESS.md` row needs new data, set its `Data source` column to `experiments/<ID>-<slug>/` (§6) and create that directory (copy `experiments/_TEMPLATE/`).
+2. Fill in the experiment's `README.md` **before** running anything: goal, method, parameters/seed, and data provenance. If the run depends on `PETER_SIMULATION`, pin the exact commit used (`git -C ../PETER_SIMULATION rev-parse HEAD`) — that sibling repo is read-only reference material but is not version-locked to `paper-revision`, so an unpinned reference silently rots as teammates keep committing there.
+3. Run the generation scripts; final artifacts land in `output/`.
+4. `scripts/promote_figure.sh experiments/<ID>-<slug>/output/<file> <assets/relative/path>` copies it into `assets/` at the exact relative path the LaTeX will reference. It refuses to overwrite an existing `assets/` file unless `--force` is passed, and refuses any source path outside `experiments/*/output/` — every promoted asset stays traceable to the experiment that produced it.
+5. From here it's a normal patch (§5–§7): edit `sections/<slug>.tex` to `\includegraphics`/cite the new asset and write the surrounding prose, record it in `patches/<id>-<slug>.tex`, update `PROGRESS.md` status to `drafted`/`applied`. `scripts/push_to_overleaf.sh` mirrors the promoted asset back to Overleaf like any other file in `assets/` — no changes needed there.
+6. The promoted asset is now inside `assets/`, so the existing pull guard (§5.1) already protects it: `pull_from_overleaf.sh` will refuse to run if this work is committed but not yet synced, exactly like any other local change.
+
+#### 9.4 Why this doesn't touch the pull/push guards
+
+Both guards (§5.1, §5.8) key off git history touching `source/`, `sections/`, or `assets/` — not off *why* those files changed. A promoted figure is just another commit touching `assets/`, so it's covered automatically. `experiments/` itself is deliberately outside both guards' scope: work-in-progress scripts/data in `experiments/<ID>-<slug>/scripts/` and `output/` can be committed freely without tripping the pull guard, since nothing there is mirrored to Overleaf until `promote_figure.sh` moves it into `assets/`.
+
+---
+
 ## Repository Setup & Execution Guide
 
 ### Current state
@@ -378,11 +431,12 @@ Both repositories exist and are linked:
 Remaining setup (implementation phase, not yet done):
 
 1. Create `scripts/config.sh` with the variables in §5.8.
-2. Implement `scripts/pull_from_overleaf.sh`, `scripts/split_sections.py`, `scripts/reassemble.py`, `scripts/find_section.py`, `scripts/validate_tex.sh`, `scripts/compile_pdf.sh`, `scripts/check_roundtrip.sh`, `scripts/push_to_overleaf.sh` per §5. The text-processing scripts are bash/Python-stdlib only — deliberately simple regex/line-based logic, no LaTeX parser. `compile_pdf.sh` is the one script allowed to depend on external tooling (a LaTeX distribution).
+2. Implement `scripts/pull_from_overleaf.sh`, `scripts/split_sections.py`, `scripts/reassemble.py`, `scripts/find_section.py`, `scripts/validate_tex.sh`, `scripts/compile_pdf.sh`, `scripts/check_roundtrip.sh`, `scripts/push_to_overleaf.sh`, `scripts/promote_figure.sh` per §5/§9. The text-processing scripts (everything except `compile_pdf.sh` and anything under `experiments/*/scripts/`) are bash/Python-stdlib only — deliberately simple regex/line-based logic, no LaTeX parser.
 3. Create `PROGRESS.md` at the repo root using the table in §6, and a first-pass `OUTLINE.md` (§4.3) once the real manuscript structure is known.
 4. Run `scripts/pull_from_overleaf.sh` once to produce the first real `source/main_monolithic.tex`, `sections/*.tex`, and populated `assets/` from the actual manuscript project.
 5. Run `scripts/check_roundtrip.sh` once right after step 4 to confirm the split boundaries are byte-exact for the real manuscript before relying on the pipeline.
 6. Populate `intake/SOURCES.md` (§8.3) with any sibling repos currently relevant (e.g. `PETER_SIMULATION`).
+7. Create `experiments/README.md` and `experiments/_TEMPLATE/` per §9 for any `PROGRESS.md` row that needs new data.
 
 ### Daily revision loop (once scripts exist)
 

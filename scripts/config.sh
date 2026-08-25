@@ -24,4 +24,7 @@ BUILD_DIR="${BUILD_DIR:-$REPO_ROOT/build}"
 # Editable per-section working copy of the manuscript text.
 SECTIONS_DIR="${SECTIONS_DIR:-$REPO_ROOT/sections}"
 
-export REPO_ROOT OVERLEAF_DIR OVERLEAF_MAIN_FILE MIRROR_FILE ASSETS_DIR BUILD_DIR SECTIONS_DIR
+# Scripts/notebooks/data that generate new figures/tables not yet in assets/.
+EXPERIMENTS_DIR="${EXPERIMENTS_DIR:-$REPO_ROOT/experiments}"
+
+export REPO_ROOT OVERLEAF_DIR OVERLEAF_MAIN_FILE MIRROR_FILE ASSETS_DIR BUILD_DIR SECTIONS_DIR EXPERIMENTS_DIR
