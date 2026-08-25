@@ -8,3 +8,8 @@
 *.synctex.gz
 /build/
 experiments/*/data/
+
+# assets/ mirrors the Overleaf project 1:1 and legitimately contains PDF figures/graphics (e.g.
+# GRAPHICAL_ABSTRACT.pdf) — the *.pdf rule above is meant for compile byproducts (build/paper.pdf),
+# not tracked assets. Re-include everything under assets/ regardless of the patterns above.
+!/assets/**
