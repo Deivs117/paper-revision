@@ -29,6 +29,7 @@
 * **Two independent git repositories are involved, with a strict division of labor:**
   * The **Overleaf repo** (clone of `git.overleaf.com/<project-id>`) — **sync-only**. Nothing is hand-edited here. Its sole purpose is exchanging content with Overleaf's web editor; it is never a place to draft, patch, or compile.
   * **This repo, `paper-revision`** (GitHub) — where all real work happens: text editing/patching, asset management (bibliography, figures, class files), and PDF compilation.
+* **Primary editor is the repo owner, not just an AI agent.** All edits, human or AI-generated, go through the same formal path: a `sections/<slug>.tex` change tied to a `PROGRESS.md` row and recorded in `patches/`. This keeps every change — however small — traceable and prevents silent, unreviewable drift in the manuscript.
 
 ---
 
@@ -41,8 +42,9 @@
 
 ```
 paper-revision/
+├── OUTLINE.md                   # cheap global-context map, read before any section-level edit (§4.5)
 ├── source/
-│   └── main_monolithic.tex      # generated — never hand-edited (§4)
+│   └── main_monolithic.tex      # generated — never hand-edited (§5)
 ├── sections/
 │   ├── manifest.json            # ordered list of section files; order lives HERE, not in filenames
 │   ├── preamble.tex
@@ -67,7 +69,8 @@ paper-revision/
 │   ├── reassemble.py
 │   ├── find_section.py
 │   ├── validate_tex.sh
-│   └── compile_pdf.sh
+│   ├── compile_pdf.sh
+│   └── check_roundtrip.sh
 ├── PROGRESS.md
 ├── README.md
 └── CLAUDE.md
@@ -79,7 +82,53 @@ Overleaf git authentication uses a per-project git token (`olp_...`) as the pass
 
 ---
 
-### 4. Automation Pipeline
+### 4. Token-Efficient Agent Workflow
+
+The point of `sections/` and `OUTLINE.md` together is that an agent (human or AI) doing one patch never needs to read the whole manuscript.
+
+#### 4.1 What an agent reads for a typical patch
+1. `OUTLINE.md` — always. Small (a few hundred tokens), gives global context: what each section covers, key terminology, and known cross-references between sections.
+2. `PROGRESS.md` — to pick or confirm the requirement being addressed and its target section(s).
+3. **Only** the target `sections/<slug>.tex` file(s) named in that `PROGRESS.md` row — not the full monolith, not unrelated sections.
+
+#### 4.2 When a broader scan is warranted
+If a requirement genuinely needs cross-section awareness (e.g. R2-01's "remove duplicate plots between simulation and hardware tests" spans two sections), the agent decides this itself from what `OUTLINE.md` and the requirement text imply, and reads the additional specific `sections/*.tex` files it identifies as relevant — never the full `source/main_monolithic.tex` as a default move. Reading the monolith directly should be rare and deliberate, not a fallback habit.
+
+#### 4.3 `OUTLINE.md` — the cheap global-context file
+
+Root-level file, maintained by hand (occasionally with agent help), **not regenerated automatically** by any sync script — accurate summarization needs understanding, not parsing. Update it whenever the section structure changes materially (a section added, merged, or its scope shifts).
+
+Format:
+
+```markdown
+# Outline — ROBOT-D-26-00122R1
+
+## Abstract (1 line)
+<one-sentence summary of the paper's contribution>
+
+## Sections
+- introduction.tex — <1-line: what it covers>
+- related-work.tex — <1-line, e.g. "comparative table Basal Ganglia vs CPG vs RL (R3-06)">
+- ablation-study.tex — <1-line, note if new/empty pending R3-01/R3-02>
+- ...
+
+## Key terms / notation
+- WTA = Winner-Take-All
+- ...
+
+## Known cross-references
+- ablation-study.tex results are cited in discussion.tex
+- ...
+```
+
+#### 4.4 Cost discipline
+- Never pass the full `source/main_monolithic.tex` to an AI agent as routine input for a single-section patch.
+- `OUTLINE.md` + `PROGRESS.md` row + target `sections/*.tex` file(s) is the default context bundle for a patch.
+- `find_section.py` (§5.4) exists precisely so an agent can learn "what changed since last sync" without diffing or reading the whole file itself.
+
+---
+
+### 5. Automation Pipeline
 
 ```
 [Overleaf web UI]                                        [paper-revision repo: all real work]
@@ -90,22 +139,21 @@ Overleaf git authentication uses a per-project git token (`olp_...`) as the pass
   (git.overleaf.com)                                               │
         │                                                          │
         ▼   scripts/pull_from_overleaf.sh                          │
-        │   guard: abort if PROGRESS.md has any                    │
-        │   row with Status = applied (unsynced                    │
-        │   local work would otherwise be lost)                    │
+        │   guard: abort if any commit since the last              │
+        │   "sync:"/"chore: mark synced" marker touches             │
+        │   source/, sections/, or assets/ (§5.1) — unpushed        │
+        │   local work would otherwise be lost                      │
         ▼                                                          │
   git pull (cached token)                                          │
      │        │                                                    │
      │        └─copy+rename main tex──▶ source/main_monolithic.tex │
      └─mirror everything else─────────▶ assets/                    │
                                                      │               │
-                                          commit "sync: ..."         │
-                                                     │               │
-                                                     ▼               │
-                                        scripts/split_sections.py    │
-                                        source/main_monolithic.tex   │
-                                           ──▶ sections/*.tex        │
-                                           ──▶ sections/manifest.json│
+                                        split_sections.py runs,      │
+                                        THEN commit "sync: ..."      │
+                                       (source + sections + assets   │
+                                        all in one commit = new      │
+                                        synced checkpoint)           │
                                                      │               │
                                                      ▼               │
                                           scripts/find_section.py    │
@@ -113,9 +161,10 @@ Overleaf git authentication uses a per-project git token (`olp_...`) as the pass
                                          which sections/*.tex changed)
                                                      │
                                                      ▼
-                                     agent edits sections/*.tex and/or assets/
-                                     (new figures, updated .bib) directly, using
-                                     PROGRESS.md to pick which requirement to address
+                                     agent reads OUTLINE.md + PROGRESS.md
+                                     + only the target sections/*.tex (§4),
+                                     edits sections/*.tex and/or assets/
+                                     (new figures, updated .bib)
                                                      │
                                           commit "patch: <ID> <summary>"
                                        (+ patches/<ID>-<slug>.tex audit copy,
@@ -123,7 +172,8 @@ Overleaf git authentication uses a per-project git token (`olp_...`) as the pass
                                                      │
                                                      ▼
                                           scripts/reassemble.py
-                                        sections/*.tex (manifest order)
+                                        sections/*.tex (manifest order,
+                                        byte-exact join — see §5.2/5.3)
                                           ──▶ source/main_monolithic.tex
                                                      │
                                                      ▼
@@ -136,7 +186,9 @@ Overleaf git authentication uses a per-project git token (`olp_...`) as the pass
   abort if it brings new commits
         │
         ▼ (only if guard passes)
-  mirror assets/ + copy/rename main tex, commit, git push
+  mirror assets/ + copy/rename main tex, commit, git push,
+  then commit "chore: mark synced to Overleaf" (empty commit,
+  new synced checkpoint) in paper-revision
         │
         ▼
   Overleaf reflects the change live
@@ -146,52 +198,46 @@ Overleaf git authentication uses a per-project git token (`olp_...`) as the pass
 **Golden rules:**
 - `source/main_monolithic.tex` is always generated (by `pull_from_overleaf.sh` or `reassemble.py`) — never hand-edited.
 - `sections/*.tex` is the editable working copy of the manuscript text. `assets/` is the editable working copy of everything else (bibliography, figures, class files) — both are mirrored to/from Overleaf, but edited locally in between syncs.
+- Every edit — human or AI, however small — goes through `sections/` + a `PROGRESS.md` row + a `patches/` record. There is no separate "quick edit" bypass; this is what keeps the pull guard (§5.1) able to trust "no marker-less commit touching these paths" as proof nothing is unsynced.
 - The Overleaf repo clone is **sync-only** — no drafting, patching, or compiling happens there.
 
 ---
 
-### 5. Script Specifications
+### 5.1 `scripts/pull_from_overleaf.sh`
 
-All scripts live in `scripts/` and read shared paths from `scripts/config.sh` (bash):
-
-```bash
-OVERLEAF_DIR="../<overleaf-project-id>"        # path to the Overleaf repo clone
-OVERLEAF_MAIN_FILE="elsarticle-template-num-names.tex"
-MIRROR_FILE="source/main_monolithic.tex"
-ASSETS_DIR="assets"
-BUILD_DIR="build"
-```
-
-Nothing else in the codebase should hardcode these paths/names — always source `config.sh`.
-
-#### 5.1 `scripts/pull_from_overleaf.sh`
-1. **Guard against data loss:** grep `PROGRESS.md` for any row with `Status` = `applied`. If one or more exist, abort with an error listing their IDs and telling the user to run `push_to_overleaf.sh` first. (`drafted` rows do not block — nothing in `sections/`/`assets/` depends on them yet.)
+1. **Guard against data loss:** find the most recent commit in this repo whose message starts with `sync: pull from Overleaf` or `chore: mark synced to Overleaf` (call it `$LAST_MARKER`; if none exists yet, skip this check — first run). Run `git log $LAST_MARKER..HEAD --oneline -- source sections assets`. If that returns any commits, abort: local work exists that hasn't been pushed to Overleaf yet. Run `push_to_overleaf.sh` first. (Cross-check `PROGRESS.md` for rows still in `applied` as a human-readable hint of what's pending, but the git-log check above is the actual guard — it catches every local change, not only ones tied to a tracked reviewer ID.)
 2. `git -C "$OVERLEAF_DIR" pull origin main`. On failure (auth, conflict), print the error and exit 1.
 3. Copy `$OVERLEAF_DIR/$OVERLEAF_MAIN_FILE` → `$MIRROR_FILE` (overwrite).
-4. Mirror everything else: `rsync -a --delete --exclude='.git' --exclude="$OVERLEAF_MAIN_FILE" "$OVERLEAF_DIR"/ "$ASSETS_DIR"/` (the `--delete` keeps `assets/` an exact mirror, removing files deleted on Overleaf's side too).
+4. Mirror everything else: `rsync -a --delete --exclude='.git' --exclude="$OVERLEAF_MAIN_FILE" "$OVERLEAF_DIR"/ "$ASSETS_DIR"/`.
 5. If `git diff --quiet -- "$MIRROR_FILE" "$ASSETS_DIR"` shows no changes, print `"No changes since last sync."` and exit 0 without committing.
-6. Otherwise: `git add "$MIRROR_FILE" "$ASSETS_DIR"`, commit with message `sync: pull from Overleaf (<YYYY-MM-DD HH:MM>)`.
-7. Invoke `scripts/split_sections.py` as the final step so `sections/` is always in sync with `source/main_monolithic.tex` after a pull.
+6. Otherwise, run `scripts/split_sections.py` now (before committing), so `sections/` reflects the new content.
+7. `git add "$MIRROR_FILE" "$ASSETS_DIR" sections/`, commit with message `sync: pull from Overleaf (<YYYY-MM-DD HH:MM>)`. This single commit is the new synced checkpoint referenced by step 1's guard.
 
 Exit codes: `0` = success, `1` = error or guard-abort.
 
-#### 5.2 `scripts/split_sections.py`
+### 5.2 `scripts/split_sections.py`
+
 Splits `source/main_monolithic.tex` into `sections/`. Pure text/regex split — no LaTeX parser, no `\input`/`\include` resolution.
 
 * Split points are lines matching `^\s*\\section\{`. Only **top-level** `\section{}` commands are split boundaries; `\subsection{}` etc. stay embedded inside their parent section's file.
 * Start of file up to (not including) the first `\section{}` → `sections/preamble.tex`.
-* Each `\section{Title}` block → `sections/<slug>.tex`, where `<slug>` is the title lowercased, non-alphanumeric characters replaced with `-`, collapsed/trimmed (e.g. `\section{Related Work}` → `sections/related-work.tex`). **No numeric prefix** — ordering lives only in `manifest.json`, so a section that gets reordered in Overleaf keeps the same filename and its git history stays intact.
-* If two sections produce the same slug (duplicate titles, e.g. two "Results" sections), disambiguate deterministically by appending `-2`, `-3`, ... in order of appearance.
-* `\end{document}` (inclusive) plus anything trailing after the last section (bibliography commands, appendices not under a `\section`) → `sections/closing.tex`.
+* Each `\section{Title}` block → `sections/<slug>.tex`, where `<slug>` is the title lowercased, non-alphanumeric characters replaced with `-`, collapsed/trimmed (e.g. `\section{Related Work}` → `sections/related-work.tex`). **No numeric prefix** — ordering lives only in `manifest.json`.
+* If two sections produce the same slug (duplicate titles), disambiguate deterministically by appending `-2`, `-3`, ... in order of appearance.
+* `\end{document}` (inclusive) plus anything trailing after the last section → `sections/closing.tex`.
+* **Byte-exact boundaries, required invariant:** each section's captured text runs from its `\section{}` line up to (but not including) the byte where the next split-boundary line starts — meaning all blank lines, trailing whitespace, and comments between two sections belong to the **earlier** section's file, exactly as they appeared in the source. No content is dropped, added, or normalized during the split.
 * Before writing, delete all existing `sections/*.tex` files (full regeneration every run).
-* Write `sections/manifest.json`: an ordered array of `{"file": "related-work.tex", "title": "Related Work"}` objects (`preamble.tex` and `closing.tex` included, `"title": null` for those two). This array's order is authoritative for reassembly — filenames alone never imply order.
+* Write `sections/manifest.json`: an ordered array of `{"file": "related-work.tex", "title": "Related Work"}` objects (`preamble.tex` and `closing.tex` included, `"title": null` for those two).
 
-When an agent adds a **brand-new** section locally (not yet present in Overleaf's file — e.g. R2-03's "consolidate limitations into a dedicated section"), it creates `sections/<slug>.tex` directly and inserts an entry for it at the right position in `manifest.json` by hand. The next `split_sections.py` run (after that content has been pushed to Overleaf and pulled back) will regenerate the manifest from the real file and keep it consistent.
+When an agent adds a **brand-new** section locally, it creates `sections/<slug>.tex` directly and inserts an entry for it at the right position in `manifest.json` by hand.
 
-#### 5.3 `scripts/reassemble.py`
-Reads `sections/manifest.json` in order, concatenates each listed file's contents (with a single blank line between files), writes the result to `source/main_monolithic.tex`. Exact inverse of `split_sections.py`'s join.
+### 5.3 `scripts/reassemble.py`
 
-#### 5.4 `scripts/find_section.py`
+Reads `sections/manifest.json` in order and **concatenates each listed file's raw bytes with no separator inserted** — the exact inverse of §5.2's byte-exact split. Writes the result to `source/main_monolithic.tex`.
+
+**Required invariant — round-trip idempotency:** running `split_sections.py` immediately followed by `reassemble.py`, with no edits in between, MUST produce a `source/main_monolithic.tex` that is byte-identical to what went in. If it isn't, the split boundaries in §5.2 are wrong — treat any such diff as a bug, not an acceptable side effect. `scripts/check_roundtrip.sh` (§5.7) verifies this automatically.
+
+### 5.4 `scripts/find_section.py`
+
 Upward-scan / diff-to-section mapper. Usage: `find_section.py [<git-rev-range>]`, default range `HEAD~1..HEAD`.
 
 1. Run `git diff <range> -- source/main_monolithic.tex` and parse unified-diff hunk headers (`@@ -a,b +c,d @@`).
@@ -200,7 +246,8 @@ Upward-scan / diff-to-section mapper. Usage: `find_section.py [<git-rev-range>]`
 
 Read-only: never modifies files.
 
-#### 5.5 `scripts/validate_tex.sh`
+### 5.5 `scripts/validate_tex.sh`
+
 Fast structural sanity check on `source/main_monolithic.tex`, no LaTeX toolchain required:
 * Braces `{`/`}` balanced (equal count).
 * `\begin{document}` and `\end{document}` both present, exactly once each.
@@ -208,28 +255,37 @@ Fast structural sanity check on `source/main_monolithic.tex`, no LaTeX toolchain
 
 Exit 1 with a description of the first failure found; exit 0 if all checks pass. Run before every `push_to_overleaf.sh`.
 
-#### 5.6 `scripts/compile_pdf.sh`
-Real compilation check, requires a local LaTeX toolchain (`latexmk` preferred, fallback `pdflatex` + `bibtex`/`biber` run twice). Not part of the "no dependencies" scripts — this one legitimately needs LaTeX installed.
+### 5.6 `scripts/compile_pdf.sh`
+
+Real compilation check, requires a local LaTeX toolchain (`latexmk` preferred, fallback `pdflatex` + `bibtex`/`biber` run twice). The one script allowed to depend on external tooling.
 
 1. `rm -rf "$BUILD_DIR/tex-src"`, recreate it.
 2. Copy `$ASSETS_DIR/` into `$BUILD_DIR/tex-src/` (preserving relative paths).
-3. Copy `source/main_monolithic.tex` into `$BUILD_DIR/tex-src/$OVERLEAF_MAIN_FILE` (using the original Overleaf filename, so the assembled build directory matches what Overleaf itself would compile).
-4. `cd "$BUILD_DIR/tex-src" && latexmk -pdf -interaction=nonstopmode "$OVERLEAF_MAIN_FILE"` (or the `pdflatex`/`bibtex` fallback sequence if `latexmk` isn't installed).
+3. Copy `source/main_monolithic.tex` into `$BUILD_DIR/tex-src/$OVERLEAF_MAIN_FILE` (original Overleaf filename, so the build matches what Overleaf itself would compile).
+4. `cd "$BUILD_DIR/tex-src" && latexmk -pdf -interaction=nonstopmode "$OVERLEAF_MAIN_FILE"` (or the `pdflatex`/`bibtex` fallback sequence).
 5. On success, copy the resulting PDF to `$BUILD_DIR/paper.pdf`. On failure, print the LaTeX log tail and exit 1.
 
-`build/` is gitignored entirely — it's a disposable compilation workspace, never committed.
+`build/` is gitignored entirely — disposable, never committed.
 
-#### 5.7 `scripts/push_to_overleaf.sh`
+### 5.7 `scripts/check_roundtrip.sh`
+
+Verifies the invariant in §5.3. Copies current `source/main_monolithic.tex` aside, runs `split_sections.py` then `reassemble.py`, diffs the result against the copy, restores the original file, and exits 1 if any diff was found (printing it). Cheap, dependency-free — safe to run after any change to `split_sections.py`/`reassemble.py` themselves, and worth running once after implementing them.
+
+### 5.8 `scripts/push_to_overleaf.sh`
+
 1. **Guard:** `git -C "$OVERLEAF_DIR" pull origin main`. If this brings in new commits, **abort** — tells the user to re-run `pull_from_overleaf.sh` and re-check for conflicts before pushing. Never force-push, never auto-merge.
-2. Run `scripts/validate_tex.sh`; abort on failure. Run `scripts/compile_pdf.sh` if a LaTeX toolchain is available; abort on failure (warn-and-continue only if the toolchain itself is missing, not if compilation fails).
+2. Run `scripts/validate_tex.sh`; abort on failure. Run `scripts/compile_pdf.sh` if a LaTeX toolchain is available; abort on failure (warn-and-continue only if the toolchain itself is missing).
 3. Mirror back: `rsync -a --delete --exclude='.git' "$ASSETS_DIR"/ "$OVERLEAF_DIR"/`, then copy `$MIRROR_FILE` → `$OVERLEAF_DIR/$OVERLEAF_MAIN_FILE`.
 4. `git -C "$OVERLEAF_DIR" add -A`, commit `sync: apply patches from paper-revision (<YYYY-MM-DD HH:MM>)`, `git push origin main`.
+5. On success, in **this** repo: `git commit --allow-empty -m "chore: mark synced to Overleaf (<YYYY-MM-DD HH:MM>)"`. This is the new synced checkpoint the §5.1 guard looks for.
+
+All shared paths (`OVERLEAF_DIR`, `OVERLEAF_MAIN_FILE`, `MIRROR_FILE`, `ASSETS_DIR`, `BUILD_DIR`) come from `scripts/config.sh` — no script hardcodes them.
 
 ---
 
 ### 6. `PROGRESS.md` — Reviewer Checklist Tracking
 
-A markdown table at the repo root, one row per reviewer requirement, IDs fixed as below (do not renumber — these IDs are referenced by patch filenames, commit messages, and the pull guard in §5.1):
+A markdown table at the repo root, one row per reviewer requirement, IDs fixed as below (do not renumber — these IDs are referenced by patch filenames and commit messages):
 
 | ID | Reviewer | Requirement (short) | Target section(s) | Status | Patch file |
 |---|---|---|---|---|---|
@@ -244,7 +300,7 @@ A markdown table at the repo root, one row per reviewer requirement, IDs fixed a
 | R3-05 | 3 | Inspection task performance metrics (tracking accuracy, coverage rate, autonomous re-planning) | TBD | pending | — |
 | R3-06 | 3 | Literature review comparative tables: Basal Ganglia vs CPG vs RL-based action selection | TBD | pending | — |
 
-Status values (exactly these strings, lowercase): `pending` → `drafted` → `applied` → `synced-to-overleaf`. `applied` means committed locally but **not yet pushed to Overleaf** — `pull_from_overleaf.sh` refuses to run while any row is in this state (§5.1). Update `Target section(s)` with the actual `sections/<slug>.tex` file(s) once identified.
+Status values (exactly these strings, lowercase): `pending` → `drafted` → `applied` → `synced-to-overleaf`. `applied` means committed locally but **not yet pushed to Overleaf**. Update `Target section(s)` with the actual `sections/<slug>.tex` file(s) once identified.
 
 ---
 
@@ -278,17 +334,19 @@ Both repositories exist and are linked:
 
 Remaining setup (implementation phase, not yet done):
 
-1. Create `scripts/config.sh` with the variables in §5.
-2. Implement `scripts/pull_from_overleaf.sh`, `scripts/split_sections.py`, `scripts/reassemble.py`, `scripts/find_section.py`, `scripts/validate_tex.sh`, `scripts/compile_pdf.sh`, `scripts/push_to_overleaf.sh` per §5. The text-processing scripts (`split_sections.py`, `reassemble.py`, `find_section.py`, `validate_tex.sh`) are bash/Python-stdlib only — deliberately simple regex/line-based logic, no LaTeX parser. `compile_pdf.sh` is the one script allowed to depend on external tooling (a LaTeX distribution).
-3. Create `PROGRESS.md` at the repo root using the table in §6.
+1. Create `scripts/config.sh` with the variables in §5.8.
+2. Implement `scripts/pull_from_overleaf.sh`, `scripts/split_sections.py`, `scripts/reassemble.py`, `scripts/find_section.py`, `scripts/validate_tex.sh`, `scripts/compile_pdf.sh`, `scripts/check_roundtrip.sh`, `scripts/push_to_overleaf.sh` per §5. The text-processing scripts are bash/Python-stdlib only — deliberately simple regex/line-based logic, no LaTeX parser. `compile_pdf.sh` is the one script allowed to depend on external tooling (a LaTeX distribution).
+3. Create `PROGRESS.md` at the repo root using the table in §6, and a first-pass `OUTLINE.md` (§4.3) once the real manuscript structure is known.
 4. Run `scripts/pull_from_overleaf.sh` once to produce the first real `source/main_monolithic.tex`, `sections/*.tex`, and populated `assets/` from the actual manuscript project.
+5. Run `scripts/check_roundtrip.sh` once right after step 4 to confirm the split boundaries are byte-exact for the real manuscript before relying on the pipeline.
 
 ### Daily revision loop (once scripts exist)
 
-1. `scripts/pull_from_overleaf.sh` — sync from Overleaf (blocked if unsynced local patches exist), regenerate `sections/`.
+1. `scripts/pull_from_overleaf.sh` — sync from Overleaf (blocked if any unpushed local commit touches `source/`, `sections/`, or `assets/`), regenerate `sections/`.
 2. `scripts/find_section.py` — see which sections changed since last sync.
-3. Pick a `pending` row in `PROGRESS.md`, identify its target `sections/<slug>.tex` file(s) (and/or `assets/` files, e.g. new figures).
-4. Edit those files directly to satisfy the reviewer requirement; save a copy of the change to `patches/<id>-<slug>.tex`; update `PROGRESS.md` to `applied`; commit as `patch: <ID> <summary>`.
-5. `scripts/reassemble.py` — rebuild `source/main_monolithic.tex` from `sections/`.
-6. `scripts/validate_tex.sh` (and `scripts/compile_pdf.sh` if the LaTeX toolchain is installed) — must pass before continuing.
-7. `scripts/push_to_overleaf.sh` — guarded push back to Overleaf; update `PROGRESS.md` to `synced-to-overleaf` on success.
+3. Pick a `pending` row in `PROGRESS.md`, identify its target `sections/<slug>.tex` file(s) (and/or `assets/` files).
+4. Read `OUTLINE.md` + the target file(s) only (§4) — not the full monolith, unless the requirement genuinely spans sections.
+5. Edit those files directly; save a copy of the change to `patches/<id>-<slug>.tex`; update `PROGRESS.md` to `applied`; commit as `patch: <ID> <summary>`.
+6. `scripts/reassemble.py` — rebuild `source/main_monolithic.tex` from `sections/`.
+7. `scripts/validate_tex.sh` (and `scripts/compile_pdf.sh` if the LaTeX toolchain is installed) — must pass before continuing.
+8. `scripts/push_to_overleaf.sh` — guarded push back to Overleaf; updates the synced checkpoint on success; update `PROGRESS.md` to `synced-to-overleaf`.

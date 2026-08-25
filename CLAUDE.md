@@ -10,43 +10,58 @@ happens in this repo** — text patching, asset management, compilation. The sib
 sync-only. Full spec: **README.md — read it before implementing any script here**, it is the source of truth for
 file formats, script behavior, and naming.
 
+## Token-efficient editing (read `OUTLINE.md` first)
+
+For any section-level edit: read `OUTLINE.md` (cheap global context) + the relevant `PROGRESS.md` row + only the
+target `sections/<slug>.tex` file(s). Do not read `source/main_monolithic.tex` as a default move — it's the full
+monolith and defeats the point of `sections/`. Only read additional section files, or the monolith, when the
+requirement itself genuinely spans sections and `OUTLINE.md` doesn't resolve it.
+
 ## Hard rules
 
 - Never edit `source/main_monolithic.tex` by hand. It is generated: written by `scripts/pull_from_overleaf.sh`
   (from Overleaf) or `scripts/reassemble.py` (from `sections/`).
 - Never edit `sections/*.tex` filenames or `manifest.json` order outside `scripts/split_sections.py` — it fully
-  regenerates `sections/` on every run. Edit section **content** in place, not the split itself. Filenames have no
-  numeric prefix; order lives only in `sections/manifest.json`.
+  regenerates `sections/` on every run. Edit section **content** in place. Filenames have no numeric prefix; order
+  lives only in `sections/manifest.json`.
+- `split_sections.py`/`reassemble.py` must round-trip byte-identically with no edits in between (`scripts/
+  check_roundtrip.sh` verifies this) — never insert separators or normalize whitespace during split/join.
 - `assets/` mirrors the Overleaf project 1:1 (bibliography, figures, class files), under original relative paths.
-  It is editable in place (unlike `source/main_monolithic.tex`) and mirrors back on push.
+  Editable in place; mirrors back on push.
 - The Overleaf repo clone is **sync-only** — never hand-edit files there.
-- `scripts/pull_from_overleaf.sh` must abort if `PROGRESS.md` has any row with `Status = applied` — that means
-  local work isn't pushed to Overleaf yet, and pulling would silently overwrite it.
-- `scripts/push_to_overleaf.sh` must always `git pull` the Overleaf repo first and abort on new commits, and must
-  run `scripts/validate_tex.sh` (+ `compile_pdf.sh` if a LaTeX toolchain is available) before pushing — never
-  force-push, never auto-merge, never push unvalidated LaTeX.
+- `scripts/pull_from_overleaf.sh` must abort if any commit since the last `sync:`/`chore: mark synced` marker
+  touches `source/`, `sections/`, or `assets/` — that means local work isn't pushed yet, and pulling would
+  silently overwrite it. This is a git-log check, not a `PROGRESS.md`-only check — it must catch every local
+  change, not just ones tied to a tracked reviewer ID.
+- Every edit, however small, goes through `sections/` + a `PROGRESS.md` row + a `patches/` record — no untracked
+  "quick edit" path. This is what lets the pull guard trust marker-less history as proof nothing is unsynced.
+- `scripts/push_to_overleaf.sh` must always `git pull` the Overleaf repo first and abort on new commits, run
+  `scripts/validate_tex.sh` (+ `compile_pdf.sh` if available) before pushing, and on success commit an empty
+  `chore: mark synced to Overleaf` marker in this repo — never force-push, never auto-merge, never push
+  unvalidated LaTeX.
 - All scripts read shared paths from `scripts/config.sh` — never hardcode `OVERLEAF_DIR`, `ASSETS_DIR`, or
   `source/main_monolithic.tex` elsewhere.
-- Never write the Overleaf git token (`olp_...`) into any file in either repo. It lives only in
+- Never write the Overleaf git token (`olp_...`) into any file in either repo — it lives only in
   `~/.git-credentials` via `git config --global credential.helper store`.
-- Text-processing scripts (`split_sections.py`, `reassemble.py`, `find_section.py`, `validate_tex.sh`) are
-  bash/Python-stdlib only, regex/line-based by design — no LaTeX parser. `compile_pdf.sh` is the only script
-  allowed to depend on external tooling (a LaTeX distribution).
-- Keep `sync:` commits (from pulling Overleaf) and `patch:` commits (from applying a reviewer fix) separate — never
-  combine them in one commit.
+- Text-processing scripts (`split_sections.py`, `reassemble.py`, `find_section.py`, `validate_tex.sh`,
+  `check_roundtrip.sh`) are bash/Python-stdlib only — no LaTeX parser. `compile_pdf.sh` is the only script allowed
+  to depend on external tooling (a LaTeX distribution).
+- Keep `sync:` commits (pulling Overleaf), `patch:` commits (applying a reviewer fix), and `chore: mark synced`
+  commits (marking a push) separate — never combine them.
 
 ## Key files
 
-- `README.md` — full architecture, script specs, file formats (`sections/manifest.json`, `patches/*.tex` header,
-  `PROGRESS.md` table). Treat as the spec to implement against.
+- `README.md` — full architecture, script specs, file formats. Treat as the spec to implement against.
+- `OUTLINE.md` — hand-maintained global summary (abstract, per-section one-liner, key terms, cross-references).
+  Read this, not the monolith, for context.
 - `PROGRESS.md` — status per reviewer requirement (`pending` → `drafted` → `applied` → `synced-to-overleaf`). Check
-  before starting new patch work; update after. Also gates `pull_from_overleaf.sh` (see Hard rules).
+  before starting new patch work; update after.
 - `patches/<id>-<slug>.tex` — audit copy of each applied change, not the live file (that's `sections/<slug>.tex`
   or `assets/`).
-- `build/` — gitignored, disposable compile output from `compile_pdf.sh`. Never commit anything from it.
+- `build/` — gitignored, disposable compile output. Never commit anything from it.
 
 ## Commands
 
 Not yet implemented — see README.md §"Repository Setup & Execution Guide" for what to build and the daily loop
-(`pull_from_overleaf.sh` → `find_section.py` → edit `sections/`/`assets/` → `reassemble.py` → `validate_tex.sh` /
-`compile_pdf.sh` → `push_to_overleaf.sh`).
+(`pull_from_overleaf.sh` → `find_section.py` → read `OUTLINE.md` + target `sections/`/`assets/` → edit → `reassemble.py`
+→ `validate_tex.sh` / `compile_pdf.sh` → `push_to_overleaf.sh`).
