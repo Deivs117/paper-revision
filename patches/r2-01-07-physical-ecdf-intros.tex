@@ -1,0 +1,23 @@
+% PATCH: R2-01 (7/12)
+% Reviewer: 2
+% Target section: sections/results.tex
+% Requirement: Condense repetitive text — each of the 4 physical quantitative-analysis
+%   scenarios (Appetitive/Aversive/Complex/Obstacle) opened its ECDF paragraph with a
+%   throat-clearing "was evaluated/benchmarked/validated/conducted using the X Scenario"
+%   sentence restating the scenario name (already in the section comment, figure caption)
+%   and, for Appetitive, the replicate count (already stated once at the subsection
+%   intro, line 789). Cut these opening sentences, added a bold scenario-name lead-in
+%   matching the simulation-side style (block 3), kept 100% of the technical content and
+%   numbers. Note: did NOT build a consolidated numeric table here (unlike block 3) --
+%   the ECDF/Var(z)/RMS numbers are not uniformly reported per scenario in the source
+%   text, so a table would require inventing missing values. Paragraphs 2-3 (neural
+%   dynamics, RMS) per scenario are genuinely distinct content and were left untouched.
+% Status: applied
+
+\revblue{\textbf{Appetitive (see Figure~\ref{fig:appetitive_real_compound}):} The ECDF in Fig.~}\ref{fig:appetitive_ecdf_real}\revblue{ shows the physical mode-switching latency (}$T_{switch}$\revblue{) settling across an extended window of }$3.0$\revblue{--}$9.0\,\text{s}$\revblue{. This shift does not stem from computational overhead within the basal ganglia network---which operates at the microsecond scale---but from the electro-mechanical trajectory smoothing and landing interpolation enforced by the low-level controllers during target approach, to prevent peak-torque damage on the 3D-printed actuators.}
+
+\revblue{\textbf{Aversive (see Figure~\ref{fig:aversive_real_compound}):} Fig.~}\ref{fig:aversive_ecdf_real}\revblue{ shows a near-instantaneous Heaviside step response centred at the origin (}$t \approx 0.0\,\text{s}$\revblue{) across all replicates. Unlike the Appetitive scenario's extended settling window, the Aversive pipeline behaves as an immediate emergency reflex: upon threat detection, the ROS~2 Control architecture bypasses heavy trajectory filtering to prioritise high-speed backward flight, minimising routing overhead to near-zero computational ticks under critical hazards.}
+
+\revblue{\textbf{Complex (see Figure~\ref{fig:complex_real_compound}):} Under chained, safety-critical transformations over an extended hardware timeline, the ECDF in Fig.~}\ref{fig:complex_ecdf_real}\revblue{ shows a deterministic step response settling around }$1.0\,\text{s}$\revblue{, fully consolidating by }$1.2\,\text{s}$\revblue{. This confirms that, under successive back-to-back transformations, the ROS~2 Control architecture effectively manages electromechanical inertia and trajectory blending, protecting the joints from cumulative torque stress.}
+
+\revblue{\textbf{Obstacle (see Figure~\ref{fig:obstacle_real_compound}):} Using physical barriers in the laboratory environment, the ECDF in Fig.~}\ref{fig:obstacle_ecdf_real}\revblue{ shows an instantaneous Heaviside step response centred at the origin (}$t \approx 0.0\,\text{s}$\revblue{), consistent across all three replicates. This confirms the ROS~2 Control architecture processes physical geometric blockages as immediate emergency reflexes, bypassing trajectory ramp filters to guarantee instant hot-swapping of joint matrices.}
