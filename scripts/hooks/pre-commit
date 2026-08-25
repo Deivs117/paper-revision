@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# Installed by scripts/install_hooks.sh into .git/hooks/pre-commit (not versioned there — git
+# doesn't track hooks — so this template lives in scripts/hooks/ and gets copied in). Only acts
+# when the commit touches sections/ or source/ — unrelated commits (README edits, experiments/
+# scripts, PROGRESS.md updates) stay fast. See README.md §10.2. Bypass with 'git commit --no-verify'.
+#
+# Important: validate_tex.sh/check_roundtrip.sh check source/main_monolithic.tex, not sections/
+# directly. A commit that only edits sections/ without having run reassemble.py first would
+# otherwise validate a STALE monolith and silently miss a break introduced in sections/. So this
+# hook always regenerates source/main_monolithic.tex from the staged sections/ content first, and
+# stages the result — every commit touching sections/ keeps the monolith in sync automatically,
+# removing a manual step from the daily loop as a side benefit.
+
+set -euo pipefail
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "$REPO_ROOT"
+
+CHANGED="$(git diff --cached --name-only)"
+if ! grep -qE '^(sections|source)/' <<< "$CHANGED"; then
+  exit 0
+fi
+
+echo "pre-commit: sections/ or source/ changed -- regenerating source/main_monolithic.tex and validating"
+
+if ! scripts/reassemble.py; then
+  echo "pre-commit: reassemble.py failed -- commit aborted (use --no-verify to override)." >&2
+  exit 1
+fi
+git add source/main_monolithic.tex
+
+if ! scripts/validate_tex.sh; then
+  echo "pre-commit: validate_tex.sh failed -- commit aborted (use --no-verify to override)." >&2
+  exit 1
+fi
+
+if ! scripts/check_roundtrip.sh; then
+  echo "pre-commit: check_roundtrip.sh failed -- commit aborted (use --no-verify to override)." >&2
+  exit 1
+fi
+
+exit 0

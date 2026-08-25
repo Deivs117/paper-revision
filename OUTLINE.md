@@ -184,9 +184,11 @@ disclosure) — these aren't split out separately since `split_sections.py` only
 - methodology.tex's basal-ganglia `\revblue{}` justification paragraph (line 200) cross-references
   "Section 3" for the ~47ms decision-latency figure — that number lives in results.tex, not
   methodology.tex; verify it before reusing it in R3-01/R3-02 text.
-- introduction.tex's closing paragraph hardcodes "Section 2/3/4" for methodology/results/conclusions —
-  update by hand if the top-level section structure changes (e.g. R2-03 promoting Limitations to its
-  own section).
+- introduction.tex's closing paragraph hardcodes "Section 2/3/4" for methodology/results/conclusions,
+  and methodology.tex's BG-justification paragraph (line 200) hardcodes "Section~3" for the same
+  results.tex cross-reference — update both by hand if the top-level section structure changes (e.g.
+  R2-03 promoting Limitations to its own section). `scripts/check_hardcoded_refs.sh` detects both
+  automatically (advisory, run before push — see README.md §10.1).
 - conclusions.tex's stale "MLP metrics not evaluated" sentence contradicts results.tex's own
   `\revblue{}` MLP evaluation subsection — see `C-01` in PROGRESS.md.
 - All four sections (introduction.tex, methodology.tex, results.tex, conclusions.tex) have now been

@@ -52,6 +52,9 @@ else
   echo "warning: no LaTeX toolchain found (latexmk/pdflatex) — skipping real compile check." >&2
 fi
 
+# Advisory only — never blocks the push, just surfaces it every time (§10.1).
+"$SCRIPT_DIR/check_hardcoded_refs.sh"
+
 # --- 3. Mirror back --------------------------------------------------------------------------
 rsync -a --delete --exclude='.git' "$ASSETS_DIR"/ "$OVERLEAF_DIR"/
 cp "$MIRROR_FILE" "$OVERLEAF_DIR/$OVERLEAF_MAIN_FILE"

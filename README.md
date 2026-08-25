@@ -87,7 +87,12 @@ paper-revision/
 │   ├── validate_tex.sh
 │   ├── compile_pdf.sh
 │   ├── check_roundtrip.sh
-│   └── promote_figure.sh        # experiments/<id>/output/* -> assets/ (§9)
+│   ├── promote_figure.sh        # experiments/<id>/output/* -> assets/ (§9)
+│   ├── check_hardcoded_refs.sh  # advisory: hardcoded "Section N" refs (§10.1)
+│   ├── next_id.sh                # next available N-xx/C-xx ID (§10.3)
+│   ├── check_target_conflicts.sh # advisory: other rows targeting the same section (§10.4)
+│   ├── install_hooks.sh          # one-time: installs the pre-commit hook (§10.2)
+│   └── hooks/pre-commit          # template copied into .git/hooks/ by install_hooks.sh
 ├── PROGRESS.md
 ├── README.md
 └── CLAUDE.md
@@ -418,6 +423,37 @@ Both guards (§5.1, §5.8) key off git history touching `source/`, `sections/`, 
 
 ---
 
+### 10. Minor Auxiliary Scripts — Advisory Checks & Convenience
+
+Four smaller gaps, all low-risk given a single primary writer, addressed with lightweight scripts rather than heavier machinery. None of these change the core pull/push guard semantics in §5.
+
+#### 10.1 `scripts/check_hardcoded_refs.sh` — hardcoded "Section N" cross-references
+
+Prose like *"Section 2 details the methodology"* (not a real `\ref{}`) goes stale silently if the top-level `\section{}` structure changes — e.g. R2-03 promoting Limitations to its own section would shift every number after it. Auto-fixing this is unsafe (a script can't tell whether "Section 2" still means the same thing after a restructure), so this is **detection only**: greps `sections/*.tex` for `Section(s) <number>` patterns and prints file:line matches. Always exits 0 — never blocks anything.
+
+Wired into `scripts/push_to_overleaf.sh` as an unconditional advisory step (prints after the validate/compile step, before mirroring) so it surfaces on every push without gating it. Known instances as of 2026-08-25: `introduction.tex` ("Section 2/3/4" in the closing paragraph) and `methodology.tex` ("Section~3" in the basal-ganglia justification paragraph) — see `OUTLINE.md`.
+
+#### 10.2 Pre-commit hook — `scripts/hooks/pre-commit` + `scripts/install_hooks.sh`
+
+Git hooks aren't version-controlled (`.git/hooks/` isn't tracked), so the real hook lives as a template at `scripts/hooks/pre-commit` and `scripts/install_hooks.sh` copies it into place — **run once per clone**, and again any time `scripts/hooks/pre-commit` changes.
+
+The hook only acts when the staged diff touches `sections/` or `source/` (a README/PROGRESS.md-only commit stays fast). When it does act, it:
+1. Runs `scripts/reassemble.py` and re-stages `source/main_monolithic.tex` — **necessary**, not optional: `validate_tex.sh`/`check_roundtrip.sh` check the monolith, not `sections/` directly, so without this step a broken `sections/` edit would validate a stale, still-passing monolith and slip through.
+2. Runs `scripts/validate_tex.sh`; aborts the commit on failure.
+3. Runs `scripts/check_roundtrip.sh`; aborts the commit on failure.
+
+Bypass deliberately with `git commit --no-verify` (e.g. a deliberate WIP commit). Verified against both failure and success paths: a `sections/` edit that breaks brace-matching is blocked before it's committed; a valid `sections/` edit commits successfully with `source/main_monolithic.tex` auto-regenerated in the same commit.
+
+#### 10.3 `scripts/next_id.sh` — automatic `N-xx`/`C-xx` allocation
+
+`scripts/next_id.sh N` / `scripts/next_id.sh C` scans every ID that has ever appeared in `PROGRESS.md` for that namespace and prints the next one (max seen + 1, so a removed row's ID is never reused). `R2-xx`/`R3-xx` are the fixed reviewer list from §6 and are **not** allocated by this script — only used when adding an `intake/`-originated row (§8.2 step 5).
+
+#### 10.4 `scripts/check_target_conflicts.sh` — same-section advisory
+
+`scripts/check_target_conflicts.sh <slug>` greps `PROGRESS.md` for rows mentioning `<slug>.tex` that aren't yet `synced-to-overleaf`, and prints them. Run before starting work on a section to see whether another in-flight item already claims the same file. This is deliberately coarse (it matches anywhere in the row, including the `Requirement` prose column, not just `Target section(s)` — so it can over-report) rather than a real lock: with one primary writer, the practical fix for an actual overlap is just to finish and commit one item before starting the other, not build file-level locking into a git-based pipeline.
+
+---
+
 ## Repository Setup & Execution Guide
 
 ### Current state
@@ -437,14 +473,15 @@ Remaining setup (implementation phase, not yet done):
 5. Run `scripts/check_roundtrip.sh` once right after step 4 to confirm the split boundaries are byte-exact for the real manuscript before relying on the pipeline.
 6. Populate `intake/SOURCES.md` (§8.3) with any sibling repos currently relevant (e.g. `PETER_SIMULATION`).
 7. Create `experiments/README.md` and `experiments/_TEMPLATE/` per §9 for any `PROGRESS.md` row that needs new data.
+8. Run `scripts/install_hooks.sh` once per clone to install the pre-commit hook (§10.2). Re-run it any time `scripts/hooks/pre-commit` changes, since `.git/hooks/` itself isn't version-controlled.
 
 ### Daily revision loop (once scripts exist)
 
 1. `scripts/pull_from_overleaf.sh` — sync from Overleaf (blocked if any unpushed local commit touches `source/`, `sections/`, or `assets/`), regenerate `sections/`.
 2. `scripts/find_section.py` — see which sections changed since last sync.
-3. Pick a `pending` row in `PROGRESS.md`, identify its target `sections/<slug>.tex` file(s) (and/or `assets/` files).
-4. Read `OUTLINE.md` + the target file(s) only (§4) — not the full monolith, unless the requirement genuinely spans sections.
-5. Edit those files directly; save a copy of the change to `patches/<id>-<slug>.tex`; update `PROGRESS.md` to `applied`; commit as `patch: <ID> <summary>`.
-6. `scripts/reassemble.py` — rebuild `source/main_monolithic.tex` from `sections/`.
+3. Pick a `pending` row in `PROGRESS.md`, identify its target `sections/<slug>.tex` file(s) (and/or `assets/` files). Optionally run `scripts/check_target_conflicts.sh <slug>` (§10.4) if another in-flight row might target the same file. If the row is an `intake/`-originated `N-xx`/`C-xx` item without an ID yet, get one from `scripts/next_id.sh` (§10.3).
+4. Read `OUTLINE.md` + the target file(s) only (§4) — not the full monolith, unless the requirement genuinely spans sections. If the row's `Data source` points at `experiments/<id>-<slug>/`, generate that first (§9) and promote the figure into `assets/` before writing the prose that references it.
+5. Edit those files directly; save a copy of the change to `patches/<id>-<slug>.tex`; update `PROGRESS.md` to `applied`; commit as `patch: <ID> <summary>` — the pre-commit hook (§10.2) regenerates `source/main_monolithic.tex` and runs `validate_tex.sh`/`check_roundtrip.sh` automatically.
+6. `scripts/reassemble.py` — rebuild `source/main_monolithic.tex` from `sections/` (redundant with step 5's hook if it's installed, but explicit here for the case it isn't).
 7. `scripts/validate_tex.sh` (and `scripts/compile_pdf.sh` if the LaTeX toolchain is installed) — must pass before continuing.
-8. `scripts/push_to_overleaf.sh` — guarded push back to Overleaf; updates the synced checkpoint on success; update `PROGRESS.md` to `synced-to-overleaf`.
+8. `scripts/push_to_overleaf.sh` — guarded push back to Overleaf; also prints `scripts/check_hardcoded_refs.sh`'s advisory output (§10.1); updates the synced checkpoint on success; update `PROGRESS.md` to `synced-to-overleaf`.

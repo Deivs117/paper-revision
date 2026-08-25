@@ -109,6 +109,27 @@ la ruta exacta que va a usar el LaTeX (se niega a sobreescribir algo que ya exis
 use `--force`). De ahí en adelante es un parche normal: se referencia la imagen en `sections/`, se
 redacta el texto, y se sincroniza con Overleaf como cualquier otro cambio.
 
+## Huecos menores ya resueltos (25 de agosto)
+
+Cuatro huecos de diseño de bajo riesgo (dado que tú eres quien más escribe) pero reales, resueltos
+con scripts livianos que **avisan, no bloquean**, salvo el hook de commit:
+
+- **Referencias cruzadas tipo "Section 2" escritas a mano** (no `\ref{}`): `scripts/
+  check_hardcoded_refs.sh` las detecta (ya encontró 4 instancias reales) y se corre automáticamente
+  cada vez que haces `push_to_overleaf.sh` — solo avisa, nunca bloquea el push, porque un script no
+  puede saber con certeza si el número sigue siendo correcto.
+- **Nada forzaba correr `validate_tex.sh`/`check_roundtrip.sh` antes de cada commit**: ahora existe
+  un hook de git (`scripts/install_hooks.sh`, una vez por clon) que se activa solo cuando el commit
+  toca `sections/` o `source/`, regenera `source/main_monolithic.tex` automáticamente, y bloquea el
+  commit si algo queda mal. Probado con un caso real que rompe el LaTeX (bloqueado correctamente) y
+  uno válido (pasa y queda commiteado).
+- **Asignar IDs `N-xx`/`C-xx` a mano**: `scripts/next_id.sh N` o `scripts/next_id.sh C` calcula el
+  siguiente disponible automáticamente.
+- **Dos parches tocando la misma sección a la vez**: `scripts/check_target_conflicts.sh <slug>`
+  avisa si otra fila de `PROGRESS.md` ya apunta al mismo archivo. No es un candado real — con un
+  solo escritor principal, la solución práctica sigue siendo terminar y commitear uno antes de
+  empezar el otro.
+
 ## `OUTLINE.md` — el mapa barato del paper
 
 Un archivo corto que resume qué trata cada sección, términos clave, y qué referencias cruzadas
@@ -125,6 +146,9 @@ contexto global sin tener que leer el manuscrito completo.
   y de rechazo (no sobreescribe sin `--force`, no acepta archivos fuera de `output/`). `PROGRESS.md`
   tiene ahora una columna `Data source` marcando qué ítems del checklist necesitan esto (R3-01,
   R3-02, R3-05 confirmados; R2-02, R2-04, R3-03, R3-04 posibles según se verifiquen los huecos).
+- Los cuatro huecos menores identificados el mismo día (referencias hardcodeadas, sin hook de
+  pre-commit, asignación manual de IDs, sin aviso de conflicto entre parches) también quedaron
+  resueltos — ver sección arriba.
 - Se hizo una lectura completa de `introduction.tex`, `results.tex`, `conclusions.tex` y, el 25 de
   agosto, también `methodology.tex` (501 líneas). Hallazgos importantes ya registrados en
   `PROGRESS.md`/`OUTLINE.md`:

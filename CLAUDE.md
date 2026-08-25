@@ -66,6 +66,14 @@ to `experiments/<id>-<slug>/` and follow README.md §9 before touching `sections
   committed. See README.md §9.
 - Keep `sync:` commits (pulling Overleaf), `patch:` commits (applying a reviewer fix), and `chore: mark synced`
   commits (marking a push) separate — never combine them.
+- Never hand-pick an `N-xx`/`C-xx` ID — get it from `scripts/next_id.sh N` / `scripts/next_id.sh C` (max seen + 1,
+  never reused). `R2-xx`/`R3-xx` stay the fixed reviewer list from README.md §6.
+- `scripts/check_hardcoded_refs.sh` and `scripts/check_target_conflicts.sh` are advisory-only — they never block
+  a commit or push, they just print. Don't skip reading their output when it's non-empty; don't treat their
+  silence as a guarantee either (§10.4 is deliberately coarse).
+- Run `scripts/install_hooks.sh` once per clone (and again if `scripts/hooks/pre-commit` changes) — installs the
+  pre-commit hook that regenerates `source/main_monolithic.tex` and runs `validate_tex.sh`/`check_roundtrip.sh`
+  whenever a commit touches `sections/` or `source/`. See README.md §10.2.
 
 ## Key files
 
@@ -87,6 +95,8 @@ to `experiments/<id>-<slug>/` and follow README.md §9 before touching `sections
 
 ## Commands
 
-Not yet implemented — see README.md §"Repository Setup & Execution Guide" for what to build and the daily loop
-(`pull_from_overleaf.sh` → `find_section.py` → read `OUTLINE.md` + target `sections/`/`assets/` → edit → `reassemble.py`
-→ `validate_tex.sh` / `compile_pdf.sh` → `push_to_overleaf.sh`).
+All implemented under `scripts/` (see README.md §5/§9/§10 for exact behavior). Daily loop:
+`pull_from_overleaf.sh` → `find_section.py` → read `OUTLINE.md` + target `sections/`/`assets/` →
+(if `Data source` is set, generate via `experiments/` + `promote_figure.sh` first) → edit →
+`reassemble.py` → `validate_tex.sh` / `compile_pdf.sh` → `push_to_overleaf.sh`. One-time per clone:
+`install_hooks.sh`. As needed: `next_id.sh`, `check_target_conflicts.sh`.
