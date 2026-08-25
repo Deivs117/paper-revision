@@ -1,0 +1,23 @@
+% PATCH: R2-01 (3/12, covers blocks 3+4)
+% Reviewer: 2
+% Target section: sections/results.tex
+% Requirement: Merge unified metric definitions / condense repetitive text — the four
+%   quantitative-validation paragraphs (Appetitive, Aversive, Obstacle, Complex) each
+%   restated numbers (completion time, latency, Roll/Pitch RMS, success rate) that are
+%   already reported in Table~\ref{tab:consolidated_simulation_metrics} immediately
+%   below them. Dropped the duplicated numbers from prose (kept in the table only),
+%   keeping only the mechanistic/qualitative insight the table cannot show. Merged the
+%   Complex Navigation paragraphs into one, matching the other three scenarios' bold
+%   header style. Shrunk the table-intro paragraph (previously restating the table's
+%   own numbers) to one linking sentence.
+% Status: applied
+
+\revblue{\textbf{Appetitive Targeting (see Figure~\ref{fig:appetitive_results}):} The appetitive module shows high resilience under perceptual uncertainty across all noise levels ($\sigma \in [0, 4]$): the neural controller dampens stochastic disturbances, decision latency stays clamped at $\approx 47$~ms, and gait generation operates independently of visual tracking variance (see Table~\ref{tab:consolidated_simulation_metrics} for completion-time and attitude statistics).}
+
+\revblue{\textbf{Aversive Escape (see Figure~\ref{fig:aversive_results}):} The defensive repulsion properties of the architecture are validated when exposed to proximal threats, with clearance-time statistics reported in Table~\ref{tab:consolidated_simulation_metrics}. The neural firing variance exhibits a swift, step-like onset upon threat detection — structural mobilization into a defensive overdrive state — and returns to baseline once the threat leaves the field of view, confirming the efficiency of the neural gating mechanism.}
+
+\revblue{\textbf{Obstacle Evasion (see Figure~\ref{fig:obstacle_results}):} Smooth capsule geometries for simulated obstacles prevent localized torque spikes during contact; convergence-time and pitch-RMS statistics are reported in Table~\ref{tab:consolidated_simulation_metrics}. The sensory-locomotor coupling is precise: neural firing variance stays at a low baseline until the robot enters the obstacle's ranging threshold, at which point the avoidance sub-circuits modulate steering weights while preserving forward momentum.}
+
+\revblue{\textbf{Complex Navigation (see Figure~\ref{fig:complex_results}):} The complex navigation suite culminates the simulation validation, combining appetitive targets, aversive threats, and physical obstacles simultaneously; success rate, completion time, and attitude statistics are reported in Table~\ref{tab:consolidated_simulation_metrics} alongside the other three scenarios. Under high noise indices, the robot's local trajectory undergoes micro-corrections as it balances competing vector fields, while decision latency remains constant, confirming the network does not suffer from computational deadlocks. The neural firing variance profile shown in Fig.~\ref{fig:complex_micro} exhibits a two-stage computational increment: an initial peak ($t \approx 3$~s) for the aggressive evasion response to the aversive threat, followed by a second activation envelope ($t = 12$–$18$~s) capturing the gait switch required to navigate the narrow passage around the central obstacle; the system then enters a high-consistency tracking phase toward the target.}
+
+\revblue{Table~\ref{tab:consolidated_simulation_metrics} consolidates these performance metrics across all four scenarios, confirming a 100\% success rate under stochastic noise injection ($\sigma \in [0,4]$) and low variance in kinematic stability and execution time throughout.}

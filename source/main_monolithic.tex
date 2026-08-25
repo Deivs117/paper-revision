@@ -707,7 +707,7 @@ The performance of the platform was evaluated under isolated sensory stimuli to 
     \label{fig:appetitive_results}
 \end{figure*}
 
-\textbf{Appetitive Targeting (see Figure~\ref{fig:appetitive_results}):} The validation of the appetitive module demonstrates high resilience under perceptual uncertainty. Mission completion time remains bounded between 35.2~s and 36.8~s across all noise levels ($\sigma \in [0, 4]$). The neural controller effectively dampens stochastic disturbances, with the decision latency remaining clamped at $\approx 47$~ms. The structural pitch response holds at $1.06^\circ \pm 0.04^\circ$, verifying that gait generation operates independently of visual tracking variance.
+\textbf{Appetitive Targeting (see Figure~\ref{fig:appetitive_results}):} The appetitive module shows high resilience under perceptual uncertainty across all noise levels ($\sigma \in [0, 4]$): the neural controller dampens stochastic disturbances, decision latency stays clamped at $\approx 47$~ms, and gait generation operates independently of visual tracking variance (see Table~\ref{tab:consolidated_simulation_metrics} for completion-time and attitude statistics).
 
 \begin{figure*}[t]
     \centering
@@ -728,7 +728,7 @@ The performance of the platform was evaluated under isolated sensory stimuli to 
     \label{fig:aversive_results}
 \end{figure*}
 
-\textbf{Aversive Escape (see Figure~\ref{fig:aversive_results}):} The defensive repulsion properties of the architecture are validated when exposed to proximal threats. The platform consistently achieves successful evacuation, maintaining an average threat clearance time of $38.5 \pm 2.2$~s. The neural firing variance exhibits a swift, step-like onset upon threat detection, representing structural mobilization into a defensive overdrive state. Once the threat leaves the field of view, the system returns to baseline, confirming the efficiency of the neural gating mechanism.
+\textbf{Aversive Escape (see Figure~\ref{fig:aversive_results}):} The defensive repulsion properties of the architecture are validated when exposed to proximal threats, with clearance-time statistics reported in Table~\ref{tab:consolidated_simulation_metrics}. The neural firing variance exhibits a swift, step-like onset upon threat detection — structural mobilization into a defensive overdrive state — and returns to baseline once the threat leaves the field of view, confirming the efficiency of the neural gating mechanism.
 
 \begin{figure*}[t]
     \centering
@@ -749,7 +749,7 @@ The performance of the platform was evaluated under isolated sensory stimuli to 
     \label{fig:obstacle_results}
 \end{figure*}
 
-\textbf{Obstacle Evasion (see Figure~\ref{fig:obstacle_results}):} By adopting obstacles with smooth capsule geometries in simulation, localized torque spikes during contact were prevented. Convergence time exhibits minimal dispersion ($37.1 \pm 1.2$~s), and pitch RMS values are restricted to $1.06^\circ$. The sensory-locomotor coupling is precise: the neural firing variance remains at a low baseline until the robot enters the ranging threshold of the obstacle, at which point the avoidance sub-circuits modulate steering weights while preserving forward momentum.
+\textbf{Obstacle Evasion (see Figure~\ref{fig:obstacle_results}):} Smooth capsule geometries for simulated obstacles prevent localized torque spikes during contact; convergence-time and pitch-RMS statistics are reported in Table~\ref{tab:consolidated_simulation_metrics}. The sensory-locomotor coupling is precise: neural firing variance stays at a low baseline until the robot enters the obstacle's ranging threshold, at which point the avoidance sub-circuits modulate steering weights while preserving forward momentum.
 
 \subsubsection{Response to Multiple Stimuli of Different Natures}
 
@@ -802,11 +802,9 @@ Ultimately, the platform reaches its goal in 92 seconds, avoiding hazardous area
     \label{fig:complex_results}
 \end{figure*}
 
-The culmination of the simulation validation is represented by the complex navigation suite, where the system is exposed to a simultaneous combination of appetitive targets, aversive threats, and physical obstacles. Figure~\ref{fig:complex_macro} establishes that, despite the high environmental complexity, the mission success rate remained at $100\%$ with completion times remaining below $60$~s. Under high noise indices, the robot's local trajectory undergoes micro-corrections as it balances competing vector fields; however, the decision latency remains constant, demonstrating that the network does not suffer from computational deadlocks.
+\textbf{Complex Navigation (see Figure~\ref{fig:complex_results}):} The complex navigation suite culminates the simulation validation, combining appetitive targets, aversive threats, and physical obstacles simultaneously; success rate, completion time, and attitude statistics are reported in Table~\ref{tab:consolidated_simulation_metrics} alongside the other three scenarios. Under high noise indices, the robot's local trajectory undergoes micro-corrections as it balances competing vector fields, while decision latency remains constant, confirming the network does not suffer from computational deadlocks. The neural firing variance profile shown in Fig.~\ref{fig:complex_micro} exhibits a two-stage computational increment: an initial peak ($t \approx 3$~s) for the aggressive evasion response to the aversive threat, followed by a second activation envelope ($t = 12$–$18$~s) capturing the gait switch required to navigate the narrow passage around the central obstacle; the system then enters a high-consistency tracking phase toward the target.
 
-The structural attitude response remains clean, below a Pitch RMS of $1.12^\circ$. The multimodal temporal alignment in Fig.~\ref{fig:complex_micro} reveals the sequential decision lifecycle executed by the architecture. The neural firing variance profile shows a two-stage computational increment: the first peak ($t \approx 3$~s) represents the aggressive evasion response to avoid the initial aversive threat. Once the robot safely avoids the threat, a second distinct activation envelope appears between $t = 12$~s and $t = 18$~s, capturing the structural gait switch required to navigate the narrow passage corridor surrounding the central obstacle. Once cleared, the system enters a final high-consistency tracking phase, closing the loop smoothly toward the target.
-
-To quantitatively validate the robustness and efficiency of the proposed system under conditions of sensory uncertainty, performance metrics from all four experimental simulations, in both single- and multi-stimulus scenarios, were consolidated, as detailed in Table~\ref{tab:consolidated_simulation_metrics}. Experimental evidence demonstrates that the quadrupedal platform maintains a 100\% success rate even under stochastic noise injection (ranging from $\sigma = 0$ to $4$), thereby evidencing the resilience of the proposed architecture against signal degradation. Furthermore, the low variance in kinematic stability (Roll and Pitch RMS) and the consistency in execution time across distinct stimulus modalities confirm the system's capability to manage complex sensory conflicts without compromising operational integrity, effectively overcoming the limitations inherent in empirical detection thresholds.
+Table~\ref{tab:consolidated_simulation_metrics} consolidates these performance metrics across all four scenarios, confirming a 100\% success rate under stochastic noise injection ($\sigma \in [0,4]$) and low variance in kinematic stability and execution time throughout.
 
 \begin{table}[htbp]
 \centering
