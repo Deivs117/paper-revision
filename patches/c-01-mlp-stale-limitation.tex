@@ -1,0 +1,20 @@
+% PATCH: C-01
+% Reviewer: —
+% Target section: sections/conclusions.tex
+% Requirement: The limitations paragraph claimed "Classification metrics for strengthening
+%   the MLP-based terrain classifier were also not evaluated" -- this contradicts results.tex,
+%   which already reports a full MLP evaluation (accuracy/precision/recall/F1/ROC-AUC, an
+%   architecture ablation, and a comparison against Logistic Regression/SVM/Random Forest).
+%   Removed the stale/false sentence; the surrounding limitations (manual tuning, no hardware-
+%   failure resilience testing, no formal sensor fusion, illumination-dependent segmentation)
+%   remain accurate and untouched.
+% Status: applied
+
+% Before (sections/conclusions.tex, limitations paragraph):
+%   "...temporary sensory dropout-conditions likely to occur in real industrial environments.
+%   Classification metrics for strengthening the MLP-based terrain classifier were also not
+%   evaluated. \revblue{Furthermore, the multimodal sensory integration..."
+%
+% After:
+%   "...temporary sensory dropout-conditions likely to occur in real industrial environments.
+%   \revblue{Furthermore, the multimodal sensory integration..."
