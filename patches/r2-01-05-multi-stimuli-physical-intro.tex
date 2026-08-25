@@ -1,0 +1,11 @@
+% PATCH: R2-01 (5/12)
+% Reviewer: 2
+% Target section: sections/results.tex
+% Requirement: Condense repetitive text — the physical Multi-Stimuli opening sentence
+%   claimed "activations comparable to those described above... same arrangement of
+%   elements", but the content that follows is genuinely distinct physical data (different
+%   geometry, different timings) rather than a restatement. Cut the misleading/unneeded
+%   framing sentence and merged the trailing two sentences.
+% Status: applied
+
+In the physical experiment (Figure~\ref{fig:robot-6frames}), the input layer (Figure~\ref{fig:NEU_EST_MUL_real}b) shows a simultaneous activation on the robot's left side, corresponding to an external object detected by the LiDAR. Because this object is farther away than the obstacle on the right, the responses in the response and auxiliary layers decrease progressively, so the network does not consider it relevant for generating an evasive action toward that side; unit $L_2$ shows only mild activation, attenuated by inhibition from $L_3$.

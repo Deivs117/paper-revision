@@ -1135,7 +1135,7 @@ The angle correction occurs after 23 seconds, when neurons $X_{5}$ and $X_{7}$ i
 
 \subsubsection{Response to Multiple Stimuli of Different Natures}
 
-Similarly, in the physical experiment (Figure~\ref{fig:robot-6frames}) with the constructed robot, neuronal activations comparable to those described above are observed, given that the same arrangement of elements is used in the experimental setup. In the input layer (Figure~\ref{fig:NEU_EST_MUL_real}b), a simultaneous activation appears on the robot’s left side, corresponding to an external object detected by the LiDAR. However, because this object is farther away than the obstacle on the right, the responses in the response and auxiliary layers decrease progressively, so the network does not consider it relevant for generating an evasive action toward that side. In the LiDAR neuron plot, unit $L_2$ exhibits mild activation, attenuated by inhibition from $L_3$. 
+In the physical experiment (Figure~\ref{fig:robot-6frames}), the input layer (Figure~\ref{fig:NEU_EST_MUL_real}b) shows a simultaneous activation on the robot's left side, corresponding to an external object detected by the LiDAR. Because this object is farther away than the obstacle on the right, the responses in the response and auxiliary layers decrease progressively, so the network does not consider it relevant for generating an evasive action toward that side; unit $L_2$ shows only mild activation, attenuated by inhibition from $L_3$.
 
 \begin{figure}[t]
     \centering
