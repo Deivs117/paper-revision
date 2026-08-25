@@ -1,0 +1,14 @@
+% PATCH: C-03
+% Reviewer: —
+% Target section: sections/preamble.tex
+% Requirement: source referenced \includegraphics{GRAPHICAL_ABSTRACT} but no such
+%   image file exists in assets/ (missing from the Overleaf project too, since
+%   assets/ mirrors it 1:1) — blocked local PDF compilation. Commented out the
+%   graphicalabstract block until the image is supplied.
+% Status: applied
+
+%%Graphical abstract
+%% C-02: temporarily disabled — GRAPHICAL_ABSTRACT image file missing from assets/, blocks local compilation.
+%% \begin{graphicalabstract}
+%% \includegraphics[width=\textwidth]{GRAPHICAL_ABSTRACT}
+%% \end{graphicalabstract}
