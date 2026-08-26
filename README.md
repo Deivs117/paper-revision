@@ -322,24 +322,26 @@ A markdown table at the repo root, one row per change — of **any** origin. Thr
 
 Every row — regardless of namespace — goes through the identical flow: identify target section(s), edit, record in `patches/`, update status, push. There is no separate tracking file for `intake/`-originated work; see §8.
 
-The `R2-xx`/`R3-xx` rows are fixed at the outset (do not renumber — these IDs are referenced by patch filenames and commit messages):
+The `R2-xx`/`R3-xx` IDs are fixed at the outset and never renumbered (they're referenced by patch filenames and commit messages) — this is the permanent list of what each ID means:
 
-| ID | Reviewer | Requirement (short) | Target section(s) | Data source | Status | Patch file |
-|---|---|---|---|---|---|---|
-| R2-01 | 2 | Condense repetitive text / remove duplicate plots / merge metric definitions / shorten warehouse sim section | TBD | — | pending | — |
-| R2-02 | 2 | Add FSM gait arbitration baseline comparison | TBD | TBD | pending | — |
-| R2-03 | 2 | Consolidate limitations into one dedicated section | TBD | — | pending | — |
-| R2-04 | 2 | Add multi-mode energy consumption + onboard MLP compute overhead analysis | TBD | TBD | pending | — |
-| R3-01 | 3 | Ablation analysis on basal ganglia arbitration network | TBD | TBD | pending | — |
-| R3-02 | 3 | Comparative tests removing neural layers/inhibitory connections to justify WTA over threshold logic | TBD | TBD | pending | — |
-| R3-03 | 3 | Control/compensation strategies for low-torque servo constraints and open-loop gait instability | TBD | TBD | pending | — |
-| R3-04 | 3 | Perception-decision noise robustness experiments (IMU drift, LiDAR noise, camera illumination distortion) | TBD | TBD | pending | — |
-| R3-05 | 3 | Inspection task performance metrics (tracking accuracy, coverage rate, autonomous re-planning) | TBD | TBD | pending | — |
-| R3-06 | 3 | Literature review comparative tables: Basal Ganglia vs CPG vs RL-based action selection | TBD | — | pending | — |
+| ID | Reviewer | Requirement (short) |
+|---|---|---|
+| R2-01 | 2 | Condense repetitive text / remove duplicate plots / merge metric definitions / shorten warehouse sim section |
+| R2-02 | 2 | Add FSM gait arbitration baseline comparison |
+| R2-03 | 2 | Consolidate limitations into one dedicated section |
+| R2-04 | 2 | Add multi-mode energy consumption + onboard MLP compute overhead analysis |
+| R3-01 | 3 | Ablation analysis on basal ganglia arbitration network |
+| R3-02 | 3 | Comparative tests removing neural layers/inhibitory connections to justify WTA over threshold logic |
+| R3-03 | 3 | Control/compensation strategies for low-torque servo constraints and open-loop gait instability |
+| R3-04 | 3 | Perception-decision noise robustness experiments (IMU drift, LiDAR noise, camera illumination distortion) |
+| R3-05 | 3 | Inspection task performance metrics (tracking accuracy, coverage rate, autonomous re-planning) |
+| R3-06 | 3 | Literature review comparative tables: Basal Ganglia vs CPG vs RL-based action selection |
 
-Status values (exactly these strings, lowercase): `pending` → `drafted` → `applied` → `synced-to-overleaf`. `applied` means committed locally but **not yet pushed to Overleaf**. Update `Target section(s)` with the actual `sections/<slug>.tex` file(s) once identified.
+**This table is not live — it's the frozen list these IDs are locked to.** For current `Target section(s)`, `Data source`, `Category`, `Owner`, `Status`, and `Patch file`, always read `PROGRESS.md` at the repo root — that's the single live tracker (and what `docs/`'s dashboard renders, §12). Don't duplicate its columns back into this table; that's exactly the kind of two-copies-drift this system is designed to avoid.
 
-`Data source` is `—` for rows that are pure prose/reorganization, and points at `experiments/<ID>-<slug>/` for rows that need a figure/number that doesn't exist yet — see §9.
+The full `PROGRESS.md` row schema: `ID | Reviewer | Requirement (short) | Target section(s) | Data source | Category | Owner | Status | Patch file`. Status values (exactly these strings, lowercase): `pending` → `drafted` → `applied` → `synced-to-overleaf`. `applied` means committed locally but **not yet pushed to Overleaf**.
+
+`Data source` is `—` for rows that are pure prose/reorganization, and points at `experiments/<ID>-<slug>/` for rows that need a figure/number that doesn't exist yet — see §9. `Category`/`Owner` feed the dashboard — see §12.
 
 ---
 
@@ -521,24 +523,20 @@ No emojis anywhere in the UI. Category and status each get a small fixed color s
 
 ### Current state
 
-Both repositories exist and are linked:
+The pipeline described in this document is **fully implemented and in active use** (not a spec awaiting implementation):
 
-* Overleaf mirror cloned at a sibling path (e.g. `~/Documents/Paper/<overleaf-project-id>/`), git token cached via `git config --global credential.helper store`. **Sync-only** — never edited by hand.
-* This repo (`paper-revision`) initialized, linked to `origin` on GitHub, with `README.md`, `CLAUDE.md`, `.gitignore`, and empty `source/`, `sections/`, `assets/`, `patches/`, `intake/pending/`, `intake/processed/`, `scripts/`, `build/` (gitignored) directories, baseline committed and pushed.
-* A sibling repo `../PETER_SIMULATION` also exists (firmware/ROS 2 simulation) — read-only reference material for `intake/` documents, registered in `intake/SOURCES.md`.
+* Overleaf mirror cloned at a sibling path (`../6a23870b4fcac02449561a35`), git token cached via `git config --global credential.helper store`. **Sync-only** — never edited by hand. Actively pulled from and pushed to.
+* This repo (`paper-revision`) — all scripts under §5/§9/§10/§11/§12 exist and run; `PROGRESS.md`, `OUTLINE.md`, `patches/`, `experiments/`, and `docs/` (GitHub Pages dashboard, live at the repo's Pages URL) are populated and updated as work happens, not empty scaffolding.
+* A sibling repo `../PETER_SIMULATION` (firmware/ROS 2 simulation) is registered read-only reference material in `intake/SOURCES.md`, and has already been used as source material for at least one patch (R3-03).
+* More than one contributor pushes directly to this repo (not just through this agent) — see §10.4's advisory conflict check and the git-log-based (not just `PROGRESS.md`-only) pull guard, both designed for that.
 
-Remaining setup (implementation phase, not yet done):
+### One-time setup for a new clone
 
-1. Create `scripts/config.sh` with the variables in §5.8.
-2. Implement `scripts/pull_from_overleaf.sh`, `scripts/split_sections.py`, `scripts/reassemble.py`, `scripts/find_section.py`, `scripts/validate_tex.sh`, `scripts/compile_pdf.sh`, `scripts/check_roundtrip.sh`, `scripts/push_to_overleaf.sh`, `scripts/promote_figure.sh` per §5/§9. The text-processing scripts (everything except `compile_pdf.sh` and anything under `experiments/*/scripts/`) are bash/Python-stdlib only — deliberately simple regex/line-based logic, no LaTeX parser.
-3. Create `PROGRESS.md` at the repo root using the table in §6, and a first-pass `OUTLINE.md` (§4.3) once the real manuscript structure is known.
-4. Run `scripts/pull_from_overleaf.sh` once to produce the first real `source/main_monolithic.tex`, `sections/*.tex`, and populated `assets/` from the actual manuscript project.
-5. Run `scripts/check_roundtrip.sh` once right after step 4 to confirm the split boundaries are byte-exact for the real manuscript before relying on the pipeline.
-6. Populate `intake/SOURCES.md` (§8.3) with any sibling repos currently relevant (e.g. `PETER_SIMULATION`).
-7. Create `experiments/README.md` and `experiments/_TEMPLATE/` per §9 for any `PROGRESS.md` row that needs new data.
-8. Run `scripts/install_hooks.sh` once per clone to install the pre-commit hook (§10.2). Re-run it any time `scripts/hooks/pre-commit` changes, since `.git/hooks/` itself isn't version-controlled.
+1. `scripts/install_hooks.sh` — installs the pre-commit hook (§10.2/§12.3). Re-run any time `scripts/hooks/pre-commit` changes, since `.git/hooks/` itself isn't version-controlled.
+2. Confirm the Overleaf git token is cached locally (`git config --global credential.helper store`) — it's per-machine, not part of the repo.
+3. If continuing work on a checklist item, read `PROGRESS.md` for its current status/owner before starting (and optionally `scripts/check_target_conflicts.sh <slug>`, §10.4).
 
-### Daily revision loop (once scripts exist)
+### Daily revision loop
 
 1. `scripts/pull_from_overleaf.sh` — sync from Overleaf (blocked if any unpushed local commit touches `source/`, `sections/`, or `assets/`), regenerate `sections/`.
 2. `scripts/find_section.py` — see which sections changed since last sync.

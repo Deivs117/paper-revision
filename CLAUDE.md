@@ -23,7 +23,8 @@ requirement itself genuinely spans sections and `OUTLINE.md` doesn't resolve it.
 (e.g. a teammate's implementation) or a loose list of corrections. Read `OUTLINE.md` first, then the doc, then (only
 if it references one) the specific files it points to in a repo listed in `intake/SOURCES.md` — read-only, never
 edit outside `paper-revision/`. For each distinct change found, add a `PROGRESS.md` row with the next `N-xx` (new
-content) or `C-xx` (correction) ID, then follow the normal patch flow. If the change needs a figure/plot that
+content) or `C-xx` (correction) ID, its `Category` (Escritura/Pruebas/Métricas) and `Owner`, then follow the
+normal patch flow. If the change needs a figure/plot that
 doesn't exist yet (common for write-ups of a teammate's simulation/hardware work), set that row's `Data source`
 to `experiments/<id>-<slug>/` and follow README.md §9 before touching `sections/`. `git mv` the doc to
 `intake/processed/` once every change it produced has reached `applied` or later.
@@ -108,8 +109,10 @@ to `experiments/<id>-<slug>/` and follow README.md §9 before touching `sections
 
 ## Commands
 
-All implemented under `scripts/` (see README.md §5/§9/§10 for exact behavior). Daily loop:
+All implemented under `scripts/` (see README.md §5/§9/§10/§12 for exact behavior). Daily loop:
 `pull_from_overleaf.sh` → `find_section.py` → read `OUTLINE.md` + target `sections/`/`assets/` →
 (if `Data source` is set, generate via `experiments/` + `promote_figure.sh` first) → edit →
 `reassemble.py` → `validate_tex.sh` / `compile_pdf.sh` → `push_to_overleaf.sh`. One-time per clone:
-`install_hooks.sh`. As needed: `next_id.sh`, `check_target_conflicts.sh`.
+`install_hooks.sh`. As needed: `next_id.sh`, `check_target_conflicts.sh`, `build_dashboard.py`
+(auto-runs from the pre-commit hook when `PROGRESS.md` changes — manual run only needed if the
+hook isn't installed or was bypassed with `--no-verify`).
