@@ -1,0 +1,38 @@
+% PATCH: R2-01 (16/13, 2nd pass - deeper redundancy sweep, findings #2 and #3)
+% Reviewer: 2
+% Target section: sections/results.tex
+% Requirement: Condense repetitive text / merge metric definitions.
+%
+% Finding #2: the four-panel latency figure (FigReal_Terrain_Latencies_4Panels) stated all
+%   four mu-values (0.184s, 0.534s, 2.92s, 1.56s) in its own caption, then the two prose
+%   paragraphs immediately following it restated the identical four numbers panel-by-panel.
+%   Fix: kept the numbers only in the caption (the self-contained anchor a reader consults
+%   first) and rewrote the prose to reference panel letters + qualitative interpretation
+%   only, dropping the duplicate numeric restatement.
+%
+% Finding #3: the simulation decision-latency figure (~47ms, invariant under noise sigma in
+%   [0,4]) was stated three times in results.tex: (1) the Appetitive Targeting paragraph
+%   where it is first established with full context, (2) the consolidated-metrics table
+%   caption (self-contained anchor, kept), (3) the Limitations paragraph's noise-robustness
+%   summary, restating the identical figure a third time for an argument that doesn't need
+%   the specific value. Fix: removed the number from occurrence (3), replaced with a
+%   cross-reference to the earlier result.
+%
+% Status: applied
+
+% --- Finding #2, paragraph after Panel A/B ---
+% Before: "...achieves an instantaneous step response at $\mu = 0.184\,\text{s}$... settles
+%   at a longer $\mu = 0.534\,\text{s}$ (Panel~B)..."
+% After:
+\revblue{The basal ganglia loop's decision latency (Fig.~\ref{fig:FourPanelLatencies}, values in caption) shows a clear task-dependent split. The Quadrupedal $\rightarrow$ Differential Mobile transition (Panel~A) achieves an instantaneous step response, reflecting immediate pitch-gradient adaptation. The reverse transition (Panel~B), triggered by wheel slippage on rugged terrain, settles at a markedly longer latency; this extended window is a deliberate stability feature, filtering transient high-frequency impact noise to suppress control chattering and false-positive switches on noisy surfaces.}
+
+% --- Finding #2, paragraph after Panel C/D ---
+% Before: "...requires an extended settling window of $\mu = 2.92\,\text{s}$ (Panel~C)...
+%   collapsing to $\mu = 1.56\,\text{s}$ (Panel~D)..."
+% After:
+\revblue{The electromechanical coupling timelines reflect these commands mechanically: achieving full wheel-ground alignment (Panel~C) requires an extended settling window, capturing the kinematic cost of leg extension under slope conditions. The emergency retraction to the high-traction articulated stance (Panel~D), by contrast, is a rapid recovery reflex, minimising the wheel-spin window and securing foothold anchors quickly on unstable terrain.}
+
+% --- Finding #3, Limitations paragraph ---
+% Before: "...decision latency was stable at approximately $47$~ms..."
+% After:
+\revblue{...decision latency remained invariant (see the simulation quantitative-validation results above)...}
