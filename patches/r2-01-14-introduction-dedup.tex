@@ -1,0 +1,33 @@
+% PATCH: R2-01 (14/13, 2nd pass)
+% Reviewer: 2
+% Target section: sections/introduction.tex
+% Requirement: Condense repetitive text. introduction.tex was previously read and judged to have
+%   "no clear redundancy" (see OUTLINE.md), but a closer re-read surfaced two concrete repeats of
+%   the same pattern already fixed elsewhere in this paper (e.g. the Ar=28.0 re-citation dedup in
+%   methodology.tex, the triple-restated closing summary in conclusions.tex):
+%     1. Gurney2001a/Gurney2001b was cited back-to-back across two consecutive paragraphs for
+%        essentially the same claim (BG = canonical action-selection substrate / the GPR model).
+%        Kept the citation where the GPR model is actually named and described (paragraph
+%        beginning "Neural control architectures..."), dropped the redundant duplicate citation
+%        from the preceding paragraph's generic mention.
+%     2. The "interpretable architecture vs. RL black-box" contrast, and the paper's novelty claim,
+%        were argued in full once at the end of the mode-switching-approaches paragraph, then
+%        re-argued via near-identical wording as differentiating property (i) in the closing
+%        contribution paragraph. Condensed property (i) to a short cross-reference back to the
+%        earlier argument instead of restating it.
+% Status: applied
+
+% --- Edit 1 (paragraph beginning "A critical observation emerges...") ---
+% Before:
+%   ...are the canonical neural substrate for action selection \citep{Gurney2001a,Gurney2001b}:
+%   through a salience-driven winner-take-all (WTA) mechanism...
+% After:
+\revblue{The basal ganglia, a subcortical neural circuit present in all vertebrates, are the canonical neural substrate for action selection: through a salience-driven winner-take-all (WTA) mechanism implemented via disinhibition, they select and sustain a single behavioral channel from a set of competing alternatives while suppressing all others.}
+
+% --- Edit 2 (paragraph beginning "Against this background...") ---
+% Before:
+%   ...three differentiating properties: (i) \emph{biological interpretability}: the switching
+%   logic is grounded in an explicit, neuroscientifically validated model rather than a learned
+%   black-box policy; (ii) \emph{modularity}...
+% After:
+\revblue{(i) \emph{biological interpretability}, following directly from the neuroscientific grounding established above;}

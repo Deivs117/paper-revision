@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-08-26T01:24:21+00:00",
-  "progressLastCommit": "2026-08-25T19:52:57-05:00",
+  "generatedAt": "2026-08-26T20:27:15+00:00",
+  "progressLastCommit": "2026-08-25T20:24:21-05:00",
   "tasks": [
     {
       "id": "R2-01",
       "reviewer": "2",
       "requirement": "Condense repetitive text / remove duplicate plots / merge metric definitions / shorten warehouse sim section",
-      "target": "results.tex done (9 edits, 9668->8410 words, incl. 2nd-pass verbal tightening of physical-scenario + energy/latency paragraphs). methodology.tex done (3 edits, 5280->5172 words: table dedup, notation dedup, Ar=28.0 re-citation cut), verification pass clean. conclusions.tex done (1 edit, 1622->1499 words: merged triple-restated closing summary + split extensibility/future-work paragraphs). introduction.tex not started (dense, citation-heavy, no clear redundancy found on read-through).",
+      "target": "results.tex done (9 edits, 9668->8410 words, incl. 2nd-pass verbal tightening of physical-scenario + energy/latency paragraphs). methodology.tex done (3 edits, 5280->5172 words: table dedup, notation dedup, Ar=28.0 re-citation cut), verification pass clean. conclusions.tex done (1 edit, 1622->1499 words: merged triple-restated closing summary + split extensibility/future-work paragraphs). introduction.tex done on 2nd-pass re-read (2 edits, 1203->1193 words: dropped back-to-back duplicate Gurney2001a/b citation across two paragraphs, condensed the restated interpretable-vs-black-box/novelty argument in the closing \"differentiating properties\" paragraph into a cross-reference). All four sections now covered for R2-01.",
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
         "Sebas"
       ],
-      "status": "synced-to-overleaf",
-      "patchFile": "patches/r2-01-01..13-*.tex"
+      "status": "applied",
+      "patchFile": "patches/r2-01-01..14-*.tex"
     },
     {
       "id": "R2-02",
