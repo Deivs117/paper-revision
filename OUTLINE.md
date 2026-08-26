@@ -106,6 +106,20 @@ neuronal control circuits, (4) physical construction. Four subsections:
   stats ($\sigma_h=2.339$mm, $R_q=2.339$mm, mean slope 0.155). This is the real-world counterpart to
   the simulated Perlin terrain in Gazebo Simulation above — relevant if R3-04 (noise robustness) or
   R3-01/R3-02 ablations need a physical (not just simulated) validation terrain.
+- `\subsection{Low-Torque Actuation Compensation Strategies}` (`\label{ssec:ServoCompensation}`,
+  added 2026-08-25, end of file, after Physical Platform Construction) — **R3-03, resolved.** Three
+  core techniques sourced from a review of `PETER_SIMULATION/Repository/Peter_arduino/src` firmware
+  (`intake/SOURCES.md`): (1) statically-stable single-leg-swing wave gait — structural, not
+  runtime-computed, CoM/support-triangle guarantee; (2) rate-limited (velocity-capped) trajectory
+  interpolation — bounds peak torque/current demand; (3) fixed feed-forward tibia-angle offset
+  compensating measured servo sag under load. Plus a one-sentence mention of four supporting
+  safeguards (per-actuator PWM calibration, joint-angle saturation, IK-feasibility rejection).
+  **Deliberately excludes** the firmware's IMU-based tilt safety-stop and its supporting
+  complementary-filter/bias-nulling — `USE_IMU=0` by default in that firmware, unconfirmed whether
+  it was active during the real-robot experiments reported in results.tex (pending confirmation from
+  the firmware's developer, Sam) — revisit and potentially add once confirmed. Also excludes
+  `IMU_GAIN_X`/`IMU_GAIN_Y` — defined in that firmware's config but never referenced anywhere, i.e.
+  designed but not implemented, not a real technique to cite.
 - Confirmed by full read: **no mention of FSM (Finite State Machine) anywhere in this file** —
   R2-02's baseline comparison is entirely new content, not a rewrite of existing material.
 
@@ -145,12 +159,15 @@ by a **Quantitative Performance Analysis (Physical)** subsection and a **Limitat
   likely still a gap. And a 4-panel terrain-latency figure (neural + electromechanical latencies per
   transition direction).
 - `\subsection{Limitations of the Present Work}` (`\label{ssec:Limitations}`) — **already exists**,
-  already covers: low-torque servos / open-loop gait limitations (directly relevant to **R3-03**, but
-  only as an acknowledged limitation — no compensation strategy is proposed, which is what R3-03
-  actually asks for), lab-only validation scope, and the symbolic (non-certified) warehouse sim
-  caveat. **R2-03 ("consolidate all limitations into a dedicated section") may already be largely
-  satisfied structurally** — verify whether limitations are mentioned anywhere else in the paper
-  (introduction, conclusions) that would still need pulling in here, and whether "dedicated section"
+  already covers: low-torque servos / open-loop gait limitations, lab-only validation scope, and the
+  symbolic (non-certified) warehouse sim caveat. **R3-03 now resolved** (methodology.tex's new
+  `ssec:ServoCompensation`, see below) — the two subsections are consistent, not contradictory: this
+  one's "open-loop execution cannot compensate for torque deficits" refers narrowly to *active*
+  balance recovery on severe/high-slip terrain, which remains genuinely unaddressed; `ssec:
+  ServoCompensation` covers *structural/feed-forward* compensation for baseline low-torque operation,
+  a different claim. **R2-03 ("consolidate all limitations into a dedicated section") may already be
+  largely satisfied structurally** — verify whether limitations are mentioned anywhere else in the
+  paper (introduction, conclusions) that would still need pulling in here, and whether "dedicated section"
   means promoting this from a `\subsection` of Results to its own top-level `\section`.
 
 ### conclusions.tex — fully read this round
