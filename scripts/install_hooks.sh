@@ -10,4 +10,4 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 cp "$SCRIPT_DIR/hooks/pre-commit" "$REPO_ROOT/.git/hooks/pre-commit"
 chmod +x "$REPO_ROOT/.git/hooks/pre-commit"
 
-echo "Installed: .git/hooks/pre-commit (runs validate_tex.sh + check_roundtrip.sh when sections/ or source/ change)"
+echo "Installed: .git/hooks/pre-commit (validate_tex.sh + check_roundtrip.sh when sections/ or source/ change; docs/data.json rebuild when PROGRESS.md changes)"

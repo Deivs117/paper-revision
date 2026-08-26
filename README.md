@@ -93,7 +93,13 @@ paper-revision/
 │   ├── check_target_conflicts.sh # advisory: other rows targeting the same section (§10.4)
 │   ├── install_hooks.sh          # one-time: installs the pre-commit hook (§10.2)
 │   ├── hooks/pre-commit          # template copied into .git/hooks/ by install_hooks.sh
-│   └── strip_revblue.py          # start-of-round: unwrap last round's \revblue{} (§11)
+│   ├── strip_revblue.py          # start-of-round: unwrap last round's \revblue{} (§11)
+│   └── build_dashboard.py        # PROGRESS.md -> docs/data.json (§12)
+├── docs/                        # GitHub Pages traceability dashboard (§12)
+│   ├── index.html
+│   ├── styles.css
+│   ├── app.js
+│   └── data.json                 # generated — never hand-edited
 ├── PROGRESS.md
 ├── README.md
 └── CLAUDE.md
@@ -471,6 +477,43 @@ Bypass deliberately with `git commit --no-verify` (e.g. a deliberate WIP commit)
 4. Record it as a `C-xx` row in `PROGRESS.md` (get the ID from `scripts/next_id.sh C`) with a `.md` patch summary (not a content copy — see §7) listing wrapper counts per file, per the precedent in `patches/c-02-strip-revblue.md`.
 
 This repo's round stripped 265 wrappers on 2026-08-25 (`C-02`) — see `OUTLINE.md`'s "Revision convention" section for the live state and per-section pointers to what used to be `\revblue{}`.
+
+---
+
+### 12. `docs/` — GitHub Pages Traceability Dashboard
+
+A read-only, publicly viewable dashboard (`docs/index.html`) showing every `PROGRESS.md` row — category, owner, reviewer, status — with client-side filtering and summary metrics. Published via GitHub Pages (repo Settings → Pages → source: `main` branch, `/docs` folder — see [GitHub's publishing-source guide](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)).
+
+This is scoped **outside** the reviewer-checklist pipeline (§1–§11) — it doesn't touch manuscript content, Overleaf, or the pull/push guards. It exists purely for the team to see who owns what and how far along it is, at a glance, without opening `PROGRESS.md` in an editor.
+
+#### 12.1 Layout
+
+```
+docs/
+├── index.html      # page structure — fetches data.json, no inline data
+├── styles.css       # theme tokens (light/dark), stat tiles, filter pills, task cards
+├── app.js           # fetch + render + client-side filter/search logic, no dependencies
+└── data.json        # generated — never hand-edited (scripts/build_dashboard.py)
+```
+
+`data.json` is **generated**, not hand-maintained — same discipline as `source/main_monolithic.tex`: never edit it directly, it will be overwritten the next time `PROGRESS.md` changes.
+
+#### 12.2 Data model
+
+`PROGRESS.md`'s table (§6) carries two columns purpose-built for this dashboard:
+
+- **`Category`** — one of `Escritura` (prose/text editing), `Pruebas` (experiments/ablations/comparisons to run), `Métricas` (new measurements/quantitative analysis).
+- **`Owner`** — the person(s) actually doing the work, comma-separated if shared (e.g. `Diego, Sam`).
+
+`scripts/build_dashboard.py` parses the whole table (stdlib-only `re`/`json`, no markdown library) into `docs/data.json`: one object per row (`id`, `reviewer`, `requirement`, `target`, `dataSource`, `category`, `owner` as an array, `status`, `patchFile`), plus a `generatedAt` timestamp and `PROGRESS.md`'s last commit time (via `git log`). `**bold**`/`` `code` ``/`*italic*` markdown is stripped for plain-text display — the dashboard shows prose, not rendered markdown.
+
+#### 12.3 Keeping it in sync
+
+`scripts/build_dashboard.py` runs automatically from the pre-commit hook (§10.2) whenever `PROGRESS.md` is part of the commit — `docs/data.json` is regenerated and staged into the same commit, so the published dashboard can never drift from what's actually in `PROGRESS.md`. Run it manually (`python3 scripts/build_dashboard.py`) after editing `PROGRESS.md` if the hook isn't installed or was bypassed with `--no-verify`.
+
+#### 12.4 Design conventions
+
+No emojis anywhere in the UI. Category and status each get a small fixed color set (not reused between the two dimensions, so a color always means one thing); owners render as plain text chips, not colored, since a second color-coded dimension would compete with category for attention. Every status badge pairs its color with a text label — never color alone. Light/dark mode both follow the visitor's OS/browser preference (`prefers-color-scheme`), no manual toggle. The whole page is dependency-free vanilla HTML/CSS/JS — no build step, no framework, so it stays as low-maintenance as the rest of this repo's tooling.
 
 ---
 

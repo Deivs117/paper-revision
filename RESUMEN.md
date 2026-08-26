@@ -132,6 +132,17 @@ confundirlo con lo nuevo de esta ronda. Esto se hizo el 25 de agosto de 2026 con
 **Ahora mismo no queda ningún `\revblue{}` en el manuscrito** — todo lo que se agregue de aquí en
 adelante en esta ronda es lo que hay que envolver en azul.
 
+## Panel de trazabilidad (GitHub Pages)
+
+`docs/index.html` es un panel público, de solo lectura, que muestra cada fila de `PROGRESS.md`
+—categoría (Escritura/Pruebas/Métricas), responsable, revisor, estado— con filtros y métricas,
+sin depender de abrir el markdown. Se publica con GitHub Pages (rama `main`, carpeta `/docs`).
+
+`docs/data.json` se genera automáticamente con `scripts/build_dashboard.py` a partir de
+`PROGRESS.md` (nunca se edita a mano) — el hook de pre-commit lo regenera solo cada vez que
+`PROGRESS.md` cambia, así el panel publicado nunca queda desactualizado respecto al repo. Para
+que una fila aparezca bien en el panel, sus columnas `Category` y `Owner` deben estar llenas.
+
 ## Huecos menores ya resueltos (25 de agosto)
 
 Cuatro huecos de diseño de bajo riesgo (dado que tú eres quien más escribe) pero reales, resueltos

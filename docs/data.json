@@ -1,0 +1,203 @@
+{
+  "generatedAt": "2026-08-26T01:24:21+00:00",
+  "progressLastCommit": "2026-08-25T19:52:57-05:00",
+  "tasks": [
+    {
+      "id": "R2-01",
+      "reviewer": "2",
+      "requirement": "Condense repetitive text / remove duplicate plots / merge metric definitions / shorten warehouse sim section",
+      "target": "results.tex done (9 edits, 9668->8410 words, incl. 2nd-pass verbal tightening of physical-scenario + energy/latency paragraphs). methodology.tex done (3 edits, 5280->5172 words: table dedup, notation dedup, Ar=28.0 re-citation cut), verification pass clean. conclusions.tex done (1 edit, 1622->1499 words: merged triple-restated closing summary + split extensibility/future-work paragraphs). introduction.tex not started (dense, citation-heavy, no clear redundancy found on read-through).",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sebas"
+      ],
+      "status": "synced-to-overleaf",
+      "patchFile": "patches/r2-01-01..13-*.tex"
+    },
+    {
+      "id": "R2-02",
+      "reviewer": "2",
+      "requirement": "Add FSM gait arbitration baseline comparison",
+      "target": "methodology.tex (baseline description, new), results.tex (comparison data, new) — confirmed no existing FSM content anywhere",
+      "dataSource": "experiments/R2-02-fsm-baseline/ (new FSM comparison data)",
+      "category": "Pruebas",
+      "owner": [
+        "Diego",
+        "Sam"
+      ],
+      "status": "pending",
+      "patchFile": "—"
+    },
+    {
+      "id": "R2-03",
+      "reviewer": "2",
+      "requirement": "Consolidate limitations into one dedicated section",
+      "target": "Merged conclusions.tex's limitations paragraph (tuning/resilience/fusion/illumination) into results.tex §\"Limitations of the Present Work\" (Section~\\ref{ssec:Limitations}) as a third paragraph; conclusions.tex now points to it with a short pointer sentence. Kept as a subsection of Results, not promoted to top-level \\section — introduction.tex's \"Section 2/3/4\" roadmap unaffected.",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "synced-to-overleaf",
+      "patchFile": "patches/r2-03-consolidate-limitations.tex"
+    },
+    {
+      "id": "R2-04",
+      "reviewer": "2",
+      "requirement": "Add multi-mode energy consumption + onboard MLP compute overhead analysis",
+      "target": "MLP compute overhead: already present in results.tex (\"Evaluation of the MLP-based terrain classifier\" — per-sample latency vs SVM/RF/LogReg). Multi-mode long-term average energy: results.tex only has per-transition energy cost, not steady-state per-mode average — likely a real gap",
+      "dataSource": "experiments/R2-04-mode-energy/ (steady-state per-mode energy, if confirmed a gap)",
+      "category": "Métricas",
+      "owner": [
+        "Sam"
+      ],
+      "status": "pending",
+      "patchFile": "—"
+    },
+    {
+      "id": "R3-01",
+      "reviewer": "3",
+      "requirement": "Ablation analysis on basal ganglia arbitration network",
+      "target": "methodology.tex §\"Basal Ganglia Module\" (~line 154, STN/GPe/GPi WTA circuit) for the ablation methodology; results.tex for the ablation results — confirmed no existing content, genuine gap",
+      "dataSource": "experiments/R3-01-basal-ganglia-ablation/",
+      "category": "Pruebas",
+      "owner": [
+        "Diego"
+      ],
+      "status": "pending",
+      "patchFile": "—"
+    },
+    {
+      "id": "R3-02",
+      "reviewer": "3",
+      "requirement": "Comparative tests removing neural layers/inhibitory connections to justify WTA over threshold logic",
+      "target": "same as R3-01 — methodology.tex + results.tex, genuine gap, no existing content. Locomotion module already uses explicit threshold logic (20° frontal cone, Ar=28.0) — a natural in-paper contrast point",
+      "dataSource": "experiments/R3-02-wta-vs-threshold/",
+      "category": "Pruebas",
+      "owner": [
+        "Diego"
+      ],
+      "status": "pending",
+      "patchFile": "—"
+    },
+    {
+      "id": "R3-03",
+      "reviewer": "3",
+      "requirement": "Control/compensation strategies for low-torque servo constraints and open-loop gait instability",
+      "target": "New methodology.tex §\"Low-Torque Actuation Compensation Strategies\" (ssec:ServoCompensation), added at the end of the section. Core 3 techniques from Peter_arduino/src firmware review: (1) statically-stable single-leg-swing wave gait (structural CoM/support-triangle guarantee), (2) rate-limited trajectory interpolation (bounds peak torque/current), (3) feed-forward tibia-angle offset compensating servo sag. 4 supporting measures mentioned briefly. IMU-based techniques deliberately excluded pending confirmation from the firmware developer (Sam) that USE_IMU was enabled during the reported real-robot tests — revisit once confirmed.",
+      "dataSource": "prose-only, no experiments/ needed",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "synced-to-overleaf",
+      "patchFile": "patches/r3-03-servo-compensation-strategies.tex"
+    },
+    {
+      "id": "R3-04",
+      "reviewer": "3",
+      "requirement": "Perception-decision noise robustness experiments (IMU drift, LiDAR noise, camera illumination distortion)",
+      "target": "results.tex already has noise-robustness data across σ∈[0,4] for all 4 simulation scenarios — verify whether this is generic sensor noise or specifically framed as IMU drift/LiDAR noise/illumination, since the reviewer names specific noise sources",
+      "dataSource": "experiments/R3-04-noise-robustness/ if the existing σ-sweep isn't framed per-sensor",
+      "category": "Pruebas",
+      "owner": [
+        "Diego"
+      ],
+      "status": "pending",
+      "patchFile": "—"
+    },
+    {
+      "id": "R3-05",
+      "reviewer": "3",
+      "requirement": "Inspection task performance metrics (tracking accuracy, coverage rate, autonomous re-planning)",
+      "target": "results.tex — no coverage-rate or autonomous-replanning metrics found; genuine gap",
+      "dataSource": "experiments/R3-05-inspection-metrics/",
+      "category": "Métricas",
+      "owner": [
+        "Sam"
+      ],
+      "status": "pending",
+      "patchFile": "—"
+    },
+    {
+      "id": "R3-06",
+      "reviewer": "3",
+      "requirement": "Literature review comparative tables: Basal Ganglia vs CPG vs RL-based action selection",
+      "target": "introduction.tex — narrative comparison already exists (threshold logic / MPC / RL vs basal ganglia), likely just needs converting to a table + reframing CPG as a third action-selection alternative (currently only discussed as a rhythm-execution layer)",
+      "dataSource": "— (table from existing text, no new data)",
+      "category": "Escritura",
+      "owner": [
+        "Sebas",
+        "Deivi"
+      ],
+      "status": "pending",
+      "patchFile": "—"
+    },
+    {
+      "id": "C-01",
+      "reviewer": "—",
+      "requirement": "Fix stale sentence in conclusions.tex: \"Classification metrics for strengthening the MLP-based terrain classifier were also not evaluated\" contradicts results.tex's own MLP evaluation subsection (accuracy/precision/recall/F1/ROC-AUC, ablation, classifier comparison already present)",
+      "target": "conclusions.tex",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sebas"
+      ],
+      "status": "synced-to-overleaf",
+      "patchFile": "patches/c-01-mlp-stale-limitation.tex"
+    },
+    {
+      "id": "C-03",
+      "reviewer": "—",
+      "requirement": "(Superseded by C-06 — the file was never actually missing, .gitignore was silently excluding it from git; original diagnosis wrong.) \\includegraphics{GRAPHICAL_ABSTRACT} in preamble references an image missing from assets/ (and from Overleaf, since assets/ mirrors it 1:1), blocking local compilation — commented out the graphicalabstract block until the image is supplied",
+      "target": "preamble.tex",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sebas"
+      ],
+      "status": "synced-to-overleaf",
+      "patchFile": "patches/c-03-disable-graphical-abstract.tex"
+    },
+    {
+      "id": "C-06",
+      "reviewer": "—",
+      "requirement": "Supersedes C-03: GRAPHICAL_ABSTRACT was never actually missing — .gitignore's blanket .pdf rule (meant for compile byproducts) was silently excluding assets/GRAPHICAL_ABSTRACT.pdf from git, so it never reached GitHub/Sebas's clone even though it existed on disk, byte-identical to the Overleaf-tracked copy. Fixed .gitignore (!/assets/*), tracked the file, restored the graphicalabstract block in preamble.tex C-03 had commented out.",
+      "target": "preamble.tex, assets/GRAPHICAL_ABSTRACT.pdf, .gitignore",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "synced-to-overleaf",
+      "patchFile": "patches/c-06-restore-graphical-abstract.md"
+    },
+    {
+      "id": "C-05",
+      "reviewer": "—",
+      "requirement": "Review of Sebas's R2-01/R2-03/C-01/C-03 push (before Overleaf sync) found several patches with real prose rewrites left unwrapped, or \\revblue{} fragmented around \\ref{}/math — fixed wrapping across 18 paragraphs in results.tex/conclusions.tex; no content/numbers changed. Also corrected a stale \"C-02\" comment in patches/c-03-disable-graphical-abstract.tex left over from the C-04 reconciliation.",
+      "target": "results.tex, conclusions.tex",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "synced-to-overleaf",
+      "patchFile": "patches/c-05-revblue-consistency-fix.md"
+    },
+    {
+      "id": "C-04",
+      "reviewer": "—",
+      "requirement": "Strip all \\revblue{} wrappers repo-wide (265 across preamble/introduction/methodology/results/conclusions) — last round's accepted changes become this round's plain baseline text, per new revision-round color convention (see OUTLINE.md / CLAUDE.md). Originally logged as C-02 on 2026-08-25; that ID was independently reused by a concurrent contributor working from a stale local copy of this file, which also overwrote this row and reset several Data source values above — reassigned to C-04 and restored during reconciliation. Patch file kept its original name for git-history continuity.",
+      "target": "all sections/*.tex except closing.tex (0 occurrences there)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "synced-to-overleaf",
+      "patchFile": "patches/c-02-strip-revblue.md"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trazabilidad de tareas — ROBOT-D-26-00122R1</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <h1>Trazabilidad de tareas — ROBOT-D-26-00122R1</h1>
+      <p>Estado de cada requerimiento de revisión (Revisor 2 / Revisor 3) y corrección interna, con
+      responsable asignado. Generado directamente desde <code>PROGRESS.md</code>, la fuente única de
+      verdad del repositorio.</p>
+    </div>
+    <div class="meta" id="meta"></div>
+  </header>
+
+  <section class="stats" id="stats"></section>
+
+  <section class="filters" id="filters">
+    <div class="filter-group">
+      <span class="filter-label">Categoría</span>
+      <div class="pill-row" id="filter-category"></div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Estado</span>
+      <div class="pill-row" id="filter-status"></div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Responsable</span>
+      <div class="pill-row" id="filter-owner"></div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Revisor</span>
+      <div class="pill-row" id="filter-reviewer"></div>
+    </div>
+    <div class="filter-group search-input">
+      <span class="filter-label">Buscar</span>
+      <input type="search" id="search" placeholder="ID o texto del requerimiento…">
+    </div>
+    <button class="clear-filters" id="clear-filters" type="button">Limpiar filtros</button>
+  </section>
+
+  <p class="result-count" id="result-count"></p>
+  <section class="task-grid" id="task-grid"></section>
+  <div class="empty-state" id="empty-state" style="display:none;">
+    Ningún ítem coincide con los filtros seleccionados.
+  </div>
+
+  <footer class="page-footer">
+    <span>Panel generado por <code>scripts/build_dashboard.py</code> a partir de <code>PROGRESS.md</code> — no se edita a mano.</span>
+    <a href="https://github.com/Deivs117/paper-revision" target="_blank" rel="noopener">Repositorio en GitHub</a>
+  </footer>
+
+</div>
+<script src="app.js"></script>
+</body>
+</html>
