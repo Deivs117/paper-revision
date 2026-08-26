@@ -1,0 +1,33 @@
+% PATCH: R2-01 (19/13, 3rd-pass cross-check)
+% Reviewer: 2 (redundancy reduction), touching R3-03's (Deivi's) content
+% Target section: sections/methodology.tex
+% Requirement: Condense repetitive text -- this time a cross-section, cross-author case found
+%   while auditing recently-synced content for the redundancy sweep. R3-03's new
+%   "Low-Torque Actuation Compensation Strategies" subsection (ssec:ServoCompensation, added by
+%   Deivi, synced-to-overleaf) independently re-argued the same claim already made -- with
+%   quantitative backing -- in results.tex's "Quantitative Stability Analysis of Locomotion Mode
+%   Transitions" subsubsection (sssec:transition_stability, Table~tab:crawl_stability, N=268
+%   samples): that the crawl gait is statically/quasi-statically stable by construction because
+%   only one leg is ever airborne, keeping the CoM within the support polygon/triangle. Neither
+%   author was aware of the other's phrasing at the time of writing.
+% Fix: kept the full quantitative claim in results.tex untouched; condensed ServoCompensation's
+%   paragraph to state the fact once (needed for its own compensation-strategy argument) plus a
+%   cross-reference to the quantitative confirmation, instead of re-deriving the stability
+%   argument from scratch. The 3 core compensation techniques and the pending IMU question
+%   (R3-03's own scope) are unchanged.
+% Status: applied
+
+% Before:
+%   "First, gait stability is addressed at the scheduling level rather than through active
+%   balance control. The crawl gait described in Section~\ref{ssec:Gait_Decision_Module}
+%   advances exactly one leg at a time, following a fixed diagonal sequence (front-left ->
+%   rear-right -> front-right -> rear-left); the remaining three legs stay grounded and fixed
+%   throughout each swing phase. This is a structural, not a runtime-computed, guarantee:
+%   because only one leg is ever airborne, the robot's center of mass is always contained
+%   within the support triangle formed by the three stance legs, independently of any per-step
+%   positioning error the open-loop actuation may introduce. The gait is therefore
+%   quasi-statically stable by construction, which bounds the destabilizing consequence of an
+%   individual joint's torque deficit to a single, momentarily unsupported limb rather than to
+%   the whole platform."
+% After:
+\revblue{First, gait stability is addressed at the scheduling level rather than through active balance control. The crawl gait described in Section~\ref{ssec:Gait_Decision_Module} advances exactly one leg at a time, following a fixed diagonal sequence (front-left~$\rightarrow$~rear-right~$\rightarrow$~front-right~$\rightarrow$~rear-left); the remaining three legs stay grounded and fixed throughout each swing phase. This is a structural, not a runtime-computed, guarantee, quantitatively confirmed in Section~\ref{sssec:transition_stability} (Table~\ref{tab:crawl_stability}): because only one leg is ever airborne, this bounds the destabilizing consequence of an individual joint's torque deficit to a single, momentarily unsupported limb rather than to the whole platform.}

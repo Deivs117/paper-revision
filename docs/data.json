@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-08-26T21:50:57+00:00",
-  "progressLastCommit": "2026-08-26T16:40:21-05:00",
+  "generatedAt": "2026-08-26T22:27:23+00:00",
+  "progressLastCommit": "2026-08-26T16:50:57-05:00",
   "tasks": [
     {
       "id": "R2-01",
       "reviewer": "2",
       "requirement": "Condense repetitive text / remove duplicate plots / merge metric definitions / shorten warehouse sim section",
-      "target": "results.tex: 12 edits, 9668->8524 words (9 first-pass edits + 3 deeper 2nd-pass edits: QuantReal physical-scenario 3-paragraph-per-scenario template condensed into 1 paragraph + new consolidated Table~tab:consolidated_physical_metrics mirroring the sim-side table; dropped duplicate mu-value restatement between FigReal_Terrain_Latencies_4Panels caption and its two prose paragraphs; dropped the 3rd redundant restatement of the ~47ms decision-latency figure in the Limitations paragraph, kept the other 2 as the establishing mention + self-contained table-caption anchor). methodology.tex: 5 edits, 5280->5625 words (3 first-pass edits: table dedup, notation dedup, Ar=28.0 re-citation cut; 2 deeper 2nd-pass edits: condensed the near-verbatim stimulus-to-mode correspondence restated ~250 lines apart between \"Neuronal Control System\" intro and \"Gait Decision Module\" intro into a cross-reference; condensed the back-to-back duplicate \"fixed and uniform weights, per Sarvestani\" claim in Obstacle Sensory Module into a single citation). conclusions.tex: 2 edits, 1622->1309 words (1st-pass edit merged triple-restated closing summary + split extensibility/future-work paragraphs; 2nd deeper-pass edit consolidated \"future work\" from 3 fragmented paragraphs -- Limitations pointer, extensibility paragraph, final \"In conclusion\" paragraph -- each independently restating overlapping real-world/outdoor-validation and sensor-fusion recommendations, into a single list in the extensibility paragraph). introduction.tex done on 2nd-pass re-read (2 edits, 1203->1193 words: dropped back-to-back duplicate Gurney2001a/b citation, condensed restated interpretable-vs-black-box/novelty argument into a cross-reference). All four sections now covered across two full passes, including the deeper 2nd-pass sweep. R2-01 fully complete.",
+      "target": "results.tex: 12 edits, 9668->8524 words (9 first-pass edits + 3 deeper 2nd-pass edits: QuantReal physical-scenario 3-paragraph-per-scenario template condensed into 1 paragraph + new consolidated Table~tab:consolidated_physical_metrics mirroring the sim-side table; dropped duplicate mu-value restatement between FigReal_Terrain_Latencies_4Panels caption and its two prose paragraphs; dropped the 3rd redundant restatement of the ~47ms decision-latency figure in the Limitations paragraph, kept the other 2 as the establishing mention + self-contained table-caption anchor). methodology.tex: 5 edits, 5280->5625 words (3 first-pass edits: table dedup, notation dedup, Ar=28.0 re-citation cut; 2 deeper 2nd-pass edits: condensed the near-verbatim stimulus-to-mode correspondence restated ~250 lines apart between \"Neuronal Control System\" intro and \"Gait Decision Module\" intro into a cross-reference; condensed the back-to-back duplicate \"fixed and uniform weights, per Sarvestani\" claim in Obstacle Sensory Module into a single citation). conclusions.tex: 2 edits, 1622->1309 words (1st-pass edit merged triple-restated closing summary + split extensibility/future-work paragraphs; 2nd deeper-pass edit consolidated \"future work\" from 3 fragmented paragraphs -- Limitations pointer, extensibility paragraph, final \"In conclusion\" paragraph -- each independently restating overlapping real-world/outdoor-validation and sensor-fusion recommendations, into a single list in the extensibility paragraph). introduction.tex done on 2nd-pass re-read (2 edits, 1203->1193 words: dropped back-to-back duplicate Gurney2001a/b citation, condensed restated interpretable-vs-black-box/novelty argument into a cross-reference). All four sections now covered across two full passes, including the deeper 2nd-pass sweep. R2-01 fully complete. 3rd-pass cross-check found one more: R3-03's (Deivi's) new ServoCompensation subsection independently re-argued the same \"static stability by construction, one-leg-airborne\" claim already made with quantitative backing in results.tex's Quantitative Stability Analysis subsubsection (Table~tab:crawl_stability) — condensed to a cross-reference, see R3-03 row and patches/r2-01-19-servocompensation-crossref.tex.",
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
         "Sebas"
       ],
       "status": "applied",
-      "patchFile": "patches/r2-01-01..18-*.tex"
+      "patchFile": "patches/r2-01-01..19-*.tex"
     },
     {
       "id": "R2-02",
@@ -85,14 +85,14 @@
       "id": "R3-03",
       "reviewer": "3",
       "requirement": "Control/compensation strategies for low-torque servo constraints and open-loop gait instability",
-      "target": "New methodology.tex §\"Low-Torque Actuation Compensation Strategies\" (ssec:ServoCompensation), added at the end of the section. Core 3 techniques from Peter_arduino/src firmware review: (1) statically-stable single-leg-swing wave gait (structural CoM/support-triangle guarantee), (2) rate-limited trajectory interpolation (bounds peak torque/current), (3) feed-forward tibia-angle offset compensating servo sag. 4 supporting measures mentioned briefly. IMU-based techniques deliberately excluded pending confirmation from the firmware developer (Sam) that USE_IMU was enabled during the reported real-robot tests — revisit once confirmed.",
+      "target": "New methodology.tex §\"Low-Torque Actuation Compensation Strategies\" (ssec:ServoCompensation), added at the end of the section. Core 3 techniques from Peter_arduino/src firmware review: (1) statically-stable single-leg-swing wave gait (structural CoM/support-triangle guarantee), (2) rate-limited trajectory interpolation (bounds peak torque/current), (3) feed-forward tibia-angle offset compensating servo sag. 4 supporting measures mentioned briefly. IMU-based techniques deliberately excluded pending confirmation from the firmware developer (Sam) that USE_IMU was enabled during the reported real-robot tests — revisit once confirmed. 2026-08-26 (Sebas, R2-01 3rd-pass redundancy sweep): technique (1)'s paragraph independently re-derived the same static-stability claim already made with quantitative backing in results.tex; condensed to a cross-reference to Table~tab:crawl_stability instead of re-arguing it — content/techniques unchanged, no impact on the 3 core techniques or the pending IMU question.",
       "dataSource": "prose-only, no experiments/ needed",
       "category": "Escritura",
       "owner": [
         "Deivi"
       ],
-      "status": "synced-to-overleaf",
-      "patchFile": "patches/r3-03-servo-compensation-strategies.tex"
+      "status": "applied",
+      "patchFile": "patches/r3-03-servo-compensation-strategies.tex, patches/r2-01-19-servocompensation-crossref.tex"
     },
     {
       "id": "R3-04",
