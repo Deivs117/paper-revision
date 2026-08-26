@@ -1,0 +1,39 @@
+% PATCH: R2-01 (18/13, 2nd pass - deeper redundancy sweep, conclusions.tex)
+% Reviewer: 2
+% Target section: sections/conclusions.tex
+% Requirement: Condense repetitive text. A closer re-read found "future work" fragmented
+%   across three separate paragraphs with partial thematic overlap, restated with different
+%   wording each time: (13) the Limitations pointer's own closing clause ("...should focus on
+%   validating the proposed architecture... under real, non-controlled conditions"), (17) the
+%   dedicated extensibility/future-work paragraph (long-term field validation, adaptive
+%   tuning, safety protocols), and (19) the final "In conclusion" paragraph's own separate
+%   future-work list (industrial-grade migration, closed-loop replanning, sensor fusion,
+%   outdoor validation) -- "real/outdoor validation" and "sensor fusion" each appeared in two
+%   of the three. Consolidated into a single future-work list in paragraph 17 (the
+%   purpose-built extensibility paragraph), folding in the two genuinely new items from
+%   paragraph 19 (industrial-grade migration, closed-loop dynamic gait replanning, formal
+%   sensor fusion); paragraphs 13 and 19 now cross-reference it instead of restating.
+% Status: applied
+
+% --- Paragraph after "Several limitations..." (Limitations pointer) ---
+% Before: "...These constraints do not invalidate the results but indicate that the next
+%   development stage should focus on validating the proposed architecture in a prototype
+%   that includes robustness and adaptability tests under real, non-controlled conditions."
+% After:
+\revblue{Several limitations of the present work are acknowledged and discussed in detail in Section~\ref{ssec:Limitations}, spanning the physical platform's hardware envelope, the scope of experimental validation, manual parameter tuning, and the absence of a formal sensor-fusion framework. These constraints do not invalidate the results; the future-work priorities they motivate are consolidated below.}
+
+% --- Extensibility paragraph (already \revblue from a prior round) ---
+% Before ended: "...Long-term field validation, adaptive threshold learning, and policy
+%   optimization are recommended to reduce manual tuning, along with safety and traceability
+%   protocols aligned with current standards, evolving the platform..."
+% After (folds in the industrial-grade/replanning/sensor-fusion items from paragraph 19):
+\revblue{...Future-work priorities include: long-term field validation under unconstrained, real-world outdoor conditions; migrating the arbitration logic to industrial-grade platforms with closed-loop dynamic gait replanning; integrating a formal sensor-fusion framework; and adaptive threshold learning and policy optimization to reduce manual tuning, together with safety and traceability protocols aligned with current standards ---evolving the platform from a functional prototype into a practical autonomous inspection tool.}
+
+% --- Final "In conclusion" paragraph ---
+% Before: "...the framework demonstrates that complex, multi-stimulus mobility decisions can
+%   be executed without heavy computational overhead or expensive training cycles. Future
+%   work will focus on migrating the arbitration logic to industrial-grade platforms,
+%   implementing closed-loop dynamic gait replanning, integrating formal sensor fusion, and
+%   validating the method in unconstrained outdoor environments."
+% After:
+\revblue{...the framework demonstrates that complex, multi-stimulus mobility decisions can be executed without heavy computational overhead or expensive training cycles, with the future-work priorities detailed above.}
