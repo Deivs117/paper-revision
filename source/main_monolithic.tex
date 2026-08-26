@@ -278,7 +278,7 @@ In Equations~\eqref{eq:L0}–\eqref{eq:L4} the subscripts are used to enumerate 
 
 Likewise, the indices $n$ and $r$ enumerate the neurons in the input, response, and auxiliary integrating layers, so that $I_n$, $R_n$, and $A_n$ represent the activity of the $n$-th neuron in each of these layers. In Equations~\eqref{eq:ResL}–\eqref{eq:AuxL}, each neuron $R_n$ and $A_n$ receives weighted contributions from all other neurons through the synaptic weights $W^{(\mathrm{IR})}_{n,i}$, $W^{(\mathrm{RR})}_{n,j}$, and $W^{(\mathrm{RA})}_{n,j}$, where the indices $i$ and $j$ are used only as summation variables. Finally, in Equation~\eqref{eq:L4} the index $r$ runs over all units $A_n$ to accumulate their activity in neuron $L_4$, which acts as a global integrator of the obstacle-stimulus intensity.
 
-The matrices $W^{(IR)}$, $W^{(RR)}$, and $W^{(RA)}$ denote connectivity weight matrices (binary or fixed patterns). They represent fixed structural inter-neuron connectivity in the Integrating Neural Network (see Fig.~\ref{fig:IntLidar}). In this implementation, $W$ matrices are fixed and uniform according to connectivity patterns adapted from \citet{sarvestani2013computational}.
+\revblue{The matrices $W^{(IR)}$, $W^{(RR)}$, and $W^{(RA)}$ denote connectivity weight matrices (binary or fixed patterns) representing fixed structural inter-neuron connectivity in the Integrating Neural Network (see Fig.~\ref{fig:IntLidar}), fixed and uniform in the same sense as the ring-to-integrator weights above.}
 
 The time constant $\tau_L$ (s) governs the dynamics of the directional tank neurons $L_0$--$L_4$, while $\tau_{IRA}$ (s) is the shared integration time constant of the input ($I_n$), response ($R_n$), and auxiliary ($A_n$) layers (see Table~\ref{table:LiDAR}).
 
@@ -437,7 +437,7 @@ $HI = 3.0$ defines a baseline forward bias to overcome motor static friction. Th
     \label{fig:Modos_Locomocion}
 \end{figure}
 
-The gait-decision module, implemented in the simulation (see graph in Figure~\ref{fig:Modos_Locomocion}), processes signals from the GPi and GPe together with IMU outputs to determine, according to the nature of the presented stimulus, the most appropriate locomotion mode. The omnidirectional mode is used to avoid obstacles and maintain continuous forward motion in the absence of stimuli. The differential-drive rolling mode enables approach toward appetitive stimuli and performs best on inclined terrain. Finally, the quadrupedal mode is used to avoid aversive stimuli or when gait stability is compromised. 
+\revblue{The gait-decision module, implemented in the simulation (see graph in Figure~\ref{fig:Modos_Locomocion}), processes signals from the GPi and GPe together with IMU outputs to select the locomotion mode following the stimulus-mode correspondence introduced above (obstacle $\to$ omnidirectional, appetitive $\to$ differential rolling, aversive $\to$ quadrupedal), additionally engaging the quadrupedal mode whenever gait stability is compromised, irrespective of stimulus.}
 
 Units $z_0$--$z_2$ and $z_{14}$--$z_{16}$ use a second-order Naka--Rushton nonlinearity to transform their net input into a bounded activation. The general form is given in Equation~\eqref{eq:Naka}, where $(\cdot)_+$ denotes the rectified (positive-part) operator.
 

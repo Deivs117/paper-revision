@@ -1,0 +1,34 @@
+% PATCH: R2-01 (17/13, 2nd pass - deeper redundancy sweep, methodology.tex)
+% Reviewer: 2
+% Target section: sections/methodology.tex
+% Requirement: Condense repetitive text.
+%
+% Finding #1: the stimulus-to-locomotion-mode correspondence (appetitive -> differential
+%   rolling, aversive -> quadrupedal, obstacle -> omnidirectional) was stated in full twice,
+%   ~250 lines apart: once in the "Neuronal Control System" intro (kept, first/canonical
+%   statement) and again, nearly verbatim with reordered clauses, in the "Gait Decision
+%   Module" intro. Condensed the second occurrence to a short cross-reference plus the one
+%   genuinely new detail it added (quadrupedal mode also engages whenever gait stability is
+%   compromised, regardless of stimulus).
+%
+% Finding #2: two back-to-back paragraphs (~20 lines apart, both in "Obstacle Sensory
+%   Module") separately cited \citet{sarvestani2013computational} to make the identical claim
+%   ("these weights/matrices are fixed and uniform") about two different weight groups
+%   (ring-to-integrator weights; then the IR/RR/RA connectivity matrices). Condensed the
+%   second occurrence to cross-reference the first instead of repeating the citation + claim.
+%
+% Status: applied
+
+% --- Finding #1 ---
+% Before: "The gait-decision module... The omnidirectional mode is used to avoid obstacles...
+%   The differential-drive rolling mode enables approach toward appetitive stimuli...
+%   Finally, the quadrupedal mode is used to avoid aversive stimuli or when gait stability is
+%   compromised."
+% After:
+\revblue{The gait-decision module, implemented in the simulation (see graph in Figure~\ref{fig:Modos_Locomocion}), processes signals from the GPi and GPe together with IMU outputs to select the locomotion mode following the stimulus-mode correspondence introduced above (obstacle $\to$ omnidirectional, appetitive $\to$ differential rolling, aversive $\to$ quadrupedal), additionally engaging the quadrupedal mode whenever gait stability is compromised, irrespective of stimulus.}
+
+% --- Finding #2 ---
+% Before: "...In this implementation, $W$ matrices are fixed and uniform according to
+%   connectivity patterns adapted from \citet{sarvestani2013computational}."
+% After:
+\revblue{The matrices $W^{(IR)}$, $W^{(RR)}$, and $W^{(RA)}$ denote connectivity weight matrices (binary or fixed patterns) representing fixed structural inter-neuron connectivity in the Integrating Neural Network (see Fig.~\ref{fig:IntLidar}), fixed and uniform in the same sense as the ring-to-integrator weights above.}
