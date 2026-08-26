@@ -1,0 +1,37 @@
+% PATCH: R2-01 (15/13, 2nd pass - deeper redundancy sweep)
+% Reviewer: 2
+% Target section: sections/results.tex
+% Requirement: Condense repetitive text / merge metric definitions. A closer re-read of
+%   results.tex (already 9 edits deep from the first R2-01 pass) surfaced a structural
+%   redundancy that survived the first pass: subsection "Quantitative Performance Analysis
+%   in Physical Multi-Stimuli and Variable Terrain Environments" (\label{ssec:QuantReal})
+%   described its four scenarios (Appetitive/Aversive/Complex/Obstacle Real) with a rigid
+%   3-paragraph-per-scenario template (switching-delay ECDF / neural Var(z) dynamics /
+%   Roll-Pitch RMS), restating every numeric value in prose that was also visible in the
+%   corresponding figure. The equivalent simulation-side subsection already resolved this
+%   exact pattern by consolidating its four scenarios into Table~\ref{tab:consolidated_
+%   simulation_metrics} (see patches/r2-01-03-single-multi-quant-vs-table.tex) -- the
+%   physical side never received the same treatment.
+% Fix: condensed each scenario's 3 paragraphs into 1 (mechanism/interpretation only, numeric
+%   values removed from prose) and added a new consolidated table (T_switch ECDF window,
+%   Var(z) peak/pattern, Roll/Pitch RMS range, settling time) mirroring the simulation
+%   table's structure. Net effect: results.tex 8645 -> 8532 words, despite the added table.
+% Status: applied
+
+% New table inserted after the Obstacle scenario paragraph, before the Energy Consumption
+% figure:
+\begin{table}[htbp]
+\centering
+\caption{Consolidated Quantitative Metrics for the Physical Multi-Stimuli Scenarios (three hardware replicates each). $T_{switch}$: mode-switching-delay ECDF window. $Var(z)$: basal-ganglia firing-variance peak/pattern. Roll/Pitch RMS: chassis attitude range during the active response window.}
+\label{tab:consolidated_physical_metrics}
+\begin{tabularx}{\textwidth}{l >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
+\toprule
+\textbf{Scenario} & \textbf{$T_{switch}$ ECDF} & \textbf{$Var(z)$ peak} & \textbf{Roll / Pitch RMS} & \textbf{Settles by} \\
+\midrule
+Appetitive & $3.0$--$9.0\,\text{s}$ (mechanically limited) & Sustained, non-zero post-completion & $3.0^{\circ}$--$3.5^{\circ}$ (cyclic) & $t > 25\,\text{s}$ \\
+Aversive   & ${\approx}\,0.0\,\text{s}$ (instantaneous) & Dual-peak (detection + retreat-FOV) & Pitch step $\uparrow$, Roll cyclic ($t{=}4$--$9\,\text{s}$) & $t > 10\,\text{s}$ \\
+Complex    & ${\approx}\,1.0$--$1.2\,\text{s}$ & Three-phase, peak $>30{,}000$ & Roll ${\approx}\,7^{\circ}$, Pitch ${\approx}\,5^{\circ} \to 4^{\circ}$ & $t > 25\,\text{s}$ \\
+Obstacle   & ${\approx}\,0.0\,\text{s}$ (instantaneous) & ${\approx}\,1100$, transient ($t < 7\,\text{s}$) & Roll $3.5^{\circ}$ (rhythmic) & $t = 8\,\text{s}$ \\
+\bottomrule
+\end{tabularx}
+\end{table}

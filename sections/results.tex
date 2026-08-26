@@ -814,11 +814,7 @@ This subsection presents a rigorous quantitative analysis of the proposed bio-in
   \label{fig:appetitive_real_compound}
 \end{figure*}
 
-\revblue{\textbf{Appetitive (see Figure~\ref{fig:appetitive_real_compound}):} The ECDF in Fig.~\ref{fig:appetitive_ecdf_real} shows the physical mode-switching latency ($T_{switch}$) settling across an extended window of $3.0$--$9.0\,\text{s}$. This shift does not stem from computational overhead within the basal ganglia network---which operates at the microsecond scale---but from the electro-mechanical trajectory smoothing and landing interpolation enforced by the low-level controllers during target approach, to prevent peak-torque damage on the 3D-printed actuators.}
-
-\revblue{The neural dynamics in Fig.~\ref{fig:appetitive_bg_real} show a prolonged exploration phase (${\approx}\,25\,\text{s}$, Trial 1) before the platform locks onto the appetitive cue, reflecting real-world camera field-of-view and illumination constraints. Notably, the neural firing variance $Var(z)$ does not decay to zero after mission completion: the stopping neuron ($X_{17}$) inhibits downstream motor commands to freeze the physical stance, but upstream sensory pathways continue registering the stimulus --- a continuous perception loop rather than a full sensory shutdown.}
-
-\revblue{The attitude dynamics in Fig.~\ref{fig:appetitive_rms_real} show coupled, cyclic Roll/Pitch RMS fluctuations settling between $3.0^{\circ}$ and $3.5^{\circ}$, reflecting body-shaking from the rhythmic weight-shifting quadrupedal gait over uncalibrated floor textures. After $t > 25\,\text{s}$, both curves flatten, confirming convergence to a stable, non-oscillatory equilibrium.}
+\revblue{\textbf{Appetitive (see Figure~\ref{fig:appetitive_real_compound}):} Quantitative metrics are consolidated in Table~\ref{tab:consolidated_physical_metrics}. The extended switching-delay window does not stem from computational overhead within the basal ganglia network---which operates at the microsecond scale---but from the electro-mechanical trajectory smoothing and landing interpolation enforced by the low-level controllers during target approach, to prevent peak-torque damage on the 3D-printed actuators. The prolonged pre-lock exploration phase reflects real-world camera field-of-view and illumination constraints; the sustained, non-zero firing variance after mission completion reflects that the stopping neuron ($X_{17}$) freezes the physical stance while upstream sensory pathways continue registering the stimulus, rather than a full sensory shutdown. The cyclic Roll/Pitch oscillations stem from body-shaking during the rhythmic weight-shifting quadrupedal gait over uncalibrated floor textures, flattening once the platform converges to a stable equilibrium.}
 
 %% ─── AVERSIVE SCENARIO ────────────────────────────────────────────────────
 
@@ -848,11 +844,7 @@ This subsection presents a rigorous quantitative analysis of the proposed bio-in
   \label{fig:aversive_real_compound}
 \end{figure*}
 
-\revblue{\textbf{Aversive (see Figure~\ref{fig:aversive_real_compound}):} Fig.~\ref{fig:aversive_ecdf_real} shows a near-instantaneous Heaviside step response centred at the origin ($t \approx 0.0\,\text{s}$) across all replicates. Unlike the Appetitive scenario's extended settling window, the Aversive pipeline behaves as an immediate emergency reflex: upon threat detection, the ROS~2 Control architecture bypasses heavy trajectory filtering to prioritise high-speed backward flight, minimising routing overhead to near-zero computational ticks under critical hazards.}
-
-\revblue{The neural dynamics in Fig.~\ref{fig:aversive_bg_real} show a consistent dual-peak pattern in the firing variance $Var(z)$ during the evasive manoeuvre: the first peak marks detection of the aversive stimulus and dispatch of the mode-switching command; a second, higher-energy peak follows as hardware inertia keeps the threat briefly within the camera's field of view during the retreat. Once the chassis clears the threat from view, the firing variance decays back to its resting state.}
-
-\revblue{The attitude micro-dynamics in Fig.~\ref{fig:aversive_rms_real} mirror this neural sequence: concurrent with the firing peaks ($t = 4$--$9\,\text{s}$), Pitch RMS shows a sharp step-like increase while Roll RMS displays cyclic walking oscillations, reflecting transient longitudinal tilt during the wheel-driven evasion. After the threat leaves the visual field ($t > 10\,\text{s}$), both metrics return to a flat baseline, confirming restored equilibrium.}
+\revblue{\textbf{Aversive (see Figure~\ref{fig:aversive_real_compound}):} Quantitative metrics are consolidated in Table~\ref{tab:consolidated_physical_metrics}. Unlike the Appetitive scenario's extended settling window, the Aversive pipeline behaves as an immediate emergency reflex: upon threat detection, the ROS~2 Control architecture bypasses heavy trajectory filtering to prioritise high-speed backward flight, minimising routing overhead to near-zero computational ticks under critical hazards. The dual-peak firing-variance pattern reflects, first, detection of the aversive stimulus and dispatch of the mode-switching command, then a second, higher-energy peak as hardware inertia keeps the threat briefly within the camera's field of view during the retreat, decaying back to its resting state once the chassis clears the threat from view. The concurrent Pitch step-increase and cyclic Roll oscillations reflect transient longitudinal tilt during the wheel-driven evasion, returning to a flat baseline once the threat leaves the visual field.}
 
 %% ─── COMPLEX MULTI-STIMULUS SCENARIO ─────────────────────────────────────
 
@@ -882,11 +874,7 @@ This subsection presents a rigorous quantitative analysis of the proposed bio-in
   \label{fig:complex_real_compound}
 \end{figure*}
 
-\revblue{\textbf{Complex (see Figure~\ref{fig:complex_real_compound}):} Under chained, safety-critical transformations over an extended hardware timeline, the ECDF in Fig.~\ref{fig:complex_ecdf_real} shows a deterministic step response settling around $1.0\,\text{s}$, fully consolidating by $1.2\,\text{s}$. This confirms that, under successive back-to-back transformations, the ROS~2 Control architecture effectively manages electromechanical inertia and trajectory blending, protecting the joints from cumulative torque stress.}
-
-\revblue{The neural dynamics in Fig.~\ref{fig:complex_bg_real} map the multi-stage decision process across three phases of firing variance $Var(z)$: during static obstacle avoidance ($0\,\text{s} < t < 15\,\text{s}$), a transient hyper-excitation peak exceeds $30{,}000$ in the most extreme trial, driven by the physical barrier's high spatial density flooding the camera sensor; a secondary activation wave between $t = 15$--$22\,\text{s}$ captures the emergency flight reflex to the aversive cue; after $t = 25\,\text{s}$, the platform enters the appetitive convergence phase, where $Var(z)$ dampens to a low-energy steady-state as the robot tracks the target to mission completion.}
-
-\revblue{The chassis attitude telemetry in Fig.~\ref{fig:complex_rms_real} mirrors this neural sequence: Roll and Pitch RMS show step-like increases during the high-transient windows, with asymmetric flanking manoeuvres exciting the transversal axis up to ${\approx}\,7^{\circ}$ and rapid backward accelerations peaking the longitudinal tilt at ${\approx}\,5^{\circ}$. During the final appetitive convergence phase ($t > 25\,\text{s}$), both metrics drop and stabilise around ${\approx}\,4^{\circ}$, confirming the wheel-driven configuration smooths parasitic oscillations during target approach.}
+\revblue{\textbf{Complex (see Figure~\ref{fig:complex_real_compound}):} Quantitative metrics are consolidated in Table~\ref{tab:consolidated_physical_metrics}. Under chained, safety-critical transformations over an extended hardware timeline, the deterministic step response confirms that, across successive back-to-back transformations, the ROS~2 Control architecture effectively manages electromechanical inertia and trajectory blending, protecting the joints from cumulative torque stress. The three-phase firing-variance profile maps the multi-stage decision process: a transient hyper-excitation peak during static obstacle avoidance, driven by the physical barrier's high spatial density flooding the camera sensor; a secondary activation wave capturing the emergency flight reflex to the aversive cue; and a low-energy steady-state as the robot tracks the appetitive target to mission completion. The chassis attitude telemetry mirrors this sequence, with asymmetric flanking manoeuvres exciting the transversal axis and rapid backward accelerations peaking the longitudinal tilt, before both metrics drop and stabilise during the final convergence phase, confirming the wheel-driven configuration smooths parasitic oscillations during target approach.}
 
 %% ─── STATIC OBSTACLE AVOIDANCE SCENARIO ──────────────────────────────────
 
@@ -916,11 +904,23 @@ This subsection presents a rigorous quantitative analysis of the proposed bio-in
   \label{fig:obstacle_real_compound}
 \end{figure*}
 
-\revblue{\textbf{Obstacle (see Figure~\ref{fig:obstacle_real_compound}):} Using physical barriers in the laboratory environment, the ECDF in Fig.~\ref{fig:obstacle_ecdf_real} shows an instantaneous Heaviside step response centred at the origin ($t \approx 0.0\,\text{s}$), consistent across all three replicates. This confirms the ROS~2 Control architecture processes physical geometric blockages as immediate emergency reflexes, bypassing trajectory ramp filters to guarantee instant hot-swapping of joint matrices.}
+\revblue{\textbf{Obstacle (see Figure~\ref{fig:obstacle_real_compound}):} Quantitative metrics are consolidated in Table~\ref{tab:consolidated_physical_metrics}. Using physical barriers in the laboratory environment, the instantaneous step response, consistent across all three replicates, confirms the ROS~2 Control architecture processes physical geometric blockages as immediate emergency reflexes, bypassing trajectory ramp filters to guarantee instant hot-swapping of joint matrices. The massive transient spike in firing variance---an order of magnitude above the colour-cue scenarios---reflects the volumetric obstacle flooding the camera sensor with spatial and depth data, triggering a hyper-excitation wave that drives aggressive lateral flanking, collapsing back to baseline once the chassis clears the obstacle's spatial boundary. The rhythmic Roll expansion with coupled Pitch variation reflects the weight-shifting needed for a tight lateral bypass, flattening once safety is secured.}
 
-\revblue{The neural dynamics in Fig.~\ref{fig:obstacle_bg_real} show, unlike the colour-cue scenarios, massive transient spikes in firing variance $Var(z)$ reaching ${\approx}\,1100$ within a condensed window ($0\,\text{s} < t < 7\,\text{s}$): the volumetric obstacle floods the camera sensor with spatial and depth data, triggering a hyper-excitation wave that drives aggressive lateral flanking. Once the chassis clears the obstacle's spatial boundary ($t > 7\,\text{s}$), the firing variance collapses back to baseline.}
-
-\revblue{The chassis attitude telemetry in Fig.~\ref{fig:obstacle_rms_real} confirms this cascade: during active avoidance ($t < 7\,\text{s}$), Roll RMS shows a rhythmic expansion peaking at $3.5^{\circ}$ alongside coupled Pitch RMS variations, reflecting the weight-shifting needed for a tight lateral bypass. By $t = 8\,\text{s}$, both curves flatten, confirming the platform's return to a stable equilibrium once safety is secured.}
+\begin{table}[htbp]
+\centering
+\caption{Consolidated Quantitative Metrics for the Physical Multi-Stimuli Scenarios (three hardware replicates each). $T_{switch}$: mode-switching-delay ECDF window. $Var(z)$: basal-ganglia firing-variance peak/pattern. Roll/Pitch RMS: chassis attitude range during the active response window.}
+\label{tab:consolidated_physical_metrics}
+\begin{tabularx}{\textwidth}{l >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
+\toprule
+\textbf{Scenario} & \textbf{$T_{switch}$ ECDF} & \textbf{$Var(z)$ peak} & \textbf{Roll / Pitch RMS} & \textbf{Settles by} \\
+\midrule
+Appetitive & $3.0$--$9.0\,\text{s}$ (mechanically limited) & Sustained, non-zero post-completion & $3.0^{\circ}$--$3.5^{\circ}$ (cyclic) & $t > 25\,\text{s}$ \\
+Aversive   & ${\approx}\,0.0\,\text{s}$ (instantaneous) & Dual-peak (detection + retreat-FOV) & Pitch step $\uparrow$, Roll cyclic ($t{=}4$--$9\,\text{s}$) & $t > 10\,\text{s}$ \\
+Complex    & ${\approx}\,1.0$--$1.2\,\text{s}$ & Three-phase, peak $>30{,}000$ & Roll ${\approx}\,7^{\circ}$, Pitch ${\approx}\,5^{\circ} \to 4^{\circ}$ & $t > 25\,\text{s}$ \\
+Obstacle   & ${\approx}\,0.0\,\text{s}$ (instantaneous) & ${\approx}\,1100$, transient ($t < 7\,\text{s}$) & Roll $3.5^{\circ}$ (rhythmic) & $t = 8\,\text{s}$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 %% ─── ENERGY CONSUMPTION ───────────────────────────────────────────────────
 
