@@ -548,26 +548,34 @@ decisión):**
 
 ---
 
-## 8. Estado Actualizado — Ronda N-02, físico (2026-08-27, 4 sub-rondas de auditoría)
+## 8. Estado Actualizado — Ronda N-02, físico (2026-08-27, 4 sub-rondas de auditoría + ejecución §9)
 
 Entre la publicación de este informe y hoy, `experiments/N-02-physical-figure-regeneration/` pasó por 4 rondas
 de regeneración + auditoría manual del autor (ver `experiments/N-02-physical-figure-regeneration/README.md` y
-`experiments/_plotting/vectorized/README.md` para el detalle técnico completo de cada una). **12 de 19 figuras
-físicas ya están aprobadas y listas para promover a `assets/`.** Este apartado solo resume el estado final por
-hallazgo de este informe — el detalle de *cómo* se llegó a cada resultado vive en los README ya citados.
+`experiments/_plotting/vectorized/README.md` para el detalle técnico completo de cada una), y el checklist de
+tareas de escritura de §9 ya se ejecutó por completo (commit `d93adbd`, filas `N-03`/`N-04` en `PROGRESS.md`,
+estado `applied`). **Las 12 figuras físicas + la fusión F-03 ya están promovidas a `assets/`, no solo
+aprobadas.** Este apartado solo resume el estado final por hallazgo de este informe — el detalle de *cómo* se
+llegó a cada resultado vive en los README ya citados; el detalle de *qué patch lo aplicó* vive en
+`patches/n-03-physical-figure-promotion-classifier-fusion.tex` y `patches/n-04-m01-m04-text-redaction.tex`.
 
-| Hallazgo de este informe | Estado final (2026-08-27) |
+| Hallazgo de este informe | Estado final (2026-08-27, actualizado tras N-03/N-04) |
 |---|---|
-| F-01 (traducción "March Decision Module"/"Auxiliar") — instancias **físicas** (`NEU_EST_UNIG_real`, `NEU_EST_MUL_real`, `NEU_IMU_real`, `NEU_IMU2_real`) | ✅ **Resuelto y aprobado.** Las 4 figuras se vectorizaron por intensidad de píxel (mismo método, generalizado a layouts multi-columna de 4/8/12 paneles) y ya usan "Gait Decision Module"/"Auxiliary" correctamente. Listas para promover. |
-| F-01 — instancias **de simulación** (`NEU_EST_UNIB`, `NEU_EST_UNIG`, `NEU_EST_MUL`, `NEU_IMU`, `NEU_IMU2`) | 🔲 Sin empezar — pertenece a `experiments/N-01-simulation-figure-regeneration/` (Grupo 1/2 del Informe 2 §3.4), no a N-02. No confundir con lo de arriba. |
-| F-02 (rejilla 4×3 de `fig1_*_macro.png`, simulación) | 🔲 Sin empezar — mismo caso, pertenece a N-01, no a N-02. |
-| F-03 (fusión `fig5`+`fig6` → panel 1×3) | ✅ **Resuelto y aprobado** (`fig_classifier_tradeoff_fused.png`, vectorizado). ⚠️ Ver nota de verificación numérica en la lista de tareas de escritura (§9) antes de dar la prosa por definitiva. |
-| F-04 (doble eje + umbral 3.7 en `GRAPH_IMU`/`GRAPH_IMU2`, **simulación**) | 🔲 Sin empezar — pertenece a N-01. La versión **física** (`GRAPH_IMU_real`/`GRAPH_IMU2_real`) resultó ser un caso distinto (ver F-05). |
-| F-05 (notación $N_0/N_1/N_2$ en `GRAPH_IMU_real`/`GRAPH_IMU2_real`) | ✅ **Resuelto y aprobado.** Vectorizadas (resultaron ser heatmaps categóricos, no series continuas) con la notación ya incorporada en la imagen. |
-| F-06 (reescalar eje Y de `fig4_architecture_ablation.png`) | ✅ **Resuelto y aprobado.** Regenerada desde los valores ya citados en prosa (`results.tex:598`), sin necesidad de vectorizar. Sin ninguna referencia al ID interno "F-06" en la imagen. |
-| — (hallazgo nuevo, no estaba en este informe) | **`*_Real_Plot_2_Basal_Ganglia_Dynamics.png` (12 figuras: 4 escenarios × esta figura) eliminada por decisión del autor**, respondiendo al comentario del revisor "cut repetitive descriptions, duplicated neural raster plots and identical stability curves". Su contenido (firing variance) se fusionó como panel A dentro de `*_Real_Plot_3` (que ahora es un compuesto A+B de 2 paneles, con sombreado rojo/azul de presencia de estímulo en el panel A para Appetitive/Aversive/Complex — NO para Obstacle). ✅ Las 4 `*_Real_Plot_3` regeneradas están aprobadas. **La actualización de `results.tex` para reflejar esto en LaTeX es una tarea sistemática ya determinada — ver §9.** |
-| — (hallazgo nuevo) | `FigReal_Morphological_Transition_Energy.png` **rechazada por el autor** — debe responder directamente al pedido del revisor sobre "long-term average energy consumption... for onboard deployment", mostrando consumo durante/a lo largo de UNA transición de modo, no dónde se generó el pico actual. **3 alternativas de diseño están propuestas pero sin decidir** (ver `experiments/N-02-physical-figure-regeneration/README.md` §"Round 2"). Esto NO es una tarea sistemática — sigue en fase de planeación. |
+| F-01 (traducción "March Decision Module"/"Auxiliar") — instancias **físicas** (`NEU_EST_UNIG_real`, `NEU_EST_MUL_real`, `NEU_IMU_real`, `NEU_IMU2_real`) | ✅ **Resuelto, aprobado y promovido a `assets/`.** Las 4 figuras se vectorizaron por intensidad de píxel (mismo método, generalizado a layouts multi-columna de 4/8/12 paneles) y ya usan "Gait Decision Module"/"Auxiliary" correctamente. |
+| F-01 — instancias **de simulación** (`NEU_EST_UNIB`, `NEU_EST_UNIG`, `NEU_EST_MUL`, `NEU_IMU`, `NEU_IMU2`) | 🔲 Sin empezar — pertenece a `experiments/N-01-simulation-figure-regeneration/` (Grupo 1/2 del Informe 2 §3.4), no a N-02/N-03/N-04. No confundir con lo de arriba. |
+| F-02 (rejilla 4×3 de `fig1_*_macro.png`, simulación) | 🔲 Sin empezar — mismo caso, pertenece a N-01. |
+| F-03 (fusión `fig5`+`fig6` → panel 1×3) | ✅ **Resuelto, aprobado y promovido** (`fig_classifier_tradeoff_fused.png`, vectorizado). La verificación numérica que este informe dejaba pendiente en §9.3 ya se cerró: el autor confirmó (2026-08-27) que los valores vectorizados son los correctos, y `results.tex:607` se corrigió de SVM-RBF/RF F1=0.900/0.995 (prosa desactualizada) a F1=0.857/0.947 (`patches/n-03-...`). |
+| F-04 (doble eje + umbral 3.7 en `GRAPH_IMU`/`GRAPH_IMU2`, **simulación**) | 🔲 Sin empezar — pertenece a N-01. La versión **física** (`GRAPH_IMU_real`/`GRAPH_IMU2_real`) resultó ser un caso distinto (ver F-05), y esa sí está promovida. |
+| F-05 (notación $N_0/N_1/N_2$ en `GRAPH_IMU_real`/`GRAPH_IMU2_real`) | ✅ **Resuelto, aprobado y promovido a `assets/`.** Vectorizadas (resultaron ser heatmaps categóricos, no series continuas) con la notación ya incorporada en la imagen. |
+| F-06 (reescalar eje Y de `fig4_architecture_ablation.png`) | ✅ **Resuelto, aprobado y promovido a `assets/`.** Regenerada desde los valores ya citados en prosa (`results.tex:598`), sin necesidad de vectorizar. Sin ninguna referencia al ID interno "F-06" en la imagen. |
+| — (hallazgo nuevo, no estaba en este informe) | **`*_Real_Plot_2_Basal_Ganglia_Dynamics.png` (12 figuras: 4 escenarios × esta figura) eliminada por decisión del autor**, respondiendo al comentario del revisor "cut repetitive descriptions, duplicated neural raster plots and identical stability curves". Su contenido (firing variance) se fusionó como panel A dentro de `*_Real_Plot_3` (que ahora es un compuesto A+B de 2 paneles, con sombreado rojo/azul de presencia de estímulo en el panel A para Appetitive/Aversive/Complex — NO para Obstacle). ✅ **Las 4 `*_Real_Plot_3` regeneradas están aprobadas y promovidas, y la actualización de `results.tex` (subfigura eliminada de los 4 bloques `figure*`, captions reescritos) ya está aplicada** (`patches/n-03-...`) — ya no es una tarea pendiente. |
+| — (hallazgo nuevo) | `FigReal_Morphological_Transition_Energy.png` **sigue rechazada por el autor** — debe responder directamente al pedido del revisor sobre "long-term average energy consumption... for onboard deployment", mostrando consumo durante/a lo largo de UNA transición de modo, no dónde se generó el pico actual. **3 alternativas de diseño siguen propuestas pero sin decidir** (ver `experiments/N-02-physical-figure-regeneration/README.md` §"Round 2") — deliberadamente fuera de alcance de N-03/N-04 (§9.6). Sigue en fase de planeación. |
+| M-01–M-04 (discrepancias texto↔figura, §2) | ✅ **Resuelto.** Los 5 pasajes de `results.tex` (Appetitive Targeting, caption `tab:consolidated_simulation_metrics`, Limitations, Tipover Risk, $T_{switch}$/Heaviside + su caption, phase-space + su caption) se reescribieron con los valores reales verificados en Informe 2 §0, envueltos en `\revblue{}` (`patches/n-04-m01-m04-text-redaction.tex`). Ya no es una tarea de redacción pendiente. |
 | Tipografía de figuras | Serif (10/11/12pt según elemento) es ahora el estilo **por defecto del proyecto** (`.claude/skills/scientific-visualization/assets/publication.mplstyle`), confirmado contra `assets/fig1_Obstacle_macro.png`. Aplica automáticamente a cualquier figura futura, incluidas las de N-01 cuando se generen. |
+
+**Lo único que sigue abierto de este informe:** F-01/F-02/F-04 en su variante de **simulación** (pertenecen a
+`N-01-simulation-figure-regeneration/`, sin empezar) y `FigReal_Morphological_Transition_Energy.png` (rechazada,
+sin diseño decidido). Todo lo demás listado en este §8 y en el checklist de §9 está cerrado.
 
 ---
 
@@ -645,16 +653,15 @@ Reemplazar los dos bloques `figure` (~líneas 609-614 `fig5_classifier_compariso
 ⚠️ **No fusionar los dos párrafos de prosa** (F-03 original lo sugería como posible, pero no es sistemático —
 requiere criterio editorial). Dejarlos como dos párrafos separados citando la misma figura fusionada.
 
-⚠️ **Verificación numérica pendiente antes de dar esto por cerrado, no ejecutar a ciegas:** la prosa actual
-(`results.tex:607`) cita SVM-RBF F1=0.900 y Random Forest F1=0.995; la extracción por vectorización de
-`fig5_classifier_comparison.png` (`experiments/_plotting/vectorized/classifier_fig5.csv`) da SVM-RBF F1≈0.857 y
-Random Forest F1≈0.947 — una diferencia de ~4-5 puntos porcentuales, mayor que el error esperable de una
-extracción de píxeles bien calibrada. Las cifras de latencia (`results.tex:616`) sí coinciden casi exactamente
-con la extracción (1.64 vs. 1.63 µs, 23.5 vs. 23.4 µs, 41.0 vs. 40.7 µs, 0.54 vs. 0.53 µs). **No cambiar los
-números de F1 en la prosa sin que el autor confirme cuál de las dos fuentes (prosa ya escrita vs. extracción
-nueva) es la correcta** — podría ser imprecisión de la extracción del panel (a) específicamente, o podría ser que
-la prosa ya estaba desactualizada igual que pasó con M-01–M-04. Documentar la discrepancia en `PROGRESS.md` al
-registrar esta fila, no resolverla unilateralmente.
+✅ **Verificación numérica resuelta (2026-08-27).** La prosa original (`results.tex:607`) citaba SVM-RBF F1=0.900
+y Random Forest F1=0.995; la extracción por vectorización de `fig5_classifier_comparison.png`
+(`experiments/_plotting/vectorized/classifier_fig5.csv`) daba SVM-RBF F1≈0.857 y Random Forest F1≈0.947 — una
+diferencia de ~4-5 puntos porcentuales, mayor que el error esperable de una extracción de píxeles bien calibrada.
+Las cifras de latencia (`results.tex:616`) sí coincidían casi exactamente con la extracción (1.64 vs. 1.63 µs,
+23.5 vs. 23.4 µs, 41.0 vs. 40.7 µs, 0.54 vs. 0.53 µs), lo que ya apuntaba a que solo el panel (a) tenía el
+problema. **El autor confirmó que la extracción vectorizada es la correcta y la prosa era la desactualizada**
+(mismo patrón que M-01–M-04) — `results.tex:607` ya se corrigió a F1=0.857/0.947, envuelto en `\revblue{}`
+(`patches/n-03-physical-figure-promotion-classifier-fusion.tex`, fila `N-03` en `PROGRESS.md`).
 
 ### 9.4 `sections/results.tex` — redacción M-01–M-04 (ya verificado, Informe 2 §0)
 
