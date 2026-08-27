@@ -545,3 +545,152 @@ decisión):**
     cuando todas las filas que generen entre los dos hayan alcanzado al menos estado `applied` en `PROGRESS.md`
     (regla del proyecto) — se mueven a la vez porque están cruzados y dejar uno en `pending/` sin el otro
     rompería la trazabilidad entre "por qué" y "cómo".
+
+---
+
+## 8. Estado Actualizado — Ronda N-02, físico (2026-08-27, 4 sub-rondas de auditoría)
+
+Entre la publicación de este informe y hoy, `experiments/N-02-physical-figure-regeneration/` pasó por 4 rondas
+de regeneración + auditoría manual del autor (ver `experiments/N-02-physical-figure-regeneration/README.md` y
+`experiments/_plotting/vectorized/README.md` para el detalle técnico completo de cada una). **12 de 19 figuras
+físicas ya están aprobadas y listas para promover a `assets/`.** Este apartado solo resume el estado final por
+hallazgo de este informe — el detalle de *cómo* se llegó a cada resultado vive en los README ya citados.
+
+| Hallazgo de este informe | Estado final (2026-08-27) |
+|---|---|
+| F-01 (traducción "March Decision Module"/"Auxiliar") — instancias **físicas** (`NEU_EST_UNIG_real`, `NEU_EST_MUL_real`, `NEU_IMU_real`, `NEU_IMU2_real`) | ✅ **Resuelto y aprobado.** Las 4 figuras se vectorizaron por intensidad de píxel (mismo método, generalizado a layouts multi-columna de 4/8/12 paneles) y ya usan "Gait Decision Module"/"Auxiliary" correctamente. Listas para promover. |
+| F-01 — instancias **de simulación** (`NEU_EST_UNIB`, `NEU_EST_UNIG`, `NEU_EST_MUL`, `NEU_IMU`, `NEU_IMU2`) | 🔲 Sin empezar — pertenece a `experiments/N-01-simulation-figure-regeneration/` (Grupo 1/2 del Informe 2 §3.4), no a N-02. No confundir con lo de arriba. |
+| F-02 (rejilla 4×3 de `fig1_*_macro.png`, simulación) | 🔲 Sin empezar — mismo caso, pertenece a N-01, no a N-02. |
+| F-03 (fusión `fig5`+`fig6` → panel 1×3) | ✅ **Resuelto y aprobado** (`fig_classifier_tradeoff_fused.png`, vectorizado). ⚠️ Ver nota de verificación numérica en la lista de tareas de escritura (§9) antes de dar la prosa por definitiva. |
+| F-04 (doble eje + umbral 3.7 en `GRAPH_IMU`/`GRAPH_IMU2`, **simulación**) | 🔲 Sin empezar — pertenece a N-01. La versión **física** (`GRAPH_IMU_real`/`GRAPH_IMU2_real`) resultó ser un caso distinto (ver F-05). |
+| F-05 (notación $N_0/N_1/N_2$ en `GRAPH_IMU_real`/`GRAPH_IMU2_real`) | ✅ **Resuelto y aprobado.** Vectorizadas (resultaron ser heatmaps categóricos, no series continuas) con la notación ya incorporada en la imagen. |
+| F-06 (reescalar eje Y de `fig4_architecture_ablation.png`) | ✅ **Resuelto y aprobado.** Regenerada desde los valores ya citados en prosa (`results.tex:598`), sin necesidad de vectorizar. Sin ninguna referencia al ID interno "F-06" en la imagen. |
+| — (hallazgo nuevo, no estaba en este informe) | **`*_Real_Plot_2_Basal_Ganglia_Dynamics.png` (12 figuras: 4 escenarios × esta figura) eliminada por decisión del autor**, respondiendo al comentario del revisor "cut repetitive descriptions, duplicated neural raster plots and identical stability curves". Su contenido (firing variance) se fusionó como panel A dentro de `*_Real_Plot_3` (que ahora es un compuesto A+B de 2 paneles, con sombreado rojo/azul de presencia de estímulo en el panel A para Appetitive/Aversive/Complex — NO para Obstacle). ✅ Las 4 `*_Real_Plot_3` regeneradas están aprobadas. **La actualización de `results.tex` para reflejar esto en LaTeX es una tarea sistemática ya determinada — ver §9.** |
+| — (hallazgo nuevo) | `FigReal_Morphological_Transition_Energy.png` **rechazada por el autor** — debe responder directamente al pedido del revisor sobre "long-term average energy consumption... for onboard deployment", mostrando consumo durante/a lo largo de UNA transición de modo, no dónde se generó el pico actual. **3 alternativas de diseño están propuestas pero sin decidir** (ver `experiments/N-02-physical-figure-regeneration/README.md` §"Round 2"). Esto NO es una tarea sistemática — sigue en fase de planeación. |
+| Tipografía de figuras | Serif (10/11/12pt según elemento) es ahora el estilo **por defecto del proyecto** (`.claude/skills/scientific-visualization/assets/publication.mplstyle`), confirmado contra `assets/fig1_Obstacle_macro.png`. Aplica automáticamente a cualquier figura futura, incluidas las de N-01 cuando se generen. |
+
+---
+
+## 9. Tareas de Escritura Sistemáticas (2026-08-27) — para ejecutar HOY
+
+**Estas son tareas ya decididas por el autor, sin ambigüedad de contenido pendiente — solo ejecución mecánica.**
+No incluyen: la reescritura de `*_Real_Plot_2` como texto/estadística de repetibilidad (sigue sin decidir), ni
+`FigReal_Morphological_Transition_Energy` (sigue sin decidir), ni nada de `experiments/N-01-...` (simulación,
+no ha empezado). Seguir el flujo normal del repo: `sections/` + fila de `PROGRESS.md` + `patches/` — nunca editar
+`source/main_monolithic.tex` a mano, y correr `scripts/validate_tex.sh`/`scripts/check_roundtrip.sh` antes de
+cualquier commit que toque `sections/`.
+
+### 9.1 Promover las 12 figuras aprobadas a `assets/`
+
+Usar `scripts/promote_figure.sh <origen> <destino> [--force]`. Las primeras 9 reemplazan un archivo existente en
+`assets/` con el mismo nombre → necesitan `--force`. `fig_classifier_tradeoff_fused.png` es un nombre nuevo → sin
+`--force`.
+
+```
+scripts/promote_figure.sh experiments/N-02-physical-figure-regeneration/output/fig1_confusion_matrix.png assets/fig1_confusion_matrix.png --force
+scripts/promote_figure.sh experiments/N-02-physical-figure-regeneration/output/fig4_architecture_ablation.png assets/fig4_architecture_ablation.png --force
+scripts/promote_figure.sh experiments/N-02-physical-figure-regeneration/output/GRAPH_IMU_real.png assets/GRAPH_IMU_real.png --force
+scripts/promote_figure.sh experiments/N-02-physical-figure-regeneration/output/GRAPH_IMU2_real.png assets/GRAPH_IMU2_real.png --force
+scripts/promote_figure.sh experiments/N-02-physical-figure-regeneration/output/NEU_EST_UNIG_real.png assets/NEU_EST_UNIG_real.png --force
+scripts/promote_figure.sh experiments/N-02-physical-figure-regeneration/output/NEU_EST_MUL_real.png assets/NEU_EST_MUL_real.png --force
+scripts/promote_figure.sh experiments/N-02-physical-figure-regeneration/output/NEU_IMU_real.png assets/NEU_IMU_real.png --force
+scripts/promote_figure.sh experiments/N-02-physical-figure-regeneration/output/NEU_IMU2_real.png assets/NEU_IMU2_real.png --force
+scripts/promote_figure.sh experiments/N-02-physical-figure-regeneration/output/FigReal_Terrain_Latencies_4Panels.png assets/FigReal_Terrain_Latencies_4Panels.png --force
+scripts/promote_figure.sh experiments/N-02-physical-figure-regeneration/output/Appetitive_Real_Plot_1_Switching_Delay_ECDF.png assets/Appetitive_Real_Plot_1_Switching_Delay_ECDF.png --force
+scripts/promote_figure.sh experiments/N-02-physical-figure-regeneration/output/Aversive_Real_Plot_1_Switching_Delay_ECDF.png assets/Aversive_Real_Plot_1_Switching_Delay_ECDF.png --force
+scripts/promote_figure.sh experiments/N-02-physical-figure-regeneration/output/Complex_Real_Plot_1_Switching_Delay_ECDF.png assets/Complex_Real_Plot_1_Switching_Delay_ECDF.png --force
+scripts/promote_figure.sh experiments/N-02-physical-figure-regeneration/output/Obstacle_Real_Plot_1_Switching_Delay_ECDF.png assets/Obstacle_Real_Plot_1_Switching_Delay_ECDF.png --force
+scripts/promote_figure.sh experiments/N-02-physical-figure-regeneration/output/Appetitive_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png assets/Appetitive_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png --force
+scripts/promote_figure.sh experiments/N-02-physical-figure-regeneration/output/Aversive_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png assets/Aversive_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png --force
+scripts/promote_figure.sh experiments/N-02-physical-figure-regeneration/output/Complex_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png assets/Complex_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png --force
+scripts/promote_figure.sh experiments/N-02-physical-figure-regeneration/output/Obstacle_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png assets/Obstacle_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png --force
+scripts/promote_figure.sh experiments/N-02-physical-figure-regeneration/output/fig_classifier_tradeoff_fused.png assets/fig_classifier_tradeoff_fused.png
+```
+
+Después: `git rm assets/Appetitive_Real_Plot_2_Basal_Ganglia_Dynamics.png assets/Aversive_Real_Plot_2_Basal_Ganglia_Dynamics.png assets/Complex_Real_Plot_2_Basal_Ganglia_Dynamics.png assets/Obstacle_Real_Plot_2_Basal_Ganglia_Dynamics.png` (las 4 quedan sin ninguna referencia en `results.tex` una vez aplicado 9.2 — confirmado por grep, `fig:*_bg_real` no se cita en ningún otro punto de la prosa).
+
+### 9.2 `sections/results.tex` — eliminar el panel `_Real_Plot_2` de los 4 bloques `figure*`
+
+Los 4 bloques están en `results.tex` (aprox. líneas 791-905 al momento de este informe — confirmar número exacto
+antes de editar, puede haber corrido). Cada uno es un `figure*` con 3 `subfigure` (a, b, c) + una `\caption{}`
+externa que narra los 3 paneles a mano. Para cada uno de los 4 (Appetitive, Aversive, Complex, Obstacle):
+
+1. **Borrar por completo** el bloque `\begin{subfigure}...\end{subfigure}` que incluye
+   `*_Real_Plot_2_Basal_Ganglia_Dynamics.png` (subfigura "b", con su propio `\caption{Basal ganglia neural
+   dynamics.}` y `\label{fig:*_bg_real}`) — y el `\hfill` que lo separaba de la subfigura siguiente.
+2. Las 2 subfiguras restantes se re-letran solas (el paquete `subcaption` las numera por posición, no hace falta
+   tocar sus captions cortos "Switching delay ECDF."/"Pitch/Roll RMS attitude dynamics.").
+3. **Editar el `\caption{}` externo del `figure*`** (la descripción larga "(a)...(b)...(c)..." escrita a mano) —
+   quitar la frase "(b) ..." y renombrar "(c)" a "(b)", describiendo que el panel ahora contiene AMBOS: la
+   dinámica neuronal (arriba) y la cinemática (abajo). Texto sugerido por escenario (ajustar redacción si no
+   fluye, pero mantener el contenido factual exacto):
+   - **Appetitive** (`\label{fig:appetitive_real_compound}`): `"(b) Coupled neural and kinematic response: (top) temporal evolution of the basal ganglia firing variance $Var(z)$ with red/blue stimulus-presence shading; (bottom) Roll and Pitch RMS attitude profile throughout the trial."`
+   - **Aversive** (`\label{fig:aversive_real_compound}`): `"(b) Coupled neural and kinematic response: (top) neural firing variance $Var(z)$ displaying the dual-peak evasion signature, with red/blue stimulus-presence shading; (bottom) chassis attitude micro-dynamics during and after the evasive manoeuvre."`
+   - **Complex** (`\label{fig:complex_real_compound}`): `"(b) Coupled neural and kinematic response: (top) three-phase neural variance profile mapping obstacle avoidance, aversive escape, and appetitive convergence phases, with red/blue stimulus-presence shading; (bottom) step-like attitude excursions during transitions and final stabilisation at ${\approx}\,4^{\circ}$."`
+   - **Obstacle** (`\label{fig:obstacle_real_compound}`): `"(b) Coupled neural and kinematic response: (top) massive transient hyper-excitation peak in neural firing variance $Var(z)$ induced by volumetric geometric input (no stimulus-presence shading — this scenario uses a non-chromatic obstacle cue); (bottom) rhythmic Roll RMS expansion during active lateral flanking and post-avoidance stabilisation."`
+4. **No tocar** los 4 párrafos `\revblue{\textbf{Appetitive/Aversive/Complex/Obstacle (see Figure~...}}` que
+   siguen a cada figura — siguen siendo válidos tal cual, ya narran el contenido combinado sin depender del
+   subfigure eliminado. Confirmado por lectura completa de los 4 (líneas ~817, ~847, ~877, ~907).
+5. Envolver cada `\caption{}` editado en `\revblue{}` si no lo está ya (regla permanente del proyecto — texto
+   materialmente cambiado esta ronda).
+
+### 9.3 `sections/results.tex` — fusión F-03 (clasificador)
+
+Reemplazar los dos bloques `figure` (~líneas 609-614 `fig5_classifier_comparison.png` y ~618-623
+`fig6_computational_cost.png`) por uno solo apuntando a `fig_classifier_tradeoff_fused.png`, con
+`\label{fig:classifier_tradeoff}`. Actualizar las dos referencias:
+- `results.tex:607` `Figure~\ref{fig:classifier_comparison}` → `Figure~\ref{fig:classifier_tradeoff}`
+- `results.tex:616` `Figure~\ref{fig:computational_cost}` → `Figure~\ref{fig:classifier_tradeoff}`
+
+⚠️ **No fusionar los dos párrafos de prosa** (F-03 original lo sugería como posible, pero no es sistemático —
+requiere criterio editorial). Dejarlos como dos párrafos separados citando la misma figura fusionada.
+
+⚠️ **Verificación numérica pendiente antes de dar esto por cerrado, no ejecutar a ciegas:** la prosa actual
+(`results.tex:607`) cita SVM-RBF F1=0.900 y Random Forest F1=0.995; la extracción por vectorización de
+`fig5_classifier_comparison.png` (`experiments/_plotting/vectorized/classifier_fig5.csv`) da SVM-RBF F1≈0.857 y
+Random Forest F1≈0.947 — una diferencia de ~4-5 puntos porcentuales, mayor que el error esperable de una
+extracción de píxeles bien calibrada. Las cifras de latencia (`results.tex:616`) sí coinciden casi exactamente
+con la extracción (1.64 vs. 1.63 µs, 23.5 vs. 23.4 µs, 41.0 vs. 40.7 µs, 0.54 vs. 0.53 µs). **No cambiar los
+números de F1 en la prosa sin que el autor confirme cuál de las dos fuentes (prosa ya escrita vs. extracción
+nueva) es la correcta** — podría ser imprecisión de la extracción del panel (a) específicamente, o podría ser que
+la prosa ya estaba desactualizada igual que pasó con M-01–M-04. Documentar la discrepancia en `PROGRESS.md` al
+registrar esta fila, no resolverla unilateralmente.
+
+### 9.4 `sections/results.tex` — redacción M-01–M-04 (ya verificado, Informe 2 §0)
+
+Reescribir, envuelto en `\revblue{}`, usando exactamente los valores de la tabla en
+`intake/pending/R02-01_data_traceability_and_plotting_plan.md` §0 (ya verificados contra `experiments/` — esto
+NO requiere más verificación, solo redacción):
+- `results.tex:77` (párrafo Appetitive Targeting): quitar "decision latency stays clamped at ≈47 ms", reemplazar
+  por una descripción que refleje que la latencia varía con el ruido sensorial (rango real 15 ms–3.07 s, mínimo en
+  $\sigma=0$).
+- `results.tex:178` (caption `tab:consolidated_simulation_metrics`): quitar "Latency remained constant at ≈47 ms"
+  (la tabla no tiene columna de latencia — o se agrega la columna con los valores reales, o se quita la frase).
+- `results.tex:276` (párrafo Tipover Risk): reemplazar "$\mu_{TR}\approx 0.42$ ... severe monotonic risk
+  escalation ... peak of $TR\approx 0.58$" por el perfil real: plano en TR≈0.58–0.60 en ambos terrenos, sin
+  escalada, con un pico transitorio aislado en terreno rugoso (t=-1.3 a -0.5s, hasta TR≈0.77).
+- `results.tex:279` (párrafo $T_{switch}$/Heaviside): quitar "invariant at $T_{switch}=0.3$ ms ... completely free
+  from chattering" — el terreno rugoso tiene una cola real hasta 600 ms en 13% de los ensayos (2/15); el terreno
+  con pendiente tiene una escalera de 5-6 saltos entre 0.8-1.9 ms, no un valor único.
+- `results.tex:281` (párrafo phase-space): reemplazar $\mu_\phi/\mu_\theta$ citados y "zero cluster overlap" por
+  los valores reales (rugoso: roll≈1.59°, pitch≈1.67°; pendiente: roll≈1.47°, pitch≈2.29°) y reconocer el
+  solapamiento real en roll entre ambos terrenos.
+
+### 9.5 Registro en `PROGRESS.md`
+
+Dar de alta filas `N-xx`/`C-xx` (usar `scripts/next_id.sh N` / `scripts/next_id.sh C`, nunca a mano) para: (a) la
+promoción de las 12 figuras físicas aprobadas + fusión F-03, `Category: Escritura`, `Data source:
+experiments/N-02-physical-figure-regeneration/`; (b) la redacción M-01–M-04, `Category: Escritura`, `Data
+source: —` (es solo texto, ya verificado). Actualizar el estado de la fila `N-02` existente a `applied` una vez
+promovidas las imágenes y actualizado `results.tex`. Correr `scripts/validate_tex.sh` y
+`scripts/check_roundtrip.sh` antes de cualquier commit, como siempre.
+
+### 9.6 Explícitamente FUERA de alcance para hoy (no tocar)
+
+- Contenido de reemplazo en prosa para lo que mostraba `*_Real_Plot_2` como figura independiente — la fusión
+  visual en 9.2 ya lo resuelve a nivel de figura; **no inventar además una nueva sección/tabla de
+  "repeatability statistics"** sin que el autor lo pida — sigue siendo una decisión de escritura sin tomar (ver
+  §8 arriba).
+- `FigReal_Morphological_Transition_Energy.png` — sigue rechazada, sin diseño decidido.
+- Cualquier cosa de `experiments/N-01-simulation-figure-regeneration/` — no ha empezado la revisión de esas
+  figuras todavía.

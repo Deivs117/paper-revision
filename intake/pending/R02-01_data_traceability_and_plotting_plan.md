@@ -468,3 +468,11 @@ código, documentadas en detalle en los README de N-01/N-02 — resumen aquí pa
 Estado de figuras físicas de vectorización pendiente (5 de 7): `GRAPH_IMU_real`, `GRAPH_IMU2_real`,
 `NEU_IMU_real`, `NEU_IMU2_real`, `FigReal_Terrain_Latencies_4Panels` — ver
 `experiments/N-02-physical-figure-regeneration/README.md` §"Remaining work" para el plan concreto.
+
+**Actualización 2026-08-27 (cierre de N-02):** las 5 figuras de arriba, más `NEU_EST_UNIG_real`/`NEU_EST_MUL_real`
+y la fusión F-03, ya se completaron y pasaron 4 rondas de auditoría del autor — **12 de 19 figuras físicas
+aprobadas, listas para promover a `assets/`.** El detalle completo de estado por hallazgo y el checklist de
+tareas de escritura sistemáticas para ejecutar hoy ya NO vive aquí — ver
+`R02-01_metric_and_figure_audit.md` §8 (estado) y §9 (tareas), para no mantener dos copias del mismo checklist.
+Este documento (Informe 2) sigue siendo la referencia para el *método* de vectorización/extracción; Informe 1 es
+la referencia para *qué hacer ahora* con el resultado.
