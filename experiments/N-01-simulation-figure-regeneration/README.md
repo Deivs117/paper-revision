@@ -64,6 +64,10 @@ latency values) cannot be reproduced from anything in this repository; if that f
 stay in the paper as-is, it should be treated as a vectorization candidate (Informe 2 §2 method),
 not a CSV rebuild.
 
+**Full list for the simulation team:** this is one of 10 items (4 blocking, 6 minor) found while
+building this pipeline — see `experiments/simulation/SIMULATION_TEAM_ACTION_ITEMS.md` for the
+complete, evidence-backed list to hand off before the re-run.
+
 ## Output
 
 - `output/fig1_noise_robustness_grid.png` — fused 4x3 grid replacing the 4 `fig1_*_macro.png`.

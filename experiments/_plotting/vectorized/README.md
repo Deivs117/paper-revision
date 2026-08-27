@@ -27,11 +27,18 @@ D-11 (isolate each data series by its known plot color, calibrate axes from know
 | `classifier_fig5.csv` | `assets/fig5_classifier_comparison.png` | `extract_fig5.py` | Re-plotted as panel (a) of `fig_classifier_tradeoff_fused.png` (N-02 output) — bar ordering/relative heights per classifier match the original (Random Forest highest across all 4 metrics, Logistic Reg. lowest, SVM/MLP in between) to visual inspection. Absolute values (e.g. accuracy 0.945–0.950 for Random Forest) were **not independently confirmed against a raw training log** (none survives) — this is the PNG's content read at pixel precision, not a re-run of the classifier. |
 | `classifier_fig6.csv` | `assets/fig6_computational_cost.png` | `extract_fig6.py` | Re-plotted as panels (b)/(c) of the same fused figure — log-scale ordering matches the original exactly (latency: Random Forest > SVM > MLP > Logistic Reg.; model size: SVM > MLP > Random Forest > Logistic Reg.) and the two panels were calibrated **independently** (different px/decade spacing measured directly from each panel's own gridlines, not assumed shared). |
 
-## Not yet extracted (Tarea 3, remaining work)
+## Extracted 2026-08-27 (round 2 — the "harder tier")
 
-Five physical terrain-IMU figures still need this treatment — flagged as the harder tier (dense,
-continuous time series vs. the discrete bar charts above) rather than rushed with unreliable
-calibration: `GRAPH_IMU_real.png`, `GRAPH_IMU2_real.png`, `NEU_IMU_real.png`, `NEU_IMU2_real.png`,
-`FigReal_Terrain_Latencies_4Panels.png`. See
-`experiments/N-02-physical-figure-regeneration/README.md` §"Remaining work" for the concrete next
-steps and why they were sequenced after the two done here.
+| CSV | Source PNG | Script | Validation |
+|---|---|---|---|
+| `terrain_latencies.csv` | `FigReal_Terrain_Latencies_4Panels.png` | `extract_terrain_latencies.py` | Step-ECDF, N=15 replicates/panel — extraction locates each visible step-jump's x-position per panel, calibrated independently per panel from its own dashed vertical gridlines (values read off the published tick labels). Re-plotted (`imu_terrain_real.py::build_terrain_latencies`) — panel shapes, x-ranges, and relative step spacing match the original closely (8/11/12/10 jumps found for panels A/B/C/D, matching a visual step-count check of the original). **Caveat:** the extractor records distinct jump *positions*, not each jump's replicate-count (multiplicity) — the regenerated ECDF assumes N/steps replicates evenly per jump rather than the exact original tie pattern, so it's shape-correct but not guaranteed value-exact per replicate. |
+| `graph_imu_real.csv`, `graph_imu2_real.csv` | `GRAPH_IMU_real.png`, `GRAPH_IMU2_real.png` | `extract_graph_imu_real.py` | Categorical 3-row (Stuck/Flat/Inclined) binary state heatmap, not a continuous series (Informe 1 already noted this). Fully-automatic per-image calibration (spine + tick-mark pixel detection, no hardcoded numbers). Re-plotted and compared side-by-side against the original — transition timing (e.g. the striped region ~43-56s and ~65-90s in `GRAPH_IMU_real`) matches to visual inspection. |
+| `neu_imu_real.csv`, `neu_imu2_real.csv` | `NEU_IMU_real.png`, `NEU_IMU2_real.png` | `extract_neu_imu_real.py` | 4-subplot per-neuron grayscale raster (Locomotion 1/2, Decision 1/2). Panel boxes auto-detected by pairing spine ROWS with spine COLUMNS of matching span (a naive row-only detector mis-identified boundaries because a fully-active neuron's solid data band is indistinguishable from a spine by row alone — see the script's docstring). Activation reported **normalized 0–1 per panel**, not rescaled to each panel's own colorbar units, because `results.tex`'s narrative about these figures is about *when* a neuron activates, never the raw magnitude. Re-plotted and visually compared against the originals — X13/X4/X8/X9/X11/X12 solid-active bands, the X0/X1 and X15/X16 striped/transition patterns all match at the timing level. |
+
+## Method notes carried over from round 1 (still apply)
+
+- Legend boxes / colorbars sharing bar colors must be explicitly excluded before color-masking (see `extract_fig5.py`) or explicitly separated from the main axes box by span-clustering (see `extract_neu_imu_real.py`) — the single biggest source of extraction bugs this round was accidentally including a legend/colorbar patch as if it were data.
+- Always validate by re-plotting from the extracted CSV and eyeballing it next to the original before trusting the numbers — three of the five extractions in round 2 needed a bug fix (an `axis=1`/`axis=0` mean-direction bug, a right-spine-vs-colorbar-edge confusion, a tick-mark-row-offset error) that only became obvious once the first re-plot came out visibly wrong. This is exactly the point of the validation step, not a sign anything is unusually fragile here.
+
+All five figures originally flagged in `experiments/N-02-physical-figure-regeneration/README.md`
+§"Remaining work" are now done — see that file's updated status.

@@ -64,26 +64,32 @@ hand before `scripts/promote_figure.sh` touches `assets/` — nothing here has b
    unexported somewhere) or vectorization of the published PNGs, same as the terrain-IMU figures
    below.
 
-## Remaining work — vectorization tier (not done this round)
+## Vectorization tier — completed 2026-08-27 (round 2)
 
-Five figures still need pixel-extraction, sequenced *after* fig5/fig6 on purpose: they're dense,
-continuous time series (IMU/neural traces) rather than discrete bars, so the extraction is
-materially harder to calibrate reliably (see `experiments/_plotting/vectorized/README.md`'s "harder
-tier" note) — attempting all seven in one pass risked rushing the ones that most need care.
+All 5 remaining figures are now vectorized, regenerated, and validated (re-plotted + compared
+against the published PNG) — see `experiments/_plotting/vectorized/README.md` for the full method/
+validation notes per figure, and `experiments/_plotting/builders/imu_terrain_real.py` for the
+regeneration code. Summary:
 
-1. `GRAPH_IMU_real.png`, `GRAPH_IMU2_real.png` — dual-axis IMU activity plots (F-04 redesign target).
-2. `NEU_IMU_real.png`, `NEU_IMU2_real.png` — same gap as finding #3 above (no per-neuron data source).
-3. `FigReal_Terrain_Latencies_4Panels.png` — 4-panel latency comparison.
+1. **`GRAPH_IMU_real.png` / `GRAPH_IMU2_real.png`** — turned out to be categorical 3-row
+   (Stuck/Flat/Inclined) binary state heatmaps, not continuous dual-axis series (Informe 1 already
+   flagged this). Regenerated with F-05's `N0`/`N1`/`N2` notation applied to the row labels. Method:
+   `extract_graph_imu_real.py`, fully automatic per-image calibration (no hardcoded pixel numbers).
+2. **`NEU_IMU_real.png` / `NEU_IMU2_real.png`** — 4-subplot per-neuron grayscale rasters. Contrary
+   to Informe 2's original "✅ Completo" verdict for the *simulation* versions of these figures,
+   the per-neuron activation data turned out to be recoverable directly from the published PNG's
+   pixel intensities (each row genuinely is one neuron's grayscale-coded activation) — no separate
+   raw log was needed after all for the physical versions once vectorized. Reported as normalized
+   0–1 activation per panel (magnitude isn't cited numerically anywhere in `results.tex` for these
+   figures, only activation timing is). Method: `extract_neu_imu_real.py`.
+3. **`FigReal_Terrain_Latencies_4Panels.png`** — step-ECDF, N=15 hardware replicates per panel;
+   extraction locates each step-jump's x-position, calibrated per panel from its own gridlines.
+   Method: `extract_terrain_latencies.py`. Caveat: replicate *multiplicity* per jump isn't
+   preserved (shape-correct reconstruction, not guaranteed value-exact per replicate) — see
+   `vectorized/README.md`.
 
-**Recommended next steps, in order:**
-1. Write `experiments/_plotting/extract/extract_graph_imu_real.py` using
-   `color_extract.find_gridline_rows` + a *line-following* extractor (not yet in
-   `color_extract.py` — `extract_bar_tops` only handles solid bars, a dense line/scatter series
-   needs per-column topmost/centroid-of-color-mask sampling instead, a small addition to that
-   module) for the two-series-on-one-axis `GRAPH_IMU*` pair.
-2. Same approach for `NEU_IMU_real`/`NEU_IMU2_real`, accepting the same "aggregate substitute"
-   caveat as finding #3 unless a genuine per-neuron source turns up.
-3. `FigReal_Terrain_Latencies_4Panels.png` last — 4 sub-panels means 4x the calibration work of a
-   single-panel figure.
-4. After each, add the `[classifier|imu]_*.csv` outputs to `vectorized/README.md`'s table with the
-   same validation-note discipline used for fig5/fig6 above.
+**Outstanding, lower priority:** the terrain-latencies ECDF reconstruction could be made
+value-exact (not just shape-correct) by extending `extract_terrain_latencies.py` to also read each
+step's height (not just its x-position) and infer replicate multiplicity from it — not done this
+round because the shape-correct version is already sufficient for the figure's qualitative role in
+`results.tex`'s current prose (no exact per-replicate values are cited there).
