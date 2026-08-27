@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-26T22:45:01+00:00",
-  "progressLastCommit": "2026-08-26T17:27:23-05:00",
+  "generatedAt": "2026-08-27T04:09:24+00:00",
+  "progressLastCommit": "2026-08-26T17:45:01-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -85,7 +85,7 @@
       "id": "R3-03",
       "reviewer": "3",
       "requirement": "Control/compensation strategies for low-torque servo constraints and open-loop gait instability",
-      "target": "New methodology.tex §\"Low-Torque Actuation Compensation Strategies\" (ssec:ServoCompensation), added at the end of the section. Core 3 techniques from Peter_arduino/src firmware review: (1) statically-stable single-leg-swing wave gait (structural CoM/support-triangle guarantee), (2) rate-limited trajectory interpolation (bounds peak torque/current), (3) feed-forward tibia-angle offset compensating servo sag. 4 supporting measures mentioned briefly. IMU-based techniques deliberately excluded pending confirmation from the firmware developer (Sam) that USE_IMU was enabled during the reported real-robot tests — revisit once confirmed. 2026-08-26 (Sebas, R2-01 3rd-pass redundancy sweep): technique (1)'s paragraph independently re-derived the same static-stability claim already made with quantitative backing in results.tex; condensed to a cross-reference to Table~tab:crawl_stability instead of re-arguing it — content/techniques unchanged, no impact on the 3 core techniques or the pending IMU question.",
+      "target": "New methodology.tex §\"Low-Torque Actuation Compensation Strategies\" (ssec:ServoCompensation), added at the end of the section. Core 3 techniques from Peter_arduino/src firmware review: (1) statically-stable single-leg-swing wave gait (structural CoM/support-triangle guarantee), (2) rate-limited trajectory interpolation (bounds peak torque/current), (3) feed-forward tibia-angle offset compensating servo sag. 4 supporting measures mentioned briefly. IMU-based techniques deliberately excluded. 2026-08-26: Sam (firmware developer) confirmed USE_IMU was NOT active during the reported real-robot tests — exclusion is now permanent (citing it would misrepresent what ran on hardware), not pending. Sam also confirmed TIBIA_BIAS_DEG=22° is purely empirical, Peter_arduino/src is the exact firmware version tested, and no additional undocumented hardware-level compensation was applied — none of this adds new citable techniques; the 3 core techniques remain the full set. 2026-08-26 (Sebas, R2-01 3rd-pass redundancy sweep): technique (1)'s paragraph independently re-derived the same static-stability claim already made with quantitative backing in results.tex; condensed to a cross-reference to Table~tab:crawl_stability instead of re-arguing it — content/techniques unchanged.",
       "dataSource": "prose-only, no experiments/ needed",
       "category": "Escritura",
       "owner": [
