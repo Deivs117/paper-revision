@@ -165,3 +165,29 @@ round, in the order decided:
    ("long-term average... consumption") most directly, and pairs naturally with (b) as a
    supplementary inset only if the shape genuinely matters to the argument — but this is the
    author's call, not decided here.
+
+## Round 3 (2026-08-27, same day) — typography + `_Real_Plot_3` structural correction
+
+Two fixes from the round-2 audit's second export (`n02_audit_notes_2026-08-27.md`, later revision):
+
+1. **Serif typography is now the project's house default**, not a one-off override — confirmed by
+   comparing against `assets/fig1_Obstacle_macro.png` (already serif) and applied to
+   `.claude/skills/scientific-visualization/assets/publication.mplstyle`:
+   `font.family: serif`, sizes 10/11/12/10/10/10 (general/axes-labels/axes-titles/xtick/ytick/legend)
+   per the author's exact spec. This propagates to **any figure regenerated from here on**,
+   including the not-yet-reviewed N-01 simulation figures. **Already-approved N-02 output PNGs were
+   deliberately NOT re-regenerated** (would have silently changed accepted work) — they were
+   restored via `git checkout` after an initial batch run touched them by accident. Only the
+   still-pending figures (4 ECDF, 4 `_Real_Plot_3`, `FigReal_Terrain_Latencies_4Panels`) carry the
+   new font.
+2. **`_Real_Plot_3` structural bug found and fixed.** The round-2 rebuild incorrectly assumed this
+   was always a single-panel RMS plot — verified against the published originals
+   (`assets/Appetitive_Real_Plot_3_..._.png`, `assets/Aversive_Real_Plot_3_..._.png`) that it is
+   and always was **two stacked panels**: A) Basal Ganglia Neural Response Dynamics (firing
+   variance, fixed orange `#D55E00`) and B) Chasis Kinematic Attitude Stabilization Space
+   (Pitch/Roll RMS, fixed purple/lavender, not scenario-colored). `build_rms_dynamics()` in
+   `real_plot_suite.py` now restores both panels with their correct fixed colors; the red/blue
+   stimulus-presence shading (round 2) moved from panel B to panel A, and only applies to
+   Appetitive/Aversive/Complex — **not Obstacle**, whose stimulus is green and doesn't fit the
+   red/blue scheme (confirmed explicitly by the author: "NO COLOREAR ESTÍMULOS A LA VISTA" for
+   that scenario). Verified visually against all 4 regenerated outputs.

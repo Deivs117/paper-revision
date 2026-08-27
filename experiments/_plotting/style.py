@@ -57,10 +57,10 @@ def apply_style():
         # Fallback if the skill folder isn't present in this checkout — keeps builders runnable,
         # but the real style source is the .mplstyle file; regenerate figures after fetching it.
         plt.rcParams.update({
-            "figure.dpi": 100, "savefig.dpi": DPI, "font.size": 8, "axes.titlesize": 9,
-            "axes.labelsize": 8, "legend.fontsize": 7, "xtick.labelsize": 7, "ytick.labelsize": 7,
+            "figure.dpi": 100, "savefig.dpi": DPI, "font.size": 10, "axes.titlesize": 12,
+            "axes.labelsize": 11, "legend.fontsize": 10, "xtick.labelsize": 10, "ytick.labelsize": 10,
             "axes.grid": False, "axes.spines.top": False, "axes.spines.right": False,
-            "savefig.bbox": "standard", "font.family": "sans-serif",
+            "savefig.bbox": "standard", "font.family": "serif",
         })
 
 

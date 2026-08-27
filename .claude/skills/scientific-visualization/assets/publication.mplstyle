@@ -14,14 +14,19 @@ figure.constrained_layout.use: False
 figure.figsize: 3.5, 2.5
 
 # Font properties
-font.size: 8
-font.family: sans-serif
-font.sans-serif: Arial, Helvetica, DejaVu Sans
+# 2026-08-27: switched from the upstream skill's sans-serif default to serif, matching this
+# project's existing published figures (e.g. assets/fig1_Obstacle_macro.png) and the manuscript's
+# own LaTeX body typeface -- confirmed visually against fig1_Obstacle_macro.png before this change,
+# per the author's explicit request. This is now this project's house default, not an override.
+font.size: 10
+font.family: serif
+font.serif: Times New Roman, Times, DejaVu Serif, Computer Modern Roman
+mathtext.fontset: dejavuserif
 
 # Axes properties
 axes.linewidth: 0.6
-axes.labelsize: 8
-axes.titlesize: 8
+axes.labelsize: 11
+axes.titlesize: 12
 axes.labelweight: normal
 axes.spines.top: False
 axes.spines.right: False
@@ -40,13 +45,13 @@ xtick.major.size: 3
 xtick.minor.size: 2
 xtick.major.width: 0.6
 xtick.minor.width: 0.5
-xtick.labelsize: 7
+xtick.labelsize: 10
 xtick.direction: out
 ytick.major.size: 3
 ytick.minor.size: 2
 ytick.major.width: 0.6
 ytick.minor.width: 0.5
-ytick.labelsize: 7
+ytick.labelsize: 10
 ytick.direction: out
 
 # Line properties
@@ -55,7 +60,7 @@ lines.markersize: 4
 lines.markeredgewidth: 0.5
 
 # Legend properties
-legend.fontsize: 7
+legend.fontsize: 10
 legend.frameon: False
 legend.loc: best
 

@@ -4,14 +4,20 @@ part — no vectorization needed): Appetitive/Aversive/Obstacle/Complex_Real_Plo
 **Decision 2026-08-27 (author audit round, n02_audit_notes):** `*_Real_Plot_2_Basal_Ganglia_Dynamics.png`
 is REMOVED from this pipeline's output, not just deprioritized — the author's plan is to answer the
 reviewer's "cut repetitive descriptions, duplicated neural raster plots and identical stability
-curves between simulation and physical tests" request by dropping this redundant figure family
-entirely, folding what it supported into `*_Real_Plot_3` (via the new red/blue stimulus-presence
-shading, see `build_rms_dynamics`) and/or into `results.tex` prose (repeatability argued with
-summary statistics instead of a new graph). **The results.tex rewrite itself is a separate, later
-pass** — this round only stops generating the `_2` figure and adds the shading to `_3`; see
-`experiments/N-02-physical-figure-regeneration/README.md` for the tracked decision. The old
-`build_bg_dynamics()` function is kept below (not deleted) as a reference for what data the removed
-figure used, but is no longer called from `__main__`.
+curves between simulation and physical tests" request by dropping this redundant STANDALONE figure.
+**Correction (round 2 of the audit, same day):** `*_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png`
+was NEVER a single-panel RMS-only figure — verified directly against the published originals
+(`assets/Appetitive_Real_Plot_3_..._.png` etc.): it always had two stacked panels, **A) "Basal
+Ganglia Neural Response Dynamics"** (the same firing-variance line `_Real_Plot_2` also showed, fixed
+orange `#D55E00`) and **B) "Chasis Kinematic Attitude Stabilization Space"** (Pitch/Roll RMS, fixed
+purple `#4B0082`/lavender `#B8A9D9` — NOT scenario-colored, confirmed fixed across scenarios by
+inspecting two different originals). `_Real_Plot_2` was redundant with panel A specifically, not
+with the whole figure — the first pass of this fix incorrectly dropped panel A entirely instead of
+just removing the now-redundant standalone `_2` figure, and misplaced the red/blue stimulus-presence
+shading on panel B instead of panel A. Fixed here: `build_rms_dynamics()` restores both panels with
+their original fixed colors, and the shading (Appetitive/Aversive/Complex only — NOT Obstacle, whose
+stimulus is green and doesn't fit the red/blue scheme, confirmed by the author) is on panel A only.
+`build_bg_dynamics()` (the old standalone-only version) is kept below, unused, as a reference.
 
 `NEU_EST_UNIG_real.png`/`NEU_EST_MUL_real.png` moved OUT of this file — they're now vectorized by
 pixel-intensity extraction (same technique as `NEU_IMU_real.png`), see `extract/extract_neu_est_real.py`.
@@ -131,30 +137,53 @@ def build_rms_dynamics(real_root: str, output_dir: str) -> None:
     Decision 2026-08-27: shades the background red/blue wherever the aversive/appetitive stimulus
     was in view (from the companion neural_metrics.csv, resampled onto this file's time grid) --
     folds in what the removed *_Real_Plot_2_Basal_Ganglia_Dynamics.png used to show separately,
-    per the author's instruction, instead of a standalone firing-variance line plot."""
+    per the author's instruction, instead of a standalone firing-variance line plot.
+
+    ROUND-2 FIX (2026-08-27): restores the original two-panel A/B structure (see module
+    docstring) instead of only regenerating panel B. Shading moves to panel A, and only applies to
+    Appetitive/Aversive/Complex -- Obstacle's stimulus is green, so the red/blue scheme doesn't
+    apply there and its panel A stays exactly like the published original (confirmed explicitly by
+    the author, "NO COLOREAR ESTÍMULOS A LA VISTA" for Obstacle)."""
+    FIRING_VARIANCE_COLOR = "#D55E00"  # fixed orange, matches every published original inspected
+    PITCH_COLOR = "#4B0082"            # fixed purple
+    ROLL_COLOR = "#B8A9D9"             # fixed lavender
+    SHADED_SCENARIOS = {"Appetitive", "Aversive", "Complex"}  # NOT Obstacle -- see docstring
+
     for scenario, pattern in SCENARIO_FOLDERS.items():
         dirs = _trial_dirs(real_root, pattern)
         if not dirs:
             continue
         trial_dir = dirs[0]
-        df = pd.read_csv(os.path.join(trial_dir, "combined_metrics.csv"))
-        t0 = df["time_s"].iloc[0]
-        t = df["time_s"] - t0
-        presence = _stimulus_presence_spans(os.path.join(trial_dir, "neural_metrics.csv"), t0, t.values)
+        combined = pd.read_csv(os.path.join(trial_dir, "combined_metrics.csv"))
+        t0 = combined["time_s"].iloc[0]
+        t_b = combined["time_s"] - t0
 
-        fig, ax = plt.subplots(figsize=(4, 3))
-        ax.fill_between(t, 0, 1, where=presence["red"], transform=ax.get_xaxis_transform(),
-                        color="#D55E00", alpha=0.15, step="mid", label="Aversive stimulus in view")
-        ax.fill_between(t, 0, 1, where=presence["blue"], transform=ax.get_xaxis_transform(),
-                        color="#0072B2", alpha=0.15, step="mid", label="Appetitive stimulus in view")
-        ax.plot(t, df["roll_rms"], color=SCENARIO_COLORS[scenario], linewidth=1.2, label="Roll RMS")
-        ax.plot(t, df["pitch_rms"], color=SCENARIO_COLORS[scenario], linewidth=1.2, linestyle="--",
-                label="Pitch RMS", alpha=0.7)
-        ax.set_xlabel("Time (s)")
-        ax.set_ylabel("RMS (deg)")
-        ax.set_title(f"{scenario} — Pitch/Roll RMS Dynamics (trial {os.path.basename(trial_dir)})")
-        ax.legend(fontsize=6, ncol=2)
-        fig.tight_layout()
+        neural = pd.read_csv(os.path.join(trial_dir, "neural_metrics.csv"))
+        t_a = neural["sim_time_s"] - t0
+
+        fig, (ax_a, ax_b) = plt.subplots(2, 1, figsize=(7, 7))
+
+        if scenario in SHADED_SCENARIOS:
+            presence = _stimulus_presence_spans(os.path.join(trial_dir, "neural_metrics.csv"), t0, t_a.values)
+            ax_a.fill_between(t_a, 0, 1, where=presence["red"], transform=ax_a.get_xaxis_transform(),
+                              color="#D55E00", alpha=0.15, step="mid", label="Aversive stimulus in view")
+            ax_a.fill_between(t_a, 0, 1, where=presence["blue"], transform=ax_a.get_xaxis_transform(),
+                              color="#0072B2", alpha=0.15, step="mid", label="Appetitive stimulus in view")
+            ax_a.legend(fontsize=8, loc="upper left")
+        ax_a.plot(t_a, neural["firing_variance"], color=FIRING_VARIANCE_COLOR, linewidth=1.5)
+        ax_a.set_ylabel("Firing Variance $Var(z)$")
+        ax_a.set_title("A. Basal Ganglia Neural Response Dynamics")
+
+        ax_b.plot(t_b, combined["pitch_rms"], color=PITCH_COLOR, linewidth=1.5, label="Pitch RMS")
+        ax_b.plot(t_b, combined["roll_rms"], color=ROLL_COLOR, linewidth=1.5, linestyle="--",
+                  label="Roll RMS")
+        ax_b.set_xlabel("Experimental Time (s)")
+        ax_b.set_ylabel("Attitude Space RMS (deg)")
+        ax_b.set_title("B. Chasis Kinematic Attitude Stabilization Space")
+        ax_b.legend(loc="lower right")
+
+        fig.tight_layout(rect=(0, 0, 1, 0.96))
+        fig.suptitle(f"{scenario} (trial {os.path.basename(trial_dir)})", fontsize=10)
         out = os.path.join(output_dir, f"{scenario}_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png")
         fig.savefig(out, dpi=DPI)
         plt.close(fig)
