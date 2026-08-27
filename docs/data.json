@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-27T22:16:55+00:00",
-  "progressLastCommit": "2026-08-27T15:15:59-05:00",
+  "generatedAt": "2026-08-27T23:28:12+00:00",
+  "progressLastCommit": "2026-08-27T17:16:55-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -215,15 +215,41 @@
     {
       "id": "N-02",
       "reviewer": "—",
-      "requirement": "Physical-section figure regeneration (Tarea 3). Round 1: CSV rebuild + vectorization of all 22 published figures (see prior note). Round 2 (2026-08-27, after author audit via local tool, notes in intake/pending/n02_audit_notes_2026-08-27.md): imported matplotlib+scientific-visualization Claude Code skills into .claude/skills/ (Okabe-Ito palette, no default grid — fixes the \"quitar grilla\" requests structurally, not per-figure); removed internal task-ID references (\"F-06\", vectorized/README.md pointer) from figure text; removed circular markers from ECDF plots; removed _Real_Plot_2_Basal_Ganglia_Dynamics.png entirely (12 fewer figures) answering the reviewer's \"cut repetitive... duplicated neural raster plots\" request, folded its info into _Real_Plot_3 via red/blue stimulus-presence background shading — results.tex rewrite for this is a separate later pass, not done yet; vectorized NEU_EST_UNIG/MUL_real (rejected aggregate-substitute approach abandoned, same pixel-intensity technique as NEU_IMU_real now generalized to multi-column 8/12-panel layouts); FigReal_Morphological_Transition_Energy rejected by author, 3 redesign alternatives proposed (bar-per-transition-direction / cropped-time-series / text-table), not yet built pending author's choice. 19 figures now in output/, still staged, not promoted — awaiting a second audit pass.",
+      "requirement": "Physical-section figure regeneration (Tarea 3). Round 1: CSV rebuild + vectorization of all 22 published figures (see prior note). Round 2 (2026-08-27, after author audit via local tool, notes in intake/pending/n02_audit_notes_2026-08-27.md): imported matplotlib+scientific-visualization Claude Code skills into .claude/skills/ (Okabe-Ito palette, no default grid — fixes the \"quitar grilla\" requests structurally, not per-figure); removed internal task-ID references (\"F-06\", vectorized/README.md pointer) from figure text; removed circular markers from ECDF plots; removed _Real_Plot_2_Basal_Ganglia_Dynamics.png entirely (12 fewer figures) answering the reviewer's \"cut repetitive... duplicated neural raster plots\" request, folded its info into _Real_Plot_3 via red/blue stimulus-presence background shading — results.tex rewrite for this is a separate later pass, not done yet; vectorized NEU_EST_UNIG/MUL_real (rejected aggregate-substitute approach abandoned, same pixel-intensity technique as NEU_IMU_real now generalized to multi-column 8/12-panel layouts); FigReal_Morphological_Transition_Energy rejected by author, 3 redesign alternatives proposed (bar-per-transition-direction / cropped-time-series / text-table), not yet built pending author's choice. 19 figures now in output/, still staged, not promoted — awaiting a second audit pass. 2026-08-27: all 19 promoted to assets/ (see N-03) and results.tex updated to match — round complete.",
       "target": "results.tex (physical results subsection, §MLP classifier)",
       "dataSource": "experiments/N-02-physical-figure-regeneration/",
       "category": "Métricas",
       "owner": [
         "Deivi"
       ],
-      "status": "drafted",
+      "status": "applied",
       "patchFile": "—"
+    },
+    {
+      "id": "N-03",
+      "reviewer": "—",
+      "requirement": "Promoted the 12 approved experiments/N-02-physical-figure-regeneration/output/ figures to assets/ (scripts/promote_figure.sh --force, replacing the prior version of each) plus the new fig_classifier_tradeoff_fused.png (F-03 fusion, no prior asset). sections/results.tex: removed the _Real_Plot_2_Basal_Ganglia_Dynamics.png subfigure from all 4 physical-scenario figure blocks (Appetitive/Aversive/Complex/Obstacle), re-lettered the remaining 2 panels (a)/(b) and rewrote each external caption's (b) description to cover the now-composite neural+kinematic panel (Informe 1 §9.2); replaced the separate fig5_classifier_comparison.png/fig6_computational_cost.png figure blocks with a single fig_classifier_tradeoff_fused.png figure under \\label{fig:classifier_tradeoff}, updating both \\ref{} call sites (Informe 1 §9.3); corrected the SVM-RBF/Random Forest F1 figures cited in prose (0.900/0.995 → 0.857/0.947) to match the vectorized classifier_fig5.csv extraction — author confirmed (2026-08-27) the vectorized/figure values are correct and the old prose values were stale, same pattern as M-01–M-04 (see N-04). Removed the 4 now-unreferenced _Real_Plot_2_.png assets and the superseded fig5_classifier_comparison.png/fig6_computational_cost.png via git rm. All new/changed prose wrapped in \\revblue{}. validate_tex.sh/check_roundtrip.sh both pass.",
+      "target": "results.tex (4 physical-scenario figure* blocks, §MLP classifier figures/prose)",
+      "dataSource": "experiments/N-02-physical-figure-regeneration/ (figure basis; see experiments/_plotting/vectorized/README.md for the classifier F1 vectorization)",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/n-03-physical-figure-promotion-classifier-fusion.tex"
+    },
+    {
+      "id": "N-04",
+      "reviewer": "—",
+      "requirement": "Rewrote the 5 M-01–M-04 passages in sections/results.tex (Informe 1 §9.4, values verified in Informe 2 §0) to match the figures/raw data instead of the stale prose: Appetitive Targeting paragraph (decision latency is noise-dependent, ≈60 ms at $\\sigma=0$ rising to 1.6–2.0 s, not a constant ≈47 ms) and the same claim removed from tab:consolidated_simulation_metrics's caption and from the Limitations paragraph's cross-reference; Tipover Risk paragraph (flat $\\mu_{TR}\\approx0.58$–$0.60$ in both terrains, transient spike to $TR\\approx0.77$ in rugged terrain, no monotonic escalation, replacing $\\mu_{TR}\\approx0.42$/$0.58$); $T_{switch}$/Heaviside paragraph and its figure caption (rugged terrain: sub-ms in 13/15 trials, 600 ms tail in 2/15 — not an invariant 0.3 ms; slope: 0.9–1.8 ms staircase, not a single value); phase-space paragraph and its figure caption (rugged roll≈1.59°/pitch≈1.67°, slope roll≈1.47°/pitch≈2.29°, Pitch-RMS separation with overlapping Roll RMS — not \"0.43°/6.95°, zero cluster overlap\"). Pure text/caption edits, no figure regeneration needed (figures were already correct — Informe 2 §0). All changes wrapped in \\revblue{}. validate_tex.sh/check_roundtrip.sh both pass.",
+      "target": "results.tex (Appetitive Targeting paragraph, tab:consolidated_simulation_metrics caption, Limitations paragraph, Tipover Risk paragraph, $T_{switch}$ paragraph + FigB_Decision_Delay.png caption, phase-space paragraph + FigC_Terrain_Adaptability.png caption)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/n-04-m01-m04-text-redaction.tex"
     }
   ]
 }

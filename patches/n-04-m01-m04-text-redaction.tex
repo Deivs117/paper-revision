@@ -1,0 +1,63 @@
+% PATCH: N-04
+% Target section: sections/results.tex (Appetitive Targeting paragraph,
+%   tab:consolidated_simulation_metrics caption, Limitations paragraph, Tipover Risk paragraph,
+%   T_switch paragraph + FigB_Decision_Delay.png caption, phase-space paragraph +
+%   FigC_Terrain_Adaptability.png caption)
+% Requirement: intake/pending/R02-01_metric_and_figure_audit.md §9.4 ("Informe 1", M-01-M-04) --
+%   the reported text for 4 quantities (decision latency, Tipover Risk, T_switch, Roll/Pitch RMS
+%   phase-space) did not match the figures citing them as evidence. Verified 2026-08-27 against
+%   raw data in experiments/simulation/ (trial_summary.json, stability_log.csv) by
+%   intake/pending/R02-01_data_traceability_and_plotting_plan.md §0 (Informe 2): in all 4 cases
+%   the figure/raw data was correct and the prose was stale. This patch is text-only -- no
+%   figures were regenerated (Informe 2 §0 already established they didn't need to be).
+%
+% Fix (5 locations, all wrapped in \revblue{}):
+%
+% 1. Appetitive Targeting paragraph (M-01, results.tex:77) -- decision latency is noise-dependent,
+%    not a clamped constant:
+%    Before: "...decision latency stays clamped at $\approx 47$~ms..."
+%    After:  removed the clamp claim; added: "Decision latency itself is noise-dependent rather
+%      than constant, remaining near-instantaneous at $\sigma=0$ ($\approx 60$~ms mean) and rising
+%      to the $1.6$--$2.0$~s range as sensory noise increases" (trial_summary.json.exp_latency,
+%      familia_a_apetitivo, 15 replicates: range 15~ms--3.07~s).
+%
+% 2. tab:consolidated_simulation_metrics caption (results.tex:178) -- table has no latency column:
+%    Before: "...Latency remained constant at $\approx 47$~ms."
+%    After:  sentence removed.
+%
+% 3. Limitations paragraph (results.tex:938) -- cross-referenced the now-corrected claim:
+%    Before: "...decision latency remained invariant (see the simulation quantitative-validation
+%      results above)..."
+%    After:  "...even though decision latency itself scales with noise level rather than staying
+%      invariant (see the simulation quantitative-validation results above)".
+%
+% 4. Tipover Risk paragraph + figure caption (M-02, results.tex:276, FigA_Stability_Profile.png
+%    caption via fig:stability_profile) -- flat baseline, no monotonic escalation:
+%    Before: "$\mu_{TR}\approx0.42$ ... severe monotonic risk escalation ... peak of
+%      $TR\approx0.58$ ... drop ... back to a safe baseline of $TR\approx0.42$."
+%    After:  flat $\mu_{TR}\approx0.58$--$0.60$ in both terrains (rugged mean 0.600, slope mean
+%      0.593, stability_log.csv/TR, 30 replicates), transient spike to $TR\approx0.77$ in rugged
+%      terrain just before the mode-switch instant, no escalation/drop in the slope trace.
+%
+% 5. $T_{switch}$/Heaviside paragraph + FigB_Decision_Delay.png caption (M-04, results.tex:279) --
+%    sub-ms in most trials, not a single invariant value:
+%    Before: "...remaining invariant at $T_{\text{switch}}=0.3$~ms for both terrain types...
+%      completely free from chattering effects."
+%    After:  rugged terrain: 0.2--0.7~ms in 13/15 trials, 600~ms tail in 2/15 (13.3%,
+%      trial_summary.json.tswitch); slope: 0.9--1.8~ms five-to-six-step spread, not a single
+%      value. $T_{\text{response}}$ (neural decision dispatch) remains a perfect Heaviside step --
+%      only the mechanical hand-off shows this bounded, terrain-dependent variability.
+%
+% 6. Phase-space paragraph + FigC_Terrain_Adaptability.png caption (M-03, results.tex:281) --
+%    Pitch-RMS separation with overlapping Roll RMS, not "zero cluster overlap":
+%    Before: "$\mu_\phi\approx1.36^\circ,\mu_\theta\approx1.25^\circ$ (rugged) ...
+%      $\mu_\phi\approx0.43^\circ,\mu_\theta\approx6.95^\circ$ (slope) ... zero cluster overlap
+%      across all 30 trials."
+%    After:  rugged $\mu_\phi\approx1.59^\circ,\mu_\theta\approx1.67^\circ$; slope
+%      $\mu_\phi\approx1.47^\circ,\mu_\theta\approx2.29^\circ$ (trial_summary.json roll_rms/
+%      pitch_rms, 30 replicates); clear separation on Pitch RMS, overlapping Roll RMS ranges
+%      (opposite of "zero overlap").
+%
+% Verification: scripts/validate_tex.sh and scripts/check_roundtrip.sh both pass after
+%   reassemble.py. No LaTeX toolchain available locally to run compile_pdf.sh.
+% Status: applied
