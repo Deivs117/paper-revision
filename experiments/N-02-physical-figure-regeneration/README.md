@@ -93,3 +93,75 @@ value-exact (not just shape-correct) by extending `extract_terrain_latencies.py`
 step's height (not just its x-position) and infer replicate multiplicity from it — not done this
 round because the shape-correct version is already sufficient for the figure's qualitative role in
 `results.tex`'s current prose (no exact per-replicate values are cited there).
+
+## Round 2 (2026-08-27) — author audit via `n02_audit_notes_2026-08-27.md`
+
+The author reviewed all 22 figures from round 1 through a local audit tool
+(`~/Documents/Paper/audit_tool_N02.html`, not committed) and exported notes. Actions taken this
+round, in the order decided:
+
+1. **Style overhaul.** Imported the `matplotlib` and `scientific-visualization` Claude Code skills
+   from https://github.com/K-Dense-AI/scientific-agent-skills into `.claude/skills/` (mirrored
+   `SKILL.md` + `assets/publication.mplstyle` only, not the full 163-skill/163-reference tree — see
+   each skill's own "not mirrored" note for how to fetch more on demand). `experiments/_plotting/style.py`
+   now loads that `.mplstyle` (Okabe-Ito colorblind-safe 5-color palette, `axes.grid: False` by
+   default, clean sans-serif, 300dpi). This alone fixed the "quitar grilla" requests on
+   `GRAPH_IMU_real/2` and `NEU_IMU_real/2` — the grid was never intentional, it came from this
+   pipeline's *first*-round `style.py` forcing `axes.grid: True` globally.
+2. **Removed internal jargon from figures.** `fig4_architecture_ablation.png`'s title no longer
+   says "F-06" (kept the *disclosure* itself — "y-axis truncated for legibility" — as a small
+   in-panel annotation, since the `scientific-visualization` skill's guardrails require disclosing
+   nonzero-baseline axis choices; only the internal task-ID reference was removed).
+   `NEU_IMU_real/2_real.png`'s suptitle no longer references
+   `experiments/_plotting/vectorized/README.md`.
+3. **Removed circular markers** from the 4 scenario ECDF plots (`*_Real_Plot_1`).
+4. **`*_Real_Plot_2_Basal_Ganglia_Dynamics.png` removed from the pipeline entirely** (12 figures:
+   4 scenarios × sim/physical was never the count — it's 4 physical scenarios × this one plot type).
+   Per the author: this answers the reviewer's "cut repetitive descriptions, duplicated neural
+   raster plots and identical stability curves between simulation and physical tests" request.
+   `*_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png` is kept and now shades its background
+   red/blue wherever the aversive/appetitive stimulus was in the camera's view (resampled from the
+   companion `neural_metrics.csv`), folding in what the removed figure used to show. **The
+   `results.tex` rewrite that formally answers the reviewer comment is a separate, later pass** —
+   not done this round, per the author's explicit instruction; this round only stopped generating
+   the `_2` figure and added the shading. `build_bg_dynamics()` is kept (unused) in
+   `real_plot_suite.py` as a data-source reference for that later pass.
+5. **`NEU_EST_UNIG_real.png`/`NEU_EST_MUL_real.png` vectorized** (previously rejected
+   "aggregate substitute" approach abandoned entirely, per the author: "no representan lo mismo...
+   no rehacer"). Same pixel-intensity technique as `NEU_IMU_real/2`, generalized in
+   `extract/extract_neu_est_real.py` — these two figures are structurally bigger (8 and 12 panels
+   in a multi-column layout, vs. `NEU_IMU_real`'s single column of 4), which required a real fix to
+   `extract_neu_imu_real.find_panel_boxes()`: side-by-side panel columns can share row-spans by
+   coincidence, and a colorbar's own left+right border sitting between two real panel spines was
+   getting mismatched as if it were a spine itself. Fixed by (a) filtering spine-candidate clusters
+   by pixel *density* (a real spine, even several px thick, has every column present across its
+   span; a colorbar's doublet border does not) and (b) a greedy nearest-distant-partner pairing
+   instead of naive even/odd pairing. Also caught and fixed: `NEU_EST_UNIG_real.png`'s time axis
+   labels every **10s**, not every 20s like every other figure processed so far — an early pass
+   silently produced a time axis running to ~130s against the true ~65s range before this was
+   caught by re-comparing the regenerated figure to the original.
+6. **Morphological Transition Energy — rejected, redesign proposed, not yet built.** The author
+   wants the figure to answer R2-04's reviewer requirement directly (long-term average energy
+   consumption across locomotion modes, framed for onboard-deployment feasibility) by showing
+   consumption *during* a mode transition and across *one* transition, not where the current peak
+   happened to occur. Three design alternatives proposed for the author to pick from (none built
+   yet — waiting on that choice, and on resolving the `power_W` calibration caveat from round 1
+   first, since any of the three inherits that problem unless it's fixed):
+   - **(a) Bar chart, energy per transition direction.** One bar for Quadrupedal→Differential
+     Mobile, one for Differential→Quadrupedal, total Joules (or Wh) integrated over each
+     transition's actual duration window (not the full trial) ± range across the available trials.
+     Closest to what a reviewer asking about "long-term average energy consumption... for onboard
+     deployment" would expect to see at a glance — directly comparable numbers, no time-series
+     reading required.
+   - **(b) Time series cropped to the transition window only**, one small panel per direction,
+     x-axis re-zeroed to transition onset (not full-trial elapsed time) — keeps the shape
+     information (does power ramp, spike, or step during the transition) that a bar chart discards,
+     at the cost of being less immediately quotable as a single number.
+   - **(c) Text/table only, no new figure** — a small table in `results.tex` (mean energy per
+     transition direction, ± range, transition duration) if the author judges that a graph doesn't
+     earn its space here versus the classifier fusion/latency figures already carrying the
+     quantitative load of this subsection.
+   Recommendation if forced to pick one: **(a)**, because it answers the reviewer's actual wording
+   ("long-term average... consumption") most directly, and pairs naturally with (b) as a
+   supplementary inset only if the shape genuinely matters to the argument — but this is the
+   author's call, not decided here.

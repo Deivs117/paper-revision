@@ -55,9 +55,11 @@ def build_neu_imu(csv_path: str, output_path: str) -> None:
         ax.set_xlabel("Time (s)")
         ax.set_ylabel("Neuron")
         ax.set_title(titles[p])
-    fig.suptitle("Gait Decision Module / Locomotion Module (vectorized, normalized activation "
-                 "0-1 per panel -- see experiments/_plotting/vectorized/README.md)", fontsize=9)
-    fig.tight_layout(rect=(0, 0, 1, 0.97))
+    # Two group titles matching the original figure's layout (Locomotion Module above panels
+    # 0-1, Gait Decision Module above panels 2-3) instead of one combined suptitle.
+    fig.tight_layout(rect=(0, 0, 1, 0.94), h_pad=3.5)
+    fig.text(0.5, 0.975, "Locomotion Module", ha="center", fontsize=11)
+    fig.text(0.5, 0.475, "Gait Decision Module", ha="center", fontsize=11)
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     fig.savefig(output_path, dpi=DPI)
     plt.close(fig)
@@ -98,6 +100,39 @@ def build_terrain_latencies(csv_path: str, output_path: str) -> None:
     plt.close(fig)
 
 
+def build_neu_est(csv_path: str, output_path: str, panels: list[str], group_titles: dict) -> None:
+    """NEU_EST_UNIG_real.png / NEU_EST_MUL_real.png -- multi-column raster, see
+    extract/extract_neu_est_real.py. `group_titles` maps a panel name to the group title placed
+    above it (only set on the first panel of each group)."""
+    df = pd.read_csv(csv_path)
+    n = len(panels)
+    ncols = 2
+    nrows = (n + 1) // 2
+    fig, axes = plt.subplots(nrows, ncols, figsize=(6 * ncols, 2.6 * nrows))
+    axes = axes.flatten() if n > 1 else [axes]
+    for ax, p in zip(axes, panels):
+        sub = df[df.panel == p]
+        neurons = list(sub["neuron"].unique())
+        t = sorted(sub["time_s"].unique())
+        mat = np.array([sub[sub.neuron == n_].sort_values("time_s")["activation_normalized"].values
+                        for n_ in neurons])
+        ax.imshow(mat, aspect="auto", cmap="gray_r", extent=[t[0], t[-1], len(neurons), 0],
+                  vmin=0, vmax=1, interpolation="nearest")
+        ax.set_yticks(np.arange(len(neurons)) + 0.5)
+        ax.set_yticklabels(neurons, fontsize=6)
+        ax.set_xlabel("Time (s)")
+        ax.set_title(p.replace("_", " "), fontsize=8)
+        if p in group_titles:
+            ax.annotate(group_titles[p], xy=(0.5, 1.28), xycoords="axes fraction",
+                        ha="center", fontsize=10)
+    for ax in axes[n:]:
+        ax.axis("off")
+    fig.tight_layout()
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    fig.savefig(output_path, dpi=DPI)
+    plt.close(fig)
+
+
 if __name__ == "__main__":
     vec = "experiments/_plotting/vectorized"
     out = "experiments/N-02-physical-figure-regeneration/output"
@@ -107,4 +142,20 @@ if __name__ == "__main__":
     build_neu_imu(f"{vec}/neu_imu_real.csv", f"{out}/NEU_IMU_real.png")
     build_neu_imu(f"{vec}/neu_imu2_real.csv", f"{out}/NEU_IMU2_real.png")
     build_terrain_latencies(f"{vec}/terrain_latencies.csv", f"{out}/FigReal_Terrain_Latencies_4Panels.png")
-    print("Wrote all 5 vectorized-figure regenerations to", out)
+
+    build_neu_est(
+        f"{vec}/neu_est_unig_real.csv", f"{out}/NEU_EST_UNIG_real.png",
+        ["Lidar", "Input", "Response", "Auxiliary", "Locomotion_1", "Locomotion_2",
+         "Decision_1", "Decision_2"],
+        {"Lidar": "Lidar Network Module", "Locomotion_1": "Locomotion Module",
+         "Decision_1": "Gait Decision Module"},
+    )
+    build_neu_est(
+        f"{vec}/neu_est_mul_real.csv", f"{out}/NEU_EST_MUL_real.png",
+        ["BasalGanglia_GPi", "BasalGanglia_GPe", "BasalGanglia_STN", "BasalGanglia_STR",
+         "Locomotion_1", "Locomotion_2", "Lidar", "Input", "Response", "Auxiliary",
+         "Decision_1", "Decision_2"],
+        {"BasalGanglia_GPi": "Basal Ganglia Module", "Lidar": "Lidar Network Module",
+         "Locomotion_1": "Locomotion Module", "Decision_1": "Gait Decision Module"},
+    )
+    print("Wrote all 7 vectorized-figure regenerations to", out)

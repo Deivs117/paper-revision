@@ -1,6 +1,23 @@
 """Builder for the physical-scenario figures that have a full CSV source (Tarea 3, CSV-rebuild
-part — no vectorization needed): Appetitive/Aversive/Obstacle/Complex_Real_Plot_{1,2,3}.png,
-NEU_EST_UNIG_real.png, NEU_EST_MUL_real.png.
+part — no vectorization needed): Appetitive/Aversive/Obstacle/Complex_Real_Plot_{1,3}.png.
+
+**Decision 2026-08-27 (author audit round, n02_audit_notes):** `*_Real_Plot_2_Basal_Ganglia_Dynamics.png`
+is REMOVED from this pipeline's output, not just deprioritized — the author's plan is to answer the
+reviewer's "cut repetitive descriptions, duplicated neural raster plots and identical stability
+curves between simulation and physical tests" request by dropping this redundant figure family
+entirely, folding what it supported into `*_Real_Plot_3` (via the new red/blue stimulus-presence
+shading, see `build_rms_dynamics`) and/or into `results.tex` prose (repeatability argued with
+summary statistics instead of a new graph). **The results.tex rewrite itself is a separate, later
+pass** — this round only stops generating the `_2` figure and adds the shading to `_3`; see
+`experiments/N-02-physical-figure-regeneration/README.md` for the tracked decision. The old
+`build_bg_dynamics()` function is kept below (not deleted) as a reference for what data the removed
+figure used, but is no longer called from `__main__`.
+
+`NEU_EST_UNIG_real.png`/`NEU_EST_MUL_real.png` moved OUT of this file — they're now vectorized by
+pixel-intensity extraction (same technique as `NEU_IMU_real.png`), see `extract/extract_neu_est_real.py`.
+The CSV-based "aggregate substitute" this file used to produce for them was REJECTED by the author
+("no representan lo mismo... no rehacer" — i.e. don't try to approximate them from aggregate
+columns at all, only a true per-neuron reproduction counts).
 
 Scenario -> folder mapping per experiments/real/MANIFEST.md (Tarea 2):
   Appetitive -> StimuliB_t01..t04   Aversive -> StimuliR_t01..t03
@@ -65,7 +82,6 @@ def build_ecdf(real_root: str, output_dir: str) -> dict:
             x = np.sort(delays)
             y = np.arange(1, len(x) + 1) / len(x)
             ax.step(x, y, where="post", color=SCENARIO_COLORS[scenario], linewidth=2)
-            ax.scatter(x, y, color=SCENARIO_COLORS[scenario], s=20, zorder=3)
         ax.set_xlabel("Switching delay (s)")
         ax.set_ylabel("ECDF")
         ax.set_title(f"{scenario} — Switching Delay ECDF (N={len(delays)})")
@@ -77,7 +93,10 @@ def build_ecdf(real_root: str, output_dir: str) -> dict:
 
 
 def build_bg_dynamics(real_root: str, output_dir: str) -> None:
-    """Plot 2 per scenario: firing-variance / mode dynamics over time, first trial as representative."""
+    """DEPRECATED, not called from __main__ (see module docstring, decision 2026-08-27).
+
+    Kept only as a reference for what data the removed *_Real_Plot_2_Basal_Ganglia_Dynamics.png
+    used, in case the later results.tex pass needs to pull a number from it."""
     for scenario, pattern in SCENARIO_FOLDERS.items():
         dirs = _trial_dirs(real_root, pattern)
         if not dirs:
@@ -95,68 +114,49 @@ def build_bg_dynamics(real_root: str, output_dir: str) -> None:
         plt.close(fig)
 
 
+def _stimulus_presence_spans(neural_csv: str, t0: float, t_grid: np.ndarray) -> dict:
+    """Resamples red_present/blue_present from neural_metrics.csv onto combined_metrics.csv's
+    time grid (different sampling, same epoch base — verified directly, not assumed) and returns
+    a boolean mask per color for shading."""
+    n = pd.read_csv(neural_csv)
+    nt = n["sim_time_s"] - t0
+    red = np.interp(t_grid, nt, n["red_present"], left=0, right=0) > 0.5
+    blue = np.interp(t_grid, nt, n["blue_present"], left=0, right=0) > 0.5
+    return {"red": red, "blue": blue}
+
+
 def build_rms_dynamics(real_root: str, output_dir: str) -> None:
-    """Plot 3 per scenario: Roll/Pitch RMS over time, first trial as representative."""
+    """Plot 3 per scenario: Roll/Pitch RMS over time, first trial as representative.
+
+    Decision 2026-08-27: shades the background red/blue wherever the aversive/appetitive stimulus
+    was in view (from the companion neural_metrics.csv, resampled onto this file's time grid) --
+    folds in what the removed *_Real_Plot_2_Basal_Ganglia_Dynamics.png used to show separately,
+    per the author's instruction, instead of a standalone firing-variance line plot."""
     for scenario, pattern in SCENARIO_FOLDERS.items():
         dirs = _trial_dirs(real_root, pattern)
         if not dirs:
             continue
-        df = pd.read_csv(os.path.join(dirs[0], "combined_metrics.csv"))
-        t = df["time_s"] - df["time_s"].iloc[0]
+        trial_dir = dirs[0]
+        df = pd.read_csv(os.path.join(trial_dir, "combined_metrics.csv"))
+        t0 = df["time_s"].iloc[0]
+        t = df["time_s"] - t0
+        presence = _stimulus_presence_spans(os.path.join(trial_dir, "neural_metrics.csv"), t0, t.values)
+
         fig, ax = plt.subplots(figsize=(4, 3))
+        ax.fill_between(t, 0, 1, where=presence["red"], transform=ax.get_xaxis_transform(),
+                        color="#D55E00", alpha=0.15, step="mid", label="Aversive stimulus in view")
+        ax.fill_between(t, 0, 1, where=presence["blue"], transform=ax.get_xaxis_transform(),
+                        color="#0072B2", alpha=0.15, step="mid", label="Appetitive stimulus in view")
         ax.plot(t, df["roll_rms"], color=SCENARIO_COLORS[scenario], linewidth=1.2, label="Roll RMS")
         ax.plot(t, df["pitch_rms"], color=SCENARIO_COLORS[scenario], linewidth=1.2, linestyle="--",
                 label="Pitch RMS", alpha=0.7)
         ax.set_xlabel("Time (s)")
         ax.set_ylabel("RMS (deg)")
-        ax.set_title(f"{scenario} — Pitch/Roll RMS Dynamics (trial {os.path.basename(dirs[0])})")
-        ax.legend(fontsize=7)
+        ax.set_title(f"{scenario} — Pitch/Roll RMS Dynamics (trial {os.path.basename(trial_dir)})")
+        ax.legend(fontsize=6, ncol=2)
         fig.tight_layout()
         out = os.path.join(output_dir, f"{scenario}_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png")
         fig.savefig(out, dpi=DPI)
-        plt.close(fig)
-
-
-def build_neu_est(real_root: str, output_dir: str) -> None:
-    """NEU_EST_UNIG_real.png (Obstacle) / NEU_EST_MUL_real.png (Complex).
-
-    CAVEAT (documented, not silently glossed over): the currently-published NEU_EST_*_real figures
-    show individual per-neuron activations (X_0..X_16, gait-decision module, LiDAR "Auxiliary"
-    subplot per Informe 1 F-01). experiments/real/*/neural_metrics.csv only has AGGREGATE columns
-    (firing_variance, temporal_consistency, lambda_efficiency, mode, red_present, blue_present) --
-    it does NOT contain individual X_i neuron traces. This builder therefore produces a simplified,
-    aggregate-only substitute (mode timeline + firing variance + stimulus-presence flags), not a
-    full reproduction of the original multi-panel raster. This is the same class of gap as
-    F-Data-04/05 (simulation IMU-terrain rasters) -- flagged here as a new, analogous finding for
-    the physical NEU_EST_* figures, not previously called out this precisely in Informe 2's
-    original "Completo" verdict for these two figures.
-    """
-    configs = [("Obstacle", "StimuliG_t*", "NEU_EST_UNIG_real.png"),
-               ("Complex", "MultiRGB_t*", "NEU_EST_MUL_real.png")]
-    for scenario, pattern, filename in configs:
-        dirs = _trial_dirs(real_root, pattern)
-        if not dirs:
-            continue
-        df = pd.read_csv(os.path.join(dirs[0], "neural_metrics.csv"))
-        t = df["sim_time_s"] - df["sim_time_s"].iloc[0]
-        fig, axes = plt.subplots(3, 1, figsize=(6, 6), sharex=True)
-        axes[0].plot(t, df["firing_variance"], color=SCENARIO_COLORS[scenario])
-        axes[0].set_ylabel("Firing variance")
-        axes[1].plot(t, df["red_present"], label="red_present", color="red")
-        axes[1].plot(t, df["blue_present"], label="blue_present", color="blue")
-        axes[1].set_ylabel("Stimulus present")
-        axes[1].legend(fontsize=7)
-        axes[2].plot(t, pd.Categorical(df["mode"]).codes, drawstyle="steps-post",
-                     color=SCENARIO_COLORS[scenario])
-        axes[2].set_yticks(range(len(pd.Categorical(df["mode"]).categories)))
-        axes[2].set_yticklabels(pd.Categorical(df["mode"]).categories)
-        axes[2].set_ylabel("Gait mode")
-        axes[2].set_xlabel("Time (s)")
-        fig.suptitle(f"{scenario} — aggregate substitute for {filename}\n"
-                     f"(no per-neuron X_i data in neural_metrics.csv, see docstring)", fontsize=9)
-        fig.tight_layout(rect=(0, 0, 1, 0.93))
-        fig.savefig(os.path.join(output_dir, filename.replace(".png", "_AGGREGATE_SUBSTITUTE.png")),
-                    dpi=DPI)
         plt.close(fig)
 
 
@@ -170,9 +170,9 @@ if __name__ == "__main__":
     os.makedirs(args.output_dir, exist_ok=True)
 
     delays = build_ecdf(args.real_root, args.output_dir)
-    build_bg_dynamics(args.real_root, args.output_dir)
     build_rms_dynamics(args.real_root, args.output_dir)
-    build_neu_est(args.real_root, args.output_dir)
+    # build_bg_dynamics() intentionally NOT called -- see module docstring, decision 2026-08-27.
+    # NEU_EST_UNIG_real/NEU_EST_MUL_real moved to extract/extract_neu_est_real.py (vectorized).
 
     print("Switching delays (s) per scenario:", delays)
-    print(f"Wrote 14 figures to {args.output_dir}")
+    print(f"Wrote 8 figures to {args.output_dir}")

@@ -42,3 +42,14 @@ D-11 (isolate each data series by its known plot color, calibrate axes from know
 
 All five figures originally flagged in `experiments/N-02-physical-figure-regeneration/README.md`
 §"Remaining work" are now done — see that file's updated status.
+
+## Extracted 2026-08-27 (round 3, after author audit) — NEU_EST_UNIG/MUL_real
+
+| CSV | Source PNG | Script | Validation |
+|---|---|---|---|
+| `neu_est_unig_real.csv` | `NEU_EST_UNIG_real.png` | `extract_neu_est_real.py` | 8-panel multi-column raster (Lidar Network / Locomotion / Gait Decision modules). Re-plotted and compared against the original — matches closely (Lidar L3/L4 and Locomotion X8/X9/X11 activity windows ~35-50s, Decision X15/X16 block pattern). Required generalizing `extract_neu_imu_real.find_panel_boxes()` for multi-column layouts (see that script's docstring) and fixing a hardcoded 20s tick-step assumption — this figure's x-axis actually labels every 10s. |
+| `neu_est_mul_real.csv` | `NEU_EST_MUL_real.png` | `extract_neu_est_real.py` | 12-panel layout (adds a 4-panel Basal Ganglia column: GPi/GPe/STN/STR, R/G/B rows). Re-plotted and compared — activity windows (~24-35s, ~43-50s, late gradient ~70-90s) match the original across all 4 columns. |
+
+Both supersede the round-1 CSV-based "aggregate substitute" for these two figures, which the author
+rejected outright ("no representan lo mismo... no rehacer") — that substitute approach is no longer
+part of the pipeline (`real_plot_suite.py`'s old `build_neu_est()` was deleted, not just deprecated).

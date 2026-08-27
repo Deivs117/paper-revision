@@ -51,9 +51,11 @@ def build_fig4_ablation(output_path: str) -> None:
     vals = list(ARCHITECTURE_F1.values())
     colors = ["#d62728" if v < max(vals) else "#2ca02c" for v in vals]
     ax.bar(names, vals, color=colors)
-    ax.set_ylim(0.65, 0.80)  # F-06: y-axis rescaled so the real 0.024-F1 spread is legible
+    ax.set_ylim(0.65, 0.80)  # y-axis rescaled so the real 0.024-F1 spread is legible
     ax.set_ylabel("F1-score")
-    ax.set_title("Architecture ablation (y-axis truncated for legibility, F-06)")
+    ax.set_title("Architecture ablation")
+    ax.annotate("y-axis truncated for legibility", xy=(0.02, 0.02), xycoords="axes fraction",
+                fontsize=6, color="#555555")
     fig.tight_layout()
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     fig.savefig(output_path, dpi=DPI)
