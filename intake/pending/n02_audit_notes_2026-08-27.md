@@ -1,21 +1,11 @@
 # Auditoría N-02 — Notas de revisión
 
-8/27/2026, 5:37:57 PM
+8/27/2026, 5:55:58 PM
 
 ## Appetitive ECDF (Appetitive_Real_Plot_1_Switching_Delay_ECDF.png)
 
 - Estado: ⚠ Ajustar antes de integrar
-- Notas: Solo cambiar tipografías. {
-  "font_family": "serif",
-  "font_sizes": {
-    "general_text": 10,
-    "axes_labels": 11,
-    "axes_titles": 12,
-    "xtick_labels": 10,
-    "ytick_labels": 10,
-    "legend": 10
-  }
-}
+- Notas: Revisar título que se corta poner debajo, si no cabe a lo largo, no importa que la imágen sea un poco más grande por el título
 
 ## Appetitive Basal Ganglia (Appetitive_Real_Plot_2_Basal_Ganglia_Dynamics.png)
 
@@ -24,35 +14,13 @@
 
 ## Appetitive Pitch/Roll RMS (Appetitive_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png)
 
-- Estado: ⚠ Ajustar antes de integrar
-- Notas: Error completo en entendimiento de la tarea:
-Se debe dejar obligatoriamente toda la estructura de la imágen Original *_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png, ES DECIR, dejar las dos partes A y B. Solo agregar, para aversive, complex, appetitive en las *_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png originales en el apartado A Basal Ganglia Neuronal Response (SOLO EDITAR ESTE APARTADO), se puede colorear detras de la linea continua (la linea continua de firing variance), con rojo y azul para ejemplificar cuando se dectectaron dichos estímulos. Así como lo que se quizo hacer en NEU_EST_MUL_real_AGGREGATE_SUBSTITUTE.png pero en lugar de ser un gráfico de lineas aparte se coloree el area de rojo o azul según correspondo todo en una gráfica, con leyendas que lo expliquen claramente.
-{
-  "font_family": "serif",
-  "font_sizes": {
-    "general_text": 10,
-    "axes_labels": 11,
-    "axes_titles": 12,
-    "xtick_labels": 10,
-    "ytick_labels": 10,
-    "legend": 10
-  }
-}
+- Estado: ✅ OK, integrar
+- Notas: (vacío)
 
 ## Aversive ECDF (Aversive_Real_Plot_1_Switching_Delay_ECDF.png)
 
 - Estado: ⚠ Ajustar antes de integrar
-- Notas: Solo cambiar tipografías. {
-  "font_family": "serif",
-  "font_sizes": {
-    "general_text": 10,
-    "axes_labels": 11,
-    "axes_titles": 12,
-    "xtick_labels": 10,
-    "ytick_labels": 10,
-    "legend": 10
-  }
-}
+- Notas: Revisar título que se corta poner debajo, si no cabe a lo largo, no importa que la imágen sea un poco más grande por el título.
 
 ## Aversive Basal Ganglia (Aversive_Real_Plot_2_Basal_Ganglia_Dynamics.png)
 
@@ -61,35 +29,13 @@ Se debe dejar obligatoriamente toda la estructura de la imágen Original *_Real_
 
 ## Aversive Pitch/Roll RMS (Aversive_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png)
 
-- Estado: ⚠ Ajustar antes de integrar
-- Notas: Error completo en entendimiento de la tarea:
-Se debe dejar obligatoriamente toda la estructura de la imágen Original *_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png, ES DECIR, dejar las dos partes A y B. Solo agregar, para aversive, complex, appetitive en las *_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png originales en el apartado A Basal Ganglia Neuronal Response (SOLO EDITAR ESTE APARTADO), se puede colorear detras de la linea continua (la linea continua de firing variance), con rojo y azul para ejemplificar cuando se dectectaron dichos estímulos. Así como lo que se quizo hacer en NEU_EST_MUL_real_AGGREGATE_SUBSTITUTE.png pero en lugar de ser un gráfico de lineas aparte se coloree el area de rojo o azul según correspondo todo en una gráfica, con leyendas que lo expliquen claramente.
-{
-  "font_family": "serif",
-  "font_sizes": {
-    "general_text": 10,
-    "axes_labels": 11,
-    "axes_titles": 12,
-    "xtick_labels": 10,
-    "ytick_labels": 10,
-    "legend": 10
-  }
-}
+- Estado: ✅ OK, integrar
+- Notas: (vacío)
 
 ## Obstacle ECDF (Obstacle_Real_Plot_1_Switching_Delay_ECDF.png)
 
 - Estado: ⚠ Ajustar antes de integrar
-- Notas: Solo cambiar tipografías. {
-  "font_family": "serif",
-  "font_sizes": {
-    "general_text": 10,
-    "axes_labels": 11,
-    "axes_titles": 12,
-    "xtick_labels": 10,
-    "ytick_labels": 10,
-    "legend": 10
-  }
-}
+- Notas: Revisar título que se corta poner debajo, si no cabe a lo largo, no importa que la imágen sea un poco más grande por el título. Cambiar unidades porque para esta gráfica se superponen directamente todos los números del eje X
 
 ## Obstacle Basal Ganglia (Obstacle_Real_Plot_2_Basal_Ganglia_Dynamics.png)
 
@@ -99,35 +45,12 @@ Se debe dejar obligatoriamente toda la estructura de la imágen Original *_Real_
 ## Obstacle Pitch/Roll RMS (Obstacle_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png)
 
 - Estado: ⚠ Ajustar antes de integrar
-- Notas: Error completo en entendimiento de la tarea:
-Se debe dejar obligatoriamente toda la estructura de la imágen Original *_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png, ES DECIR, dejar las dos partes A y B. NO agregar, para Obstacle en las *_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png originales en el apartado A Basal Ganglia Neuronal Response (NO EDITAR ESTE APARTADO), NO se puede colorear detras de la linea continua (la linea continua de firing variance), con rojo y azul para ejemplificar cuando se dectectaron dichos estímulos. 
-NO COLOREAR ESTÍMULOS A LA VISTA
-{
-  "font_family": "serif",
-  "font_sizes": {
-    "general_text": 10,
-    "axes_labels": 11,
-    "axes_titles": 12,
-    "xtick_labels": 10,
-    "ytick_labels": 10,
-    "legend": 10
-  }
-}
+- Notas: para la sección A cortar los segundos para la trial stimuli t01 desde el segundo 20 para que coincide con el inicio de la parte B de la gráfica.
 
 ## Complex ECDF (Complex_Real_Plot_1_Switching_Delay_ECDF.png)
 
 - Estado: ⚠ Ajustar antes de integrar
-- Notas: Solo cambiar tipografías. {
-  "font_family": "serif",
-  "font_sizes": {
-    "general_text": 10,
-    "axes_labels": 11,
-    "axes_titles": 12,
-    "xtick_labels": 10,
-    "ytick_labels": 10,
-    "legend": 10
-  }
-}
+- Notas: Revisar título que se corta poner debajo, si no cabe a lo largo, no importa que la imágen sea un poco más grande por el título.
 
 ## Complex Basal Ganglia (Complex_Real_Plot_2_Basal_Ganglia_Dynamics.png)
 
@@ -136,20 +59,8 @@ NO COLOREAR ESTÍMULOS A LA VISTA
 
 ## Complex Pitch/Roll RMS (Complex_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png)
 
-- Estado: ❌ Rechazar / re-hacer
-- Notas: Error completo en entendimiento de la tarea:
-Se debe dejar obligatoriamente toda la estructura de la imágen Original *_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png, ES DECIR, dejar las dos partes A y B. Solo agregar, para aversive, complex, appetitive en las *_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png originales en el apartado A Basal Ganglia Neuronal Response (SOLO EDITAR ESTE APARTADO), se puede colorear detras de la linea continua (la linea continua de firing variance), con rojo y azul para ejemplificar cuando se dectectaron dichos estímulos. Así como lo que se quizo hacer en NEU_EST_MUL_real_AGGREGATE_SUBSTITUTE.png pero en lugar de ser un gráfico de lineas aparte se coloree el area de rojo o azul según correspondo todo en una gráfica, con leyendas que lo expliquen claramente.
-{
-  "font_family": "serif",
-  "font_sizes": {
-    "general_text": 10,
-    "axes_labels": 11,
-    "axes_titles": 12,
-    "xtick_labels": 10,
-    "ytick_labels": 10,
-    "legend": 10
-  }
-}
+- Estado: ✅ OK, integrar
+- Notas: (vacío)
 
 ## Confusion Matrix (MLP) (fig1_confusion_matrix.png)
 
@@ -174,18 +85,8 @@ Hay que ver cómo podemos representar mejor esta información para responder de 
 
 ## Terrain Latencies (4 paneles) (FigReal_Terrain_Latencies_4Panels.png)
 
-- Estado: ⚠ Ajustar antes de integrar
-- Notas: Solo cambiar tipografías. {
-  "font_family": "serif",
-  "font_sizes": {
-    "general_text": 10,
-    "axes_labels": 11,
-    "axes_titles": 12,
-    "xtick_labels": 10,
-    "ytick_labels": 10,
-    "legend": 10
-  }
-}
+- Estado: ✅ OK, integrar
+- Notas: (vacío)
 
 ## GRAPH_IMU (terreno rugoso) (GRAPH_IMU_real.png)
 

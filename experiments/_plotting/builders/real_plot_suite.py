@@ -77,18 +77,27 @@ def switching_delay_s(trial_dir: str) -> float | None:
 
 
 def build_ecdf(real_root: str, output_dir: str) -> dict:
-    """Plot 1 per scenario: Switching Delay ECDF."""
+    """Plot 1 per scenario: Switching Delay ECDF.
+
+    ROUND-3 FIX (2026-08-27, per n02_audit_notes): (1) title was clipped at the figure's right
+    edge -- widened the figure (3.2->4.6in) instead of shrinking/wrapping the title text, per the
+    author's explicit "no importa que la imagen sea un poco más grande". (2) Obstacle's x-axis tick
+    labels overlapped into unreadable stacked text because its delays are sub-millisecond
+    (~0.0003-0.0006s) -- auto-switches to milliseconds whenever the whole delay range is below 1s,
+    which also fixes Aversive (similarly small) without needing a per-scenario special case."""
     results = {}
     for scenario, pattern in SCENARIO_FOLDERS.items():
         dirs = _trial_dirs(real_root, pattern)
         delays = [d for d in (switching_delay_s(t) for t in dirs) if d is not None]
         results[scenario] = delays
-        fig, ax = plt.subplots(figsize=(3.2, 3.2))
+        fig, ax = plt.subplots(figsize=(4.6, 3.6))
         if delays:
             x = np.sort(delays)
+            use_ms = x[-1] < 1.0
+            x_plot = x * 1000.0 if use_ms else x
             y = np.arange(1, len(x) + 1) / len(x)
-            ax.step(x, y, where="post", color=SCENARIO_COLORS[scenario], linewidth=2)
-        ax.set_xlabel("Switching delay (s)")
+            ax.step(x_plot, y, where="post", color=SCENARIO_COLORS[scenario], linewidth=2)
+        ax.set_xlabel("Switching delay (ms)" if delays and use_ms else "Switching delay (s)")
         ax.set_ylabel("ECDF")
         ax.set_title(f"{scenario} — Switching Delay ECDF (N={len(delays)})")
         fig.tight_layout()
@@ -181,6 +190,15 @@ def build_rms_dynamics(real_root: str, output_dir: str) -> None:
         ax_b.set_ylabel("Attitude Space RMS (deg)")
         ax_b.set_title("B. Chasis Kinematic Attitude Stabilization Space")
         ax_b.legend(loc="lower right")
+
+        # ROUND-3 FIX (2026-08-27, per n02_audit_notes, Obstacle specifically): panel B's
+        # roll_rms/pitch_rms columns have leading NaN rows in combined_metrics.csv (populate later
+        # than time_s itself), so matplotlib autoscales panel B's x-axis to start well after t=0 --
+        # while panel A's firing_variance is a real (non-NaN) zero from t=0, so it kept showing a
+        # long flat dead lead-in with nothing to align to. Sync panel A's view to panel B's
+        # autoscaled range instead of hardcoding a start second, so this self-corrects for any
+        # trial/scenario with the same NaN-lead-in pattern, not just this one.
+        ax_a.set_xlim(ax_b.get_xlim())
 
         fig.tight_layout(rect=(0, 0, 1, 0.96))
         fig.suptitle(f"{scenario} (trial {os.path.basename(trial_dir)})", fontsize=10)

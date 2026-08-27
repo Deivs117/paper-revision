@@ -191,3 +191,25 @@ Two fixes from the round-2 audit's second export (`n02_audit_notes_2026-08-27.md
    Appetitive/Aversive/Complex — **not Obstacle**, whose stimulus is green and doesn't fit the
    red/blue scheme (confirmed explicitly by the author: "NO COLOREAR ESTÍMULOS A LA VISTA" for
    that scenario). Verified visually against all 4 regenerated outputs.
+
+## Round 4 (2026-08-27, same day) — third audit-notes export, cosmetic fixes
+
+Status after this round: **12 of 19 figures approved**, only ECDF ×4 stay `⚠ Ajustar` (title-only,
+already fixed — pending a 4th review pass), `_2` family and Morphological Transition Energy stay
+`❌` (writing/design decisions, not image bugs — see rounds 1-3).
+
+1. **ECDF title clipping + Obstacle axis overlap.** `build_ecdf()`: widened the figure (3.2→4.6in)
+   instead of shrinking the title, per the author's explicit "no importa que la imagen sea un poco
+   más grande". Also: whenever the whole delay range is sub-1s, the x-axis auto-switches to
+   milliseconds — fixes Obstacle's stacked/overlapping tick labels (its delays are ~0.0003-0.0006s)
+   and Aversive's similarly small range, without a per-scenario special case.
+2. **Obstacle `_Real_Plot_3` panel misalignment.** Panel B's `roll_rms`/`pitch_rms` columns have
+   leading NaN rows in `combined_metrics.csv` (populate later than `time_s` itself), so matplotlib
+   autoscaled panel B's x-axis starting well after t=0, while panel A's `firing_variance` is a real
+   (non-NaN) zero from t=0 and kept a long flat dead lead-in with nothing to align to. Fixed by
+   syncing panel A's `xlim` to panel B's autoscaled range (`ax_a.set_xlim(ax_b.get_xlim())`)
+   instead of hardcoding "start at t=20" — self-corrects for any trial/scenario with the same
+   NaN-lead-in pattern, not just this one.
+
+As in rounds 2-3: only the still-pending figures were regenerated and re-committed; the 12 already
+`✅` figures were confirmed untouched (`git status` shows no diff on them).
