@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-27T04:09:24+00:00",
-  "progressLastCommit": "2026-08-26T17:45:01-05:00",
+  "generatedAt": "2026-08-27T04:19:03+00:00",
+  "progressLastCommit": "2026-08-26T23:09:24-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -12,7 +12,7 @@
       "owner": [
         "Sebas"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/r2-01-01..20-*.tex"
     },
     {
@@ -91,7 +91,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/r3-03-servo-compensation-strategies.tex, patches/r2-01-19-servocompensation-crossref.tex"
     },
     {
