@@ -1,0 +1,34 @@
+{
+  "trial_index": 10,
+  "suite_name": "familia_a_obstaculo",
+  "verdict": "SUCCESS",
+  "seed_info": {
+    "trial_index": 10,
+    "noise_level_idx": 4,
+    "perturbations": {
+      "stimulus_x": {
+        "base": 0.5,
+        "delta": 0.082
+      },
+      "stimulus_y": {
+        "base": -0.5,
+        "delta": 0.0954
+      }
+    }
+  },
+  "final_metrics": {
+    "sim_time_s": 16.458,
+    "tresponse": 17.0844,
+    "tswitch": 27.1452,
+    "roll_rms": 1.478,
+    "pitch_rms": 0.8437,
+    "noise_idx": 0,
+    "exp_latency": -1.0,
+    "exp_lambda": 1.0,
+    "tr": 0.0,
+    "mode": "H",
+    "bb_red": 0.0,
+    "bb_blue": 0.0,
+    "bb_green": 0.0
+  }
+}

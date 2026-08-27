@@ -1,0 +1,34 @@
+{
+  "trial_index": 11,
+  "suite_name": "familia_a_aversivo",
+  "verdict": "SUCCESS",
+  "seed_info": {
+    "trial_index": 11,
+    "noise_level_idx": 0,
+    "perturbations": {
+      "stimulus_x": {
+        "base": 2.0,
+        "delta": 0.1102
+      },
+      "stimulus_y": {
+        "base": -0.5,
+        "delta": 0.0376
+      }
+    }
+  },
+  "final_metrics": {
+    "sim_time_s": 9.818,
+    "tresponse": 0.0,
+    "tswitch": 0.0,
+    "roll_rms": 1.4149,
+    "pitch_rms": 1.0829,
+    "noise_idx": 0,
+    "exp_latency": 2.6021,
+    "exp_lambda": 1.0,
+    "tr": 0.6232,
+    "mode": "H",
+    "bb_red": 0.0,
+    "bb_blue": 0.0,
+    "bb_green": 0.0
+  }
+}

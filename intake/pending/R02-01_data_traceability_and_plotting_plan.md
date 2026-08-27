@@ -441,3 +441,30 @@ responde "de dónde sale el dato y cómo se ejecuta la corrección"** (mapa de t
 arquitectura de builders). El checklist de la Fase 1-4 del Informe 1 (§7) queda como registro de *qué decisión se
 tomó y por qué*, apuntando aquí para el *cómo*; el checklist de este documento (arriba) es la única lista de
 pasos de ejecución vigente — evitar mantener una tercera copia de la secuencia de trabajo en ningún otro lugar.
+
+---
+
+## Adenda de Implementación (2026-08-27) — Tareas 1-3 ejecutadas, correcciones encontradas
+
+Se construyó `experiments/_plotting/` (Tarea 1) y se ejecutó contra los datos actuales (`experiments/N-01-*`);
+se estandarizó `experiments/real/` (Tarea 2, ver su `MANIFEST.md`); se regeneró/vectorizó el bloque físico +
+clasificador (Tarea 3, ver `experiments/N-02-*`). Tres correcciones a este informe surgieron al ejecutar el
+código, documentadas en detalle en los README de N-01/N-02 — resumen aquí para quien lea solo este documento:
+
+- **F-Data-01 estaba mal diagnosticado.** No es que `metrics_raw.csv` tuviera el fallback de latencia para
+  `familia_a_obstaculo` — **no existe ninguna fuente de latencia poblada para ese escenario en todo
+  `experiments/`**, ni en `trial_summary.json` ni en `metrics_raw.csv` (0/15 filas en ambos). El panel C de
+  `fig1_Obstacle_macro.png` publicado no se puede reproducir desde este repositorio tal como está.
+- **La columna `Tswitch` de `combined_metrics.csv` (físico) es un escalón, no un reloj corriendo** — mantiene
+  `0.0` antes del cambio de modo y luego un único valor fijo el resto de la grabación; "retraso de conmutación"
+  = `max(Tswitch.dropna())` por ensayo. Confirmado fila por fila, no asumido.
+- **`NEU_EST_UNIG_real.png`/`NEU_EST_MUL_real.png` no tienen los datos por-neurona ($X_i$) que muestran** —
+  el veredicto original "✅ Completo" solo verificó que existiera un CSV, no que tuviera las columnas exactas
+  que la figura necesita. Mismo tipo de vacío que F-Data-04/05, ahora también aplicable a estas dos.
+- **D-11 se refinó en la práctica:** para las 2 figuras ya vectorizadas (`fig5`/`fig6`), se usó extracción
+  directa de color de píxel en Python (no WebPlotDigitizer por navegador) — ver
+  `experiments/_plotting/vectorized/README.md` para el razonamiento y la validación numérica de cada una.
+
+Estado de figuras físicas de vectorización pendiente (5 de 7): `GRAPH_IMU_real`, `GRAPH_IMU2_real`,
+`NEU_IMU_real`, `NEU_IMU2_real`, `FigReal_Terrain_Latencies_4Panels` — ver
+`experiments/N-02-physical-figure-regeneration/README.md` §"Remaining work" para el plan concreto.

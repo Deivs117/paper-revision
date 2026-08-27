@@ -1,0 +1,9 @@
+classifier,metric,value
+Logistic Reg.,inference_latency_us,0.5348
+SVM (RBF),inference_latency_us,23.4066
+Random Forest,inference_latency_us,40.7152
+MLP (150-80),inference_latency_us,1.6313
+Logistic Reg.,model_size_params,133.9
+SVM (RBF),model_size_params,45916.8
+Random Forest,model_size_params,11888.2
+MLP (150-80),model_size_params,32489.1

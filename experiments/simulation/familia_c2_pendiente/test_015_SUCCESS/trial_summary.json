@@ -1,0 +1,25 @@
+{
+  "trial_index": 15,
+  "suite_name": "familia_c2_pendiente",
+  "verdict": "SUCCESS",
+  "seed_info": {
+    "trial_index": 15,
+    "noise_level_idx": 4,
+    "perturbations": {}
+  },
+  "final_metrics": {
+    "sim_time_s": 70.6,
+    "tresponse": 0.0,
+    "tswitch": 0.0011,
+    "roll_rms": 1.4475,
+    "pitch_rms": 3.2322,
+    "noise_idx": 0,
+    "exp_latency": -1.0,
+    "exp_lambda": 1.0,
+    "tr": 0.5797,
+    "mode": "H",
+    "bb_red": 0.0,
+    "bb_blue": 0.0,
+    "bb_green": 0.0
+  }
+}

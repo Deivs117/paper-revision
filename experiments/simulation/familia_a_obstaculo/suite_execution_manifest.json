@@ -1,0 +1,227 @@
+[
+  {
+    "trial_index": 1,
+    "verdict": "SUCCESS",
+    "noise_level_idx": 0,
+    "perturbations": {
+      "stimulus_x": {
+        "base": 0.5,
+        "delta": 0.3828
+      },
+      "stimulus_y": {
+        "base": -0.75,
+        "delta": -0.0754
+      }
+    }
+  },
+  {
+    "trial_index": 2,
+    "verdict": "SUCCESS",
+    "noise_level_idx": 1,
+    "perturbations": {
+      "stimulus_x": {
+        "base": 0.5,
+        "delta": -0.0523
+      },
+      "stimulus_y": {
+        "base": -0.75,
+        "delta": -0.0949
+      }
+    }
+  },
+  {
+    "trial_index": 3,
+    "verdict": "SUCCESS",
+    "noise_level_idx": 2,
+    "perturbations": {
+      "stimulus_x": {
+        "base": 0.5,
+        "delta": -0.2758
+      },
+      "stimulus_y": {
+        "base": -0.75,
+        "delta": 0.01
+      }
+    }
+  },
+  {
+    "trial_index": 4,
+    "verdict": "SUCCESS",
+    "noise_level_idx": 3,
+    "perturbations": {
+      "stimulus_x": {
+        "base": 0.5,
+        "delta": 0.1425
+      },
+      "stimulus_y": {
+        "base": -0.75,
+        "delta": 0.2181
+      }
+    }
+  },
+  {
+    "trial_index": 5,
+    "verdict": "SUCCESS",
+    "noise_level_idx": 4,
+    "perturbations": {
+      "stimulus_x": {
+        "base": 0.5,
+        "delta": -0.2121
+      },
+      "stimulus_y": {
+        "base": -0.75,
+        "delta": -0.2131
+      }
+    }
+  },
+  {
+    "trial_index": 6,
+    "verdict": "SUCCESS",
+    "noise_level_idx": 0,
+    "perturbations": {
+      "stimulus_x": {
+        "base": 0.5,
+        "delta": 0.0645
+      },
+      "stimulus_y": {
+        "base": -0.5,
+        "delta": 0.064
+      }
+    }
+  },
+  {
+    "trial_index": 7,
+    "verdict": "SUCCESS",
+    "noise_level_idx": 1,
+    "perturbations": {
+      "stimulus_x": {
+        "base": 0.5,
+        "delta": -0.0856
+      },
+      "stimulus_y": {
+        "base": -0.5,
+        "delta": 0.0894
+      }
+    }
+  },
+  {
+    "trial_index": 8,
+    "verdict": "SUCCESS",
+    "noise_level_idx": 2,
+    "perturbations": {
+      "stimulus_x": {
+        "base": 0.5,
+        "delta": -0.0576
+      },
+      "stimulus_y": {
+        "base": -0.5,
+        "delta": -0.0941
+      }
+    }
+  },
+  {
+    "trial_index": 9,
+    "verdict": "SUCCESS",
+    "noise_level_idx": 3,
+    "perturbations": {
+      "stimulus_x": {
+        "base": 0.5,
+        "delta": 0.1677
+      },
+      "stimulus_y": {
+        "base": -0.5,
+        "delta": 0.3526
+      }
+    }
+  },
+  {
+    "trial_index": 10,
+    "verdict": "SUCCESS",
+    "noise_level_idx": 4,
+    "perturbations": {
+      "stimulus_x": {
+        "base": 0.5,
+        "delta": 0.082
+      },
+      "stimulus_y": {
+        "base": -0.5,
+        "delta": 0.0954
+      }
+    }
+  },
+  {
+    "trial_index": 11,
+    "verdict": "SUCCESS",
+    "noise_level_idx": 0,
+    "perturbations": {
+      "stimulus_x": {
+        "base": 0.5,
+        "delta": 0.0273
+      },
+      "stimulus_y": {
+        "base": -0.75,
+        "delta": 0.0382
+      }
+    }
+  },
+  {
+    "trial_index": 12,
+    "verdict": "SUCCESS",
+    "noise_level_idx": 1,
+    "perturbations": {
+      "stimulus_x": {
+        "base": 0.5,
+        "delta": -0.0211
+      },
+      "stimulus_y": {
+        "base": -0.75,
+        "delta": -0.0142
+      }
+    }
+  },
+  {
+    "trial_index": 13,
+    "verdict": "SUCCESS",
+    "noise_level_idx": 2,
+    "perturbations": {
+      "stimulus_x": {
+        "base": 0.5,
+        "delta": 0.007
+      },
+      "stimulus_y": {
+        "base": -0.75,
+        "delta": 0.0114
+      }
+    }
+  },
+  {
+    "trial_index": 14,
+    "verdict": "SUCCESS",
+    "noise_level_idx": 3,
+    "perturbations": {
+      "stimulus_x": {
+        "base": 0.5,
+        "delta": -0.0283
+      },
+      "stimulus_y": {
+        "base": -0.75,
+        "delta": 0.0203
+      }
+    }
+  },
+  {
+    "trial_index": 15,
+    "verdict": "SUCCESS",
+    "noise_level_idx": 4,
+    "perturbations": {
+      "stimulus_x": {
+        "base": 0.5,
+        "delta": 0.0337
+      },
+      "stimulus_y": {
+        "base": -0.75,
+        "delta": -0.0142
+      }
+    }
+  }
+]

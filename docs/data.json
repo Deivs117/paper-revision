@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-27T04:19:03+00:00",
-  "progressLastCommit": "2026-08-26T23:09:24-05:00",
+  "generatedAt": "2026-08-27T19:32:43+00:00",
+  "progressLastCommit": "2026-08-26T23:19:03-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -198,6 +198,32 @@
       ],
       "status": "synced-to-overleaf",
       "patchFile": "patches/c-02-strip-revblue.md"
+    },
+    {
+      "id": "N-01",
+      "reviewer": "—",
+      "requirement": "Reusable pipeline (experiments/_plotting/) that regenerates the noise-robustness figure grid (F-02 fusion), FigA/B/C (M-01–M-04 figures), and tab:consolidated_simulation_metrics from any simulation results folder — built ahead of the team's planned re-run of the simulated battery (notified 2026-08-27). Already executed once against the current experiments/simulation/ data; output staged in experiments/N-01-simulation-figure-regeneration/output/, not yet promoted to assets/ (pending review + the M-01–M-04 text redaction decision). Surfaced a new finding: familia_a_obstaculo has no populated latency data anywhere in experiments/ (corrects Informe 2's original F-Data-01 diagnosis) — see that experiment's README.md.",
+      "target": "results.tex (Appetitive/Aversive/Obstacle/Complex Targeting paragraphs, tab:consolidated_simulation_metrics, FigA/FigB/FigC)",
+      "dataSource": "experiments/N-01-simulation-figure-regeneration/",
+      "category": "Métricas",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "drafted",
+      "patchFile": "—"
+    },
+    {
+      "id": "N-02",
+      "reviewer": "—",
+      "requirement": "Physical-section figure regeneration (Tarea 3): CSV rebuild of the 4-scenario Real_Plot_{1,2,3} set (12 figures, MultiRGB confirmed per D-2), NEU_EST_UNIG/MUL_real aggregate substitutes, FigReal_Morphological_Transition_Energy; vectorization (direct pixel-color extraction, not WebPlotDigitizer-by-browser — see experiments/_plotting/vectorized/README.md) of fig5_classifier_comparison+fig6_computational_cost fused into the F-03 panel (confirmed D-3), plus fig1_confusion_matrix/fig4_architecture_ablation regenerated from values already in prose. Output staged, not promoted. 5 dense-time-series physical figures (GRAPH_IMU_real, GRAPH_IMU2_real, NEU_IMU_real, NEU_IMU2_real, FigReal_Terrain_Latencies_4Panels) still need vectorization — see this experiment's README.md \"Remaining work\".",
+      "target": "results.tex (physical results subsection, §MLP classifier)",
+      "dataSource": "experiments/N-02-physical-figure-regeneration/",
+      "category": "Métricas",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "drafted",
+      "patchFile": "—"
     }
   ]
 }

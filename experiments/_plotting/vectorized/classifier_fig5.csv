@@ -1,0 +1,17 @@
+classifier,metric,value
+Logistic Reg.,accuracy,0.6454
+SVM (RBF),accuracy,0.8532
+Random Forest,accuracy,0.9473
+MLP (150-80),accuracy,0.7296
+Logistic Reg.,precision,0.6397
+SVM (RBF),precision,0.8378
+Random Forest,precision,0.9501
+MLP (150-80),precision,0.7282
+Logistic Reg.,recall,0.6791
+SVM (RBF),recall,0.8771
+Random Forest,recall,0.9431
+MLP (150-80),recall,0.7423
+Logistic Reg.,f1,0.6594
+SVM (RBF),f1,0.8574
+Random Forest,f1,0.9473
+MLP (150-80),f1,0.7338

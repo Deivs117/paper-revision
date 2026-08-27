@@ -1,0 +1,25 @@
+{
+  "trial_index": 3,
+  "suite_name": "familia_b_compleja",
+  "verdict": "SUCCESS",
+  "seed_info": {
+    "trial_index": 3,
+    "noise_level_idx": 2,
+    "perturbations": {}
+  },
+  "final_metrics": {
+    "sim_time_s": 34.73,
+    "tresponse": 0.0,
+    "tswitch": 4.4965,
+    "roll_rms": 0.7433,
+    "pitch_rms": 1.0947,
+    "noise_idx": 0,
+    "exp_latency": 0.0263,
+    "exp_lambda": 1.0,
+    "tr": 0.5797,
+    "mode": "H",
+    "bb_red": 0.0,
+    "bb_blue": 41422.0,
+    "bb_green": 0.0
+  }
+}
