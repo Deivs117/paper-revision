@@ -1,7 +1,17 @@
 # R02-01 — Auditoría Exhaustiva de Métricas y Recursos Visuales (`sections/results.tex`)
 
-**Estado:** DIAGNÓSTICO — ningún archivo de `sections/`, `assets/` o `source/` fue modificado para producir este
-informe. Es de solo lectura sobre el estado actual del repositorio.
+**Estado:** DIAGNÓSTICO, con verificación de datos y decisiones de implementación ya cerradas en el documento
+complementario — ningún archivo de `sections/`, `assets/` o `source/` fue modificado para producir este informe.
+Es de solo lectura sobre el estado actual del repositorio.
+
+**Relación con `intake/pending/R02-01_data_traceability_and_plotting_plan.md` ("Informe 2"):** este documento
+("Informe 1") identifica **qué** está mal y **por qué importa** — es el catálogo de diagnóstico. Informe 2
+responde, para cada hallazgo de aquí, **de dónde sale el dato real y cómo se recupera/regenera**, y ya tiene
+**11 decisiones confirmadas por el autor (D-1–D-11)** que resuelven toda la Fase 1 de verificación de este
+documento (§7 más abajo) y fijan el plan de implementación completo. Los dos documentos están pensados para
+usarse juntos: **este informe para entender el problema y su severidad, Informe 2 para ejecutar la corrección**
+— cada hallazgo `M-NN`/`F-NN` de aquí abajo tiene ahora una anotación **"Estado (2026-08-27)"** que apunta a la
+sección exacta de Informe 2 donde se resolvió.
 
 **Alcance auditado:** `sections/results.tex` (974 líneas, texto completo) y las **~50 figuras/tablas** que
 referencia dentro de `assets/`. No cubre `methodology.tex` salvo donde su nomenclatura ($N_0/N_1/N_2$, $X_i$, etc.)
@@ -35,12 +45,22 @@ exactamente ese hueco y encuentra tres clases de problemas, en orden de severida
    desincronización entre el dataset con el que se generaron las figuras y el dataset (o la generalización) con
    el que se redactó el texto. **Requiere verificación contra los logs crudos antes de tocar una sola palabra del
    texto**, porque no sabemos todavía cuál de los dos (texto o figura) es el que está desactualizado.
+   **✅ RESUELTO (2026-08-27, Informe 2 §0):** se recalcularon estas cuatro cifras directamente contra
+   `experiments/simulation/` (CSV/JSON crudos, no solo inspección visual) — **en los cuatro casos la figura
+   coincide con el dato crudo y el texto es el que está desactualizado.** La verificación bloqueante de la Fase 1
+   (§7) ya está hecha; lo único pendiente es la decisión de redacción en sí (reescribir los 5 párrafos citados
+   usando los valores reales), que sigue sin tomarse.
 2. **Error de traducción sistemático en las figuras generadas por script (severidad ALTA, 1 causa raíz,
    ~8-10 figuras afectadas, hallazgo F-01).** Todos los rasters neuronales (`NEU_EST_*`, `NEU_IMU*`) rotulan un
    panel como **"March Decision Module"** — traducción literal incorrecta de "Módulo de Decisión de Marcha"
    (debería ser *"Gait Decision Module"*, coincidiendo con el término que usa el propio `methodology.tex`) — y
    otro panel como **"Auxiliar"** (español, debería ser *"Auxiliary"*). Como es el mismo script de graficación el
    que genera las ~10 figuras, es una única corrección de código que se propaga a todas.
+   **Estado (2026-08-27, Informe 2 §3.2/§3.4):** la corrección se centraliza en un único builder
+   (`neural_raster.py`) reutilizado por todas las variantes — para `NEU_EST_UNIB`/`NEU_EST_UNIG`/`NEU_EST_MUL`
+   (sim y físico) hay CSV real y el builder es implementable de inmediato (Grupo 1); para `NEU_IMU`/`NEU_IMU2`
+   (sim y físico) el mismo builder consume datos vectorizados (D-1/D-8, Grupo 2 de Informe 2), porque esas 4
+   figuras no tienen CSV crudo disponible (ver F-Data-04/05 de Informe 2).
 3. **Redundancia visual estructural y oportunidades de fusión de paneles (severidad MEDIA, sección §3).**
    Cuatro pares de familias de figuras (macro-robustez de los 4 escenarios simulados; ECDF+dinámica+RMS de los 4
    escenarios físicos; comparación de clasificadores + costo computacional; timeline IMU sim/real) están
@@ -48,6 +68,9 @@ exactamente ese hueco y encuentra tres clases de problemas, en orden de severida
    el patrón que ya se aplicó una vez con éxito para las tablas `tab:consolidated_simulation_metrics` y
    `tab:consolidated_physical_metrics` (ver R2-01, patches 03 y 15), pero que nunca se extendió al arte gráfico
    mismo.
+   **✅ Decidido (2026-08-27, Informe 2 D-9/D-3):** ambas fusiones propuestas en §3 más abajo (F-02: rejilla 4×3
+   de `fig1_*_macro.png`; F-03: panel 1×3 de `fig5`+`fig6`) están **confirmadas para ejecutarse**, no solo
+   propuestas — ver Informe 2 §3.4 para el orden de implementación exacto.
 4. **Problemas menores de nomenclatura, ejes sin unidad y contenido de figura no discutido en prosa** (severidad
    BAJA/MEDIA, hallazgos F-04–F-08): un eje Y llamado literalmente "V A L U E" que mezcla dos magnitudes
    físicas distintas sin unidades; un panel completo de una figura (tamaño de modelo en `fig6`) que nunca se
@@ -94,6 +117,12 @@ citada realmente muestra, y por qué importa.
   ms). Si esa es la intención, el texto necesita **desambiguar qué "decision latency" está citando** y dejar de
   citar a `tab:consolidated_simulation_metrics`/Fig. C como su evidencia, porque esas sí miden el pipeline
   completo.
+- **✅ Estado (2026-08-27, Informe 2 §0):** verificado contra `trial_summary.json.exp_latency` de las 15 réplicas
+  de `familia_a_apetitivo` — rango real 0.015 s–3.07 s, media≈60 ms solo en $\sigma=0$ (sin ruido), subiendo a
+  1.6–2.0 s en $\sigma\geq1$. **La figura y el dato crudo coinciden entre sí; la hipótesis de causa de arriba
+  (medida de inferencia pura vs. pipeline completo) queda descartada como explicación** — el dato crudo *es* el
+  pipeline completo (mismo campo que alimenta la figura) y de todas formas varía con el ruido. La única acción
+  pendiente es de redacción: reescribir "≈47 ms, constante" en `results.tex:77,178,973`.
 
 ### M-02 — El perfil de "Tipover Risk" (`FigA_Stability_Profile.png`) no muestra la escalada monótona ni los valores medios que describe el texto
 
@@ -122,6 +151,12 @@ citada realmente muestra, y por qué importa.
   `assets/` sea una regeneración posterior con un dataset o parámetro de recorte distinto. **Antes de reescribir
   el texto, hay que confirmar contra el script/notebook que generó esta figura cuál de las dos versiones (texto o
   PNG actual) refleja el run real.**
+- **✅ Estado (2026-08-27, Informe 2 §0):** verificado contra `stability_log.csv`/columna `TR` de las 15 réplicas
+  de `familia_c1_terreno_rugoso` y las 15 de `familia_c2_pendiente` — media global rugoso=0.600, media global
+  pendiente=0.593, ambas planas en el rango 0.58–0.60 salvo picos transitorios aislados. **Coincide con la
+  figura, no con el texto** — no existe ningún archivo en el repositorio consistente con "$\mu_{TR}\approx0.42$"
+  ni con una escalada monótona. La nota de calibración de arriba queda resuelta: no hace falta buscar una versión
+  anterior de la figura, el dataset actual y la figura actual ya están sincronizados entre sí.
 
 ### M-03 — El "phase-space" de Roll/Pitch RMS (`FigC_Terrain_Adaptability.png`) muestra clusters solapados con medias muy distintas a las citadas
 
@@ -151,6 +186,13 @@ citada realmente muestra, y por qué importa.
   experimento (`experiments/` no tiene actualmente ninguna carpeta para R3-01 relacionada; si existe un
   notebook fuera de este repo que generó estos PNG, referenciarlo desde `intake/SOURCES.md` ayudaría a futuras
   auditorías).
+- **✅ Estado (2026-08-27, Informe 2 §0):** `experiments/simulation/` sí tenía el dato (la nota de arriba estaba
+  equivocada en ese punto específico — no era R3-01, era `familia_c1_terreno_rugoso`/`familia_c2_pendiente`, ya
+  documentadas en `experiments/` desde antes de esta auditoría). Verificado contra `trial_summary.json.roll_rms`/
+  `pitch_rms` de las 30 réplicas: rugoso media roll=1.586°, pitch=1.667°; pendiente media roll=1.469°,
+  pitch=2.290°. **Coincide con la figura (no con el texto)** casi exactamente, y confirma en particular que el
+  solapamiento en roll que la figura muestra es real — el texto ("zero cluster overlap", 1.36/1.25 vs.
+  0.43/6.95) no corresponde a ningún archivo del repositorio.
 
 ### M-04 (severidad menor) — "T_switch = 0.3 ms, perfect Heaviside step" no coincide con los paneles B/C de `FigB_Decision_Delay.png`
 
@@ -172,6 +214,11 @@ citada realmente muestra, y por qué importa.
 - **Acción recomendada:** igual que M-01–M-03, verificar contra los datos crudos antes de editar. Si la cola de
   600 ms en Panel B es real, el texto debería mencionarla explícitamente (p. ej. como un caso límite en terreno
   rugoso) en vez de afirmar "invariante para ambos tipos de terreno".
+- **✅ Estado (2026-08-27, Informe 2 §0):** verificado contra `trial_summary.json.tswitch` de las 30 réplicas —
+  **la cola de 600 ms en Panel B es real y coincide con precisión exacta**: 2 de 15 réplicas de terreno rugoso
+  (13.3%) caen en 0.5999 s/0.6006 s, el resto en 0.0002–0.0007 s; terreno pendiente muestra 15 valores distintos
+  entre 0.0009–0.0018 s, consistente con la "escalera de 5-6 saltos" que describe la figura. **El texto ("0.3 ms
+  invariante para ambos terrenos") no corresponde a ningún archivo existente** — misma conclusión que M-01–M-03.
 
 ### M-05 (control positivo — no es un problema) — La matriz de confusión sí es 100% consistente con el texto
 
@@ -211,6 +258,12 @@ no fusionar un error en una figura más grande y más difícil de corregir despu
   traducida) y `"Auxiliar"`, corregirlas una sola vez, y regenerar las ~9 figuras desde ese mismo script para que
   la corrección se propague de forma idéntica a todas — evita corregir cada PNG a mano y con riesgo de
   inconsistencia entre ellas.
+- **Estado (2026-08-27, Informe 2 §3.2/§3.4):** el script de graficación original no se encontró en el repo — la
+  corrección se hace en un builder nuevo (`neural_raster.py`, Informe 2) que centraliza el rótulo correcto para
+  todas las variantes. `NEU_EST_UNIB`/`NEU_EST_UNIG`/`NEU_EST_MUL` (sim y físico) tienen CSV real y son
+  implementables ya (Informe 2, Grupo 1); `NEU_IMU`/`NEU_IMU2` (sim y físico, 4 figuras) no tienen CSV crudo
+  disponible (Informe 2, F-Data-04/05) y se resuelven vectorizando el PNG actual con WebPlotDigitizer antes de
+  poder aplicar la corrección — ver Informe 2 §2/§3.4, Grupo 2.
 
 ### F-02 (media prioridad) — Fusión de los 4 `fig1_*_macro.png` (robustez ante ruido, simulación) en una rejilla única
 
@@ -243,6 +296,10 @@ no fusionar un error en una figura más grande y más difícil de corregir despu
   - **Etiquetas de fila:** añadir el nombre del escenario como etiqueta de fila (fuera del área de plot, al estilo
     `\rotatebox{90}` en LaTeX o como texto de márgen si se compone en Python/matplotlib con `fig.text()`), en vez
     de repetirlo en cada título de columna.
+- **✅ Estado (2026-08-27, Informe 2 D-9):** fusión **confirmada, se ejecuta directamente** (no se regeneran antes
+  las 4 figuras individuales) — las 15 réplicas por escenario ya tienen CSV verificado (Informe 2 §0), incluida la
+  corrección de F-Data-01 (latencia de Obstacle, que usaba un centinela `-1.0`). Implementable ya en
+  `macro_robustness.py`, Informe 2 §3.4 Grupo 1.
 
 ### F-03 (media prioridad) — Fusión de `fig5_classifier_comparison.png` + `fig6_computational_cost.png`
 
@@ -268,6 +325,10 @@ no fusionar un error en una figura más grande y más difícil de corregir despu
     `results.tex` tras la línea 616 conectándolo con el argumento de "resource-constrained embedded hardware" que
     ya usa el resto del párrafo (el tamaño de modelo es directamente relevante a ese argumento y hoy se
     desperdicia).
+- **✅ Estado (2026-08-27, Informe 2 D-3/D-11):** fusión **confirmada, se ejecuta**. No existe el notebook de
+  entrenamiento original (Informe 2, F-Data-06), así que `fig5`/`fig6` se vectorizan con WebPlotDigitizer (los
+  valores de los 3 clasificadores no-MLP no están citados en prosa en ningún punto de `results.tex`) — ver
+  Informe 2 §2, Grupo B de calibración compartida, y §3.4 Grupo 2.
 
 ### F-04 (baja prioridad, cosmética pero real) — Ejes "V A L U E" sin unidades y con dos magnitudes mezcladas en `GRAPH_IMU*.png`
 
@@ -298,6 +359,11 @@ no fusionar un error en una figura más grande y más difícil de corregir despu
   - **Título:** mantener "IMU activity" o, mejor, diferenciarlo por figura: **"IMU activity — Rugged Terrain
     (Simulation)"** / **"IMU activity — Inclined Slope (Simulation)"** en vez del genérico "IMU activity"
     idéntico en ambas, para que la figura sea autoexplicativa sin depender del caption externo.
+- **Estado (2026-08-27, Informe 2 F-Data-04/05):** sin CSV crudo disponible en `experiments/` para
+  `familia_c1_terreno_rugoso`/`familia_c2_pendiente` (ni activaciones $X_i$ ni aceleración/pitch continuos) — se
+  vectoriza `GRAPH_IMU.png`/`GRAPH_IMU2.png` completas con WebPlotDigitizer, y el rediseño de doble eje Y +
+  umbral en 3.7 propuesto arriba se aplica sobre el dato vectorizado, no sobre una re-corrida. Ver Informe 2 §2,
+  Grupo C de calibración compartida.
 
 ### F-05 (baja prioridad) — Nomenclatura `Stuck/Flat/Inclined` vs. $N_0/N_1/N_2$ en `GRAPH_IMU_real.png` / `GRAPH_IMU2_real.png`
 
@@ -316,6 +382,11 @@ no fusionar un error en una figura más grande y más difícil de corregir despu
 - **Instrucciones de regeneración:** cambio de rótulo de eje Y únicamente (`yticklabels` en el script de
   matplotlib/seaborn que genera el heatmap binario) — no requiere volver a correr ningún experimento, es
   puramente cosmético sobre los mismos datos ya calculados.
+- **Estado (2026-08-27, Informe 2 D-7/F-Data-09/10):** la nota de "puramente cosmético sobre los mismos datos ya
+  calculados" arriba asumía que había un CSV editable — **no lo hay** para estas dos figuras específicas; se
+  descartó la asociación con `Test_current_integrated_*` por nombre de carpeta no confiable (D-7) y se vectorizan
+  ambas figuras completas desde el PNG publicado, aplicando el cambio de rótulo sobre el dato ya extraído. Ver
+  Informe 2 §2, Grupo D de calibración compartida (comparte grupo con `FigReal_Terrain_Latencies_4Panels.png`).
 
 ### F-06 (baja prioridad, informativa) — `fig4_architecture_ablation.png`: diferencias visualmente imperceptibles para la afirmación que sustenta
 
@@ -331,6 +402,10 @@ no fusionar un error en una figura más grande y más difícil de corregir despu
 - **Instrucciones de regeneración:** `ax.set_ylim(0.65, 0.80)` (o el rango que el autor prefiera) en el script
   que genera `fig4_architecture_ablation.png`; mantener las 4 series (accuracy/precision/recall/f1) y colores
   actuales.
+- **✅ Estado (2026-08-27, Informe 2 F-Data-06):** **no requiere vectorizar** — los 4 valores de F1 por
+  arquitectura ya están citados en `results.tex:598`, así que se regenera directamente desde esos valores con el
+  nuevo `ylim`. Es, junto con `fig1_confusion_matrix.png`, la única figura del bloque de clasificador que queda
+  fuera del alcance de vectorización (Informe 2 D-1) por tener ya su dato completo en prosa.
 
 ### F-07 (informativa, sin acción necesaria) — Fotografías de terreno/frames (D1-D6, E1-E6, Prueba_Terreno_Parte_1-6) sin problema de idioma
 
@@ -346,6 +421,12 @@ Los cuatro paneles de fase de balanceo (A, C, D, F) muestran TR≈0.71–0.77, y
 se obtiene un valor cercano a $TR_{mean}=0.439$ (tabla `tab:crawl_stability`) — **no hay contradicción aquí**,
 a diferencia de M-02/M-03. Se documenta para dejar constancia de que esta figura sí fue verificada y aprobada.
 
+**Estado (2026-08-27, Informe 2 F-Data-03/D-6):** el run que generó esta figura ($N=268$ muestras) no tiene
+carpeta propia en `experiments/` (ninguna de las 30 réplicas de C1/C2 coincide en conteo de filas) — se vectoriza
+la figura con WebPlotDigitizer (pocos puntos de inflexión discretos, caso simple). **Los números de
+`tab:crawl_stability` NO se vectorizan** — se mantienen como fuente de verdad ya publicada en LaTeX (D-6); solo la
+figura se redibuja para seguir combinando visualmente con esos números. Ver Informe 2 §2, Grupo A.
+
 ---
 
 ## 4. Depuración de Redundancia Texto↔Tabla/Figura Restante (más allá de lo ya resuelto en R2-01)
@@ -356,8 +437,8 @@ cubiertos por esa ronda:
 | Ubicación | Problema | Propuesta |
 |---|---|---|
 | `results.tex:917-920`, tabla `tab:consolidated_physical_metrics`, fila "Complex" | El valor "peak $>30{,}000$" en la columna $Var(z)$ peak no tiene unidad ni escala de referencia — un lector no puede saber si eso es alto o bajo sin comparar manualmente contra las otras 3 filas (~1100, dual-peak sin número, sustained) | Normalizar la columna a una escala relativa común (p. ej. "×27 vs. baseline Obstacle" o un rango) o añadir una nota al pie con la unidad de "firing variance" |
-| `results.tex:934`, párrafo de energía | Describe cualitativamente "invariant energetic cost" vs. "greater dispersion" para las dos direcciones de transición sin dar ningún número (ni siquiera aproximado) — es prosa puramente cualitativa sobre una figura (`FigReal_Morphological_Transition_Energy.png`) que sí tiene datos cuantificables | Añadir al menos el rango o media±SD de energía (J o Wh) por dirección de transición, igual que se hizo para las otras figuras de esta subsección |
-| `results.tex:945-949` | Tres párrafos consecutivos describen los 4 paneles de `FigReal_Terrain_Latencies_4Panels.png` panel por panel — ya fue parcialmente condensado por R2-01 (patch 16), pero el primer párrafo (945) sigue siendo puramente descriptivo de metodología sin aportar interpretación nueva | Fusionable con el párrafo siguiente (947) sin pérdida de contenido — es candidato a una futura pasada de redundancia, no urgente |
+| `results.tex:934`, párrafo de energía | Describe cualitativamente "invariant energetic cost" vs. "greater dispersion" para las dos direcciones de transición sin dar ningún número (ni siquiera aproximado) — es prosa puramente cualitativa sobre una figura (`FigReal_Morphological_Transition_Energy.png`) que sí tiene datos cuantificables | Añadir al menos el rango o media±SD de energía (J o Wh) por dirección de transición, igual que se hizo para las otras figuras de esta subsección. **Fuente confirmada (Informe 2 §1.2):** `experiments/real/Test_current_integrated_*/imu_ina_*.csv` (`current_A`×`voltage_V`=`power_W`, integrado en el tiempo) — dato real disponible, no requiere vectorizar. |
+| `results.tex:945-949` | Tres párrafos consecutivos describen los 4 paneles de `FigReal_Terrain_Latencies_4Panels.png` panel por panel — ya fue parcialmente condensado por R2-01 (patch 16), pero el primer párrafo (945) sigue siendo puramente descriptivo de metodología sin aportar interpretación nueva | Fusionable con el párrafo siguiente (947) sin pérdida de contenido — es candidato a una futura pasada de redundancia, no urgente. **Nota (Informe 2 D-7):** la figura misma se regenera por vectorización (Grupo D), no desde `experiments/real/`, así que esta fusión de prosa es independiente de esa regeneración y puede hacerse en cualquier orden respecto a ella. |
 
 ---
 
@@ -399,55 +480,68 @@ los casos encontrados al leer el archivo completo:
 
 ## 6. Propuesta de Mapeo de Fusiones de Métricas
 
-| Métrica(s) | Ubicación actual | Acción propuesta | Prioridad |
-|---|---|---|---|
-| Decision Latency (4 escenarios sim.) | `fig1_*_macro.png` panel C × 4 | **Verificar dato crudo (M-01) antes de fusionar**; después, fusionar a F-02 | Alta (verificación), Media (fusión) |
-| Tipover Risk profile (rugged/slope) | `FigA_Stability_Profile.png` | **Verificar dato crudo (M-02)** — no fusionar hasta resolver | Alta |
-| Roll/Pitch RMS phase-space (rugged/slope) | `FigC_Terrain_Adaptability.png` | **Verificar dato crudo (M-03)** — no fusionar hasta resolver | Alta |
-| $T_{switch}$ ECDF (rugged/slope) | `FigB_Decision_Delay.png` paneles B/C | **Verificar cola de 600 ms (M-04)** | Media |
-| Mission Time / Pitch RMS / Decision Latency (4 escenarios sim.) | 4× `fig1_*_macro.png` | Fusionar a rejilla 4×3 (F-02) | Media |
-| Classifier accuracy + inference latency + model size | `fig5` + `fig6` | Fusionar a panel 1×3 (F-03); decidir si se conserva "model size" | Media |
-| $Var(z)$ peak (4 escenarios físicos) | `tab:consolidated_physical_metrics`, columna 2 | Normalizar unidad/escala relativa (§4) | Baja |
-| Energía de transición morfológica | `results.tex:934`, prosa sin números | Añadir cifras concretas desde `FigReal_Morphological_Transition_Energy.png` | Baja |
-| Model size (parámetros MLP/SVM/RF) | `fig6_computational_cost.png` panel derecho | Conectar con 1 frase en prosa, o retirar del panel si no aporta | Baja |
+**Actualizado 2026-08-27** — las verificaciones de M-01–M-04 ya se hicieron (Informe 2 §0) y las fusiones F-02/F-03
+ya están confirmadas (Informe 2 D-9/D-3), así que esta tabla ya no tiene entradas "pendientes de verificar": lo
+que queda es redacción y ejecución de builders, ambas cubiertas por Informe 2 §3.4/§5.
+
+| Métrica(s) | Ubicación actual | Acción propuesta | Prioridad | Estado |
+|---|---|---|---|---|
+| Decision Latency (4 escenarios sim.) | `fig1_*_macro.png` panel C × 4 | Reescribir texto (M-01 resuelto: figura correcta); fusionar a F-02 | Alta (redacción), Media (fusión) | ✅ Verificado — falta redacción + Informe 2 Grupo 1 |
+| Tipover Risk profile (rugged/slope) | `FigA_Stability_Profile.png` | Reescribir texto (M-02 resuelto: figura correcta) | Alta | ✅ Verificado — falta redacción |
+| Roll/Pitch RMS phase-space (rugged/slope) | `FigC_Terrain_Adaptability.png` | Reescribir texto (M-03 resuelto: figura correcta) | Alta | ✅ Verificado — falta redacción |
+| $T_{switch}$ ECDF (rugged/slope) | `FigB_Decision_Delay.png` paneles B/C | Reescribir texto (M-04 resuelto: cola de 600 ms confirmada real) | Media | ✅ Verificado — falta redacción |
+| Mission Time / Pitch RMS / Decision Latency (4 escenarios sim.) | 4× `fig1_*_macro.png` | Fusionar a rejilla 4×3 (F-02) | Media | ✅ Confirmado (D-9) — Informe 2 Grupo 1 |
+| Classifier accuracy + inference latency + model size | `fig5` + `fig6` | Fusionar a panel 1×3 (F-03); decidir si se conserva "model size" | Media | ✅ Confirmado (D-3) — requiere vectorizar (Informe 2 Grupo 2) |
+| $Var(z)$ peak (4 escenarios físicos) | `tab:consolidated_physical_metrics`, columna 2 | Normalizar unidad/escala relativa (§4) | Baja | Sin decisión aún — puramente editorial, no depende de datos |
+| Energía de transición morfológica | `results.tex:934`, prosa sin números | Añadir cifras concretas desde `FigReal_Morphological_Transition_Energy.png` | Baja | ✅ Fuente confirmada (`imu_ina_*.csv`), no requiere vectorizar |
+| Model size (parámetros MLP/SVM/RF) | `fig6_computational_cost.png` panel derecho | Conectar con 1 frase en prosa, o retirar del panel si no aporta | Baja | Decisión editorial pendiente del autor |
 
 ---
 
 ## 7. Checklist de Próximos Pasos para el Autor
 
-**Fase 1 — Verificación de datos (bloqueante, hacer primero):**
-1. [ ] Localizar el script/notebook que generó `FigA_Stability_Profile.png`, `FigB_Decision_Delay.png`,
-   `FigC_Terrain_Adaptability.png` y los 4 `fig1_*_macro.png`, y confirmar si el dataset usado coincide con el
-   que se usó para redactar los números en `results.tex:77,174,178,276,281` (M-01, M-02, M-03).
-2. [ ] Decidir, para cada uno de los 4 hallazgos M-01–M-04, si la corrección va en el **texto** (actualizar los
-   números citados para que coincidan con las figuras actuales) o en la **figura** (regenerarla desde el dataset
-   correcto que sí respalda el texto ya escrito). **No aplicar ninguna de las dos sin antes confirmar cuál es la
-   fuente de verdad.**
-3. [ ] Si se decide que el texto necesita corrección: reescribir los párrafos de `results.tex:77` (Appetitive),
-   `:178` (caption tabla), `:276` (Tipover Risk), `:279` (T_switch/Heaviside), `:281` (phase-space) usando los
-   valores reales leídos de las figuras vigentes, envuelto en `\revblue{}` por ser texto materialmente cambiado
-   esta ronda (regla permanente del proyecto, ver `CLAUDE.md`).
+**Este checklist queda reemplazado como plan de ejecución por `intake/pending/R02-01_data_traceability_and_plotting_plan.md`
+§3.4/§5 (Informe 2)** — se conserva aquí solo con anotación de estado, para no mantener dos listas de pasos en
+paralelo que puedan desincronizarse. Usar Informe 2 para saber **qué hacer y en qué orden**; usar este documento
+para entender **por qué** cada paso existe.
 
-**Fase 2 — Corrección de idioma/nomenclatura (no bloqueante, bajo riesgo):**
-4. [ ] Corregir "March Decision Module" → "Gait Decision Module" y "Auxiliar" → "Auxiliary" en el script fuente
-   que genera los rasters neuronales (F-01), y regenerar las ~9 figuras afectadas de una sola vez.
-5. [ ] Añadir notación $N_0/N_1/N_2$ a los rótulos de `GRAPH_IMU_real.png`/`GRAPH_IMU2_real.png` (F-05).
-6. [ ] Corregir "Standar dev accel z" → "Std. dev. accel. Z" y convertir a doble eje Y con unidades explícitas en
-   `GRAPH_IMU.png`/`GRAPH_IMU2.png`, añadiendo la línea de umbral 3.7 que el texto ya menciona (F-04).
+**Fase 1 — Verificación de datos — ✅ COMPLETA (2026-08-27, Informe 2 §0):**
+1. [x] Localizar el dataset que generó `FigA_Stability_Profile.png`, `FigB_Decision_Delay.png`,
+   `FigC_Terrain_Adaptability.png` y los 4 `fig1_*_macro.png`, y confirmar si coincide con los números en
+   `results.tex:77,174,178,276,281` (M-01, M-02, M-03). **Hecho: `experiments/simulation/` sí lo tenía; en los 4
+   casos la figura coincide con el dato crudo, el texto no.**
+2. [x] Decidir si la corrección va en el texto o en la figura. **Decidido: en el texto — las figuras actuales
+   están sincronizadas con el dataset disponible en `experiments/`.**
+3. [ ] Reescribir los párrafos de `results.tex:77` (Appetitive), `:178` (caption tabla), `:276` (Tipover Risk),
+   `:279` (T_switch/Heaviside), `:281` (phase-space) usando los valores reales de la tabla de §0 de este informe
+   (o §0 de Informe 2, misma tabla), envuelto en `\revblue{}` (regla permanente del proyecto, `CLAUDE.md`). **Único
+   paso de Fase 1 que sigue sin ejecutarse** — es de redacción pura, no requiere más verificación de datos.
 
-**Fase 3 — Fusión de paneles (después de Fase 1, para no fusionar un dato erróneo):**
-7. [ ] Regenerar los 4 `fig1_*_macro.png` como una rejilla única 4×3 (F-02), unificando el nombre de la métrica
-   de tiempo de misión entre escenarios y fijando escalas de eje Y comunes por columna.
-8. [ ] Fusionar `fig5_classifier_comparison.png` + `fig6_computational_cost.png` en un panel 1×3 (F-03); decidir
-   si se conserva y se discute el panel "Model size" o se retira.
-9. [ ] Ajustar el rango del eje Y de `fig4_architecture_ablation.png` para hacer visualmente perceptible la
-   diferencia de F1 que el texto usa para justificar la arquitectura elegida (F-06).
+**Fase 2 — Corrección de idioma/nomenclatura → ver Informe 2 §3.4 Grupo 1 (builders listos, sin vectorizar) y
+Grupo 2 (requieren vectorizar primero):**
+4. [ ] Corregir "March Decision Module" → "Gait Decision Module" y "Auxiliar" → "Auxiliary" (F-01) en el nuevo
+   builder `neural_raster.py` — parcialmente Grupo 1 (`NEU_EST_*`, CSV real) y parcialmente Grupo 2 (`NEU_IMU*`,
+   requiere vectorizar, Informe 2 F-Data-04/05).
+5. [ ] Añadir notación $N_0/N_1/N_2$ a `GRAPH_IMU_real.png`/`GRAPH_IMU2_real.png` (F-05) — Grupo 2, requiere
+   vectorizar primero (Informe 2 D-7, no se confía en `Test_current_integrated_*` por nombre de carpeta).
+6. [ ] Corregir "Standar dev accel z" y convertir a doble eje Y con umbral 3.7 en `GRAPH_IMU.png`/`GRAPH_IMU2.png`
+   (F-04) — Grupo 2, requiere vectorizar primero (Informe 2 F-Data-04/05).
+
+**Fase 3 — Fusión de paneles → ver Informe 2 §3.4 (ambas fusiones ya confirmadas, D-9/D-3, no pendientes de
+decisión):**
+7. [ ] Regenerar los 4 `fig1_*_macro.png` como rejilla 4×3 (F-02, **confirmado D-9**) — Grupo 1 de Informe 2, CSV
+   real completo, implementable en cuanto se cierre el paso 3 de Fase 1 (redacción de M-01).
+8. [ ] Fusionar `fig5_classifier_comparison.png` + `fig6_computational_cost.png` en panel 1×3 (F-03, **confirmado
+   D-3**) — Grupo 2 de Informe 2, requiere vectorizar (no hay notebook de entrenamiento original).
+9. [ ] Ajustar el rango del eje Y de `fig4_architecture_ablation.png` (F-06) — **no requiere vectorizar**, los 4
+   valores de F1 ya están en prosa (`results.tex:598`); es el único paso de esta fase implementable de inmediato.
 
 **Fase 4 — Actualización de referencias cruzadas y registro en el pipeline:**
 10. [ ] Actualizar los `\label{}`/`\ref{}` afectados por las fusiones de la Fase 3 (tabla de §5).
-11. [ ] Una vez resuelto, dar de alta en `PROGRESS.md` las filas correspondientes (`N-xx` para las fusiones de
-    figura que son contenido nuevo/reestructurado, `C-xx` para las correcciones puntuales de texto/nomenclatura),
-    siguiendo el flujo estándar de `intake/` descrito en `CLAUDE.md` — este documento, una vez las decisiones de
-    la Fase 1 estén tomadas, sirve como el documento de entrada para ese triage.
-12. [ ] Mover este archivo a `intake/processed/` solo cuando todas las filas que genere hayan alcanzado al menos
-    estado `applied` en `PROGRESS.md` (regla del proyecto).
+11. [ ] Dar de alta en `PROGRESS.md` las filas correspondientes (`N-xx`/`C-xx`), con `Data source` apuntando a
+    `experiments/_plotting/` (y a `experiments/_plotting/vectorized/` cuando la figura venga de vectorización —
+    ver Informe 2 §3.2), siguiendo el flujo estándar de `intake/` descrito en `CLAUDE.md`.
+12. [ ] Mover este archivo y `R02-01_data_traceability_and_plotting_plan.md` a `intake/processed/` juntos, solo
+    cuando todas las filas que generen entre los dos hayan alcanzado al menos estado `applied` en `PROGRESS.md`
+    (regla del proyecto) — se mueven a la vez porque están cruzados y dejar uno en `pending/` sin el otro
+    rompería la trazabilidad entre "por qué" y "cómo".
