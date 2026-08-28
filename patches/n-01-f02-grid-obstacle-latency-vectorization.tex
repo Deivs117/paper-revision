@@ -1,0 +1,68 @@
+% PATCH: N-01 (closing patch)
+% Target section: sections/results.tex (4 scenario figure*->figure splits, new
+%   fig:noise_robustness_grid, 4 Targeting paragraphs)
+% Requirement: intake/pending/R02-01-04_simulacion_N01_grid_fusion_FigABC.md, executed per its §5
+%   ("LISTO PARA EJECUTAR", author-confirmed 2026-08-27) and the combined order in
+%   intake/pending/R02-01-05_simulacion_grupo2_vectorizacion.md §7 (steps 1, 3-9 of that order).
+%
+% Piece 1 -- Obstacle decision-latency gap (§3):
+%   experiments/simulation/familia_a_obstaculo has 0/15 populated latency values anywhere
+%   (neither trial_summary.json.exp_latency nor metrics_raw.csv.latency_s -- this CORRECTS
+%   Informe 2's original F-Data-01 diagnosis, which assumed the latter had it). Per the author's
+%   2026-08-27 decision (conditional on the simulation re-run not landing before the 2026-08-31
+%   deadline -- it has not), vectorized the currently-published fig1_Obstacle_macro.png panel C:
+%   new experiments/_plotting/extract/extract_fig1_obstacle_latency.py (pixel-color extraction,
+%   symmetric-yerr midpoint/half-span convention, calibrated from the panel's own gridlines) ->
+%   experiments/_plotting/vectorized/fig1_obstacle_latency.csv (documented in that dir's
+%   README.md). Patched macro_robustness.py's Obstacle-row latency logic into a 3-layer fallback:
+%   vectorized CSV (used now) -> real metrics_raw.csv computation (kept for when a future
+%   simulation re-run, D-12, lands real data and this vectorized file is removed) -> "no data"
+%   annotation (last resort, unchanged from before).
+%
+% Piece 2 -- F-02 fusion (§1a) + FigA/B/C code-traceable regen (§1b):
+%   Re-ran experiments/_plotting/generate_all_simulation.py against the now-complete Obstacle
+%   latency data. Found and fixed, incidentally, a pre-existing title-clipping bug in
+%   ecdf_phase_space.py's build_fig_a() (fig.suptitle too long for the 4.5in-wide figure, text
+%   ran off both edges) -- wrapped to two lines, reduced fontsize, widened the tight_layout rect.
+%   Promoted to assets/ (scripts/promote_figure.sh):
+%     fig1_noise_robustness_grid.png (new name, no --force)
+%     FigA_Stability_Profile.png / FigB_Decision_Delay.png / FigC_Terrain_Adaptability.png (--force)
+%   git rm'd the 4 superseded fig1_{Appetitive,Aversive,Obstacle,Complex}_macro.png.
+%
+% sections/results.tex changes:
+%   - Collapsed the 4 scenario figure* blocks' fig1_*_macro subfigure into ONE new figure*
+%     (\label{fig:noise_robustness_grid}), a single flattened 4x3-panel PNG (not LaTeX subfigures
+%     -- the panel grid is baked into the image by matplotlib, same pattern as the earlier
+%     fig_classifier_tradeoff_fused.png). Caption lettering (a)-(l), row-major
+%     Appetitive/Aversive/Obstacle/Complex x Mission-Time/Pitch-RMS/Decision-Latency, and
+%     EXPLICITLY states that panel (i) (Obstacle latency) is reconstructed by vectorization, not
+%     measured from a fresh run -- required by the report's step 7 ("nunca presentar un dato
+%     vectorizado como si fuera CSV crudo").
+%   - Each scenario's fig2_*_micro (trial-005 temporal dynamics) demoted from a subfigure
+%     alongside fig1 to its own standalone \begin{figure}; labels (fig:appetitive_micro,
+%     fig:aversive_micro, fig:obstacle_micro, fig:complex_micro) kept unchanged since
+%     conclusions.tex/results.tex's own prose still references fig:complex_micro directly.
+%   - Removed labels: fig:appetitive_macro, fig:aversive_macro, fig:obstacle_macro,
+%     fig:complex_macro, fig:appetitive_results, fig:aversive_results, fig:obstacle_results,
+%     fig:complex_results (8 labels total, all had zero remaining references after the edit,
+%     confirmed by grep).
+%   - The 4 Targeting paragraphs' \ref{}s repointed from the removed per-scenario labels to
+%     \ref{fig:noise_robustness_grid} (by row: Appetitive=row 1, Aversive=row 2, Obstacle=row 3,
+%     Complex=row 4); Appetitive's panel-C latency mention repointed to "panel (c)"; added one
+%     sentence to the Obstacle paragraph reinforcing (in prose, not just the caption) that its
+%     latency panel is vectorized.
+%
+% New finding, explicitly OUT OF SCOPE for this patch (not investigated or acted on): re-running
+%   macro_robustness.py's build_consolidated_table() against experiments/simulation/ produces
+%   Success%/T_sim/Roll/Pitch numbers that do NOT match tab:consolidated_simulation_metrics as
+%   currently published in results.tex (e.g. Obstacle Roll: 3.93+-8.92 recomputed vs. 0.55+-0.02
+%   published -- more than an order of magnitude off, likely a real discrepancy rather than
+%   extraction noise). This is unrelated to R02-01-04's actual scope (Obstacle latency + F-02
+%   fusion + FigA/B/C, none of which touch this table's Tsim/Roll/Pitch columns) -- the table's
+%   LaTeX content was deliberately left untouched. Flagged here and in PROGRESS.md's N-01 row for
+%   a future pass; NOT silently fixed, per the project's standing rule to surface rather than
+%   unilaterally resolve author-level numeric discrepancies.
+%
+% Verification: scripts/validate_tex.sh and scripts/check_roundtrip.sh both pass after
+%   reassemble.py. No LaTeX toolchain available locally to run compile_pdf.sh.
+% Status: applied

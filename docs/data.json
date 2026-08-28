@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-28T02:12:12+00:00",
-  "progressLastCommit": "2026-08-27T19:56:50-05:00",
+  "generatedAt": "2026-08-28T02:27:52+00:00",
+  "progressLastCommit": "2026-08-27T21:12:12-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -189,15 +189,15 @@
     {
       "id": "N-01",
       "reviewer": "—",
-      "requirement": "Reusable pipeline (experiments/_plotting/) that regenerates the noise-robustness figure grid (F-02 fusion), FigA/B/C (M-01–M-04 figures), and tab:consolidated_simulation_metrics from any simulation results folder — built ahead of the team's planned re-run of the simulated battery (notified 2026-08-27). Already executed once against the current experiments/simulation/ data; output staged in experiments/N-01-simulation-figure-regeneration/output/, not yet promoted to assets/ (pending review + the M-01–M-04 text redaction decision). Surfaced a new finding: familia_a_obstaculo has no populated latency data anywhere in experiments/ (corrects Informe 2's original F-Data-01 diagnosis) — see that experiment's README.md.",
-      "target": "results.tex (Appetitive/Aversive/Obstacle/Complex Targeting paragraphs, tab:consolidated_simulation_metrics, FigA/FigB/FigC)",
-      "dataSource": "experiments/N-01-simulation-figure-regeneration/",
+      "requirement": "Closed 2026-08-27 (R02-01-04). Reusable pipeline (experiments/_plotting/) that regenerates the noise-robustness figure grid (F-02 fusion), FigA/B/C (M-01–M-04 figures), and tab:consolidated_simulation_metrics from any simulation results folder. familia_a_obstaculo has 0/15 populated latency values anywhere in experiments/ (corrects Informe 2's original F-Data-01 diagnosis) — author confirmed (2026-08-27) vectorizing the currently-published fig1_Obstacle_macro.png panel C as the fix for this round (extract_fig1_obstacle_latency.py → vectorized/fig1_obstacle_latency.csv; macro_robustness.py reads it with a fallback chain: vectorized CSV → real metrics_raw.csv (for a future re-run, D-12) → \"no data\" annotation). Also fixed a pre-existing title-clipping bug in FigA_Stability_Profile.png (ecdf_phase_space.py, unrelated to any number, found while reviewing before promotion). Promoted fig1_noise_robustness_grid.png (new, F-02 fusion of the 4 old fig1__macro.png, now git rm'd) + FigA/FigB/FigC (--force) to assets/. results.tex: collapsed the 4 scenario figure blocks' fig1__macro subfigure into one new figure (\\label{fig:noise_robustness_grid}, 12 panels a–l, caption explicitly flags panel (i)/Obstacle-latency as vectorized, not measured); each scenario's fig2_*_micro (trial-005 temporal dynamics) demoted from subfigure to its own standalone figure, labels unchanged; updated the 4 Targeting paragraphs' \\ref{}s to point at the new grid (by row) instead of the 4 removed labels. New finding, out of scope for this row: tab_consolidated_simulation_metrics.csv (recomputed from raw data by this same pipeline) does not match tab:consolidated_simulation_metrics's published $T_{sim}$/Roll numbers (e.g. Obstacle Roll: 3.93±8.92° recomputed vs. 0.55±0.02° published) — not investigated or acted on here, flagged for a future pass; the table's LaTeX content was left untouched. All new/changed prose wrapped in \\revblue{}. validate_tex.sh/check_roundtrip.sh both pass.",
+      "target": "results.tex (4 scenario figure*→figure splits, new fig:noise_robustness_grid, 4 Targeting paragraphs)",
+      "dataSource": "experiments/N-01-simulation-figure-regeneration/ (figures), experiments/_plotting/vectorized/ (Obstacle panel)",
       "category": "Métricas",
       "owner": [
         "Deivi"
       ],
-      "status": "drafted",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/n-01-f02-grid-obstacle-latency-vectorization.tex"
     },
     {
       "id": "N-02",

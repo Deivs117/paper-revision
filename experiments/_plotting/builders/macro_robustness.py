@@ -6,10 +6,15 @@ Three columns per scenario, one row per scenario:
   (2) Pitch RMS (deg) vs. sigma
   (3) Decision Latency (ms) vs. sigma
 
-Also resolves F-Data-01 (Informe 2): for familia_a_obstaculo, `trial_summary.json.exp_latency` is a
-`-1.0` sentinel (never populated) — this builder falls back to the mean of `metrics_raw.csv`'s
-`latency_s` column for that scenario only (decision D-4), matching what the currently-published
-figure actually shows.
+Latency column, Obstacle row (R02-01-04 §3/§5): `familia_a_obstaculo` has NO populated latency
+source anywhere in `experiments/simulation/` -- neither `trial_summary.json.exp_latency` (a `-1.0`
+sentinel) nor `metrics_raw.csv.latency_s` (also 0/15 populated, confirmed directly; this CORRECTS
+Informe 2's original F-Data-01 diagnosis, which assumed the latter had it). Per the author's
+2026-08-27 decision, this builder reads a vectorized reconstruction of the currently-published
+`fig1_Obstacle_macro.png` panel C instead (`experiments/_plotting/vectorized/fig1_obstacle_latency.csv`,
+see `extract_fig1_obstacle_latency.py` + `vectorized/README.md`) if present, and falls back to the
+explicit "no data" annotation only if that CSV is missing -- e.g. if a future re-run of the
+simulation battery (D-12) lands real latency data and this vectorized CSV is deliberately removed.
 """
 from __future__ import annotations
 
@@ -20,8 +25,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from loaders import load_metrics_raw, load_trial_summaries, list_trial_dirs  # noqa: E402
+from loaders import load_metrics_raw, load_trial_summaries, list_trial_dirs, load_vectorized  # noqa: E402
 from style import SCENARIO_COLORS, DPI  # noqa: E402
+
+VECTORIZED_OBSTACLE_LATENCY = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "vectorized", "fig1_obstacle_latency.csv")
 
 # scenario -> (family_dir_name, uses_metrics_raw_latency_fallback)
 SCENARIOS = [
@@ -32,7 +41,19 @@ SCENARIOS = [
 ]
 
 
-def _obstacle_latency_fallback(family_dir: str) -> dict[int, list[float]]:
+def _obstacle_latency_vectorized() -> dict[int, tuple[float, float]] | None:
+    """Per-noise-level (mean, sd) in ms, read from the vectorized reconstruction of the currently
+    published fig1_Obstacle_macro.png panel C, if that CSV is present. See module docstring and
+    experiments/_plotting/vectorized/README.md. Returns None if the CSV is absent (e.g. a future
+    simulation re-run's real data has landed and this file was deliberately removed)."""
+    if not os.path.exists(VECTORIZED_OBSTACLE_LATENCY):
+        return None
+    vec = load_vectorized(VECTORIZED_OBSTACLE_LATENCY)
+    return {int(row.noise_level_idx): (float(row.latency_ms_mean), float(row.latency_ms_sd))
+            for row in vec.itertuples()}
+
+
+def _obstacle_latency_from_metrics_raw(family_dir: str) -> dict[int, list[float]]:
     """Per-noise-level list of mean-latency-per-trial, read from metrics_raw.csv.
 
     CORRECTION to Informe 2's original F-Data-01 (2026-08-27): the original diagnosis assumed
@@ -40,11 +61,10 @@ def _obstacle_latency_fallback(family_dir: str) -> dict[int, list[float]]:
     trial_summary.json's exp_latency was not. Running this builder against the real data shows
     that assumption was wrong -- metrics_raw.csv's latency_s is ALSO empty for all 15 Obstacle
     trials (0/15 rows have a value, verified directly, not just in trial_summary.json). There is
-    currently NO recorded latency source for this scenario in experiments/simulation/ at all. The
-    published fig1_Obstacle_macro.png panel C (which Informe 1 describes as showing normal latency
-    values) therefore could not have been generated from this exact dataset. This function now
-    returns an empty dict on purpose; build_grid() renders an explicit "no data" annotation instead
-    of silently plotting zeros. See this experiment's README.md for the corrected action item.
+    currently NO recorded latency source for this scenario in experiments/simulation/ at all
+    (hence `_obstacle_latency_vectorized()` above being tried first). This function stays as the
+    second fallback layer for a future re-run of the simulation battery (D-12) that lands real
+    latency data here without anyone needing to touch this builder's code.
     """
     import json
 
@@ -70,7 +90,9 @@ def collect_scenario(scenario: str, family_dir: str, latency_fallback: bool) -> 
     result = {"noise_levels": noise_levels, "T_sim": [], "T_sim_sd": [],
               "pitch": [], "pitch_sd": [], "latency": [], "latency_sd": []}
 
-    latency_by_noise = _obstacle_latency_fallback(family_dir) if latency_fallback else None
+    vectorized_latency = _obstacle_latency_vectorized() if latency_fallback else None
+    latency_by_noise = (_obstacle_latency_from_metrics_raw(family_dir)
+                        if (latency_fallback and vectorized_latency is None) else None)
 
     for n in noise_levels:
         sub = df[df["noise_level_idx"] == n]
@@ -79,7 +101,11 @@ def collect_scenario(scenario: str, family_dir: str, latency_fallback: bool) -> 
         result["pitch"].append(sub["pitch_rms"].mean())
         result["pitch_sd"].append(sub["pitch_rms"].std(ddof=0) if len(sub) > 1 else 0.0)
 
-        if latency_fallback:
+        if vectorized_latency is not None:
+            mean_sd = vectorized_latency.get(n)
+            result["latency"].append(mean_sd[0] if mean_sd else np.nan)
+            result["latency_sd"].append(mean_sd[1] if mean_sd else 0.0)
+        elif latency_fallback:
             vals = latency_by_noise.get(n, [])
             result["latency"].append(np.mean(vals) if vals else np.nan)
             result["latency_sd"].append(np.std(vals) if len(vals) > 1 else 0.0)
