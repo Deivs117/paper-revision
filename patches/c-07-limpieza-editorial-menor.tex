@@ -1,0 +1,72 @@
+% PATCH: C-07
+% Target section: sections/results.tex (intro warehouse-sim sentence, STL-discretization
+%   paragraph, appetitive real-vs-sim paragraphs, tab:consolidated_physical_metrics,
+%   tab:terrain_sequence, all "Differential Rolling"/"Differential Mobile" instances)
+% Requirement: intake/pending/R02-01-06_limpieza_editorial_menor.md, §1 (residual
+%   text<->table/figure redundancy) + §2 (grammar/style), executed in full -- low priority, no
+%   blockers, independent of every other R02-01 sub-block.
+%
+% §1.1 -- tab:consolidated_physical_metrics, Complex row, "Var(z) peak" column:
+%   Before: "Three-phase, peak $>30{,}000$" (no unit, no reference scale against the other 3
+%     rows: ~1100, dual-peak with no number, sustained).
+%   After:  \revblue{"Three-phase, peak ${\approx}\,27\times$ Obstacle baseline"} -- author
+%     confirmed the relative-scale option (over a footnote-with-unit or leaving it untouched);
+%     ~30,000 / ~1100 (Obstacle row) ~= 27.
+%
+% §1.2 -- FigReal_Terrain_Latencies_4Panels.png, 3-paragraph redundancy (originally flagged
+%   against results.tex:945-949 in the now-superseded audit): re-checked against the current
+%   file -- only 2 paragraphs remain after the figure (an earlier pass had already condensed the
+%   purely-descriptive setup paragraph into the interpretive one). No change needed; noted as
+%   already resolved rather than re-merging non-existent redundant text.
+%
+% §2.1 -- results.tex:9 (word-level, no \revblue{} -- zero meaning change):
+%   Before: "its scope and caveats as a symbolic, non-certified test arena are discussed in..."
+%   After:  "its scope and caveats as a symbolic representation rather than a certified test
+%     arena are discussed in..."
+%
+% §2.2 -- STL-mesh discretization paragraph (structural move, \revblue{}): was stranded after
+%   the second stability test's neural-response paragraph, between prose and a figure block,
+%   disconnected from the inclined-slope test setup it actually describes. Relocated verbatim to
+%   the end of the paragraph that introduces that setup ("In a second test, the transition from
+%   flat terrain to an inclined slope is defined..."), removed from its old position. No wording
+%   changed, only location -- wrapped in \revblue{} per the project convention for structural
+%   reorganization.
+%
+% §2.3 -- appetitive real-vs-simulation paragraphs (structural fusion, \revblue{}): two
+%   consecutive paragraphs used near-identical contrastive phrasing ("unlike the simulation,
+%   where..." / "In contrast, in the simulation...") to make two different points (behavioural
+%   timing vs. neural-activation detail). Merged into one paragraph preserving both facts (the
+%   23-second timing + neuron $X_5$/$X_7$/$X_{11}$ activations for the physical robot; neuron
+%   $X_{12}$'s early activity for the simulation) without the repeated "unlike/in contrast"
+%   template.
+%
+% §2.4 -- Limitations run-on sentence (originally flagged as >150 words with chained "yet",
+%   "rather than", "Instead" clauses): re-checked against the current file -- the paragraph is
+%   already split into 6 sentences of reasonable length by an earlier pass (predates this patch).
+%   No change needed; noted as already resolved rather than re-splitting an already-short
+%   paragraph.
+%
+% §2.5 -- mode-name capitalization consistency (author-confirmed decisions, both beyond the
+%   original item's scope of "just capitalization"):
+%   1. Naming inconsistency found while surveying every mode-name occurrence: "Differential
+%      Rolling" (introduction/methodology/simulation prose, and the majority of results.tex) vs.
+%      "Differential Mobile" (physical/hardware subsection, including tab:mode_steady_state_energy
+%      and the FigReal_Morphological_Transition_Energy caption/paragraph added in N-05) were two
+%      distinct names for the same locomotion mode, not a case variant of one name -- one caption
+%      (line ~737, "differential rolling (mobile) mode") had already hedged between the two.
+%      Author confirmed: unify to "Differential Rolling" (the name used in the majority of the
+%      document). All "Differential Mobile"/"differential mobile" instances renamed; the
+%      now-redundant "(mobile)" parenthetical in the hedged caption removed.
+%   2. Title Case applied consistently for all three mode names used as proper nouns (naming a
+%      mode as a category -- enumerations, transition diagrams "X -> Y", table "Mode" columns):
+%      "Quadrupedal Walking", "Differential Rolling", "Omnidirectional". Generic adjectival usage
+%      in flowing prose ("quadrupedal mode", "differential rolling mode", "omnidirectional gait")
+%      was left lowercase, unchanged -- this was already consistent throughout and not part of
+%      the reported inconsistency. Concretely re-cased: tab:terrain_sequence's "Mode" column (6
+%      rows, previously lowercase "Quadrupedal walking"/"Differential rolling"/"Rolling ->
+%      stagnation") to Title Case, matching the Title Case already used in the gait-transition
+%      figures/captions elsewhere in the same section.
+%
+% Verification: scripts/validate_tex.sh and scripts/check_roundtrip.sh both pass after
+%   reassemble.py. No LaTeX toolchain available locally to run compile_pdf.sh.
+% Status: applied

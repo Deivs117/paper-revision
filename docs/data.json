@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-28T00:56:50+00:00",
-  "progressLastCommit": "2026-08-27T18:28:12-05:00",
+  "generatedAt": "2026-08-28T02:12:12+00:00",
+  "progressLastCommit": "2026-08-27T19:56:50-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -250,6 +250,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/n-05-transition-energy-redaction.tex"
+    },
+    {
+      "id": "C-07",
+      "reviewer": "—",
+      "requirement": "Executed intake/pending/R02-01-06_limpieza_editorial_menor.md in full (§1 residual redundancy + §2 grammar/style, low priority, no blockers). §1: normalized tab:consolidated_physical_metrics's unitless \"$Var(z)$ peak >30,000\" (Complex row) to a relative scale, \"${\\approx}\\,27\\times$ Obstacle baseline\" (author confirmed this option over a footnote or leaving it as-is); the FigReal_Terrain_Latencies_4Panels.png 3-paragraph redundancy item was already resolved by an earlier pass (only 2 paragraphs remain, already condensed) — no change needed there. §2: reworded results.tex:9's \"non-certified test arena\" phrasing (word-level, no \\revblue{}); relocated the STL-mesh-discretization paragraph next to the inclined-slope test setup it actually describes instead of leaving it stranded after the transition-6 subsection (\\revblue{}, structural move); merged the two near-identical real-vs-simulation appetitive-correction paragraphs into one (\\revblue{}, structural fusion); the flagged >150-word Limitations run-on sentence turned out to already be split into 6 shorter sentences by an earlier pass — no change needed, noted as already resolved. Also surfaced and fixed (with author confirmation) a naming inconsistency beyond pure capitalization found while executing the \"mode capitalization consistency\" item: \"Differential Rolling\" (intro/methodology/simulation) vs. \"Differential Mobile\" (physical/hardware section, including the N-05 energy table/captions) were two names for the same mode, not case variants — unified all instances to \"Differential Rolling\" (author's choice) and applied consistent Title Case across results.tex for all three mode names (Quadrupedal Walking/Differential Rolling/Omnidirectional as proper nouns; lowercase as generic adjectives), including tab:terrain_sequence's previously lowercase mode-name cells. validate_tex.sh/check_roundtrip.sh both pass.",
+      "target": "results.tex (intro warehouse-sim sentence, STL-discretization paragraph, appetitive real-vs-sim paragraphs, tab:consolidated_physical_metrics, tab:terrain_sequence, all Differential Rolling/Mobile instances)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-07-limpieza-editorial-menor.tex"
     }
   ]
 }

@@ -638,7 +638,7 @@ Initially, simulations of the platform were performed in the Gazebo environment 
 
 In the first phase, the robot's behavior was analyzed under a single type of stimulus, following an approach similar to that presented by \citet{sarvestani2013computational}. Then, to assess performance in more complex environments, the platform was exposed to multiple stimuli of different modalities. Simulations were performed to verify that the selected gait corresponded to the most appropriate mode based on the perceived terrain. This stage emphasized the analysis of neuronal responses in the obstacle sensory module, the locomotor decision network, and the locomotion-mode decision network.
 
-Additionally, to contextualize the simulation within its intended inspection application domain, a Gazebo environment inspired by the spatial layout of an industrial warehouse was constructed (Figure~\ref{fig:depot_simulation}); its scope and caveats as a symbolic, non-certified test arena are discussed in Section~\ref{ssec:Limitations}.
+Additionally, to contextualize the simulation within its intended inspection application domain, a Gazebo environment inspired by the spatial layout of an industrial warehouse was constructed (Figure~\ref{fig:depot_simulation}); its scope and caveats as a symbolic representation rather than a certified test arena are discussed in Section~\ref{ssec:Limitations}.
 
 \begin{figure}[t]
     \centering
@@ -826,7 +826,7 @@ Complex Navigation   & 100.0\% & 58.41 $\pm$ 3.12 & 0.58 $\pm$ 0.03 & 1.12 $\pm$
 
 For the experiments involving variable and unstable topographies in simulation, a three‐section terrain map was designed, as shown in Figure~\ref{fig:TERR_IMU}. In the first simulated experiment, the robot begins moving forward driven by the hunting instinct encoded in the locomotor decision network. Subsequently, the transition from regular to rough terrain is introduced to analyze the standard deviation of the acceleration along the $Z$ axis throughout the simulation. In the physical robot, this information corresponds to the MLP outputs: $N_{0}$ (flat-terrain probability), $N_{1}$ (inclined-terrain probability), and $N_{2}$ (binary stagnation indicator). 
 
-In a second test, the transition from flat terrain to an inclined slope is defined to evaluate the platform’s response to a sudden change in ground inclination. In this configuration, both in Gazebo and in the real robot, an aversive stimulus is positioned behind the platform; according to the previously defined behaviors, the robot must avoid it by switching to the quadrupedal mode. However, due to the slope, the platform adopts the differential rolling mode, achieving a more stable and efficient displacement. 
+In a second test, the transition from flat terrain to an inclined slope is defined to evaluate the platform’s response to a sudden change in ground inclination. In this configuration, both in Gazebo and in the real robot, an aversive stimulus is positioned behind the platform; according to the previously defined behaviors, the robot must avoid it by switching to the quadrupedal mode. However, due to the slope, the platform adopts the differential rolling mode, achieving a more stable and efficient displacement. \revblue{Note that while the simulated sloped terrain visually approximates a continuous curved trajectory in the Gazebo environment, the digital model (STL mesh) discretizes continuous geometry into planar facets. Consequently, the IMU telemetry in simulation captures these piecewise linear segments during motion, manifesting as alternating phases of dynamic angular change and transient stationary plateaus in the pitch response plots.}
 
 In the first simulation experiment shown in Figure~\ref{fig:RES_IMU}, the platform transitions immediately after entering the unstable terrain, adopting an appropriate gait to maintain efficient displacement. This behavior is reflected in the neural responses (Figure~\ref{fig:NEU_IMU}), where at 16 seconds, the unit $X_{0}$ shows the highest activity due to the large variation in vertical acceleration, a direct indicator of terrain irregularities. This phenomenon is also visible in Figure~\ref{fig:GRAPH_IMU}, where the standard deviation of the robot's vertical acceleration is plotted over time. The graph highlights the instant when this value exceeds the 3.7 threshold defined in the neural dynamics.
 
@@ -852,8 +852,6 @@ In the first simulation experiment shown in Figure~\ref{fig:RES_IMU}, the platfo
 \end{figure}
 
 For the second stability test in simulation, the neural activities of the gait-mode control structure were recorded (Figure~\ref{fig:NEU_IMU2}b). At $t=41$~seconds, neuron $X_{1}$---associated with detecting an inclination greater than five degrees---excites unit $X_{15}$, issuing the command to transform into quadrupedal mode. The transition during locomotion is illustrated in Figure~\ref{fig:RES_IMU2}, with snapshots of the platform posture taken every 12 seconds from a lateral perspective. It is important to highlight the neural responses shown in Figure~\ref{fig:NEU_IMU2}a, where the persistent activation of neuron $X_{4}$ produces sustained activity in neurons $X_{11}$ and $X_{12}$, which in turn drive neuron $X_{13}$ and ultimately generate the forward escape behavior. In Figure~\ref{fig:GRAPH_IMU2}, the data recorded by the inertial sensor are shown.
-
-Note that while the simulated sloped terrain visually approximates a continuous curved trajectory in the Gazebo environment, the digital model (STL mesh) discretizes continuous geometry into planar facets. Consequently, the IMU telemetry in simulation captures these piecewise linear segments during motion, manifesting as alternating phases of dynamic angular change and transient stationary plateaus in the pitch response plots.
 
 \begin{figure}[t]
     \centering
@@ -1127,9 +1125,7 @@ In the obstacle-evasion response, the neuronal activations measured in the contr
 
 During the 5 seconds corresponding to the locomotion-mode change-from differential drive to omnidirectional-the signals of units $X_{15}$ and $X_{16}$ remain nearly constant, as no displacement occurs during this period. After roughly 40 seconds, these activations decrease and progressively shift toward neighboring neurons, indicating the successful completion of the evasive maneuver. 
 
-For the appetitive stimulus in the physical robot, the robot exhibits a frontal-approach behavior. Approximately halfway through the trial, the robot performs an orientation correction to center the target; unlike the simulation, where the angular correction occurs from the beginning. This difference arises because the stimulus was initially located directly in front of the robot in the physical experiment. 
-
-The angle correction occurs after 23 seconds, when neurons $X_{5}$ and $X_{7}$ in the sensory and integrative layers, respectively (Figure~\ref{fig:NEU_EST_UNIG_real}b), indicate a leftward rotation mediated by activation of $X_{11}$. In contrast, in the simulation (Figure~\ref{fig:NEU_EST_UNIB}), neuron $X_{12}$ shows the highest activity at the beginning, reflecting a rightward rotation from the start to align the robot’s orientation with the laterally positioned stimulus. 
+\revblue{For the appetitive stimulus in the physical robot, the robot exhibits a frontal-approach behavior. Approximately halfway through the trial---at 23 seconds, when neurons $X_{5}$ and $X_{7}$ in the sensory and integrative layers, respectively (Figure~\ref{fig:NEU_EST_UNIG_real}b), indicate a leftward rotation mediated by activation of $X_{11}$---the robot performs an orientation correction to center the target. This is unlike the simulation (Figure~\ref{fig:NEU_EST_UNIB}), where neuron $X_{12}$ shows the highest activity at the beginning, reflecting a rightward rotation from the start to align the robot's orientation with the laterally positioned stimulus, so the angular correction occurs from the beginning rather than mid-trial. This difference arises because the stimulus was initially located directly in front of the robot in the physical experiment.}
 
 
 \subsubsection{Response to Multiple Stimuli of Different Natures}
@@ -1291,7 +1287,7 @@ In the real implementation (Figure~\ref{fig:RES_IMU_real}), images were captured
   \begin{subfigure}[t]{0.31\textwidth}
     \centering
     \includegraphics[width=\linewidth]{E6.png}
-    \caption{Frame 6 - Final differential mobile transformation.}
+    \caption{Frame 6 - Final differential rolling transformation.}
     \label{fig:frames-f2}
   \end{subfigure}
 
@@ -1346,12 +1342,12 @@ To further consolidate the physical validation under complex, multi-section topo
 \toprule
 \textbf{Frame} & \textbf{Terrain segment} & \textbf{Mode} & \textbf{Trigger / mechanism} \\
 \midrule
-1 & Double-ramp ascent & Quadrupedal walking & Static stability \& traction priority; elevated support polygon keeps CoM within bound during climb \\
-2 & Transition to flat elevated segment & $\rightarrow$ Differential rolling & MLP-detected drop in vertical-IMU acceleration std.\ dev.\ below threshold suppresses quadrupedal salience, disinhibits rolling channel \\
-3 & Horizontal elevated plane & Differential rolling (sustained) & Energy-conservative wheeled traversal; rolling channel remains stable \\
-4 & Controlled ramp descent & Differential rolling (sustained) & Pitch disturbance stays below quadrupedal re-engagement threshold ($\approx 5^{\circ}$) \\
-5 & Perlin-noise rough terrain & Rolling $\rightarrow$ stagnation & Wheels lose traction on high-variance surface; MLP stagnation channel triggers sustained signal \\
-6 & Rough terrain (recovery) & $\rightarrow$ Quadrupedal walking & Stagnation triggers reactive disinhibition of quadrupedal channel; limbs redeploy, restoring support polygon \\
+1 & Double-ramp ascent & Quadrupedal Walking & Static stability \& traction priority; elevated support polygon keeps CoM within bound during climb \\
+2 & Transition to flat elevated segment & $\rightarrow$ Differential Rolling & MLP-detected drop in vertical-IMU acceleration std.\ dev.\ below threshold suppresses quadrupedal salience, disinhibits rolling channel \\
+3 & Horizontal elevated plane & Differential Rolling (sustained) & Energy-conservative wheeled traversal; rolling channel remains stable \\
+4 & Controlled ramp descent & Differential Rolling (sustained) & Pitch disturbance stays below quadrupedal re-engagement threshold ($\approx 5^{\circ}$) \\
+5 & Perlin-noise rough terrain & Rolling $\rightarrow$ Stagnation & Wheels lose traction on high-variance surface; MLP stagnation channel triggers sustained signal \\
+6 & Rough terrain (recovery) & $\rightarrow$ Quadrupedal Walking & Stagnation triggers reactive disinhibition of quadrupedal channel; limbs redeploy, restoring support polygon \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -1370,7 +1366,7 @@ Across the compound course (double-ascent ramp $\rightarrow$ elevated plane $\ri
   \begin{subfigure}[t]{0.31\textwidth}
     \centering
     \includegraphics[width=\linewidth]{Prueba_Terreno_Parte_2.png}
-    \caption{Frame 2: Neural arbitration network detects the flat elevated segment and switches to differential rolling (mobile) mode.}
+    \caption{Frame 2: Neural arbitration network detects the flat elevated segment and switches to differential rolling mode.}
     \label{fig:real_terrain_frame2}
   \end{subfigure}\hfill
   \begin{subfigure}[t]{0.31\textwidth}
@@ -1386,7 +1382,7 @@ Across the compound course (double-ascent ramp $\rightarrow$ elevated plane $\ri
   \begin{subfigure}[t]{0.31\textwidth}
     \centering
     \includegraphics[width=\linewidth]{Prueba_Terreno_Parte_4.png}
-    \caption{Frame 4: Differential mobile mode maintained throughout the controlled ramp descent; pitch disturbance remains below the quadrupedal re-engagement threshold.}
+    \caption{Frame 4: Differential rolling mode maintained throughout the controlled ramp descent; pitch disturbance remains below the quadrupedal re-engagement threshold.}
     \label{fig:real_terrain_frame4}
   \end{subfigure}\hfill
   \begin{subfigure}[t]{0.31\textwidth}
@@ -1513,7 +1509,7 @@ This subsection presents a rigorous quantitative analysis of the proposed bio-in
 \midrule
 Appetitive & $3.0$--$9.0\,\text{s}$ (mechanically limited) & Sustained, non-zero post-completion & $3.0^{\circ}$--$3.5^{\circ}$ (cyclic) & $t > 25\,\text{s}$ \\
 Aversive   & ${\approx}\,0.0\,\text{s}$ (instantaneous) & Dual-peak (detection + retreat-FOV) & Pitch step $\uparrow$, Roll cyclic ($t{=}4$--$9\,\text{s}$) & $t > 10\,\text{s}$ \\
-Complex    & ${\approx}\,1.0$--$1.2\,\text{s}$ & Three-phase, peak $>30{,}000$ & Roll ${\approx}\,7^{\circ}$, Pitch ${\approx}\,5^{\circ} \to 4^{\circ}$ & $t > 25\,\text{s}$ \\
+Complex    & ${\approx}\,1.0$--$1.2\,\text{s}$ & \revblue{Three-phase, peak ${\approx}\,27\times$ Obstacle baseline} & Roll ${\approx}\,7^{\circ}$, Pitch ${\approx}\,5^{\circ} \to 4^{\circ}$ & $t > 25\,\text{s}$ \\
 Obstacle   & ${\approx}\,0.0\,\text{s}$ (instantaneous) & ${\approx}\,1100$, transient ($t < 7\,\text{s}$) & Roll $3.5^{\circ}$ (rhythmic) & $t = 8\,\text{s}$ \\
 \bottomrule
 \end{tabularx}
@@ -1524,11 +1520,11 @@ Obstacle   & ${\approx}\,0.0\,\text{s}$ (instantaneous) & ${\approx}\,1100$, tra
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.75\textwidth]{FigReal_Morphological_Transition_Energy.png}
-  \caption{\revblue{Morphological transition energy per direction, derived from $|I_{\text{current}}| \times 7.2\,\text{V}$ (fixed NiMH pack voltage) integrated over the pre-calibrated electromechanical coupling window (2.92\,s / 1.56\,s, matching Fig.~\ref{fig:FourPanelLatencies}), across $N=16$ (Quadrupedal $\rightarrow$ Differential Mobile) and $N=19$ (Differential Mobile $\rightarrow$ Quadrupedal) individually detected structural-command transitions. Error bars: $\pm 1$ SD; the between-direction difference is not statistically significant (Welch's $t \approx 1.18$).}}
+  \caption{\revblue{Morphological transition energy per direction, derived from $|I_{\text{current}}| \times 7.2\,\text{V}$ (fixed NiMH pack voltage) integrated over the pre-calibrated electromechanical coupling window (2.92\,s / 1.56\,s, matching Fig.~\ref{fig:FourPanelLatencies}), across $N=16$ (Quadrupedal $\rightarrow$ Differential Rolling) and $N=19$ (Differential Rolling $\rightarrow$ Quadrupedal) individually detected structural-command transitions. Error bars: $\pm 1$ SD; the between-direction difference is not statistically significant (Welch's $t \approx 1.18$).}}
   \label{fig:MorphologicalEnergy}
 \end{figure}
 
-\revblue{The energetic cost of physical adaptation was quantified from individually detected structural-command transitions (Fig.~\ref{fig:MorphologicalEnergy}), integrating instantaneous power ($|I_{\text{current}}| \times 7.2\,\text{V}$) over each direction's pre-calibrated electromechanical coupling window. The Quadrupedal $\rightarrow$ Differential Mobile transition required $5.06 \pm 2.93$~J ($N=16$), and the reverse transition (Differential Mobile $\rightarrow$ Quadrupedal) required $4.13 \pm 1.19$~J ($N=19$); the between-direction difference is not statistically significant (Welch's $t \approx 1.18$), so neither direction should be read as more energetically costly than the other. Greater trial-to-trial variability was observed in the Quadrupedal $\rightarrow$ Differential Mobile direction, though the present dataset does not isolate a specific mechanical cause for this dispersion. To directly address the reviewer's request for long-term average energy consumption across locomotion modes, Table~\ref{tab:mode_steady_state_energy} reports the mean steady-state power draw for each of the three modes, computed by excluding the electromechanical coupling window from each \texttt{robot\_cmd}-detected mode segment; the Omnidirectional estimate is preliminary pending a dedicated test battery.}
+\revblue{The energetic cost of physical adaptation was quantified from individually detected structural-command transitions (Fig.~\ref{fig:MorphologicalEnergy}), integrating instantaneous power ($|I_{\text{current}}| \times 7.2\,\text{V}$) over each direction's pre-calibrated electromechanical coupling window. The Quadrupedal $\rightarrow$ Differential Rolling transition required $5.06 \pm 2.93$~J ($N=16$), and the reverse transition (Differential Rolling $\rightarrow$ Quadrupedal) required $4.13 \pm 1.19$~J ($N=19$); the between-direction difference is not statistically significant (Welch's $t \approx 1.18$), so neither direction should be read as more energetically costly than the other. Greater trial-to-trial variability was observed in the Quadrupedal $\rightarrow$ Differential Rolling direction, though the present dataset does not isolate a specific mechanical cause for this dispersion. To directly address the reviewer's request for long-term average energy consumption across locomotion modes, Table~\ref{tab:mode_steady_state_energy} reports the mean steady-state power draw for each of the three modes, computed by excluding the electromechanical coupling window from each \texttt{robot\_cmd}-detected mode segment; the Omnidirectional estimate is preliminary pending a dedicated test battery.}
 
 \begin{table}[htbp]
 \centering
@@ -1543,7 +1539,7 @@ test battery.}}}
 \textbf{Locomotion Mode} & \textbf{N (segments)} & \textbf{Mean Power $\pm$ SD (W)} \\
 \midrule
 Quadrupedal ($C$) & 20 & $1.94 \pm 1.77$ \\
-Differential Mobile ($H$) & 20 & $1.36 \pm 0.98$ \\
+Differential Rolling ($H$) & 20 & $1.36 \pm 0.98$ \\
 Omnidirectional ($X$)\textsuperscript{*} & 1 & $5.71$ (no SD, single segment) \\
 \bottomrule
 \end{tabularx}
@@ -1557,13 +1553,13 @@ planned; this row will be updated once that data is available.}
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.90\textwidth]{FigReal_Terrain_Latencies_4Panels.png}
-  \caption{Four-panel latency partitioning for real-world autonomous multi-terrain navigation (15 hardware replicates). Panel~A: neural processing latency, Quadrupedal $\rightarrow$ Differential Mobile ($\mu = 0.184\,\text{s}$). Panel~B: neural processing latency, Differential Mobile $\rightarrow$ Quadrupedal ($\mu = 0.534\,\text{s}$). Panel~C: electromechanical coupling latency, Quadrupedal $\rightarrow$ Differential Mobile ($\mu = 2.92\,\text{s}$). Panel~D: emergency retraction latency, Differential Mobile $\rightarrow$ Quadrupedal ($\mu = 1.56\,\text{s}$).}
+  \caption{Four-panel latency partitioning for real-world autonomous multi-terrain navigation (15 hardware replicates). Panel~A: neural processing latency, Quadrupedal $\rightarrow$ Differential Rolling ($\mu = 0.184\,\text{s}$). Panel~B: neural processing latency, Differential Rolling $\rightarrow$ Quadrupedal ($\mu = 0.534\,\text{s}$). Panel~C: electromechanical coupling latency, Quadrupedal $\rightarrow$ Differential Rolling ($\mu = 2.92\,\text{s}$). Panel~D: emergency retraction latency, Differential Rolling $\rightarrow$ Quadrupedal ($\mu = 1.56\,\text{s}$).}
   \label{fig:FourPanelLatencies}
 \end{figure}
 
-\revblue{To evaluate repeatability and determinism under uncalibrated physical environments, a continuous multi-terrain navigation mission was executed across 15 hardware replicates. The track forced the robot from Quadrupedal to Differential Mobile Mode to climb a steep incline, then back to Quadrupedal Mode on unstructured terrain inducing wheel slippage. The resulting temporal dynamics are partitioned into a four-panel layout to preserve resolution against low statistical variance (Fig.~\ref{fig:FourPanelLatencies}).}
+\revblue{To evaluate repeatability and determinism under uncalibrated physical environments, a continuous multi-terrain navigation mission was executed across 15 hardware replicates. The track forced the robot from Quadrupedal to Differential Rolling Mode to climb a steep incline, then back to Quadrupedal Mode on unstructured terrain inducing wheel slippage. The resulting temporal dynamics are partitioned into a four-panel layout to preserve resolution against low statistical variance (Fig.~\ref{fig:FourPanelLatencies}).}
 
-\revblue{The basal ganglia loop's decision latency (Fig.~\ref{fig:FourPanelLatencies}, values in caption) shows a clear task-dependent split. The Quadrupedal $\rightarrow$ Differential Mobile transition (Panel~A) achieves an instantaneous step response, reflecting immediate pitch-gradient adaptation. The reverse transition (Panel~B), triggered by wheel slippage on rugged terrain, settles at a markedly longer latency; this extended window is a deliberate stability feature, filtering transient high-frequency impact noise to suppress control chattering and false-positive switches on noisy surfaces.}
+\revblue{The basal ganglia loop's decision latency (Fig.~\ref{fig:FourPanelLatencies}, values in caption) shows a clear task-dependent split. The Quadrupedal $\rightarrow$ Differential Rolling transition (Panel~A) achieves an instantaneous step response, reflecting immediate pitch-gradient adaptation. The reverse transition (Panel~B), triggered by wheel slippage on rugged terrain, settles at a markedly longer latency; this extended window is a deliberate stability feature, filtering transient high-frequency impact noise to suppress control chattering and false-positive switches on noisy surfaces.}
 
 \revblue{The electromechanical coupling timelines reflect these commands mechanically: achieving full wheel-ground alignment (Panel~C) requires an extended settling window, capturing the kinematic cost of leg extension under slope conditions. The emergency retraction to the high-traction articulated stance (Panel~D), by contrast, is a rapid recovery reflex, minimising the wheel-spin window and securing foothold anchors quickly on unstable terrain.}
 
