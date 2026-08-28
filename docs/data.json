@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-28T02:49:26+00:00",
-  "progressLastCommit": "2026-08-27T21:27:52-05:00",
+  "generatedAt": "2026-08-28T02:58:07+00:00",
+  "progressLastCommit": "2026-08-27T21:49:26-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -263,6 +263,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/n-06-neu-est-simulation-vectorization.tex"
+    },
+    {
+      "id": "N-07",
+      "reviewer": "—",
+      "requirement": "F-08/F-Data-03 (Group A): fig_stability_phases.png ($N=268$ walk-cycle, never archived to experiments/, confirmed again). Vectorized real stance/swing-foot marker geometry from the published PNG (color-masked, calibrated against each panel's shared -0.3..0.3m gridlines), excluding a green-mask false-positive from the swing panels' \"TR\" label box; incenter/inradius for the 4 triangular panels computed analytically from the real extracted vertices, not pixel-extracted; TR/SM/timestamp/phase-name read directly off the figure's plain-text labels. tab:crawl_stability's numbers remain the source of truth (D-6, unchanged) — this only redraws the accompanying illustration as code-traceable. Re-plotted (experiments/_plotting/builders/stability_phases.py) and compared against the original — matches panel-for-panel. Promoted to assets/ (--force, same filename, no results.tex changes needed).",
+      "target": "— (no results.tex changes — same filename/label)",
+      "dataSource": "experiments/_plotting/vectorized/ (stability_phases.csv, documented in its README.md)",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/n-07-stability-phases-vectorization.tex"
     },
     {
       "id": "C-07",

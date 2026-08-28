@@ -1,0 +1,55 @@
+panel,point,x_m,y_m
+A,stance_0,0.1405,0.1651
+A,stance_1,-0.161,-0.1067
+A,stance_2,0.1287,-0.1836
+A,swing,-0.1626,0.1087
+A,com,0.0,0.0
+A,meta_t_s,120.46,
+A,meta_phase,LU Swing Phase,
+A,meta_tr,0.706,
+A,meta_sm_cm,2.8,
+B,stance_0,-0.1605,0.1713
+B,stance_1,0.1451,0.1667
+B,stance_2,-0.1656,-0.1087
+B,stance_3,0.1318,-0.1892
+B,com,0.0,0.0
+B,meta_t_s,121.06,
+B,meta_phase,4-Leg Stance,
+B,meta_tr,,
+B,meta_sm_cm,,
+C,stance_0,-0.1318,0.1892
+C,stance_1,0.1672,0.1144
+C,stance_2,-0.1421,-0.1579
+C,swing,0.1221,-0.2385
+C,com,0.0,0.0
+C,meta_t_s,121.4,
+C,meta_phase,RD Swing Phase,
+C,meta_tr,0.748,
+C,meta_sm_cm,2.5,
+D,stance_0,-0.1282,0.1821
+D,stance_1,-0.1282,-0.1759
+D,stance_2,0.1821,-0.1774
+D,swing,0.1708,0.0913
+D,com,0.0,0.0
+D,meta_t_s,121.91,
+D,meta_phase,RU Swing Phase,
+D,meta_tr,0.774,
+D,meta_sm_cm,2.2,
+E,stance_0,0.1826,0.179
+E,stance_1,-0.1338,0.1718
+E,stance_2,0.1744,-0.1256
+E,stance_3,-0.1251,-0.1892
+E,com,0.0,0.0
+E,meta_t_s,122.42,
+E,meta_phase,4-Leg Stance,
+E,meta_tr,,
+E,meta_sm_cm,,
+F,stance_0,0.1518,0.1749
+F,stance_1,-0.1631,0.1241
+F,stance_2,0.1436,-0.1759
+F,swing,-0.1221,-0.2308
+F,com,0.0,0.0
+F,meta_t_s,122.75,
+F,meta_phase,LD Swing Phase,
+F,meta_tr,0.746,
+F,meta_sm_cm,2.5,
