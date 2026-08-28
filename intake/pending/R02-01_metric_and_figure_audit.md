@@ -570,27 +570,29 @@ llegó a cada resultado vive en los README ya citados; el detalle de *qué patch
 | F-06 (reescalar eje Y de `fig4_architecture_ablation.png`) | ✅ **Resuelto, aprobado y promovido a `assets/`.** Regenerada desde los valores ya citados en prosa (`results.tex:598`), sin necesidad de vectorizar. Sin ninguna referencia al ID interno "F-06" en la imagen. |
 | — (hallazgo nuevo, no estaba en este informe) | **`*_Real_Plot_2_Basal_Ganglia_Dynamics.png` (12 figuras: 4 escenarios × esta figura) eliminada por decisión del autor**, respondiendo al comentario del revisor "cut repetitive descriptions, duplicated neural raster plots and identical stability curves". Su contenido (firing variance) se fusionó como panel A dentro de `*_Real_Plot_3` (que ahora es un compuesto A+B de 2 paneles, con sombreado rojo/azul de presencia de estímulo en el panel A para Appetitive/Aversive/Complex — NO para Obstacle). ✅ **Las 4 `*_Real_Plot_3` regeneradas están aprobadas y promovidas, y la actualización de `results.tex` (subfigura eliminada de los 4 bloques `figure*`, captions reescritos) ya está aplicada** (`patches/n-03-...`) — ya no es una tarea pendiente. |
 | — (hallazgo nuevo) | `FigReal_Morphological_Transition_Energy.png` — **✅ APROBADA (2026-08-27), plan de ejecución listo pero SIN EJECUTAR todavía** — ver §9.7 (nueva). Se descartó la Opción A original (pico inferido de `power_W`) por un hallazgo crítico: la columna `mode` de `Test_current_integrated_*` nunca cambia (siempre `'C'`), así que no ubica transiciones reales. El autor aportó la lógica original de detección (`robot_cmd` filtrado a `{c,z,x}`, ventanas precalibradas 2.92s/1.56s ya publicadas en `FigReal_Terrain_Latencies_4Panels`) — con eso se hallaron **35 transiciones reales** (16 Quad→Diff, 19 Diff→Quad, 1 Quad→Omni descartada por N insuficiente). El autor también confirmó que `current_A` es fiable pero `voltage_V`/`power_W` no — la potencia real se deriva como `\|current_A\| × 7.2V` (paquete NiMH fijo), dando **5.06±2.93 J (N=16) vs. 4.13±1.19 J (N=19)**, diferencia no significativa (Welch t≈1.18). |
-| — (hallazgo nuevo, relacionado pero DISTINTO) | **R2-04 del reviewer ("long-term average energy consumption of THREE locomotion modes") sigue sin responderse.** La figura de arriba mide energía de **transición** (evento puntual entre dos modos), no consumo **en estado estable** de cada uno de los 3 modos (Cuadrúpedo/Diferencial/Omnidireccional) por separado, que es literalmente lo que pide el reviewer. `PROGRESS.md`'s propia fila `R2-04` ya lo diagnosticaba así ("results.tex only has per-transition energy cost, not steady-state per-mode average") antes de esta ronda. **No confundir ambas** — arreglar la figura de transición no cierra R2-04. Con los mismos `Test_current_integrated_*` + `robot_cmd`, probablemente SÍ se pueda construir el consumo en estado estable (tomar cada intervalo entre dos comandos estructurales, descartar la ventana de transición calibrada al inicio, promediar `\|current_A\|×7.2V` del resto) — **no evaluado todavía, requiere una sesión de trabajo aparte, no incluido en §9.7.** |
+| — (hallazgo nuevo, relacionado pero DISTINTO) | **R2-04 del reviewer ("long-term average energy consumption of THREE locomotion modes") — ✅ borrador listo, plan en §9.9, NO EJECUTAR TODAVÍA.** Es distinto de la figura de arriba (esa mide energía de **transición**, esta mide consumo **en estado estable** por modo). Con `Test_current_integrated_*` + `robot_cmd` se calculó: Quadrupedal 1.94±1.77W (N=20 segmentos), Differential Mobile 1.36±0.98W (N=20), Omnidireccional 5.71W (**N=1, placeholder — el equipo confirmó 2026-08-27 que viene una campaña de pruebas dedicada para este modo**). **Decisión del autor: tabla, no gráfica** (más barata de actualizar cuando llegue el dato real de X). Ver `experiments/R2-04-mode-energy/README.md`. |
 | M-01–M-04 (discrepancias texto↔figura, §2) | ✅ **Resuelto.** Los 5 pasajes de `results.tex` (Appetitive Targeting, caption `tab:consolidated_simulation_metrics`, Limitations, Tipover Risk, $T_{switch}$/Heaviside + su caption, phase-space + su caption) se reescribieron con los valores reales verificados en Informe 2 §0, envueltos en `\revblue{}` (`patches/n-04-m01-m04-text-redaction.tex`). Ya no es una tarea de redacción pendiente. |
 | Tipografía de figuras | Serif (10/11/12pt según elemento) es ahora el estilo **por defecto del proyecto** (`.claude/skills/scientific-visualization/assets/publication.mplstyle`), confirmado contra `assets/fig1_Obstacle_macro.png`. Aplica automáticamente a cualquier figura futura, incluidas las de N-01 cuando se generen. |
 
 **Lo único que sigue abierto de este informe:** F-01/F-02/F-04 en su variante de **simulación** (pertenecen a
 `N-01-simulation-figure-regeneration/`, sin empezar), `FigReal_Morphological_Transition_Energy.png` (aprobada,
 plan en §9.7, **sin ejecutar por instrucción explícita del autor** — "haz el plan... pero no lo ejecutes aún"),
-y R2-04's per-mode steady-state energy (gap distinto, sin empezar). Todo lo demás listado en este §8 y en el
-checklist de §9.1–§9.6 está cerrado.
+y la tabla de R2-04 (borrador listo en §9.9, con la fila de Omnidireccional marcada como placeholder N=1 hasta
+que llegue la campaña de pruebas dedicada). Todo lo demás listado en este §8 y en el checklist de §9.1–§9.6 está
+cerrado.
 
 ---
 
 ## 9. Tareas de Escritura Sistemáticas (2026-08-27) — para ejecutar HOY
 
 **Estado (2026-08-27): §9.1–§9.5 ya se ejecutaron** (commit `d93adbd`, filas `N-03`/`N-04` en `PROGRESS.md`).
-**§9.7 (energía) tiene plan listo pero está bloqueada — el autor pidió explícitamente no ejecutarla todavía.**
-No incluyen: la reescritura de `*_Real_Plot_2` como texto/estadística de repetibilidad (sigue sin decidir), el
-gap de R2-04 (consumo en estado estable de los 3 modos, distinto de §9.7), ni nada de `experiments/N-01-...`
-(simulación, no ha empezado). Seguir el flujo normal del repo: `sections/` + fila de `PROGRESS.md` + `patches/`
-— nunca editar `source/main_monolithic.tex` a mano, y correr `scripts/validate_tex.sh`/`scripts/check_roundtrip.sh`
-antes de
+**§9.7 (energía de transición) tiene plan listo pero está bloqueada — el autor pidió explícitamente no
+ejecutarla todavía. §9.9 (tabla de consumo por modo, R2-04) tiene plan listo y SÍ puede ejecutarse — con la
+fila de Omnidireccional marcada como placeholder N=1 hasta que llegue la campaña de pruebas dedicada
+(confirmada por el equipo, en camino).** No incluyen: la reescritura de `*_Real_Plot_2` como texto/estadística
+de repetibilidad (sigue sin decidir), ni nada de `experiments/N-01-...` (simulación, no ha empezado). Seguir el
+flujo normal del repo: `sections/` + fila de `PROGRESS.md` + `patches/` — nunca editar
+`source/main_monolithic.tex` a mano, y correr `scripts/validate_tex.sh`/`scripts/check_roundtrip.sh` antes de
 cualquier commit que toque `sections/`.
 
 ### 9.1 Promover las 12 figuras aprobadas a `assets/`
@@ -765,7 +767,78 @@ experiments/N-02-physical-figure-regeneration/`, referenciando este §9.7 y
 **5. Explícitamente fuera de este plan (no hacer al ejecutar esto):** no intentar responder R2-04 (consumo en
 estado estable de los 3 modos) como parte de esta tarea — es un gap distinto, ver la fila de §8 arriba.
 
-### 9.8 Explícitamente FUERA de alcance para hoy (no tocar)
+### 9.9 R2-04 — tabla de consumo por modo (NO gráfica) — plan de integración
+
+**Decisión del autor (2026-08-27):** para el consumo *en estado estable* de los 3 modos (distinto de la energía
+de *transición* de §9.7), usar **tabla, no figura** — un bar chart de 3 categorías (una de ellas N=1 y
+temporal) no es muy diciente, y una tabla es mucho más barata de actualizar cuando lleguen los datos reales de
+Omnidireccional (una fila, no una regeneración de figura). Ver `experiments/R2-04-mode-energy/README.md` para
+el método completo y las advertencias.
+
+**⚠️ Dato de Omnidireccional (X) es un placeholder de N=1, con reemplazo confirmado en camino.** El equipo de
+hardware confirmó (2026-08-27, verbalmente, tras una reunión) que se van a tomar muestras dedicadas de energía
+para el modo Omnidireccional. **Cuando lleguen:** re-correr
+`experiments/R2-04-mode-energy/scripts/build_mode_energy.py` contra la(s) carpeta(s) nueva(s) de
+`experiments/real/`, la fila de X en la tabla de abajo se actualiza (media±SD/N), nada más del plan cambia. Este
+informe/tarea NO debe tratarse como cerrado hasta que esa fila dejede ser N=1.
+
+**Resultado actual (2026-08-27), listo para tabla:**
+
+| Modo | N segmentos | Potencia media ± SD |
+|---|---|---|
+| Quadrupedal (C) | 20 | 1.94 ± 1.77 W |
+| Differential Mobile (H) | 20 | 1.36 ± 0.98 W |
+| Omnidireccional (X) | 1 (preliminar, sin réplica — ver advertencia arriba) | 5.71 W |
+
+**1. Nueva tabla en `sections/results.tex`**, cerca de `FigReal_Morphological_Transition_Energy.png` (misma
+subsección "ENERGY CONSUMPTION", después del párrafo de esa figura una vez aplicado §9.7), siguiendo el mismo
+estilo que `tab:consolidated_physical_metrics` (`tabularx`, mismo formato de `\toprule`/`\midrule`/`\bottomrule`):
+
+```latex
+\begin{table}[htbp]
+\centering
+\caption{Long-term average steady-state power consumption per locomotion mode (three hardware
+replicates' worth of instrumented segments; transition windows excluded per segment, see
+Fig.~\ref{fig:MorphologicalEnergy}). Power derived as $|I|\times7.2\,\text{V}$ (fixed NiMH pack
+voltage). \textbf{Omnidirectional is a single-segment preliminary estimate (N=1), pending a dedicated
+test battery.}}
+\label{tab:mode_steady_state_energy}
+\begin{tabularx}{\textwidth}{l >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
+\toprule
+\textbf{Locomotion Mode} & \textbf{N (segments)} & \textbf{Mean Power $\pm$ SD (W)} \\
+\midrule
+Quadrupedal ($C$) & 20 & $1.94 \pm 1.77$ \\
+Differential Mobile ($H$) & 20 & $1.36 \pm 0.98$ \\
+Omnidirectional ($X$)\textsuperscript{*} & 1 & $5.71$ (no SD, single segment) \\
+\bottomrule
+\end{tabularx}
+\\[2pt]
+\footnotesize{\textsuperscript{*}Preliminary — a dedicated Omnidirectional-mode energy test battery is
+planned; this row will be updated once that data is available.}
+\end{table}
+```
+
+Envolver en `\revblue{}` (tabla nueva).
+
+**2. Una frase en el párrafo de energía (`results.tex:934`, después de §9.7)** conectando la tabla con el
+pedido del reviewer explícitamente, p. ej.: *"To directly address the reviewer's request for long-term
+average energy consumption across locomotion modes, Table~\ref{tab:mode_steady_state_energy} reports the
+mean steady-state power draw for each of the three modes, computed by excluding the electromechanical
+coupling window from each `robot\_cmd`-detected mode segment; the Omnidirectional estimate is preliminary
+pending a dedicated test battery."* No afirmar diferencias significativas entre C y H (Welch t≈1.26, no
+significativo).
+
+**3. `PROGRESS.md`:** actualizar la fila `R2-04` existente (no crear una nueva — ya existe, `Owner: Sam`,
+`Status: pending`) con: `Data source: experiments/R2-04-mode-energy/`, nota de que Quadrupedal/Differential ya
+tienen N=20 cada uno pero Omnidireccional sigue con N=1 pendiente de reemplazo, `Status` sube a `drafted` (no
+`applied` — no dar por cerrado mientras X sea un placeholder).
+
+**4. Cuando lleguen los datos reales de Omnidireccional:** actualizar la fila X de la tabla (mean±SD/N),
+quitar la nota "preliminary"/el `\textsuperscript{*}` si ya no aplica, subir `R2-04` a `applied` en
+`PROGRESS.md`. Registrar como una fila `C-xx` (corrección puntual) en vez de un nuevo `N-xx`, ya que la tabla
+y el párrafo ya existirán — solo se actualiza un valor.
+
+### 9.10 Explícitamente FUERA de alcance para hoy (no tocar)
 
 - Contenido de reemplazo en prosa para lo que mostraba `*_Real_Plot_2` como figura independiente — la fusión
   visual en 9.2 ya lo resuelve a nivel de figura; **no inventar además una nueva sección/tabla de
@@ -773,7 +846,5 @@ estado estable de los 3 modos) como parte de esta tarea — es un gap distinto, 
   §8 arriba).
 - `FigReal_Morphological_Transition_Energy.png` — plan listo en §9.7, pero **no ejecutar sin autorización
   explícita del autor** (instrucción directa: "no lo ejecutes aún").
-- R2-04 (consumo energético en estado estable de los 3 modos de locomoción) — gap distinto de lo de arriba, sin
-  empezar, requiere su propia sesión de trabajo (ver nota en §8).
 - Cualquier cosa de `experiments/N-01-simulation-figure-regeneration/` — no ha empezado la revisión de esas
   figuras todavía.
