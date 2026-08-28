@@ -575,21 +575,21 @@ llegó a cada resultado vive en los README ya citados; el detalle de *qué patch
 | Tipografía de figuras | Serif (10/11/12pt según elemento) es ahora el estilo **por defecto del proyecto** (`.claude/skills/scientific-visualization/assets/publication.mplstyle`), confirmado contra `assets/fig1_Obstacle_macro.png`. Aplica automáticamente a cualquier figura futura, incluidas las de N-01 cuando se generen. |
 
 **Lo único que sigue abierto de este informe:** F-01/F-02/F-04 en su variante de **simulación** (pertenecen a
-`N-01-simulation-figure-regeneration/`, sin empezar), `FigReal_Morphological_Transition_Energy.png` (aprobada,
-plan en §9.7, **sin ejecutar por instrucción explícita del autor** — "haz el plan... pero no lo ejecutes aún"),
-y la tabla de R2-04 (borrador listo en §9.9, con la fila de Omnidireccional marcada como placeholder N=1 hasta
-que llegue la campaña de pruebas dedicada). Todo lo demás listado en este §8 y en el checklist de §9.1–§9.6 está
-cerrado.
+`N-01-simulation-figure-regeneration/`, sin empezar), y **§9.7 + §9.9, ambas AUTORIZADAS para ejecutar
+(2026-08-27) pero aún no ejecutadas** — la tabla de R2-04 (§9.9) mantiene la fila de Omnidireccional como
+placeholder N=1 hasta que llegue la campaña de pruebas dedicada, eso no bloquea la ejecución de la tabla misma.
+Todo lo demás listado en este §8 y en el checklist de §9.1–§9.6 está cerrado.
 
 ---
 
 ## 9. Tareas de Escritura Sistemáticas (2026-08-27) — para ejecutar HOY
 
 **Estado (2026-08-27): §9.1–§9.5 ya se ejecutaron** (commit `d93adbd`, filas `N-03`/`N-04` en `PROGRESS.md`).
-**§9.7 (energía de transición) tiene plan listo pero está bloqueada — el autor pidió explícitamente no
-ejecutarla todavía. §9.9 (tabla de consumo por modo, R2-04) tiene plan listo y SÍ puede ejecutarse — con la
-fila de Omnidireccional marcada como placeholder N=1 hasta que llegue la campaña de pruebas dedicada
-(confirmada por el equipo, en camino).** No incluyen: la reescritura de `*_Real_Plot_2` como texto/estadística
+**§9.7 (energía de transición) y §9.9 (tabla de consumo por modo, R2-04) están AMBAS AUTORIZADAS PARA
+EJECUTAR (2026-08-27) — el bloqueo previo sobre §9.7 ("no lo ejecutes aún") quedó levantado por instrucción
+explícita del autor ("confirma la ejecución"). §9.9 mantiene la fila de Omnidireccional marcada como
+placeholder N=1 hasta que llegue la campaña de pruebas dedicada (confirmada por el equipo, en camino) — eso
+no bloquea la ejecución de la tabla misma.** No incluyen: la reescritura de `*_Real_Plot_2` como texto/estadística
 de repetibilidad (sigue sin decidir), ni nada de `experiments/N-01-...` (simulación, no ha empezado). Seguir el
 flujo normal del repo: `sections/` + fila de `PROGRESS.md` + `patches/` — nunca editar
 `source/main_monolithic.tex` a mano, y correr `scripts/validate_tex.sh`/`scripts/check_roundtrip.sh` antes de
@@ -701,9 +701,10 @@ promovidas las imágenes y actualizado `results.tex`. Correr `scripts/validate_t
 
 ### 9.7 `FigReal_Morphological_Transition_Energy.png` — plan de ajuste y redacción
 
-**⚠️ APROBADA por el autor (2026-08-27) — este es el plan de ejecución. NO EJECUTAR TODAVÍA — instrucción
-explícita: "haz el plan de ajuste y redacción pero no lo ejecutes aún".** Cuando se autorice ejecutar, es una
-tarea sistemática igual que 9.1–9.5 (los números y el método ya están decididos, sin ambigüedad de contenido).
+**✅ AUTORIZADA PARA EJECUTAR (2026-08-27).** El bloqueo anterior ("no lo ejecutes aún") queda levantado —
+instrucción explícita del autor: "confirma la ejecución". Es una tarea sistemática igual que 9.1–9.5 (los
+números y el método ya están decididos, sin ambigüedad de contenido) — ejecutar siguiendo los pasos 1–5 de
+abajo tal cual están escritos.
 
 **Qué cambió respecto a la versión rechazada:** el método pasó de "un pico de potencia inferido, sin verificar
 contra ningún evento real" a "35 transiciones de modo reales, detectadas por comando estructural
@@ -844,7 +845,5 @@ y el párrafo ya existirán — solo se actualiza un valor.
   visual en 9.2 ya lo resuelve a nivel de figura; **no inventar además una nueva sección/tabla de
   "repeatability statistics"** sin que el autor lo pida — sigue siendo una decisión de escritura sin tomar (ver
   §8 arriba).
-- `FigReal_Morphological_Transition_Energy.png` — plan listo en §9.7, pero **no ejecutar sin autorización
-  explícita del autor** (instrucción directa: "no lo ejecutes aún").
 - Cualquier cosa de `experiments/N-01-simulation-figure-regeneration/` — no ha empezado la revisión de esas
   figuras todavía.
