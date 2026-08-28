@@ -210,11 +210,11 @@ def _reliable_px_per_unit(arr: np.ndarray, boxes: list[tuple[int, int, int, int]
     raise RuntimeError("no panel produced a reliable tick calibration")
 
 
-def extract(image_path: str) -> pd.DataFrame:
+def extract(image_path: str, tick_step: int = 20) -> pd.DataFrame:
     arr = np.array(Image.open(image_path).convert("RGB"))
     boxes = find_panel_boxes(arr)
     assert len(boxes) == 4, f"expected 4 panels, found {len(boxes)}: {boxes}"
-    px_per_unit = _reliable_px_per_unit(arr, boxes)
+    px_per_unit = _reliable_px_per_unit(arr, boxes, tick_step=tick_step)
 
     rows = []
     for spec, (left, right, top, bottom) in zip(PANEL_ORDER, boxes):

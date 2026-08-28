@@ -1,0 +1,59 @@
+% PATCH: N-08
+% Target section: none in sections/ -- assets/ only (F-01/F-04 change image content, no
+%   \label{}/\ref{} in results.tex, per R02-01-05 §6/§8)
+% Requirement: intake/pending/R02-01-05_simulacion_grupo2_vectorizacion.md §1 (F-01, NEU_IMU/
+%   NEU_IMU2) and §2 (F-04, GRAPH_IMU/GRAPH_IMU2), Group C, executed per §7 step 6 of the
+%   combined order with R02-01-04.
+%
+% F-01 (NEU_IMU.png / NEU_IMU2.png): confirmed identical 4-panel layout (Locomotion_1/2 +
+%   Decision_1/2) to the already-vectorized NEU_IMU_real.png/NEU_IMU2_real.png. Reused
+%   extract_neu_imu_real.py's extract() UNCHANGED for NEU_IMU.png (its axis already matches the
+%   function's default tick_step=20); NEU_IMU2.png needed tick_step=10 (its own x-axis labels
+%   every 10s, confirmed by inspection, not assumed) -- extract() gained an optional tick_step
+%   parameter (default unchanged at 20, so the two already-approved _real call sites are
+%   unaffected). Re-plotted via the EXISTING imu_terrain_real.build_neu_imu() (already renders
+%   "Gait Decision Module", the F-01 fix -- no separate title-fix step needed). Compared against
+%   the originals -- match (see vectorized/README.md for the per-figure detail).
+%
+% F-04 (GRAPH_IMU.png / GRAPH_IMU2.png): no raw per-timestep acceleration/pitch CSV exists in
+%   familia_c1_terreno_rugoso/familia_c2_pendiente (Informe 2 F-Data-04/05) -- both full curves
+%   vectorized by pixel color via new extract_graph_imu_sim.py (matplotlib-default tab:blue/
+%   tab:orange line colors, continuous per-column centroid extraction). Two bugs found and fixed
+%   while vectorizing, both against GRAPH_IMU2.png specifically:
+%   1. A first attempt excluded a whole top-right QUADRANT to avoid the legend swatch's color
+%      leak -- but GRAPH_IMU2.png's real pitch-angle curve legitimately peaks in that same corner
+%      late in the run (~t=53, value ~38), so the quadrant exclusion silently clipped real data.
+%      Fixed by scoping the exclusion to a TIGHT box around just the two short legend sample-line
+%      segments (~29px wide, confirmed by direct pixel inspection), leaving the real peak intact.
+%   2. The color-extraction column scan was bounded by the last detected gridline instead of the
+%      axes' actual right spine -- GRAPH_IMU2.png's plot area (matplotlib default margin) extends
+%      past its last labeled tick (x=821) to its real right spine (x=900), and the curve's late
+%      peak sits at x=856, inside that gap -- silently truncating it. Fixed with a new
+%      _spine_x_range() helper that finds the true axes-box edges from the black spine pixels,
+%      not the gridline extent.
+%   Re-plotted via new imu_dual_axis.py, applying all of F-04's fixes: double Y-axis (was a
+%   single mixed "V A L U E" axis), corrected legend text ("Standar dev accel z" ->
+%   "$\sigma_{az}$ -- Std. dev. accel. Z", "Pitch angle" -> "Pitch (deg)", matching
+%   methodology.tex:354's notation), an added $U_{\sigma_{az}}=3.7$ threshold line
+%   (methodology.tex:275/354 -- results.tex:199 already cites this value but the original figure
+%   never drew it), and a terrain-specific title ("IMU activity --- Rugged Terrain (Simulation)"
+%   / "... Inclined Slope (Simulation)", both previously the generic "IMU activity"). Compared
+%   against the originals -- curve shape/peaks/valleys match at every visible feature; GRAPH_IMU2's
+%   extracted late-run peak (~34.4) is somewhat below the original's visual ~38 due to per-column
+%   centroid softening a very steep near-vertical rise -- documented as an accepted precision
+%   tradeoff, consistent with every other pixel-vectorized figure in this project, not silently
+%   presented as exact.
+%
+% RES_IMU.png / RES_IMU2.0.png (the other 2 of Group C's originally-listed "6 figures"): confirmed
+%   by direct inspection to be Gazebo screenshot composites (numbered robot-pose renders over
+%   terrain, e.g. 10 numbered poses for RES_IMU.png) -- no chart data, no F-01/F-04/F-08 finding
+%   names either of them as defective. Same category as F-07 (photos, no vectorization
+%   applicable) -- left untouched, confirmed no action needed rather than assumed.
+%
+% Promoted NEU_IMU.png/NEU_IMU2.png/GRAPH_IMU.png/GRAPH_IMU2.png to assets/ with --force (same
+%   filenames -- F-01/F-04 only change image content, confirmed no \label{}/\ref{} change needed
+%   in results.tex per R02-01-05 §6/§8).
+%
+% Verification: no LaTeX changes in this patch (image-only); validate_tex.sh/check_roundtrip.sh
+%   re-run as part of the same working-tree state, both pass.
+% Status: applied

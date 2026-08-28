@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-28T03:05:54+00:00",
-  "progressLastCommit": "2026-08-27T22:00:35-05:00",
+  "generatedAt": "2026-08-28T03:13:50+00:00",
+  "progressLastCommit": "2026-08-27T22:05:54-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -262,6 +262,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/n-07-stability-phases-vectorization.tex"
+    },
+    {
+      "id": "N-08",
+      "reviewer": "—",
+      "requirement": "Group C (simulation IMU-terrain figures, R02-01-05 §1/§2): NEU_IMU.png/NEU_IMU2.png (F-01, \"March Decision Module\"→\"Gait Decision Module\") and GRAPH_IMU.png/GRAPH_IMU2.png (F-04, double Y-axis + corrected legend + added $U_{\\sigma_{az}}=3.7$ threshold line + terrain-specific title). All 4 vectorized (no raw per-neuron/per-timestep CSV exists for familia_c1_terreno_rugoso/familia_c2_pendiente) — NEU_IMU/NEU_IMU2 reused extract_neu_imu_real.py unchanged (gained an optional tick_step param for NEU_IMU2's own 10s-step axis); GRAPH_IMU/GRAPH_IMU2 used a new extract_graph_imu_sim.py, which caught and fixed two bugs found while vectorizing (a legend-swatch color leak, and a column-range bug that silently truncated GRAPH_IMU2's late-run data past the last gridline). Re-plotted via imu_terrain_real.build_neu_imu() (existing, already-corrected) and new imu_dual_axis.py; compared against the originals — all 4 match. Promoted to assets/ (--force, same filenames, no results.tex changes). RES_IMU.png/RES_IMU2.0.png (the other 2 of Group C's originally-listed \"6 figures\") are Gazebo screenshot composites with no chart data and no F-01/F-04/F-08 finding against them — same category as F-07 (photos), confirmed no action needed.",
+      "target": "— (no results.tex changes — same filenames/labels)",
+      "dataSource": "experiments/_plotting/vectorized/ (4 new CSVs, documented in its README.md)",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/n-08-group-c-imu-terrain-vectorization.tex"
     },
     {
       "id": "C-07",
