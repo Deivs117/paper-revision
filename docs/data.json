@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-26T22:45:01+00:00",
-  "progressLastCommit": "2026-08-26T17:27:23-05:00",
+  "generatedAt": "2026-08-28T21:46:55+00:00",
+  "progressLastCommit": "2026-08-26T17:45:01-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -124,15 +124,15 @@
       "id": "R3-06",
       "reviewer": "3",
       "requirement": "Literature review comparative tables: Basal Ganglia vs CPG vs RL-based action selection",
-      "target": "introduction.tex — narrative comparison already exists (threshold logic / MPC / RL vs basal ganglia), likely just needs converting to a table + reframing CPG as a third action-selection alternative (currently only discussed as a rhythm-execution layer)",
+      "target": "introduction.tex — added Table~\\ref{table:action_selection_comparison}, a horizontal comparison (threshold logic / MPC / RL / CPG / basal ganglia) built from the existing narrative comparison, reframing CPG as a rhythm-generation (not arbitration) mechanism",
       "dataSource": "— (table from existing text, no new data)",
       "category": "Escritura",
       "owner": [
         "Sebas",
         "Deivi"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/r3-06-literature-comparison-table.tex"
     },
     {
       "id": "C-01",

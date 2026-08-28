@@ -1,0 +1,43 @@
+% R3-06 — Literature review comparative tables: Basal Ganglia vs CPG vs RL-based action selection
+% Audit copy of the change applied to sections/introduction.tex. The live file is
+% sections/introduction.tex — this is a record, not the source of truth.
+%
+% Reviewer request: "The literature review fails to systematically summarize existing
+% bio-inspired gait arbitration research. It lacks horizontal classification and
+% comparative tables of basal ganglia, CPG, and RL-based action selection algorithms..."
+%
+% What changed: introduction.tex already narratively contrasted hand-coded threshold
+% logic, MPC, and end-to-end RL against basal-ganglia arbitration (paragraph starting
+% "A critical observation emerges..."), citing the same references used below. CPG was
+% discussed elsewhere in the same file only as a rhythm-execution layer beneath BG
+% arbitration, not as an alternative action-selection paradigm. This patch:
+%   1. Converts the existing narrative comparison into a horizontal table
+%      (Table~\ref{table:action_selection_comparison}), adding CPG as a fifth row.
+%   2. Adds one clarifying sentence noting CPG's role differs qualitatively from the
+%      other four rows (rhythm generation vs. discrete-mode arbitration), so the table
+%      doesn't misrepresent this paper's own hierarchical BG-arbitration/CPG-execution
+%      design as if CPG were a competing arbitration scheme.
+%   3. No new citations were introduced — all \citet/\citep keys reused from the
+%      existing paragraphs (verified against assets/references.bib).
+%
+% Inserted into sections/introduction.tex between the "critical observation" paragraph
+% and the paragraph beginning "The basal ganglia, a subcortical neural circuit...".
+
+\revblue{Table~\ref{table:action_selection_comparison} summarizes this landscape along axes relevant to the present design choice, horizontally contrasting hand-coded threshold logic, model predictive control, end-to-end reinforcement learning, central pattern generators (CPGs), and basal-ganglia-inspired winner-take-all arbitration; note that CPGs, unlike the other four rows, are a rhythm-\emph{generation} mechanism rather than a discrete-mode \emph{arbitration} mechanism, which is why the present architecture treats CPG execution and basal-ganglia arbitration as complementary rather than competing layers.}
+
+\revblue{
+\begin{table}[t]
+\centering
+\caption{Horizontal comparison of bio-inspired and engineering approaches to locomotion-mode action selection.}
+\begin{tabular}{|p{2.6cm}|p{2.9cm}|p{2.3cm}|p{1.6cm}|p{2.6cm}|p{2.4cm}|}
+\hline
+\textbf{Approach} & \textbf{Selection Mechanism} & \textbf{Role in Control Stack} & \textbf{Biological Basis} & \textbf{Interpretability / Training} & \textbf{Representative Work} \\ \hline
+Hand-coded threshold logic & Fixed if-then rules on sensor thresholds & Arbitration & None & Fully transparent; manually tuned, no training & \citet{Bjelonic2019KeepRollin,Kashiri2019CENTAURO} \\ \hline
+Model predictive control (MPC) & Online receding-horizon optimization & Arbitration & None & Numerically opaque; requires an accurate dynamic model & \citet{bjelonic2019,Bjelonic2022OfflineMotion} \\ \hline
+End-to-end reinforcement learning (RL) & Learned policy mapping sensory state to mode/action & Arbitration & Loosely reward-inspired & Black-box; requires large-scale (often privileged) training & \citet{Lee2024Science,Humphreys2025BioInspired} \\ \hline
+Central pattern generators (CPG) & Coupled oscillator network & Rhythm generation (execution) & High (spinal circuits) & Explicit oscillator dynamics; parameter tuning, no training & \citet{ijspeert2008,Bellegarda2022CPGRL,Manoonpong2013Neural} \\ \hline
+Basal ganglia (WTA disinhibition) --- \emph{this work} & Salience-driven winner-take-all via disinhibition & Arbitration & High (subcortical action-selection circuit) & Biologically grounded dynamics; fixed circuit, no training & \citet{Gurney2001a,Gurney2001b,Prescott2006Robot,Girard2003Basal,sarvestani2013computational,Baston2015Biologically,Prescott2024Simulated} \\ \hline
+\end{tabular}
+\label{table:action_selection_comparison}
+\end{table}
+}
