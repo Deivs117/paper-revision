@@ -105,11 +105,12 @@ export que corrige.
   no se toca).
 - `loaders.py` lee `vectorized/*.csv` con la misma función que CSV real — no hace falta un parser aparte (D-11).
 
-## 6. Orden sugerido
+## 6. Orden interno de este bloque
 
 1. Paso 0 de calibración compartida (arriba).
 2. Grupo A → `fig_stability_phases.png` (baja complejidad, 1 calibración).
-3. Grupo C → las 6 figuras IMU de terreno en simulación (2-6 calibraciones según el paso 0).
+3. Grupo C → las 6 figuras IMU de terreno en simulación: `NEU_IMU.png`, `NEU_IMU2.png`, `GRAPH_IMU.png`,
+   `GRAPH_IMU2.png`, `RES_IMU.png`, `RES_IMU2.0.png` (2-6 calibraciones según el paso 0).
 4. Implementar `neural_raster.py` completo (rama CSV real primero — `NEU_EST_UNIB/UNIG/MUL`, sin esperar a que el
    Grupo C esté vectorizado — luego la rama vectorizada `NEU_IMU/NEU_IMU2` una vez lista).
 5. Implementar `imu_dual_axis.py` sobre el Grupo C ya vectorizado.
@@ -117,6 +118,36 @@ export que corrige.
 7. Dar de alta en `PROGRESS.md` las filas `N-xx` correspondientes (`scripts/next_id.sh N`), `Category: Métricas`
    o `Escritura` según corresponda, `Data source: experiments/N-01-simulation-figure-regeneration/` (y
    `experiments/_plotting/vectorized/` en la columna de notas cuando aplique).
+
+## 7. Orden combinado con `R02-01-04` (confirmado 2026-08-27 — deadline 2026-08-31, ambos bloques priorizados por igual)
+
+Los dos bloques comparten infraestructura (mismo motor de extracción de píxel, mismo `experiments/_plotting/`,
+mismo `PROGRESS.md` fila `N-01`) — este es el orden real de ejecución, intercalando por dependencia técnica, no
+por documento:
+
+1. **`R02-01-04` pasos 1-2** (vectorizar panel de Obstacle + parchear `macro_robustness.py`) — desbloquea la
+   pieza más avanzada primero.
+2. **En paralelo:** `neural_raster.py`, rama CSV real (`NEU_EST_UNIB/UNIG/MUL`, §1 de este documento, §4 paso 4
+   parcial) — no depende de ninguna vectorización, se puede hacer mientras se vectoriza Obstacle.
+3. **`R02-01-04` pasos 3-9** (regenerar, revisar, promover rejilla + FigA/B/C, actualizar `results.tex`/
+   `PROGRESS.md`) — cierra el bloque más cercano a terminar.
+4. **Paso 0 de calibración compartida** de este documento (§4) — mientras el paso 3 corre validaciones, se puede
+   adelantar la inspección visual de los Grupos A y C.
+5. **Grupo A** (`fig_stability_phases.png`, §3) — más simple, 1 calibración, cierra F-08 rápido.
+6. **Grupo C** (6 figuras IMU, §1 parcial + §2) — el más largo del bloque combinado; si el tiempo aprieta antes
+   del 31, es el candidato a recortar primero (ver nota de priorización abajo).
+7. **`neural_raster.py` rama vectorizada** (`NEU_IMU`/`NEU_IMU2`) + **`imu_dual_axis.py`** (`GRAPH_IMU`/
+   `GRAPH_IMU2`) sobre el Grupo C ya vectorizado.
+8. Promoción final de todo lo de este documento (`--force`, mismos nombres que hoy en `assets/` — F-01/F-04/F-08
+   no cambian ningún `\label{}`/`\ref{}` en `results.tex`, solo contenido de imagen), filas `N-xx` en
+   `PROGRESS.md`, `validate_tex.sh`/`check_roundtrip.sh`.
+
+**Nota de priorización si el tiempo no alcanza para todo antes del 31:** dentro de este bloque, F-01 en
+`NEU_EST_UNIB/UNIG/MUL` (paso 2, CSV real, sin vectorizar) es el de mayor relación beneficio/esfuerzo — corrige
+la traducción incorrecta en 3 figuras sin ningún trabajo de vectorización. El Grupo C (paso 6, 6 figuras,
+2-6 calibraciones) es el de mayor esfuerzo y el candidato más razonable a quedar para la siguiente ronda de
+revisión si hace falta recortar, dejando F-01/F-04 de simulación documentados como pendientes explícitos en vez
+de forzar una vectorización apurada.
 8. Promover con `scripts/promote_figure.sh --force` (mismos nombres que las figuras actuales en `assets/`) y
    actualizar `sections/results.tex` si algún `\label{}`/`\ref{}` cambia (F-01/F-04/F-08 no cambian labels, solo
    contenido de imagen — ver tabla de Fase 4 original, sin filas para este bloque).
