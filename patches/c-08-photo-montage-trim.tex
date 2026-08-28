@@ -1,0 +1,71 @@
+% PATCH: C-08
+% Target section: sections/results.tex (fig:robot-6frames, fig:RES_IMU_real)
+% Requirement: intake/pending/R02-01-07_recorte_montajes_fotograficos.md, executed in full,
+%   steps 1-7 of its §5.
+%
+% Scope decision (§0 of the report, unchanged): only D1-D6 and E1-E6 trimmed. The third montage,
+%   Prueba_Terreno_Parte_1-6 (fig:real_variable_topography_sequence), left untouched -- all 6
+%   frames map 1:1 to tab:terrain_sequence and are individually narrated in prose ("Frames 5-6:
+%   rolling-mode wheel slip..."), unlike D/E where only 1 (D3) and 0 (E-series) frames respectively
+%   had an individual citation.
+%
+% Step 3 (photo verification, done BEFORE finalizing captions, per explicit instruction): opened
+%   D1/D3/D5/D6.png and E1/E3/E5/E6.png directly.
+%   - D1 ~= D2 ~= D3 confirmed near-identical (same frozen quadrupedal pose, stimulus markers in
+%     the same position) -- matches the report's claim that D1-D3 document the same static
+%     instant, justifying dropping D2.
+%   - D5 confirmed fully transformed to differential-rolling configuration (legs splayed
+%     laterally, wheel-like terminations visible), still at the original position.
+%   - D6 confirmed significantly displaced toward the appetitive target (blue/tan marker), still
+%     in the wheeled configuration -- matches "final approach".
+%   - E1 confirmed entering the mat in a clearly legged (quadrupedal-looking) stance from a
+%     side-on camera angle.
+%   - E3 confirmed standing in a clear upright quadrupedal stance at the roughest section
+%     (front-on camera angle) -- legs and foot-hub shape used as the visual reference point for
+%     comparing E6 below.
+%   - E5 confirmed still in the same upright quadrupedal leg posture as E3, now near the mat's
+%     left edge -- directly supports the "sustains ground clearance in quadrupedal mode" caption
+%     claim (this is NOT the uncertain part flagged by §2.3).
+%   - E6 (the specific frame §2.3 flagged as uncertain for locomotion mode): closely compared
+%     its leg/foot posture against E3's confirmed-quadrupedal reference. The foot-tip hub shape is
+%     IDENTICAL between E3 and E6 (same design element regardless of mode -- not a distinguishing
+%     feature), but the overall leg posture in E6 is lowered and splayed, matching D5's
+%     confirmed-rolling posture rather than E3's tall upright stance. This is CONSISTENT WITH (not
+%     independent photographic proof of) the caption's "reverts to differential-rolling mode"
+%     claim, which is primarily grounded in the surrounding prose's neural-signal timing (unit
+%     X0's activity ceasing, already cited in results.tex before this patch). Per the report's own
+%     instruction ("ajustarla, no forzarla" only if inconsistent) -- not inconsistent, so the
+%     caption is kept as drafted, not softened or removed.
+%
+% Edits (both montages, layout 3+3 -> 2x2 per §4 of the report):
+%   - Dropped D2/D4 (fig:frames-b/fig:frames-d) and E2/E4 (fig:frames-b2/fig:frames-d2) subfigures
+%     entirely, along with their \hfill separators. Confirmed via grep across sections/*.tex
+%     BEFORE deleting that none of these 4 labels has a \ref{} anywhere else in the document (only
+%     their own \label{} definitions existed) -- safe to remove.
+%   - Kept D1/D3/D5/D6 (fig:frames-a/c/e/f) and E1/E3/E5/E6 (fig:frames-a2/c2/e2/f2) unchanged --
+%     no label renaming, per the report's explicit instruction (subcaption re-letters by position
+%     automatically).
+%   - Replaced all 8 kept captions with the report's drafted versions (§1.3/§2.3), which
+%     consolidate context from the surrounding prose into the caption itself -- all wrapped in
+%     \revblue{} (substantive rewrites, not typo fixes; the project's default-to-wrapping rule
+%     applies even to the 3 captions per montage whose gist was already correct, since the
+%     wording/detail changed materially).
+%   - Updated both external \caption{}s' subfigure-count text from "(a)-(f)" to "(a)-(d)".
+%
+% Step 4 (cross-reference check, results.tex:469's "\ref{fig:frames-c}"): fig:frames-c is now the
+%   2nd of 4 subfigures (was 3rd of 6). sections/preamble.tex has no \captionsetup override for
+%   subcaption, so the default (\alph{subfigure}) format applies -- \ref{} to a label inside a
+%   subfigure should print just "(b)" for the 2nd position, no parent-figure-number prefix.
+%   REASONED ANALYTICALLY, NOT CONFIRMED BY COMPILATION -- no LaTeX toolchain available locally
+%   (same limitation noted on every other patch this round). If a toolchain becomes available,
+%   compiling and checking this specific \ref{} render is the one remaining verification step
+%   this patch could not close.
+%
+% D2.png/D4.png/E2.png/E4.png intentionally left in assets/, unused but not deleted -- per the
+%   report's explicit note, this isn't a promoted-figure replacement (no --force/no prior version
+%   to clean up), so there's nothing for scripts/promote_figure.sh's normal cleanup path to do;
+%   removing orphaned assets, if ever wanted, is a separate decision out of scope here.
+%
+% Verification: scripts/validate_tex.sh and scripts/check_roundtrip.sh both pass after
+%   reassemble.py.
+% Status: applied

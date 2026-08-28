@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-28T03:13:50+00:00",
-  "progressLastCommit": "2026-08-27T22:05:54-05:00",
+  "generatedAt": "2026-08-28T03:28:27+00:00",
+  "progressLastCommit": "2026-08-27T22:13:50-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -288,6 +288,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-07-limpieza-editorial-menor.tex"
+    },
+    {
+      "id": "C-08",
+      "reviewer": "—",
+      "requirement": "Executed intake/pending/R02-01-07_recorte_montajes_fotograficos.md in full: trimmed the D1-D6 (fig:robot-6frames) and E1-E6 (fig:RES_IMU_real) 6-photo montages to 4 frames each (D2/D4/E2/E4 dropped, min-4 constraint from the author). Verified before finalizing (not assumed): opened D1/D3/D5/D6.png and E1/E3/E5/E6.png directly — all 8 match their drafted captions; D1≈D2≈D3 confirmed near-identical (same frozen quadrupedal pose), D5/D6 confirmed transformed/advanced. E-series mode-caution (§2.3): inspected E6 closely against E3's confirmed-quadrupedal leg posture — E6's legs are lowered/splayed like D5's confirmed rolling-mode posture rather than E3's upright stance, consistent with (not proof of) the \"reverts to differential-rolling\" claim already grounded in the surrounding prose's neural-signal timing; caption kept as drafted, not forced. Prueba_Terreno_Parte_1-6 (the 3rd montage) left untouched — all 6 frames map 1:1 to tab:terrain_sequence and are individually narrated in prose. Layout changed 3+3→2×2 for both trimmed montages; new captions consolidate context from surrounding prose (\\revblue{}, all 8 are substantive rewrites, not typo fixes). Confirmed via grep that fig:frames-b/d/b2/d2 (the 4 dropped labels) have zero other citations before deleting. \\ref{fig:frames-c} (now the 2nd of 4 subfigures) should print \"(b)\" per subcaption's default numbering (preamble.tex has no \\captionsetup override) — reasoned analytically, not compiled, no LaTeX toolchain available locally (same limitation as every other patch this round). D2.png/D4.png/E2.png/E4.png intentionally left in assets/, unused but not deleted (per the report's own note — not a promoted-figure replacement, nothing to clean up as part of this block). validate_tex.sh/check_roundtrip.sh both pass.",
+      "target": "results.tex (fig:robot-6frames, fig:RES_IMU_real)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-08-photo-montage-trim.tex"
     }
   ]
 }

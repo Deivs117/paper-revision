@@ -470,48 +470,34 @@ A simultaneous activation between units $X_{15}$ and $X_{16}$ (Figure~\ref{fig:N
 
 \begin{figure}[t]
   \centering
-  % ---- Fila 1 ----
-  \begin{subfigure}[t]{0.3\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{D1.png}
-    \caption{Frame 1 - Initial state.}
+    \caption{\revblue{Initial state: the platform holds a quadrupedal stance with all three stimulus classes in view --- the appetitive target (upper field), the near obstacle, and the more distant LiDAR-detected object that the network deems too far to warrant an evasive response.}}
     \label{fig:frames-a}
   \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.3\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{D2.png}
-    \caption{Frame 2 - Obstacle evasion.}
-    \label{fig:frames-b}
-  \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.3\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{D3.png}
-    \caption{Frame 3 - Mid response.}
+    \caption{\revblue{Indecisive hold: the constant \emph{Hunting Instinct} stimulus keeps unit $X_{16}$ active and uninhibited by $X_{15}$, holding the platform stationary in quadrupedal stance until the aversive threat signal reaches its dispatch threshold.}}
     \label{fig:frames-c}
   \end{subfigure}
 
   \vspace{0.6em}
 
-  % ---- Fila 2 ----
-  \begin{subfigure}[t]{0.3\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{D4.png}
-    \caption{Frame 4 - Aversive stimulus evasion.}
-    \label{fig:frames-d}
-  \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.3\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{D5.png}
-    \caption{Frame 5 - Approach.}
+    \caption{\revblue{Morphological transformation: following the aversive stimulus's peak activation ($\approx46$~s) and the resulting evasive gait dispatch, the platform reconfigures into differential-rolling mode.}}
     \label{fig:frames-e}
   \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.3\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{D6.png}
-    \caption{Frame 6 - Final state.}
+    \caption{\revblue{Final approach: after evading the aversive threat and detecting the appetitive target ($\approx50$~s), the platform completes an orientation correction and advances to the goal, coming to rest once neuron $X_{17}$ fully inhibits locomotion ($\approx90$~s).}}
     \label{fig:frames-f}
   \end{subfigure}
-  \caption{Six frames from the real-robot experiment facing visual stimuli of different nature: (a)–(f) show the temporal evolution across the trial.}
+  \caption{\revblue{Four representative frames from the real-robot experiment facing visual stimuli of different nature: (a)–(d) show the temporal evolution across the trial.}}
   \label{fig:robot-6frames}
 \end{figure}
 
@@ -577,48 +563,35 @@ In the real implementation (Figure~\ref{fig:RES_IMU_real}), images were captured
 
 \begin{figure}[t]
   \centering
-  \begin{subfigure}[t]{0.31\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{E1.png}
-    \caption{Frame 1 - Initial state.}
+    \caption{\revblue{Entering the terrain: the platform advances onto the irregular surface (height variance below 1.2~cm), a region it clears within the first $\approx13$~s in its initial locomotion mode.}}
     \label{fig:frames-a2}
   \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.31\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{E2.png}
-    \caption{Frame 2 - Entering unstable ground.}
-    \label{fig:frames-b2}
-  \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.31\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{E3.png}
-    \caption{Frame 3 - Quadruped transformation.}
+    \caption{\revblue{Quadrupedal transformation: once the stagnation signal reaches its maximum sustained amplitude, the network commits to the quadrupedal gait to negotiate the roughest section of the mat.}}
     \label{fig:frames-c2}
   \end{subfigure}
 
   \vspace{0.6em}
 
-  % ---- Fila 2 ----
-  \begin{subfigure}[t]{0.31\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{E4.png}
-    \caption{Frame 4 - Mid transportation.}
-    \label{fig:frames-d2}
-  \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.31\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{E5.png}
-    \caption{Frame 5 - Leaving irregular terrain.}
+    \caption{\revblue{Approaching the exit: the platform sustains ground clearance in quadrupedal mode across the highest-relief sections, nearing the mat's far edge.}}
     \label{fig:frames-e2}
   \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.31\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{E6.png}
-    \caption{Frame 6 - Final differential rolling transformation.}
+    \caption{\revblue{Recovery: around $t\approx86$~s, once unit $X_0$'s activity ceases (Figure~\ref{fig:NEU_IMU_real}), the platform exits the rough section and reverts to differential-rolling mode, completing the crossing.}}
     \label{fig:frames-f2}
   \end{subfigure}
 
-  \caption{Six frames from the real-robot experiment facing an irregular terrain: (a)–(f) show the temporal evolution across the trial.}
+  \caption{\revblue{Four representative frames from the real-robot experiment facing an irregular terrain: (a)–(d) show the temporal evolution across the trial.}}
   \label{fig:RES_IMU_real}
 \end{figure}
 
