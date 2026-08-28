@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-28T21:46:55+00:00",
-  "progressLastCommit": "2026-08-26T17:45:01-05:00",
+  "generatedAt": "2026-08-28T22:13:30+00:00",
+  "progressLastCommit": "2026-08-28T16:46:55-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -198,6 +198,19 @@
       ],
       "status": "synced-to-overleaf",
       "patchFile": "patches/c-02-strip-revblue.md"
+    },
+    {
+      "id": "C-07",
+      "reviewer": "—",
+      "requirement": "Fix inaccurate citation in introduction.tex's \"hand-coded threshold logic\" claim (both the narrative sentence and R3-06's new comparison table): web-validated \\citet{Bjelonic2019KeepRollin}'s full text against the claim and found its own experiments describe locomotion-mode transitions as human-operator/joystick-commanded, not an autonomous hand-coded threshold — dropped from that citation group in both places (remains correctly cited elsewhere in the same paragraph for its actual contribution, the whole-body motion controller). \\citet{Kashiri2019CENTAURO} kept — secondary sources describe CENTAURO's mode choice as tied to a terrain-flatness heuristic, consistent with the claim.",
+      "target": "introduction.tex",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sebas"
+      ],
+      "status": "applied",
+      "patchFile": "patches/r3-06-literature-comparison-table.tex"
     }
   ]
 }

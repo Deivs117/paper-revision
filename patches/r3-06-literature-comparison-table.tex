@@ -22,6 +22,18 @@
 %
 % Inserted into sections/introduction.tex between the "critical observation" paragraph
 % and the paragraph beginning "The basal ganglia, a subcortical neural circuit...".
+%
+% NOTE: the "hand-coded threshold logic" row/citation below was corrected under C-07
+% (see PROGRESS.md) after web-validating each cited paper's full text against the
+% claim: \citet{Bjelonic2019KeepRollin}'s own experiments describe mode transitions
+% as commanded by a human operator via joystick ("The robot is driven using external
+% velocity inputs coming from a joystick"), not by an autonomous hand-coded threshold
+% -- so it was dropped from this row (it remains correctly cited elsewhere in
+% introduction.tex for its actual contribution, the whole-body motion controller).
+% \citet{Kashiri2019CENTAURO} was kept -- secondary sources describe CENTAURO's mode
+% choice as tied to a terrain-flatness heuristic, consistent with this row's claim.
+
+[...existing paragraph text unchanged up to:] locomotion mode switching is resolved either heuristically through hand-coded threshold logic \revblue{\citep{Kashiri2019CENTAURO}}, by model predictive control \citep{bjelonic2019,Bjelonic2022OfflineMotion}, or by end-to-end RL policies [...]
 
 \revblue{Table~\ref{table:action_selection_comparison} summarizes this landscape along axes relevant to the present design choice, horizontally contrasting hand-coded threshold logic, model predictive control, end-to-end reinforcement learning, central pattern generators (CPGs), and basal-ganglia-inspired winner-take-all arbitration; note that CPGs, unlike the other four rows, are a rhythm-\emph{generation} mechanism rather than a discrete-mode \emph{arbitration} mechanism, which is why the present architecture treats CPG execution and basal-ganglia arbitration as complementary rather than competing layers.}
 
@@ -32,7 +44,7 @@
 \begin{tabular}{|p{2.6cm}|p{2.9cm}|p{2.3cm}|p{1.6cm}|p{2.6cm}|p{2.4cm}|}
 \hline
 \textbf{Approach} & \textbf{Selection Mechanism} & \textbf{Role in Control Stack} & \textbf{Biological Basis} & \textbf{Interpretability / Training} & \textbf{Representative Work} \\ \hline
-Hand-coded threshold logic & Fixed if-then rules on sensor thresholds & Arbitration & None & Fully transparent; manually tuned, no training & \citet{Bjelonic2019KeepRollin,Kashiri2019CENTAURO} \\ \hline
+Hand-coded threshold logic & Fixed if-then rules on sensor thresholds & Arbitration & None & Fully transparent; manually tuned, no training & \citet{Kashiri2019CENTAURO} \\ \hline
 Model predictive control (MPC) & Online receding-horizon optimization & Arbitration & None & Numerically opaque; requires an accurate dynamic model & \citet{bjelonic2019,Bjelonic2022OfflineMotion} \\ \hline
 End-to-end reinforcement learning (RL) & Learned policy mapping sensory state to mode/action & Arbitration & Loosely reward-inspired & Black-box; requires large-scale (often privileged) training & \citet{Lee2024Science,Humphreys2025BioInspired} \\ \hline
 Central pattern generators (CPG) & Coupled oscillator network & Rhythm generation (execution) & High (spinal circuits) & Explicit oscillator dynamics; parameter tuning, no training & \citet{ijspeert2008,Bellegarda2022CPGRL,Manoonpong2013Neural} \\ \hline
