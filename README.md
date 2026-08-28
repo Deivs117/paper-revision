@@ -444,6 +444,17 @@ Prose like *"Section 2 details the methodology"* (not a real `\ref{}`) goes stal
 
 Wired into `scripts/push_to_overleaf.sh` as an unconditional advisory step (prints after the validate/compile step, before mirroring) so it surfaces on every push without gating it. Known instances as of 2026-08-25: `introduction.tex` ("Section 2/3/4" in the closing paragraph) and `methodology.tex` ("Section~3" in the basal-ganglia justification paragraph) — see `OUTLINE.md`.
 
+**`scripts/check_word_growth.sh` — verbosity/redundancy tripwire, same advisory pattern, wired
+right after it in `push_to_overleaf.sh`.** Referee 2 originally asked to cut repetitive content
+(addressed once in full by `R2-01`, `results.tex` 9668→8524 words across a 4-section sweep); every
+`N-xx`/`R2-xx`/`R3-xx` row landing since then adds prose back, some of it genuinely new required
+content, some of it a risk of quietly re-introducing the same restatement problem. This script does
+**not** judge redundancy (that's semantic, needs a human/LLM re-read) — it just prints each
+`sections/*.tex` file's current raw `wc -w` against its word count at `R2-01`'s closing commit
+(`51c07b4`), so growth is visible on every push instead of only being discovered at final compile.
+Always exits 0. A growing `results.tex` is expected and fine on its own; use it as a prompt to ask
+"is this growth new content or restatement?", not as a fail condition.
+
 #### 10.2 Pre-commit hook — `scripts/hooks/pre-commit` + `scripts/install_hooks.sh`
 
 Git hooks aren't version-controlled (`.git/hooks/` isn't tracked), so the real hook lives as a template at `scripts/hooks/pre-commit` and `scripts/install_hooks.sh` copies it into place — **run once per clone**, and again any time `scripts/hooks/pre-commit` changes.

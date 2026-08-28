@@ -54,6 +54,7 @@ fi
 
 # Advisory only — never blocks the push, just surfaces it every time (§10.1).
 "$SCRIPT_DIR/check_hardcoded_refs.sh"
+"$SCRIPT_DIR/check_word_growth.sh"
 
 # --- 3. Mirror back --------------------------------------------------------------------------
 rsync -a --delete --exclude='.git' "$ASSETS_DIR"/ "$OVERLEAF_DIR"/
