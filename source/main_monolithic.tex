@@ -1524,11 +1524,33 @@ Obstacle   & ${\approx}\,0.0\,\text{s}$ (instantaneous) & ${\approx}\,1100$, tra
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.75\textwidth]{FigReal_Morphological_Transition_Energy.png}
-  \caption{Energetic footprint of physical morphological transitions. Integrated INA power telemetry during the Quadrupedal $\rightarrow$ Differential Mobile and Differential Mobile $\rightarrow$ Quadrupedal electromechanical coupling windows, across all hardware replicates.}
+  \caption{\revblue{Morphological transition energy per direction, derived from $|I_{\text{current}}| \times 7.2\,\text{V}$ (fixed NiMH pack voltage) integrated over the pre-calibrated electromechanical coupling window (2.92\,s / 1.56\,s, matching Fig.~\ref{fig:FourPanelLatencies}), across $N=16$ (Quadrupedal $\rightarrow$ Differential Mobile) and $N=19$ (Differential Mobile $\rightarrow$ Quadrupedal) individually detected structural-command transitions. Error bars: $\pm 1$ SD; the between-direction difference is not statistically significant (Welch's $t \approx 1.18$).}}
   \label{fig:MorphologicalEnergy}
 \end{figure}
 
-\revblue{The energetic cost of physical adaptation was quantified by integrating INA-sensor power telemetry during the electromechanical coupling windows (Fig.~\ref{fig:MorphologicalEnergy}). The Quadrupedal $\rightarrow$ Differential Mobile transition shows an invariant energetic cost across replicates, reflecting the deterministic leg-extension trajectory under managed slope gradients. The reverse transition (Differential Mobile $\rightarrow$ Quadrupedal) shows greater dispersion, consistent with the stochastic river-pebble terrain: unpredictable wheel slippage and localised mechanical resistance during limb retraction force the actuators to modulate peak torque dynamically to secure foothold anchors, introducing genuine sample-to-sample current variability.}
+\revblue{The energetic cost of physical adaptation was quantified from individually detected structural-command transitions (Fig.~\ref{fig:MorphologicalEnergy}), integrating instantaneous power ($|I_{\text{current}}| \times 7.2\,\text{V}$) over each direction's pre-calibrated electromechanical coupling window. The Quadrupedal $\rightarrow$ Differential Mobile transition required $5.06 \pm 2.93$~J ($N=16$), and the reverse transition (Differential Mobile $\rightarrow$ Quadrupedal) required $4.13 \pm 1.19$~J ($N=19$); the between-direction difference is not statistically significant (Welch's $t \approx 1.18$), so neither direction should be read as more energetically costly than the other. Greater trial-to-trial variability was observed in the Quadrupedal $\rightarrow$ Differential Mobile direction, though the present dataset does not isolate a specific mechanical cause for this dispersion. To directly address the reviewer's request for long-term average energy consumption across locomotion modes, Table~\ref{tab:mode_steady_state_energy} reports the mean steady-state power draw for each of the three modes, computed by excluding the electromechanical coupling window from each \texttt{robot\_cmd}-detected mode segment; the Omnidirectional estimate is preliminary pending a dedicated test battery.}
+
+\begin{table}[htbp]
+\centering
+\caption{\revblue{Long-term average steady-state power consumption per locomotion mode (three hardware
+replicates' worth of instrumented segments; transition windows excluded per segment, see
+Fig.~\ref{fig:MorphologicalEnergy}). Power derived as $|I|\times7.2\,\text{V}$ (fixed NiMH pack
+voltage). \textbf{Omnidirectional is a single-segment preliminary estimate (N=1), pending a dedicated
+test battery.}}}
+\label{tab:mode_steady_state_energy}
+\begin{tabularx}{\textwidth}{l >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
+\toprule
+\textbf{Locomotion Mode} & \textbf{N (segments)} & \textbf{Mean Power $\pm$ SD (W)} \\
+\midrule
+Quadrupedal ($C$) & 20 & $1.94 \pm 1.77$ \\
+Differential Mobile ($H$) & 20 & $1.36 \pm 0.98$ \\
+Omnidirectional ($X$)\textsuperscript{*} & 1 & $5.71$ (no SD, single segment) \\
+\bottomrule
+\end{tabularx}
+\\[2pt]
+\footnotesize{\textsuperscript{*}Preliminary --- a dedicated Omnidirectional-mode energy test battery is
+planned; this row will be updated once that data is available.}
+\end{table}
 
 %% ─── TERRAIN LATENCY (4 PANELS) ───────────────────────────────────────────
 

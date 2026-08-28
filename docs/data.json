@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-27T23:28:12+00:00",
-  "progressLastCommit": "2026-08-27T17:16:55-05:00",
+  "generatedAt": "2026-08-28T00:56:50+00:00",
+  "progressLastCommit": "2026-08-27T18:28:12-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -41,19 +41,6 @@
       ],
       "status": "synced-to-overleaf",
       "patchFile": "patches/r2-03-consolidate-limitations.tex"
-    },
-    {
-      "id": "R2-04",
-      "reviewer": "2",
-      "requirement": "Add multi-mode energy consumption + onboard MLP compute overhead analysis",
-      "target": "MLP compute overhead: already present in results.tex (\"Evaluation of the MLP-based terrain classifier\" — per-sample latency vs SVM/RF/LogReg). Multi-mode long-term average energy: results.tex only has per-transition energy cost, not steady-state per-mode average — likely a real gap",
-      "dataSource": "experiments/R2-04-mode-energy/ (steady-state per-mode energy, if confirmed a gap)",
-      "category": "Métricas",
-      "owner": [
-        "Sam"
-      ],
-      "status": "pending",
-      "patchFile": "—"
     },
     {
       "id": "R3-01",
@@ -250,6 +237,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/n-04-m01-m04-text-redaction.tex"
+    },
+    {
+      "id": "N-05",
+      "reviewer": "—",
+      "requirement": "Executed Informe 1 §9.7 (author-authorized 2026-08-27) for FigReal_Morphological_Transition_Energy.png: promoted the rewritten figure (experiments/_plotting/builders/energy_transition.py, now deriving power from current_A$\\times$7.2V nominal NiMH voltage over 35 individually-detected robot_cmd-structural-command transitions, not an inferred power-peak) to assets/ (--force, same filename); rewrote its caption and the results.tex:934 paragraph with the real per-direction figures ($5.06\\pm2.93$~J, $N=16$, Quadrupedal→Differential Mobile; $4.13\\pm1.19$~J, $N=19$, Differential Mobile→Quadrupedal; Welch $t\\approx1.18$, not significant) — dropped the old causal narrative (invariant Quad→Diff / dispersed Diff→Quad from river-pebble slippage), which the real data contradicts (SD is actually higher in Quad→Diff), replacing it with an unattributed observation of greater dispersion in that direction. All new/changed prose wrapped in \\revblue{}. validate_tex.sh/check_roundtrip.sh both pass.",
+      "target": "results.tex (FigReal_Morphological_Transition_Energy.png caption + energy paragraph)",
+      "dataSource": "experiments/N-02-physical-figure-regeneration/ (figure), experiments/_plotting/builders/energy_transition.py (derivation)",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/n-05-transition-energy-redaction.tex"
     }
   ]
 }
