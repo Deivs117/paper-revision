@@ -79,3 +79,38 @@ complete, evidence-backed list to hand off before the re-run.
   t=-1.3s to -0.5s in Rugged Terrain, flat TR≈0.59 in Inclined Slope — matches).
 - `output/tab_consolidated_simulation_metrics.csv` — recomputed `tab:consolidated_simulation_metrics`
   values, for cross-checking against the currently published table before promoting.
+
+## Update 2026-08-27 (R02-01-04/05 fully executed)
+
+Everything flagged above as pending is now resolved:
+
+- **Obstacle latency gap:** resolved by vectorizing the currently-published `fig1_Obstacle_macro.png`
+  panel C (`experiments/_plotting/extract/extract_fig1_obstacle_latency.py` →
+  `vectorized/fig1_obstacle_latency.csv`), since the simulation re-run did not land before the
+  2026-08-31 deadline. `macro_robustness.py` now reads this file with a fallback chain (vectorized
+  → real CSV → "no data" annotation), so pointing `--simulation-root` at the eventual re-run and
+  removing this CSV switches back to real data with no code change. All 5 outputs above (grid +
+  FigA/B/C) are promoted to `assets/`; `results.tex` updated (see `patches/n-01-f02-grid-obstacle-
+  latency-vectorization.tex`).
+- **F-01 (simulation NEU_EST/NEU_IMU mistranslation):** all 5 figures (`NEU_EST_UNIB/UNIG/MUL`,
+  `NEU_IMU`, `NEU_IMU2`) vectorized and re-plotted with the corrected "Gait Decision Module"/
+  "Auxiliary" labels — see `patches/n-06-neu-est-simulation-vectorization.tex` and
+  `patches/n-08-group-c-imu-terrain-vectorization.tex`.
+- **F-04 (`GRAPH_IMU`/`GRAPH_IMU2` mixed single axis):** vectorized and re-plotted with a double
+  Y-axis, corrected legend, and the `$U_{\sigma_{az}}$=3.7` threshold line — see
+  `patches/n-08-group-c-imu-terrain-vectorization.tex`.
+- **F-08 (`fig_stability_phases.png`, N=268 walk cycle):** vectorized and re-plotted, real
+  geometry — see `patches/n-07-stability-phases-vectorization.tex`.
+- **`RES_IMU.png`/`RES_IMU2.0.png`:** confirmed to be Gazebo screenshot composites (no chart
+  data) — no action needed, same category as F-07.
+
+New scripts added this round: `experiments/_plotting/extract/extract_neu_est_sim.py`,
+`extract_stability_phases.py`, `extract_graph_imu_sim.py`; `experiments/_plotting/builders/
+stability_phases.py`, `imu_dual_axis.py` (reused the existing `imu_terrain_real.build_neu_est()`/
+`build_neu_imu()` for the NEU_EST/NEU_IMU re-plots, no new builder needed there).
+
+**Still open, out of scope for this round:** re-running `macro_robustness.py`'s
+`build_consolidated_table()` produces `Success%`/`T_sim`/`Roll`/`Pitch` numbers that do not match
+`tab:consolidated_simulation_metrics` as currently published (e.g. Obstacle Roll: 3.93±8.92
+recomputed vs. 0.55±0.02 published) — flagged in `PROGRESS.md`'s `N-01` row, not investigated or
+acted on here.
