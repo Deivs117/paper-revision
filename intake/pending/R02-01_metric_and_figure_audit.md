@@ -512,10 +512,13 @@ para entender **por qué** cada paso existe.
    casos la figura coincide con el dato crudo, el texto no.**
 2. [x] Decidir si la corrección va en el texto o en la figura. **Decidido: en el texto — las figuras actuales
    están sincronizadas con el dataset disponible en `experiments/`.**
-3. [ ] Reescribir los párrafos de `results.tex:77` (Appetitive), `:178` (caption tabla), `:276` (Tipover Risk),
-   `:279` (T_switch/Heaviside), `:281` (phase-space) usando los valores reales de la tabla de §0 de este informe
-   (o §0 de Informe 2, misma tabla), envuelto en `\revblue{}` (regla permanente del proyecto, `CLAUDE.md`). **Único
-   paso de Fase 1 que sigue sin ejecutarse** — es de redacción pura, no requiere más verificación de datos.
+3. [x] Reescribir los párrafos de `results.tex:77` (Appetitive), `:269`/`:281` (phase-space, caption+párrafo),
+   `:276` (Tipover Risk), `:279` (T_switch/Heaviside) usando los valores reales de la tabla de §0 de este informe
+   (o §0 de Informe 2, misma tabla), envuelto en `\revblue{}` (regla permanente del proyecto, `CLAUDE.md`).
+   **✅ Confirmado ejecutado (verificado con `grep` exacto, 2026-08-27)** — los 5 pasajes ya contienen los
+   valores reales (60ms→1.6–2.0s; μ≈0.58–0.60 sin escalada; 1.59°/1.67° vs 1.47°/2.29°;
+   sub-millisecond/no-invariante), todos envueltos en `\revblue{}`. Este ítem estaba desactualizado — §8 (más
+   abajo) ya lo daba por resuelto y tenía razón; esta línea no se había corregido hasta ahora.
 
 **Fase 2 — Corrección de idioma/nomenclatura → ver Informe 2 §3.4 Grupo 1 (builders listos, sin vectorizar) y
 Grupo 2 (requieren vectorizar primero):**
@@ -575,9 +578,11 @@ llegó a cada resultado vive en los README ya citados; el detalle de *qué patch
 | Tipografía de figuras | Serif (10/11/12pt según elemento) es ahora el estilo **por defecto del proyecto** (`.claude/skills/scientific-visualization/assets/publication.mplstyle`), confirmado contra `assets/fig1_Obstacle_macro.png`. Aplica automáticamente a cualquier figura futura, incluidas las de N-01 cuando se generen. |
 
 **Lo único que sigue abierto de este informe:** F-01/F-02/F-04 en su variante de **simulación** (pertenecen a
-`N-01-simulation-figure-regeneration/`, sin empezar), y **§9.7 + §9.9, ambas AUTORIZADAS para ejecutar
-(2026-08-27) pero aún no ejecutadas** — la tabla de R2-04 (§9.9) mantiene la fila de Omnidireccional como
-placeholder N=1 hasta que llegue la campaña de pruebas dedicada, eso no bloquea la ejecución de la tabla misma.
+`N-01-simulation-figure-regeneration/`, sin empezar). **§9.7 y §9.9 ya se ejecutaron** (2026-08-27, commit
+`b104186`, fila `N-05` en `PROGRESS.md` = `applied`) — la figura de energía de transición está promovida con
+caption/párrafo real, y la tabla `tab:mode_steady_state_energy` de R2-04 está en `results.tex`. La fila `R2-04`
+en `PROGRESS.md` queda en `drafted` (no `applied`) a propósito, porque su fila Omnidireccional sigue siendo el
+placeholder N=1 hasta que llegue la campaña de pruebas dedicada — eso no bloquea nada más de este informe.
 Todo lo demás listado en este §8 y en el checklist de §9.1–§9.6 está cerrado.
 
 ---
