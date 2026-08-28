@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-28T03:44:44+00:00",
-  "progressLastCommit": "2026-08-27T22:28:27-05:00",
+  "generatedAt": "2026-08-28T03:49:41+00:00",
+  "progressLastCommit": "2026-08-27T22:44:44-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -195,7 +195,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "—"
     },
     {
@@ -208,7 +208,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/n-03-physical-figure-promotion-classifier-fusion.tex"
     },
     {
@@ -221,7 +221,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/n-04-m01-m04-text-redaction.tex"
     },
     {
@@ -234,7 +234,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/n-05-transition-energy-redaction.tex"
     },
     {
@@ -286,7 +286,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-07-limpieza-editorial-menor.tex"
     },
     {
@@ -299,7 +299,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-08-photo-montage-trim.tex"
     }
   ]
