@@ -1,6 +1,6 @@
 # R3-06 — Revisión de literatura: clasificación horizontal y tabla comparativa (Basal Ganglia vs. CPG vs. RL) — PENDIENTE
 
-**Owner asignado: Cejas — única tarea de mañana, dedicación completa del día. Prioriza calidad y rigor sobre
+**Owner asignado: Sebas — única tarea de mañana, dedicación completa del día. Prioriza calidad y rigor sobre
 velocidad; esto no es un "quick pass".**
 
 **Por qué se reabre:** `PROGRESS.md` marcaba `R3-06` como `pending` con la nota "narrative comparison already
@@ -157,7 +157,7 @@ Para cada referencia candidata, en este orden:
   la práctica: no basta con mencionar los otros paradigmas, hay que decir explícitamente por qué el enfoque de
   este paper es distinto/mejor para este problema).
 - Insertar la tabla comparativa (ver esqueleto en §7) inmediatamente después del párrafo de la línea 9 o al
-  final del bloque de la línea 11 (decisión editorial de Cejas según qué fluya mejor — probar ambas ubicaciones
+  final del bloque de la línea 11 (decisión editorial de Sebas según qué fluya mejor — probar ambas ubicaciones
   antes de fijar una).
 - Todo el texto nuevo/reescrito envuelto en `\revblue{}` (regla permanente del proyecto).
 
@@ -189,7 +189,7 @@ los resultados).
 
 ## 8. Definición de "hecho" (qué se espera al final del día)
 
-1. Escaneo de §1/§2 confirmado o corregido con hallazgos propios de Cejas (no asumir que este documento tiene
+1. Escaneo de §1/§2 confirmado o corregido con hallazgos propios de Sebas (no asumir que este documento tiene
    la última palabra si encuentra algo distinto al revisar el texto de nuevo).
 2. Lista de referencias nuevas candidatas, cada una con su evidencia de verificación (§4) — sección nueva
    añadida a este mismo documento.
@@ -210,13 +210,13 @@ los resultados).
   tangenciales.
 - No avanzar a §5/§6 (BibTeX/integración a la escritura) sin haber completado la validación manual de §4 paso 6
   — este es un punto de parada real, no una formalidad.
-- Si en el escaneo (§1) Cejas encuentra que alguna cita ya existente en `introduction.tex` tiene un problema de
+- Si en el escaneo (§1) Sebas encuentra que alguna cita ya existente en `introduction.tex` tiene un problema de
   existencia/exactitud (no solo las nuevas), aplicar el mismo protocolo de §4 retroactivamente y reportarlo —
   no asumir que lo ya publicado está necesariamente verificado solo por estar ya en el repo.
 
 ---
 
-## Referencias verificadas (Cejas añade aquí según avanza — no dejar vacío al final del día)
+## Referencias verificadas (Sebas añade aquí según avanza — no dejar vacío al final del día)
 
 | Clave BibTeX propuesta | Título | Columna | DOI/URL fuente primaria | URL fuente de cruce | Nota |
 |---|---|---|---|---|---|
