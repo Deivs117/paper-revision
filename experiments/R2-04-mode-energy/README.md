@@ -48,5 +48,5 @@ sanity-check visualization, not as the artifact to promote).
 The author's assessment, followed here: a bar chart for 3 categories (one of them N=1, expected to
 be replaced) is not very informative on its own, and a table is far cheaper to update once the
 Omnidirectional data arrives (edit one row vs. regenerate + re-review a figure). See
-`intake/pending/R02-01_metric_and_figure_audit.md` §9.9 for the drafted LaTeX table and integration
-plan for the writing agent.
+`intake/processed/R02-01-03_energia_transicion_y_modo_R2-04.md` §3/§5 for the executed table integration and the
+Omnidirectional-placeholder follow-up note (`intake/R02-01_INDEX.md` for the full block index).

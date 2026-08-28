@@ -4,7 +4,9 @@ Physical-robot test folders are **frozen** (per the author, 2026-08-27: no re-ru
 que se determine lo contrario") — this manifest exists so the next pass (Tarea 3: regenerate every
 physical-section figure) doesn't have to re-derive folder↔figure↔status from scratch every time.
 Machine-readable twin: `manifest.json` (same rows, structured for scripts). Full analysis behind
-every row: `intake/pending/R02-01_data_traceability_and_plotting_plan.md` §1.2/§2.
+every row: `intake/processed/R02-01-02_fisico_regeneracion_N02-N05.md` (physical figures already
+promoted) and `intake/pending/R02-01-05_simulacion_grupo2_vectorizacion.md` (vectorization method,
+still shared with simulation-side work) — see `intake/R02-01_INDEX.md` for the full block index.
 
 **Standardization applied this pass:** renamed every `imu_ina_<timestamp>.csv` to `imu_ina.csv`
 and `pitch_latency_<timestamp>.csv` to `pitch_latency.csv` (timestamp is still recoverable from git

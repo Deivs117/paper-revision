@@ -1,7 +1,8 @@
 """Pure data-loading functions for experiments/_plotting builders.
 
 Isolates all CSV/JSON parsing from the plotting code (see
-intake/pending/R02-01_data_traceability_and_plotting_plan.md §3.3, principle 1) — if a column name
+intake/processed/R02-01-02_fisico_regeneracion_N02-N05.md and intake/pending/R02-01-05_simulacion_grupo2_vectorizacion.md
+§5, "principle 1" of the former architecture plan) — if a column name
 changes in a future re-run of the simulation suite, this is the only file that needs to change.
 
 Accepts ANY folder that follows the existing layout (family_dir/test_NNN[_VERDICT]/*.csv|json),

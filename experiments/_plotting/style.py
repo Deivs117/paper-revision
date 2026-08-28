@@ -2,8 +2,8 @@
 
 One source of truth for palette, fonts and export settings so every regenerated figure looks
 consistent with the rest of the manuscript, and so a future style change (e.g. brand palette swap)
-happens in one file instead of N builders. See intake/pending/R02-01_data_traceability_and_plotting_plan.md
-§3 for the rationale.
+happens in one file instead of N builders. See intake/R02-01_INDEX.md for the block that documents
+the rationale (originally §3 of a now-atomized planning doc).
 
 Style source (2026-08-27): `.claude/skills/scientific-visualization/assets/publication.mplstyle`,
 imported from the `scientific-visualization` Claude Code skill

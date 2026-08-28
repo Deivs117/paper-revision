@@ -7,8 +7,9 @@ ever promoted to `assets/`.
 
 **Scope note:** the author explicitly included the MLP-classifier block (`fig1_confusion_matrix`,
 `fig4_architecture_ablation`, `fig5_classifier_comparison`, `fig6_computational_cost`) in this
-task's scope 2026-08-27, even though it isn't physical-specific — see this repo's chat log /
-`intake/pending/R02-01_data_traceability_and_plotting_plan.md` for that decision.
+task's scope 2026-08-27, even though it isn't physical-specific — see
+`intake/processed/R02-01-02_fisico_regeneracion_N02-N05.md` for that decision (`intake/R02-01_INDEX.md` for the
+full block index).
 
 **Promotion policy (decision D-14, same round):** everything below lands in `output/`, reviewed by
 hand before `scripts/promote_figure.sh` touches `assets/` — nothing here has been promoted yet.

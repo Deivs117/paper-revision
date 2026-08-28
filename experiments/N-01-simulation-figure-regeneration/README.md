@@ -7,8 +7,9 @@ simulated tests (notified 2026-08-27, only the simulated battery), regenerating 
 figure is one command, not a manual re-derivation.
 
 **Provenance:** built from the shared library `experiments/_plotting/` (loaders/builders/style),
-following the architecture and the 11 confirmed decisions (D-1–D-11) in
-`intake/pending/R02-01_data_traceability_and_plotting_plan.md`. Council decisions specific to this
+following the architecture and the 11 confirmed decisions (D-1–D-11), now documented in
+`intake/pending/R02-01-05_simulacion_grupo2_vectorizacion.md` (§4) and `intake/processed/R02-01-02_fisico_regeneracion_N02-N05.md`
+(§2) — see `intake/R02-01_INDEX.md` for the full block index. Council decisions specific to this
 experiment, made 2026-08-27 in the follow-up planning round:
 
 - **D-12 (versioning):** a future re-run lands in a **new sibling directory** next to the current
