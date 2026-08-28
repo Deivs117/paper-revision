@@ -60,7 +60,7 @@ def _spine_columns(black: np.ndarray, min_run: int = 40) -> list[tuple[int, int,
     return out
 
 
-def find_panel_boxes(arr: np.ndarray) -> list[tuple[int, int, int, int]]:
+def find_panel_boxes(arr: np.ndarray, row_span_tol: int = 6) -> list[tuple[int, int, int, int]]:
     """Returns [(left, right, top, bottom), ...] for every panel in the image, ordered
     column-first then top-to-bottom within each column, by pairing spine columns that share the
     same row-span (within a small tolerance).
@@ -81,7 +81,7 @@ def find_panel_boxes(arr: np.ndarray) -> list[tuple[int, int, int, int]]:
     for col, top, bottom in cols:
         matched = None
         for (t0, b0) in spans:
-            if abs(t0 - top) <= 6 and abs(b0 - bottom) <= 6:
+            if abs(t0 - top) <= row_span_tol and abs(b0 - bottom) <= row_span_tol:
                 matched = (t0, b0)
                 break
         key = matched or (top, bottom)

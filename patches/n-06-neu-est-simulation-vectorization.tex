@@ -1,0 +1,51 @@
+% PATCH: N-06
+% Target section: none in sections/ -- assets/ only (F-01 changes image content, no
+%   \label{}/\ref{} in results.tex, per R02-01-05 §6/§8)
+% Requirement: intake/pending/R02-01-05_simulacion_grupo2_vectorizacion.md §1 (F-01, simulation
+%   instances), executed per the combined order in that document's §7 step 2.
+%
+% CORRECTION to R02-01-05's own diagnosis (found while executing, not assumed): §1 claimed
+%   NEU_EST_UNIB/UNIG/MUL had real per-neuron CSV available in metrics_raw.csv (columns
+%   sim_time_s, mode, red_present, blue_present, firing_variance, temporal_consistency,
+%   lambda_efficiency) and did not need vectorizing. Verified directly against metrics_raw.csv in
+%   all 3 source families (familia_a_apetitivo / familia_a_obstaculo / familia_b_compleja) --
+%   NONE of them have per-neuron (X0-X17, L0-L4) columns, only the aggregate metrics listed
+%   above. These figures show individual-neuron raster activations, which cannot be reconstructed
+%   from aggregate firing_variance/lambda_efficiency. Same class of report error as F-Data-01
+%   (Obstacle latency, R02-01-04) -- confirmed by checking the actual file, not by trusting the
+%   report's column list. All 3 figures vectorized instead.
+%
+% Method: new experiments/_plotting/extract/extract_neu_est_sim.py, reusing
+%   extract_neu_est_real.py's extract() / extract_neu_imu_real.py's find_panel_boxes()/
+%   find_x_ticks()/PanelSpec UNCHANGED in logic:
+%   - NEU_EST_UNIB.png: new 4-panel spec (Locomotion_1/2 + Decision_1/2 -- no Lidar module in
+%     this scenario), tick_step=10 (read off the image's own axis).
+%   - NEU_EST_UNIG.png: confirmed by visual side-by-side comparison to share the EXACT 8-panel
+%     layout/order as the already-vectorized NEU_EST_UNIG_real.png -- reused that spec's
+%     neuron-label lists directly, only tick_step differs (5s here vs. 10s for the physical
+%     version).
+%   - NEU_EST_MUL.png: confirmed identical 12-panel layout/order to NEU_EST_MUL_real.png.
+%     Needed find_panel_boxes(row_span_tol=10) instead of the shared default (6) -- this image's
+%     "Input" panel's left/right spine black-runs differ by 7px top-to-bottom (antialiasing),
+%     just outside the default tolerance, so it went undetected (11/12 boxes found) at tol=6.
+%     find_panel_boxes()/extract() both gained an optional row_span_tol parameter (default
+%     unchanged at 6, so every other existing call site is unaffected). Verified the higher
+%     tolerance is genuinely scoped to this one call: re-running the two already-approved _real
+%     extractions with tol=10 BREAKS them (UNIG_real jumps from 8 detected boxes to 15) -- tested
+%     directly, not assumed, before deciding to keep the default at 6 and pass tol=10 only here.
+%
+% Re-plotting: called the EXISTING imu_terrain_real.build_neu_est() (same function already used
+%   for the approved NEU_EST_UNIG_real.png/NEU_EST_MUL_real.png) with the appropriate panel/
+%   group-title lists per figure -- this function already renders "Gait Decision Module" and
+%   "Auxiliary" (the corrected F-01 labels), so no separate title-fix step was needed, it falls
+%   out of reusing the same rendering code. Visually compared all 3 regenerated figures against
+%   the originals -- activation timing/pattern matches across every panel (Locomotion X3/X6/X7/
+%   X9-X13, Decision X0/X3/X4/X14/X15/X16, Lidar L0/L3/L4, Basal-Ganglia R/G/B GPi/GPe/STN/STR --
+%   see experiments/_plotting/vectorized/README.md for the full per-figure comparison notes).
+%
+% Promoted to assets/ with --force (same filenames as before -- F-01 only changes image content,
+%   confirmed no \label{}/\ref{} change needed in results.tex per R02-01-05 §6/§8).
+%
+% Verification: no LaTeX changes in this patch (image-only), so validate_tex.sh/check_roundtrip.sh
+%   are unaffected by it; re-ran both anyway as part of the same working-tree state and both pass.
+% Status: applied

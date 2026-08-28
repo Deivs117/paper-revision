@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-28T02:27:52+00:00",
-  "progressLastCommit": "2026-08-27T21:12:12-05:00",
+  "generatedAt": "2026-08-28T02:49:26+00:00",
+  "progressLastCommit": "2026-08-27T21:27:52-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -250,6 +250,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/n-05-transition-energy-redaction.tex"
+    },
+    {
+      "id": "N-06",
+      "reviewer": "—",
+      "requirement": "F-01 simulation instances (NEU_EST_UNIB.png/NEU_EST_UNIG.png/NEU_EST_MUL.png) — \"March Decision Module\"/\"Auxiliar\" mistranslation fix. Corrects R02-01-05 §1's diagnosis: the report claimed these 3 figures had real per-neuron CSV available (metrics_raw.csv) and did not need vectorizing — verified directly against the CSV in all 3 source families and found NO per-neuron (X0–X17/L0–L4) columns anywhere, only aggregate metrics (same class of report error as F-Data-01/Obstacle latency, R02-01-04). Vectorized all 3 instead (experiments/_plotting/extract/extract_neu_est_sim.py, reusing extract_neu_est_real.py's generic panel detection unchanged for UNIB/UNIG; NEU_EST_MUL.png needed a new optional row_span_tol parameter on the shared find_panel_boxes(), set to 10 only for this call — confirmed the higher tolerance breaks the two already-approved _real extractions if applied there, so the shared default stays 6). Re-plotted via the existing imu_terrain_real.build_neu_est() (already-corrected group titles, same function used for the approved _real versions — no separate title-fix needed) and visually compared against the originals — all match. Promoted to assets/ (--force, same filenames — F-01 changes image content only, no \\label{}/\\ref{} in results.tex).",
+      "target": "— (no results.tex changes — same filenames/labels)",
+      "dataSource": "experiments/_plotting/vectorized/ (3 new CSVs, documented in its README.md)",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/n-06-neu-est-simulation-vectorization.tex"
     },
     {
       "id": "C-07",
