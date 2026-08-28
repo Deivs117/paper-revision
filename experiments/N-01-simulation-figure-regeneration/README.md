@@ -80,27 +80,32 @@ complete, evidence-backed list to hand off before the re-run.
 - `output/tab_consolidated_simulation_metrics.csv` — recomputed `tab:consolidated_simulation_metrics`
   values, for cross-checking against the currently published table before promoting.
 
-## Update 2026-08-27 (R02-01-04/05 fully executed)
+## Update 2026-08-27 (R02-01-04/05 generated, staged for author review — NOT promoted)
 
-Everything flagged above as pending is now resolved:
+Everything flagged above as pending has been regenerated into `output/`, but **none of it has been
+promoted to `assets/` yet** — the author needs to review each figure individually first (same gate
+as N-02's physical figures went through before their own promotion). An earlier pass in this round
+promoted these to `assets/` and updated `results.tex` before that review happened; it was reverted
+(assets restored to their prior published versions, `results.tex` reverted to reference the
+original figures, `PROGRESS.md`'s N-01/N-06/N-07/N-08 rows moved back to `drafted`) so the review
+can happen against the correct baseline. The generation code and CSVs below are unaffected by that
+revert and remain ready to be promoted once confirmed.
 
-- **Obstacle latency gap:** resolved by vectorizing the currently-published `fig1_Obstacle_macro.png`
+- **Obstacle latency gap:** addressed by vectorizing the currently-published `fig1_Obstacle_macro.png`
   panel C (`experiments/_plotting/extract/extract_fig1_obstacle_latency.py` →
   `vectorized/fig1_obstacle_latency.csv`), since the simulation re-run did not land before the
   2026-08-31 deadline. `macro_robustness.py` now reads this file with a fallback chain (vectorized
   → real CSV → "no data" annotation), so pointing `--simulation-root` at the eventual re-run and
-  removing this CSV switches back to real data with no code change. All 5 outputs above (grid +
-  FigA/B/C) are promoted to `assets/`; `results.tex` updated (see `patches/n-01-f02-grid-obstacle-
-  latency-vectorization.tex`).
+  removing this CSV switches back to real data with no code change. Output (grid + FigA/B/C) is in
+  `output/`, awaiting review.
 - **F-01 (simulation NEU_EST/NEU_IMU mistranslation):** all 5 figures (`NEU_EST_UNIB/UNIG/MUL`,
   `NEU_IMU`, `NEU_IMU2`) vectorized and re-plotted with the corrected "Gait Decision Module"/
-  "Auxiliary" labels — see `patches/n-06-neu-est-simulation-vectorization.tex` and
-  `patches/n-08-group-c-imu-terrain-vectorization.tex`.
+  "Auxiliary" labels — output in `output/`, awaiting review.
 - **F-04 (`GRAPH_IMU`/`GRAPH_IMU2` mixed single axis):** vectorized and re-plotted with a double
-  Y-axis, corrected legend, and the `$U_{\sigma_{az}}$=3.7` threshold line — see
-  `patches/n-08-group-c-imu-terrain-vectorization.tex`.
+  Y-axis, corrected legend, and the `$U_{\sigma_{az}}$=3.7` threshold line — output in `output/`,
+  awaiting review.
 - **F-08 (`fig_stability_phases.png`, N=268 walk cycle):** vectorized and re-plotted, real
-  geometry — see `patches/n-07-stability-phases-vectorization.tex`.
+  geometry — output in `output/`, awaiting review.
 - **`RES_IMU.png`/`RES_IMU2.0.png`:** confirmed to be Gazebo screenshot composites (no chart
   data) — no action needed, same category as F-07.
 
