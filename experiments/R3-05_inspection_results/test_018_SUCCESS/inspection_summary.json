@@ -1,0 +1,14 @@
+{
+  "suite_name": "familia_e_inspeccion",
+  "success": true,
+  "T_acquisition_s": 22.491,
+  "N_lidar_events": 4,
+  "N_mode_X_events": 1,
+  "d_final_m": 1.1024,
+  "z17_peak": 0.5746,
+  "inspection_pose": {
+    "x": -0.9955,
+    "y": 1.5458,
+    "z": 0.0611
+  }
+}

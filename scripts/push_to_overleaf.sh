@@ -72,4 +72,26 @@ git -C "$OVERLEAF_DIR" push origin main
 # --- 5. Mark the new synced checkpoint in this repo ---------------------------------------------
 git commit --allow-empty -m "chore: mark synced to Overleaf ($(date '+%Y-%m-%d %H:%M'))"
 
-echo "Pushed to Overleaf and marked synced. Remember to update PROGRESS.md rows to synced-to-overleaf."
+echo "Pushed to Overleaf and marked synced."
+
+# Advisory only, never blocks: a generic "remember to update statuses" reminder is easy to skim
+# past and ignore (this is exactly how R2-04 and R3-06 sat as `applied` instead of
+# `synced-to-overleaf` after their content had already been pushed, 2026-08-29) -- naming the
+# actual rows still marked `applied` makes the gap concrete instead of a vague chore.
+APPLIED_ROWS="$(awk -F'|' '
+  /^\| *[A-Z0-9-]+ *\|/ {
+    # NF=11 for a well-formed 9-column row (leading + trailing empty fields from the outer "|"s):
+    # $2=ID .. $9=Status .. $10=Patch file. A malformed row (stray unescaped "|") would shift
+    # these, but build_dashboard.py now hard-fails on that before this script ever runs.
+    status = $(NF - 2)
+    gsub(/^[ \t]+|[ \t]+$/, "", status)
+    id = $2; gsub(/^[ \t]+|[ \t]+$/, "", id)
+    if (status == "applied") print "  " id
+  }
+' "$REPO_ROOT/PROGRESS.md" 2>/dev/null || true)"
+if [ -n "$APPLIED_ROWS" ]; then
+  echo "PROGRESS.md rows still marked 'applied' (their content may already be on Overleaf now"
+  echo "  since this push mirrors everything committed, not just rows tagged synced) -- if so,"
+  echo "  bump these to 'synced-to-overleaf':"
+  echo "$APPLIED_ROWS"
+fi

@@ -1,0 +1,25 @@
+{
+  "trial_index": 17,
+  "suite_name": "familia_e_inspeccion",
+  "verdict": "FAILURE_TIMEOUT",
+  "seed_info": {
+    "trial_index": 17,
+    "noise_level_idx": 1,
+    "perturbations": {}
+  },
+  "final_metrics": {
+    "sim_time_s": 93.095,
+    "tresponse": 0.0,
+    "tswitch": 0.0067,
+    "roll_rms": 1.6687,
+    "pitch_rms": 0.6825,
+    "noise_idx": 0,
+    "exp_latency": 0.0706,
+    "exp_lambda": 1.0,
+    "tr": 0.0,
+    "mode": "X",
+    "bb_red": 0.0,
+    "bb_blue": 0.0,
+    "bb_green": 0.0
+  }
+}

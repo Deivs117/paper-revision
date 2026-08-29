@@ -34,13 +34,26 @@ def strip_md_inline(text: str) -> str:
 def parse_table(md_text: str):
     rows = []
     header_seen = False
-    for line in md_text.splitlines():
-        line = line.strip()
+    for lineno, raw_line in enumerate(md_text.splitlines(), start=1):
+        line = raw_line.strip()
         if not line.startswith("|"):
             continue
         cells = [c.strip() for c in line.split("|")[1:-1]]
         if len(cells) != EXPECTED_COLUMNS:
-            continue
+            # A row with the wrong column count almost always means a literal, unescaped "|"
+            # somewhere in one of its free-text cells (e.g. "... | results.tex (...)" mid-sentence)
+            # splitting one cell into two. Silently `continue`-ing here is exactly what let R2-04
+            # and R3-06 vanish from the dashboard without anyone noticing (2026-08-29) -- so this
+            # is a hard failure, not a skip. Fix: replace the stray "|" with a word (e.g. "Target
+            # sections:") to merge the split cell back into one.
+            row_id = cells[0] if cells else "?"
+            print(
+                f"error: PROGRESS.md:{lineno} has {len(cells)} columns, expected "
+                f"{EXPECTED_COLUMNS} (row starting '{row_id}') -- almost certainly an unescaped "
+                f"'|' inside a free-text cell. Fix the row before committing.",
+                file=sys.stderr,
+            )
+            sys.exit(1)
         if not header_seen:
             # First matching row is the header; the next (all-dashes) is the separator.
             header_seen = True

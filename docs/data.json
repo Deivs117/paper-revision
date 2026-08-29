@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-29T22:48:37+00:00",
-  "progressLastCommit": "2026-08-29T17:45:52-05:00",
+  "generatedAt": "2026-08-29T23:02:52+00:00",
+  "progressLastCommit": "2026-08-29T17:48:37-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -130,7 +130,7 @@
       "owner": [
         "Sebas"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/r3-06-literature-comparison-table.tex (first pass, insufficient), patches/r3-06-cpg-rl-arbitration-refs.tex (this pass)"
     },
     {
@@ -390,7 +390,7 @@
       "owner": [
         "Sebas"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-14-redundancy-pass-post-r2-01.tex"
     },
     {
@@ -416,7 +416,7 @@
       "owner": [
         "Sebas"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-12-results-confirm-wording-variety.tex"
     },
     {

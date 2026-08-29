@@ -1,0 +1,25 @@
+{
+  "trial_index": 6,
+  "suite_name": "familia_e_inspeccion",
+  "verdict": "SUCCESS",
+  "seed_info": {
+    "trial_index": 6,
+    "noise_level_idx": 0,
+    "perturbations": {}
+  },
+  "final_metrics": {
+    "sim_time_s": 43.653,
+    "tresponse": 0.0,
+    "tswitch": 0.0053,
+    "roll_rms": 1.2178,
+    "pitch_rms": 1.0822,
+    "noise_idx": 0,
+    "exp_latency": 0.1183,
+    "exp_lambda": 1.0,
+    "tr": 0.0,
+    "mode": "H",
+    "bb_red": 0.0,
+    "bb_blue": 41616.0,
+    "bb_green": 0.0
+  }
+}
