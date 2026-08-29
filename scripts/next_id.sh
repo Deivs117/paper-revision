@@ -19,5 +19,5 @@ fi
 
 MAX="$(grep -oE "\\b${NS}-[0-9]+\\b" "$REPO_ROOT/PROGRESS.md" | grep -oE '[0-9]+' | sort -n | tail -1 || true)"
 MAX="${MAX:-0}"
-NEXT=$((MAX + 1))
+NEXT=$((10#$MAX + 1))
 printf "%s-%02d\n" "$NS" "$NEXT"

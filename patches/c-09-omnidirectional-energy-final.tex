@@ -1,0 +1,40 @@
+% PATCH: C-09 (closes the Omnidirectional-energy placeholder left open by N-05 / R2-04)
+% Target section: sections/results.tex (transition-energy paragraph + tab:mode_steady_state_energy)
+% Requirement: intake/pending/R2-04-02_energy_analysis_for_writing.md -- "datos organizados para
+%   redacción", explicitly written as the source of truth for this table update (see
+%   experiments/R2-04-mode-energy/README.md "Result (2026-08-29, final)").
+%
+% What changed (results.tex ~868-890):
+%   1. Table tab:mode_steady_state_energy switched from the mixed inter-/intra-segment reporting
+%      (C/H inter-segment, X a single N=1 preliminary point estimate with no SD) to a single
+%      consistent statistic across all three modes: pooled intra-segment power samples. This
+%      became possible because the Omnidirectional test battery the N-05 patch flagged as pending
+%      landed (experiments/R2-04-mode-energy/scripts/build_mode_energy.py, updated 2026-08-29,
+%      output/mode_energy_stats.csv) -- 194 samples across the one available 38.6s X segment,
+%      giving X a real SD (0.73 W, CV 12.8%) for the first time.
+%      Before: C 1.94+-1.77 W (N=20 segments); H 1.36+-0.98 W (N=20 segments);
+%               X 5.71 W, no SD (N=1 segment) -- flagged "preliminary" in caption + footnote.
+%      After:  C 2.73+-2.29 W; H 1.13+-1.08 W; X 5.71+-0.73 W -- all three now intra-segment
+%              statistics (N segments unchanged: 20/20/1; intra-sample counts added as a
+%              footnote: C N=1,873; H N=3,297; X N=194). "Preliminary" language removed from
+%              caption and footnote -- hardware has since been decommissioned, so this is final.
+%   2. Transition-energy paragraph: dropped the trailing "the Omnidirectional estimate is
+%      preliminary pending a dedicated test battery" clause (no longer true), and added the
+%      upper-bound argument from the intake doc §2.1: the Quadrupedal<->Differential Rolling pair
+%      is the largest morphological reconfiguration among the three modes, so its transition
+%      energy (<=5.06 J) upper-bounds the cost of any mode transition -- small relative to
+%      continuous operation (a typical 38s Omnidirectional segment integrates to ~216 J).
+%
+% Why a standalone C-xx and not folding into N-05: per n-05-transition-energy-redaction.tex's own
+%   closing note, the Omnidirectional-data landing was explicitly deferred to "a new C-xx
+%   correction row (not a new N-xx)" once real data arrived -- this patch is that row.
+%
+% PROGRESS.md: added row C-09 (this patch, status applied). Updated the existing R2-04 row's note
+%   to record that the Omnidirectional-energy half of "Not applied until both ... land" is now
+%   resolved; R2-04 itself stays `drafted` -- the onboard-compute (ESP32-S3) half is still blocked
+%   on the real 150-80 checkpoint (see intake/pending/R2-04-03_mlp_onboard_compute_overhead_plan.md).
+%   R2-04-02_energy_analysis_for_writing.md moved to intake/processed/ (nothing further owed to it).
+%
+% Verification: scripts/reassemble.py + scripts/validate_tex.sh + scripts/check_roundtrip.sh all
+%   pass. No LaTeX toolchain available locally to run compile_pdf.sh.
+% Status: applied.

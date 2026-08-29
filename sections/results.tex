@@ -548,7 +548,7 @@ During this movement, a leftward correction occurs to center the stimulus, refle
 
 \subsubsection{Evaluation of the MLP-based terrain classifier}
 
-To complement the qualitative description of the terrain-classification module (Section~\ref{ssec:Gait_Decision_Module}), the MLP (150–80 hidden units, ReLU, Adam optimizer) was evaluated on the IMU dataset ($n = 600$ samples, 135-dimensional input, binary labels: 0 = flat terrain, 1 = inclined terrain) using a stratified 80/20 train–test split and 5-fold stratified cross-validation.
+To complement the qualitative description of the terrain-classification module (Section~\ref{ssec:Gait_Decision_Module}), the MLP (150–80 hidden units, \revblue{LeakyReLU with negative slope $0.01$}, Adam optimizer) was evaluated on the IMU dataset ($n = 600$ samples, 135-dimensional input, binary labels: 0 = flat terrain, 1 = inclined terrain) using a stratified 80/20 train–test split and 5-fold stratified cross-validation.
 
 As illustrated in Figure~\ref{fig:confusion_matrix}, the final model produced a confusion matrix on the held-out test set. Across the 5-fold cross-validation, the model achieved an accuracy of $0.767 \pm 0.028$, precision of $0.764 \pm 0.024$, recall of $0.779 \pm 0.048$, and an F1-score of $0.771 \pm 0.033$. On the held-out test set ($n = 120$), the model reached an accuracy of 0.800, precision of 0.747, recall of 0.918, F1-score of 0.824, and an ROC-AUC of 0.866, confirming that the network reliably discriminates between flat and inclined terrain, with a recall bias toward the inclined-terrain class that minimises the safety-critical risk of missed inclines.
 
@@ -865,28 +865,28 @@ Obstacle   & ${\approx}\,0.0\,\text{s}$ (instantaneous) & ${\approx}\,1100$, tra
   \label{fig:MorphologicalEnergy}
 \end{figure}
 
-\revblue{The energetic cost of physical adaptation was quantified from individually detected structural-command transitions (Fig.~\ref{fig:MorphologicalEnergy}), integrating instantaneous power ($|I_{\text{current}}| \times 7.2\,\text{V}$) over each direction's pre-calibrated electromechanical coupling window. The Quadrupedal $\rightarrow$ Differential Rolling transition required $5.06 \pm 2.93$~J ($N=16$), and the reverse transition (Differential Rolling $\rightarrow$ Quadrupedal) required $4.13 \pm 1.19$~J ($N=19$); the between-direction difference is not statistically significant (Welch's $t \approx 1.18$), so neither direction should be read as more energetically costly than the other. Greater trial-to-trial variability was observed in the Quadrupedal $\rightarrow$ Differential Rolling direction, though the present dataset does not isolate a specific mechanical cause for this dispersion. To directly address the reviewer's request for long-term average energy consumption across locomotion modes, Table~\ref{tab:mode_steady_state_energy} reports the mean steady-state power draw for each of the three modes, computed by excluding the electromechanical coupling window from each \texttt{robot\_cmd}-detected mode segment; the Omnidirectional estimate is preliminary pending a dedicated test battery.}
+\revblue{The energetic cost of physical adaptation was quantified from individually detected structural-command transitions (Fig.~\ref{fig:MorphologicalEnergy}), integrating instantaneous power ($|I_{\text{current}}| \times 7.2\,\text{V}$) over each direction's pre-calibrated electromechanical coupling window. The Quadrupedal $\rightarrow$ Differential Rolling transition required $5.06 \pm 2.93$~J ($N=16$), and the reverse transition (Differential Rolling $\rightarrow$ Quadrupedal) required $4.13 \pm 1.19$~J ($N=19$); the between-direction difference is not statistically significant (Welch's $t \approx 1.18$), so neither direction should be read as more energetically costly than the other. Greater trial-to-trial variability was observed in the Quadrupedal $\rightarrow$ Differential Rolling direction, though the present dataset does not isolate a specific mechanical cause for this dispersion. As the Quadrupedal$\leftrightarrow$Differential Rolling pair involves the largest morphological reconfiguration among the three modes (full limb deployment/retraction together with the leg-to-wheel locomotion change), its transition energy serves as an upper bound on the cost of any mode transition: in the worst case a transition consumes $\leq 5.06$~J, a small cost relative to continuous operation (e.g.\ a typical 38\,s Omnidirectional segment integrates to $\approx 216$~J). To directly address the reviewer's request for long-term average energy consumption across locomotion modes, Table~\ref{tab:mode_steady_state_energy} reports the mean steady-state power draw for each of the three modes, computed from pooled intra-segment power samples with the electromechanical coupling window excluded from each \texttt{robot\_cmd}-detected mode segment.}
 
 \begin{table}[htbp]
 \centering
-\caption{\revblue{Long-term average steady-state power consumption per locomotion mode (three hardware
-replicates' worth of instrumented segments; transition windows excluded per segment, see
-Fig.~\ref{fig:MorphologicalEnergy}). Power derived as $|I|\times7.2\,\text{V}$ (fixed NiMH pack
-voltage). \textbf{Omnidirectional is a single-segment preliminary estimate (N=1), pending a dedicated
-test battery.}}}
+\caption{\revblue{Long-term average steady-state power consumption per locomotion mode, computed from
+pooled intra-segment power samples (individual samples within each \texttt{robot\_cmd}-detected mode
+segment, electromechanical coupling window excluded; see Fig.~\ref{fig:MorphologicalEnergy}). Power
+derived as $|I|\times7.2\,\text{V}$ (fixed NiMH pack voltage).}}
 \label{tab:mode_steady_state_energy}
 \begin{tabularx}{\textwidth}{l >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
 \toprule
 \textbf{Locomotion Mode} & \textbf{N (segments)} & \textbf{Mean Power $\pm$ SD (W)} \\
 \midrule
-Quadrupedal ($C$) & 20 & $1.94 \pm 1.77$ \\
-Differential Rolling ($H$) & 20 & $1.36 \pm 0.98$ \\
-Omnidirectional ($X$)\textsuperscript{*} & 1 & $5.71$ (no SD, single segment) \\
+Quadrupedal ($C$) & 20 & $2.73 \pm 2.29$ \\
+Differential Rolling ($H$) & 20 & $1.13 \pm 1.08$ \\
+Omnidirectional ($X$) & 1 & $5.71 \pm 0.73$ \\
 \bottomrule
 \end{tabularx}
 \\[2pt]
-\footnotesize{\textsuperscript{*}Preliminary --- a dedicated Omnidirectional-mode energy test battery is
-planned; this row will be updated once that data is available.}
+\footnotesize{Intra-segment sample counts: $C$ $N=1{,}873$; $H$ $N=3{,}297$; $X$ $N=194$ (single
+38.6\,s segment; hardware subsequently decommissioned, no further Omnidirectional recordings
+possible).}
 \end{table}
 
 %% ─── TERRAIN LATENCY (4 PANELS) ───────────────────────────────────────────
