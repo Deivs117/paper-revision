@@ -1,0 +1,56 @@
+R2-04-mlp-onboard-compute -- console output from hardware run, 2026-08-29
+==========================================================================
+
+BOARD ACTUALLY USED: ESP32-C3 (identified by OS as such; connected board on
+hand, NOT the ESP32-S3 the physical robot's firmware targets --
+see PETER_SIMULATION/Repository/Peter_arduino/platformio.ini,
+[env:esp32-s3-devkitc-1]). platformio.ini env: esp32-c3-devkitm-1
+(generic Espressif ESP32-C3-DevKitM-1 board definition, exact vendor board
+unknown). Framework: arduino, build_flags: -O2 -DARDUINO_USB_MODE=1
+-DARDUINO_USB_CDC_ON_BOOT=1 (the USB_MODE/CDC_ON_BOOT flags were required to
+route Arduino's `Serial` to the native USB-Serial-JTAG peripheral on this
+chip -- without them, Serial output silently goes to the physical UART0 pins
+instead of the USB cable actually connected).
+
+*** DO NOT cite this latency number as the paper's ESP32-S3 onboard-compute
+*** result -- see "Caveat" below. It is a real, correctly-measured number,
+*** just for the wrong chip.
+
+--- Build report (pio run -e esp32-c3-devkitm-1) ---
+RAM:   [=         ]   5.9% (used 19220 bytes from 327680 bytes)
+Flash: [===       ]  29.4% (used 385296 bytes from 1310720 bytes)
+
+--- Serial console output (pio run -t upload, then read over /dev/ttyACM0) ---
+=== R2-04 MLP onboard compute: correctness self-check ===
+TEST_INPUT_0 -> C=[0.000000, 1.000000]  expected(Python)=[0.000000, 1.000000]
+TEST_INPUT_1 -> C=[0.000000, 1.000000]  expected(Python)=[0.000000, 1.000000]
+TEST_INPUT_2 -> C=[0.000000, 1.000000]  expected(Python)=[0.000000, 1.000000]
+TEST_INPUT_3 -> C=[0.000000, 1.000000]  expected(Python)=[0.000000, 1.000000]
+TEST_INPUT_4 -> C=[0.000000, 1.000000]  expected(Python)=[0.000000, 1.000000]
+Self-check: OK, all vectors within 1e-3
+=== Latency benchmark: N=1000 forward() calls on TEST_INPUT_0 ===
+Latency: mean=49892.177 us, sd=2.166 us, N=1000
+=== Done. Copy this console output into output/onboard_compute_results.txt ===
+
+--- Caveat (why this number cannot go into results.tex as-is) ---
+Self-check passed (all 5 test vectors match the Python reference within
+1e-3) -- the forward-pass logic itself is confirmed correct on real
+hardware, corroborating the earlier host-gcc cross-check.
+
+However, mean latency = 49.892 ms/inference is ~30,000x slower than the
+host PyTorch number (1.64 us) and ~1000x slower than what an ESP32-S3 would
+be expected to show. Root cause: the ESP32-C3 (RISC-V, this board) has NO
+hardware FPU -- every `float` multiply/add in the ~32,600-FLOP forward pass
+is emulated in software. The ESP32-S3 (Xtensa LX7, dual-core, the chip the
+physical robot's firmware actually targets -- see
+PETER_SIMULATION/Repository/Peter_arduino/platformio.ini) has a hardware
+single-precision FPU, so its real latency should be dramatically lower and
+is NOT extrapolable from this number by a simple clock-speed ratio (it's an
+architecture difference, not just a frequency one).
+
+Author decision (2026-08-29): keep this result on file for traceability,
+do NOT write anything into results.tex yet. Re-run identically
+(`pio run -e esp32-s3-devkitc-1 -t upload`, same firmware/, no code
+changes needed -- the S3 env in platformio.ini was already there from the
+original plan) once a real ESP32-S3 is available, and append that result to
+this file before touching the paper.

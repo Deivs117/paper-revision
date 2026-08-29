@@ -56,13 +56,13 @@ static void forward(const float* input, float* out) {
     for (int i = 0; i < INPUT_SIZE; i++) {
         scaled[i] = (input[i] - SCALER_MEAN[i]) / SCALER_SCALE[i];
     }
-    linear(scaled, W1, B1, INPUT_SIZE, HIDDEN1_SIZE, hidden1);
+    linear(scaled, W1, BIAS1, INPUT_SIZE, HIDDEN1_SIZE, hidden1);
     for (int i = 0; i < HIDDEN1_SIZE; i++) hidden1[i] = leaky_relu(hidden1[i]);
 
-    linear(hidden1, W2, B2, HIDDEN1_SIZE, HIDDEN2_SIZE, hidden2);
+    linear(hidden1, W2, BIAS2, HIDDEN1_SIZE, HIDDEN2_SIZE, hidden2);
     for (int i = 0; i < HIDDEN2_SIZE; i++) hidden2[i] = leaky_relu(hidden2[i]);
 
-    linear(hidden2, W3, B3, HIDDEN2_SIZE, NUM_CLASSES, logits);
+    linear(hidden2, W3, BIAS3, HIDDEN2_SIZE, NUM_CLASSES, logits);
     softmax(logits, NUM_CLASSES, out);
 }
 

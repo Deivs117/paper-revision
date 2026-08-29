@@ -1,10 +1,18 @@
 # R2-04-03 — Plan: overhead de cómputo embebido del MLP en la ESP32-S3 (onboard deployment)
 
-**Estado (2026-08-29): 🟡 DESBLOQUEADO Y PARCIALMENTE EJECUTADO.** El checkpoint 150-80 real llegó
-(`pesos_red/pesos_usados_en_implementacion.pth` + `pesos_red/parametros_modelo.json`, recuperados
-por el autor). Todo el andamiaje de los pasos 3.1–3.3 está escrito y validado en host (ver §5); lo
-único que falta es correr `pio run -t upload -t monitor` en una ESP32-S3 física, que este entorno no
-tiene. Detalle completo en `experiments/R2-04-mlp-onboard-compute/README.md`.
+**Estado (2026-08-29): 🟡 CORRIDO EN HARDWARE, PERO EN EL CHIP EQUIVOCADO.** El checkpoint 150-80
+real llegó (`pesos_red/pesos_usados_en_implementacion.pth` + `parametros_modelo.json`). Todo el
+andamiaje (3.1–3.3) se corrió de punta a punta: el self-check pasó en hardware real (5/5 vectores
+coinciden con la referencia Python). Pero la placa que el autor conectó fue identificada por el
+sistema operativo como una **ESP32-C3**, no la ESP32-S3 que usa el firmware real del robot
+(`PETER_SIMULATION/Repository/Peter_arduino/platformio.ini`). La ESP32-C3 no tiene FPU por
+hardware (RISC-V, emulación por software), lo que dio una latencia de **49.9 ms** — ~30.000× más
+lenta que el host — un número real pero no representativo del ESP32-S3 objetivo. **Decisión del
+autor (2026-08-29): no escribir este número en el paper; esperar una ESP32-S3 real.** Detalle
+completo, incluyendo los dos bugs de compilación reales que hubo que arreglar (macro `B1`/`B2`/`B3`
+de Arduino, y flags `ARDUINO_USB_MODE`/`ARDUINO_USB_CDC_ON_BOOT` para que `Serial` salga por el USB
+correcto), en `experiments/R2-04-mlp-onboard-compute/README.md` y
+`experiments/R2-04-mlp-onboard-compute/output/onboard_compute_results.txt`.
 
 **Origen:** fila `R2-04` de `PROGRESS.md`, cláusula "embedded computing overhead of the MLP network
 for onboard deployment analysis" — distinta de la cláusula de energía por modo (esa ya está cerrada,
@@ -172,10 +180,24 @@ declarado).
   `patches/r2-04-mlp-onboard-compute.tex` documenta el cambio.
 - `PROGRESS.md`: fila `R2-04` — ✅ actualizada, sigue `drafted` (no `applied`): refleja la corrección
   de activación ya hecha y que el número real de latencia/footprint on-device sigue pendiente.
-- **Pendiente para cerrar esto:** el autor corre `pio run -t upload -t monitor` en una ESP32-S3 real
-  (comando exacto en el README del experimento), confirma que el self-check imprime "OK, all vectors
-  within 1e-3", y pasa la consola completa (incluye el reporte RAM:/Flash: de PlatformIO) para
-  guardarla en `experiments/R2-04-mlp-onboard-compute/output/onboard_compute_results.txt` y escribir
-  la frase nueva en `results.tex` (~línea 591, ver plan §4).
-- `git mv` este documento a `intake/processed/` solo cuando ese número real llegue y quede escrito en
-  el paper.
+- **Corrida en hardware (2026-08-29):** el autor conectó una placa identificada por el sistema
+  como ESP32-C3 (no la ESP32-S3 objetivo). Dos bugs reales de compilación encontrados y arreglados
+  en el proceso (ver README.md del experimento para el detalle técnico completo):
+  1. Los arrays de bias se llamaban `B1`/`B2`/`B3`, que chocan con las macros de literal binario
+     de Arduino (`binary.h` define `B0`..`B11111111`) — renombrados a `BIAS1`/`BIAS2`/`BIAS3` en
+     `export_weights_to_c.py` y `main.cpp`.
+  2. Faltaban los build flags `-D ARDUINO_USB_MODE=1 -D ARDUINO_USB_CDC_ON_BOOT=1` — sin ellos,
+     `Serial` en un chip con USB nativo (C3/S3) se enlaza al UART físico en vez del puerto USB
+     conectado, y la salida no llega nunca por el cable. (Ya son los mismos flags que usa
+     `Peter_arduino/platformio.ini`.)
+  - Con eso, el firmware compiló, subió y el self-check pasó (5/5 vectores exactos) en hardware
+    real. La latencia salió en 49.9ms (SD 2.166µs, N=1000) — real pero del chip equivocado: la
+    ESP32-C3 no tiene FPU por hardware, la ESP32-S3 sí. **No se escribió nada en `results.tex`**
+    (decisión del autor) — resultado completo archivado en
+    `experiments/R2-04-mlp-onboard-compute/output/onboard_compute_results.txt`.
+- **Pendiente para cerrar esto:** repetir exactamente lo mismo en una ESP32-S3 real —
+  `pio run -e esp32-s3-devkitc-1 -t upload` (el entorno ya está en `platformio.ini`, mismo
+  firmware, sin cambios de código) — y, si el self-check pasa, escribir la frase nueva en
+  `results.tex` (~línea 591, ver plan §4) con ese número.
+- `git mv` este documento a `intake/processed/` solo cuando ese número de la ESP32-S3 llegue y
+  quede escrito en el paper.

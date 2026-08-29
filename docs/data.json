@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-29T20:29:57+00:00",
-  "progressLastCommit": "2026-08-29T15:04:35-05:00",
+  "generatedAt": "2026-08-29T20:31:45+00:00",
+  "progressLastCommit": "2026-08-29T15:29:57-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -403,7 +403,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-16-r3-06-bib-verification-fixes.tex"
     }
   ]

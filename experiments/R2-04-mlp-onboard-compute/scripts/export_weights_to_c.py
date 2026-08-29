@@ -182,12 +182,15 @@ def write_header(path, ck, test_vectors, expected_outputs):
         f.write("#define LEAKY_RELU_SLOPE 0.01f\n")
         f.write(f"#define NUM_TEST_VECTORS {len(test_vectors)}\n\n")
 
+        # NOTE: bias arrays are named BIAS1/2/3, not B1/B2/B3 -- the Arduino core
+        # (binary.h) #defines B0..B11111111 as binary-literal macros (e.g. B1 -> 1),
+        # so "B1"/"B2"/"B3" silently expand to integers and break compilation.
         f.write(c_array("W1", ck["W1"]) + "\n\n")
-        f.write(c_array("B1", ck["B1"]) + "\n\n")
+        f.write(c_array("BIAS1", ck["B1"]) + "\n\n")
         f.write(c_array("W2", ck["W2"]) + "\n\n")
-        f.write(c_array("B2", ck["B2"]) + "\n\n")
+        f.write(c_array("BIAS2", ck["B2"]) + "\n\n")
         f.write(c_array("W3", ck["W3"]) + "\n\n")
-        f.write(c_array("B3", ck["B3"]) + "\n\n")
+        f.write(c_array("BIAS3", ck["B3"]) + "\n\n")
         f.write(c_array("SCALER_MEAN", ck["scaler_mean"]) + "\n\n")
         f.write(c_array("SCALER_SCALE", ck["scaler_scale"]) + "\n\n")
 
