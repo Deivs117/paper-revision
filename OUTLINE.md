@@ -75,8 +75,10 @@ neuronal control circuits, (4) physical construction. Four subsections:
     text after the 2026-08-25 `\revblue{}` strip — see revision-convention note above) already
     argues the architecture's merits vs. RL/MPC — citing \citet{Gurney2001a,Gurney2001b,
     Prescott2006Robot} as "canonical arbitration circuits validated in computational neuroscience" and
-    citing a measured **decision latency of ~47 ms** (cross-referenced as "Section~3", i.e.
-    results.tex) as evidence of real-time operation without training/inference infrastructure. This is
+    citing a measured **decision latency of ~47 ms** (cross-referenced as `Section~\ref{sec:results}`,
+    i.e. results.tex) as evidence of real-time operation without training/inference infrastructure —
+    that number is **not actually traceable in results.tex** (tracked as `C-15`, pending, see the
+    "Known cross-references" note below). This is
     useful groundwork/citations to reuse, but it is a justification paragraph, **not an ablation study
     or a WTA-vs-threshold-logic comparison** — that content still does not exist anywhere.
     Confirmed: **no existing ablation study on the basal-ganglia network itself** anywhere in the
@@ -222,14 +224,17 @@ disclosure) — these aren't split out separately since `split_sections.py` only
 - The MLP ablation/classifier-comparison work in results.tex's "Evaluation of the MLP-based terrain
   classifier" is self-contained (references methodology's gait-decision module by section label
   `ssec:Gait_Decision_Module`, confirmed at methodology.tex line 313).
-- methodology.tex's basal-ganglia justification paragraph (line 200, R1-round text) cross-references
-  "Section 3" for the ~47ms decision-latency figure — that number lives in results.tex, not
-  methodology.tex; verify it before reusing it in R3-01/R3-02 text.
-- introduction.tex's closing paragraph hardcodes "Section 2/3/4" for methodology/results/conclusions,
-  and methodology.tex's BG-justification paragraph (line 200) hardcodes "Section~3" for the same
-  results.tex cross-reference — update both by hand if the top-level section structure changes (e.g.
-  R2-03 promoting Limitations to its own section). `scripts/check_hardcoded_refs.sh` detects both
-  automatically (advisory, run before push — see README.md §10.1).
+- methodology.tex's basal-ganglia justification paragraph (line 200) cross-references
+  `Section~\ref{sec:results}` for the ~47ms decision-latency figure — that number does **not**
+  live anywhere in results.tex (confirmed by grep, 2026-08-29 coherence audit: no "47" appears
+  near any latency figure there). This is tracked as `C-15` in `PROGRESS.md`, `pending`, no owner
+  yet — verify (or soften/remove the claim) before reusing that number in R3-01/R3-02 text.
+- introduction.tex's closing paragraph and methodology.tex's BG-justification paragraph (line 200)
+  now use `Section~\ref{sec:methodology}`/`\ref{sec:results}`/`\ref{sec:conclusions}` instead of
+  hardcoded numbers (`C-10`, 2026-08-29) — all four top-level sections carry a `\label{sec:...}`,
+  so this stays correct automatically if the top-level section structure ever changes.
+  `scripts/check_hardcoded_refs.sh` confirms no hardcoded `Section N` references remain anywhere
+  in `sections/*.tex` (advisory, run before push — see README.md §10.1).
 - conclusions.tex's stale "MLP metrics not evaluated" sentence contradicts results.tex's own
   MLP evaluation subsection (R1-round text) — see `C-01` in PROGRESS.md.
 - All four sections (introduction.tex, methodology.tex, results.tex, conclusions.tex) have now been

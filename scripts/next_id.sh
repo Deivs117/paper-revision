@@ -17,6 +17,18 @@ if [[ "$NS" != "N" && "$NS" != "C" ]]; then
   exit 1
 fi
 
+# Guard: refuse to allocate on top of an existing collision. This is how the ID scheme actually
+# broke in practice — two contributors each ran this script against their own local, not-yet-
+# synced PROGRESS.md and independently computed the same "next" ID before either side pushed
+# (2026-08-29 coherence audit: C-09/C-10/C-11 each collided this way). Catching it here surfaces
+# the problem immediately instead of letting a second collision compound a first one.
+DUPES="$(grep -oE '^\| [A-Za-z0-9-]+ \|' "$REPO_ROOT/PROGRESS.md" | sed -E 's/^\| //; s/ \|$//' | sort | uniq -d)"
+if [ -n "$DUPES" ]; then
+  echo "error: PROGRESS.md already has duplicate IDs -- resolve before allocating a new one:" >&2
+  echo "$DUPES" >&2
+  exit 1
+fi
+
 MAX="$(grep -oE "\\b${NS}-[0-9]+\\b" "$REPO_ROOT/PROGRESS.md" | grep -oE '[0-9]+' | sort -n | tail -1 || true)"
 MAX="${MAX:-0}"
 NEXT=$((10#$MAX + 1))

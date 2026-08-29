@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-29T19:17:35+00:00",
-  "progressLastCommit": "2026-08-29T13:38:26-05:00",
+  "generatedAt": "2026-08-29T20:04:35+00:00",
+  "progressLastCommit": "2026-08-29T14:17:35-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -342,9 +342,9 @@
       "patchFile": "patches/c-08-photo-montage-trim.tex"
     },
     {
-      "id": "C-09",
+      "id": "C-13",
       "reviewer": "—",
-      "requirement": "(Reassigned from a locally-picked \"C-07\", which collided with a concurrent contributor's own C-07 — renumbered per README.md §10.3, never reuse an ID.) Fix inaccurate citation in introduction.tex's \"hand-coded threshold logic\" claim (both the narrative sentence and R3-06's comparison table): web-validated \\citet{Bjelonic2019KeepRollin}'s full text against the claim and found its own experiments describe locomotion-mode transitions as human-operator/joystick-commanded, not an autonomous hand-coded threshold — dropped from that citation group in both places (remains correctly cited elsewhere in the same paragraph for its actual contribution, the whole-body motion controller). \\citet{Kashiri2019CENTAURO} kept — secondary sources describe CENTAURO's mode choice as tied to a terrain-flatness heuristic, consistent with the claim.",
+      "requirement": "(Reassigned twice: originally a locally-picked \"C-07\", collided with a concurrent contributor's own C-07; renumbered to \"C-09\", which — because the renumbering happened on a local PROGRESS.md snapshot that hadn't yet pulled another concurrent \"C-09\" — collided a second time; this repo-coherence audit renumbered it to C-13, the first free ID after the audit's own C-12. See the coherence-audit note appended near the end of this file for the full account and why scripts/next_id.sh now refuses to allocate while duplicates exist.) Fix inaccurate citation in introduction.tex's \"hand-coded threshold logic\" claim (both the narrative sentence and R3-06's comparison table): web-validated \\citet{Bjelonic2019KeepRollin}'s full text against the claim and found its own experiments describe locomotion-mode transitions as human-operator/joystick-commanded, not an autonomous hand-coded threshold — dropped from that citation group in both places (remains correctly cited elsewhere in the same paragraph for its actual contribution, the whole-body motion controller). \\citet{Kashiri2019CENTAURO} kept — secondary sources describe CENTAURO's mode choice as tied to a terrain-flatness heuristic, consistent with the claim.",
       "target": "introduction.tex",
       "dataSource": "—",
       "category": "Escritura",
@@ -355,9 +355,9 @@
       "patchFile": "patches/r3-06-literature-comparison-table.tex"
     },
     {
-      "id": "C-10",
+      "id": "C-14",
       "reviewer": "—",
-      "requirement": "Redundancy/text-tightening pass run after R2-01's sweep had closed, targeting prose that landed since (mainly R3-06's own patch). (1) introduction.tex: R3-06 had independently restated \"CPGs can arbitrate elsewhere in the literature but we keep that in the basal-ganglia stage\" in both the table-intro sentence (line 9) and the CPG paragraph (line ~30) — condensed line 9 to the literature fact + forward pointer, kept the full rationale in the CPG paragraph. (2) conclusions.tex vs results.tex: both stated the near-verbatim clause \"these constraints do not invalidate the results\" — rewrote conclusions.tex's opening limitations sentence as a pure pointer to Section~\\ref{ssec:Limitations}, dropped the repeated clause there (results.tex unchanged). (3) results.tex: the four QuantReal per-scenario paragraphs (Appetitive/Aversive/Complex/Obstacle) each repeated the identical sentence \"Quantitative metrics are consolidated in Table~\\ref{tab:consolidated_physical_metrics}\" (4x, confirmed by grep) — moved the pointer into the subsection's own intro paragraph once, dropped from all four. No claims changed, pure condensation; net-new connective phrasing wrapped in \\revblue{}. Also fixed, script-only: scripts/next_id.sh had a real octal-parsing bug (bash arithmetic on zero-padded IDs like \"09\" fails) that blocked allocating this row's own ID — fixed with a 10# base prefix.",
+      "requirement": "(Renumbered from a colliding \"C-10\" — see the coherence-audit note near the end of this file.) Redundancy/text-tightening pass run after R2-01's sweep had closed, targeting prose that landed since (mainly R3-06's own patch). (1) introduction.tex: R3-06 had independently restated \"CPGs can arbitrate elsewhere in the literature but we keep that in the basal-ganglia stage\" in both the table-intro sentence (line 9) and the CPG paragraph (line ~30) — condensed line 9 to the literature fact + forward pointer, kept the full rationale in the CPG paragraph. (2) conclusions.tex vs results.tex: both stated the near-verbatim clause \"these constraints do not invalidate the results\" — rewrote conclusions.tex's opening limitations sentence as a pure pointer to Section~\\ref{ssec:Limitations}, dropped the repeated clause there (results.tex unchanged). (3) results.tex: the four QuantReal per-scenario paragraphs (Appetitive/Aversive/Complex/Obstacle) each repeated the identical sentence \"Quantitative metrics are consolidated in Table~\\ref{tab:consolidated_physical_metrics}\" (4x, confirmed by grep) — moved the pointer into the subsection's own intro paragraph once, dropped from all four. No claims changed, pure condensation; net-new connective phrasing wrapped in \\revblue{}. Also fixed, script-only: scripts/next_id.sh had a real octal-parsing bug (bash arithmetic on zero-padded IDs like \"09\" fails) that blocked allocating this row's own ID — fixed with a 10# base prefix.",
       "target": "introduction.tex, results.tex, conclusions.tex",
       "dataSource": "—",
       "category": "Escritura",
@@ -365,12 +365,12 @@
         "Sebas"
       ],
       "status": "applied",
-      "patchFile": "patches/c-10-redundancy-pass-post-r2-01.tex"
+      "patchFile": "patches/c-14-redundancy-pass-post-r2-01.tex"
     },
     {
-      "id": "C-11",
+      "id": "C-15",
       "reviewer": "—",
-      "requirement": "Traceability gap found during the C-10 redundancy pass, filed separately since it's a correctness issue, not a redundancy fix: methodology.tex line 200 cites \"the decision latency of approximately 47 ms measured across all experimental trials (Section~3)\", but grepping results.tex for \"47\" finds no such figure anywhere in that section — the number this sentence points to isn't findable in the section it cites. OUTLINE.md had already flagged this as unverified before this pass. Needs either locating the actual measurement and citing it precisely, or softening/removing the specific \"47 ms\" claim if it can't be traced to a table in results.tex. Not yet investigated or fixed.",
+      "requirement": "(Renumbered from a colliding \"C-11\" — see the coherence-audit note near the end of this file.) Traceability gap found during the C-14 redundancy pass, filed separately since it's a correctness issue, not a redundancy fix: methodology.tex line 200 cites \"the decision latency of approximately 47 ms measured across all experimental trials (Section~3)\", but grepping results.tex for \"47\" finds no such figure anywhere in that section — the number this sentence points to isn't findable in the section it cites. OUTLINE.md had already flagged this as unverified before this pass. Needs either locating the actual measurement and citing it precisely, or softening/removing the specific \"47 ms\" claim if it can't be traced to a table in results.tex. Not auto-resolved by this coherence audit either — no .pth/log/CSV anywhere in this repo or in the read-only PETER_SIMULATION reference repo (intake/SOURCES.md) contains a traceable \"47 ms\" measurement, and inventing or removing a scientific claim from the manuscript is an author decision, not a repo-hygiene fix. Needs an owner and a decision from the author.",
       "target": "methodology.tex",
       "dataSource": "—",
       "category": "Escritura",

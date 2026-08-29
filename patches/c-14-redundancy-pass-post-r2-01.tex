@@ -1,4 +1,5 @@
-% C-10 -- Redundancy/text-tightening pass run after R2-01's sweep had already closed
+% C-14 (renumbered from a colliding "C-10" -- see PROGRESS.md's coherence-audit note) --
+% Redundancy/text-tightening pass run after R2-01's sweep had already closed
 % (synced-to-overleaf). Targets prose that landed AFTER that sweep -- mainly the R3-06
 % literature patch (commit 886e1db) -- plus one item outside R2-01's original scope.
 % Audit copy of the change applied to sections/introduction.tex, sections/results.tex, and
@@ -35,7 +36,7 @@
 % subsection's own intro paragraph (once) and dropped it from all four per-scenario
 % paragraphs, which now open directly with their scenario-specific finding.
 %
-% Adjacent finding, NOT fixed in this patch (filed separately as C-11): methodology.tex line
+% Adjacent finding, NOT fixed in this patch (filed separately as C-15): methodology.tex line
 % 200 cross-references "the decision latency of approximately 47 ms measured across all
 % experimental trials (Section~3)", but grep for "47" across results.tex finds no such
 % figure anywhere in that section. This is a traceability/citation-accuracy gap, not
@@ -46,7 +47,8 @@
 % -- bash arithmetic on a zero-padded ID like "09" is interpreted as octal and fails on the
 % digit 9 (`value too great for base`). This broke ID allocation as soon as a 9th C-xx or
 % N-xx row existed. Fixed with a `10#` base prefix (`NEXT=$((10#$MAX + 1))`); no PROGRESS.md
-% content change, a script-only fix required to allocate this very row's ID (C-10).
+% content change, a script-only fix required to allocate this very row's ID (originally C-10,
+% renumbered to C-14 -- see PROGRESS.md's coherence-audit note).
 %
 % No new claims were introduced by fixes 1-3 -- pure condensation of already-written prose.
 % Net-new connective phrasing (the forward pointer in fix 1, the results-pointer rewrite in
