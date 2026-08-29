@@ -1,0 +1,42 @@
+% PATCH: C-15 -- fix the "~47 ms decision latency" ghost figure in methodology.tex:201
+% Target section: methodology.tex (basal-ganglia architectural-justification paragraph)
+% Requirement: intake/pending/C-15_decision_latency_47ms_traceability_fix.md (full scan + plan);
+%   PROGRESS.md row C-15 (originally filed as C-11 by the C-14 redundancy pass, renumbered in the
+%   2026-08-29 coherence audit).
+%
+% Scan performed before touching any text (full detail in the intake doc):
+%   1. Visually inspected the 3 decision-latency figures results.tex actually cites --
+%      fig1_Appetitive_macro.png panel C (sim, ~60ms at sigma=0 rising to 1.6-2.0s), FigB_
+%      Decision_Delay.png panel A (sim, deterministic step at 0.0s), FigReal_Terrain_Latencies_
+%      4Panels.png panels A/B (hardware, 184ms / 534ms). None contains ~47ms.
+%   2. Computed exp_latency stats across all 96 experiments/simulation/*/trial_summary.json files
+%      (51 valid, excluding the -1.0 sentinel used by familia_a_obstaculo): mean 730.9ms, median
+%      102.6ms, range 1.4-3467.6ms. No aggregate or standout trial supports "approximately 47ms
+%      measured across all experimental trials". A single unrelated trial (familia_a_apetitivo/
+%      test_001_SUCCESS) happens to have exp_latency=0.047 exactly, but it's 1 of 51 trials, not a
+%      mean/median/figure value -- coincidence, not the source of the cited number.
+%   3. Grepped the read-only PETER_SIMULATION reference repo (intake/SOURCES.md) for "47" near any
+%      control-loop-rate/firmware constant -- nothing but numpy test-suite noise in a vendored
+%      .venv.
+%   Conclusion: the "47 ms" figure is not traceable to any data, figure, or table in this repo or
+%   its reference repo. Almost certainly a stale number left over from a pre-R1 manuscript version,
+%   never touched by any later cleanup pass (R2-01, C-07, C-08...) because none of them read this
+%   sentence closely until C-14's redundancy pass flagged it.
+%
+% Fix: rather than inventing a number or deleting the paragraph's evidentiary claim outright,
+%   replaced "~47 ms measured across all experimental trials" with the two real, already-verified,
+%   already-cited-elsewhere figures that serve the exact same rhetorical purpose (real-time
+%   operation without RL/MPC-scale training/inference infrastructure):
+%     - Simulation: deterministic T_response = 0.0s (Fig.~\ref{fig:decision_delay}, results.tex).
+%     - Hardware: 184-534ms neural processing latency across 15 hardware replicates
+%       (Fig.~\ref{fig:FourPanelLatencies}, results.tex).
+%   These are a *stronger* argument than the original, unverifiable ~47ms -- both are measured,
+%   both have a figure, both are already independently cited and correct.
+%   New text wrapped in \revblue{} (substantive content change, not a typo fix).
+%
+% PROGRESS.md: C-15 moved from `pending` to `applied` (this patch). Intake doc git mv'd to
+%   intake/processed/.
+%
+% Verification: scripts/reassemble.py + scripts/validate_tex.sh + scripts/check_roundtrip.sh +
+%   scripts/compile_pdf.sh all pass (LaTeX toolchain available in this environment).
+% Status: applied.

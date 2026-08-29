@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-29T20:45:37+00:00",
-  "progressLastCommit": "2026-08-29T15:31:45-05:00",
+  "generatedAt": "2026-08-29T20:55:40+00:00",
+  "progressLastCommit": "2026-08-29T15:45:37-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -396,15 +396,15 @@
     {
       "id": "C-15",
       "reviewer": "—",
-      "requirement": "(Renumbered from a colliding \"C-11\" — see the coherence-audit note near the end of this file.) Traceability gap found during the C-14 redundancy pass, filed separately since it's a correctness issue, not a redundancy fix: methodology.tex line 200 cites \"the decision latency of approximately 47 ms measured across all experimental trials (Section~3)\", but grepping results.tex for \"47\" finds no such figure anywhere in that section — the number this sentence points to isn't findable in the section it cites. OUTLINE.md had already flagged this as unverified before this pass. Needs either locating the actual measurement and citing it precisely, or softening/removing the specific \"47 ms\" claim if it can't be traced to a table in results.tex. Not auto-resolved by this coherence audit either — no .pth/log/CSV anywhere in this repo or in the read-only PETER_SIMULATION reference repo (intake/SOURCES.md) contains a traceable \"47 ms\" measurement, and inventing or removing a scientific claim from the manuscript is an author decision, not a repo-hygiene fix. Needs an owner and a decision from the author.",
-      "target": "methodology.tex",
+      "requirement": "(Renumbered from a colliding \"C-11\" — see the coherence-audit note near the end of this file.) Traceability gap found during the C-14 redundancy pass: methodology.tex line 200/201 cited \"the decision latency of approximately 47 ms measured across all experimental trials\", but no such figure existed anywhere in results.tex. Resolved via a full redaction plan (intake/processed/C-15_decision_latency_47ms_traceability_fix.md): visually inspected the 3 decision-latency figures results.tex actually cites (none contains ~47ms), computed exp_latency stats across all 96 experiments/simulation/*/trial_summary.json files (mean 730.9ms, median 102.6ms — no aggregate supports 47ms), and grepped the read-only PETER_SIMULATION reference repo (nothing). Conclusion: \"47 ms\" is not traceable to any data in this repo or its reference repo, almost certainly a stale pre-R1 number no cleanup pass had read closely until now. Fix: replaced it with the two real, already-verified figures serving the same rhetorical purpose (real-time operation without RL/MPC-scale infrastructure) — simulation's deterministic $T_{response}=0.0$~s and hardware's $184$–$534$~ms neural processing latency across 15 replicates (both already cited correctly elsewhere in results.tex, both stronger evidence than the unverifiable original). reassemble.py/validate_tex.sh/check_roundtrip.sh/compile_pdf.sh all pass.",
+      "target": "methodology.tex (BG-justification paragraph)",
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
-        "—"
+        "Deivi"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/c-15-decision-latency-47ms-fix.tex"
     },
     {
       "id": "C-12",

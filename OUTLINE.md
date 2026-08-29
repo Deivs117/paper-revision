@@ -72,13 +72,14 @@ neuronal control circuits, (4) physical construction. Four subsections:
     hyperparameters in Table~\ref{table:Ganglia} (all weights currently 1.0, only time constants
     differ: $\tau_{STN}=\tau_{Gpe}=\tau_{STR}=2.0$, $\tau_{Gpi}=1.0$). **Important for framing R3-01/
     R3-02**: an existing paragraph (line 200, written in the prior R1 round, now plain baseline
-    text after the 2026-08-25 `\revblue{}` strip — see revision-convention note above) already
-    argues the architecture's merits vs. RL/MPC — citing \citet{Gurney2001a,Gurney2001b,
-    Prescott2006Robot} as "canonical arbitration circuits validated in computational neuroscience" and
-    citing a measured **decision latency of ~47 ms** (cross-referenced as `Section~\ref{sec:results}`,
-    i.e. results.tex) as evidence of real-time operation without training/inference infrastructure —
-    that number is **not actually traceable in results.tex** (tracked as `C-15`, pending, see the
-    "Known cross-references" note below). This is
+    text after the 2026-08-25 `\revblue{}` strip) already argues the architecture's merits vs.
+    RL/MPC — citing \citet{Gurney2001a,Gurney2001b,Prescott2006Robot} as "canonical arbitration
+    circuits validated in computational neuroscience". It used to cite a measured "decision
+    latency of ~47 ms" that was never traceable to anything in results.tex — `C-15` (2026-08-29)
+    replaced that with the two real, already-verified figures serving the same purpose: simulation's
+    deterministic $T_{response}=0.0$~s and hardware's $184$–$534$~ms neural processing latency
+    across 15 replicates (see `intake/processed/C-15_decision_latency_47ms_traceability_fix.md`).
+    This is
     useful groundwork/citations to reuse, but it is a justification paragraph, **not an ablation study
     or a WTA-vs-threshold-logic comparison** — that content still does not exist anywhere.
     Confirmed: **no existing ablation study on the basal-ganglia network itself** anywhere in the
@@ -224,11 +225,11 @@ disclosure) — these aren't split out separately since `split_sections.py` only
 - The MLP ablation/classifier-comparison work in results.tex's "Evaluation of the MLP-based terrain
   classifier" is self-contained (references methodology's gait-decision module by section label
   `ssec:Gait_Decision_Module`, confirmed at methodology.tex line 313).
-- methodology.tex's basal-ganglia justification paragraph (line 200) cross-references
-  `Section~\ref{sec:results}` for the ~47ms decision-latency figure — that number does **not**
-  live anywhere in results.tex (confirmed by grep, 2026-08-29 coherence audit: no "47" appears
-  near any latency figure there). This is tracked as `C-15` in `PROGRESS.md`, `pending`, no owner
-  yet — verify (or soften/remove the claim) before reusing that number in R3-01/R3-02 text.
+- methodology.tex's basal-ganglia justification paragraph (line 201) no longer cites the
+  untraceable "~47ms" figure — `C-15` (2026-08-29) replaced it with simulation's deterministic
+  $T_{response}=0.0$~s and hardware's $184$–$534$~ms neural processing latency, both already
+  verified and cited elsewhere in results.tex. Reuse those two figures (not a bare "47ms") if
+  R3-01/R3-02 text needs a decision-latency number.
 - introduction.tex's closing paragraph and methodology.tex's BG-justification paragraph (line 200)
   now use `Section~\ref{sec:methodology}`/`\ref{sec:results}`/`\ref{sec:conclusions}` instead of
   hardcoded numbers (`C-10`, 2026-08-29) — all four top-level sections carry a `\label{sec:...}`,
