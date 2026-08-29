@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-29T20:04:35+00:00",
-  "progressLastCommit": "2026-08-29T14:17:35-05:00",
+  "generatedAt": "2026-08-29T20:29:57+00:00",
+  "progressLastCommit": "2026-08-29T15:04:35-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -392,6 +392,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-12-results-confirm-wording-variety.tex"
+    },
+    {
+      "id": "C-16",
+      "reviewer": "—",
+      "requirement": "Verified R3-06's 4 new/upgraded assets/references.bib entries (C-13/patches/r3-06-cpg-rl-arbitration-refs.tex: Fukui2019VestibularCPG, Owaki2017SpontaneousGait, Yang2021GaitTransitions, plus Humphreys2025BioInspired's preprint→journal upgrade) against publisher records — resolved each DOI against Crossref/Semantic Scholar metadata + abstract text, cross-checked against the specific claim each is cited for in introduction.tex; the user then independently exported clean BibTeX/RIS directly from ScienceDirect/Nature (x2)/PMLR and handed them over rather than trusting any AI transcription. 2 of 4 were already fully correct (Owaki2017SpontaneousGait, Humphreys2025BioInspired) — added missing issn/number/volume/pages fields from the publisher exports but no factual fix needed. 2 had real discrepancies: Fukui2019VestibularCPG's co-author first name was wrong (\"Hiroaki\" → corrected to \"Hisamu\", confirmed by ScienceDirect's own export); Yang2021GaitTransitions's year was wrong (.bib said 2021, the year CoRL was held, but PMLR's official volume-164 record indexes it as 2022 — corrected, added the missing pages 773–783/editor/month; citation key intentionally kept as \"Yang2021GaitTransitions\" since introduction.tex cites it by that key and CoRL 2021 is still the common way to refer to the venue — the key/year mismatch is documented, not a further inconsistency). No sections/*.tex change — citation keys unchanged. validate_tex.sh/check_roundtrip.sh pass; compile_pdf.sh recompiled with a fresh BibTeX run, 0 warnings/errors on any of the 4 entries.",
+      "target": "— (no sections/*.tex change — assets/references.bib only)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-16-r3-06-bib-verification-fixes.tex"
     }
   ]
 }

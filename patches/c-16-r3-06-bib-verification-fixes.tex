@@ -1,0 +1,49 @@
+% PATCH: C-16 -- verify R3-06's 4 new/upgraded assets/references.bib entries against publisher
+% records, fix the 2 discrepancies found
+% Target: assets/references.bib only (no sections/*.tex change -- citation keys unchanged)
+%
+% Requirement: user asked to verify the 4 references R3-06 (C-13, patches/r3-06-cpg-rl-arbitration-
+% refs.tex) added/upgraded were real before trusting them in the manuscript's bibliography, since
+% Sebas's own patch only stated the citations were "web-validated" without leaving an audit trail
+% of what was actually checked.
+%
+% Method: resolved each DOI against Crossref (official publisher metadata: title/authors/journal/
+% volume/pages/year) and Semantic Scholar (abstract text), cross-checked both against what was
+% already in the .bib and against the specific claim each reference is cited for in
+% introduction.tex. The 5th-conference (Yang2021GaitTransitions) has no DOI -- verified directly
+% against its PMLR abstract page instead. The user then independently exported clean BibTeX/RIS
+% for all 4 directly from the publisher pages (ScienceDirect, Nature x2, PMLR) rather than trusting
+% any of my own transcriptions, and handed them over for integration -- this patch is that
+% integration.
+%
+% Findings (2 of 4 were already fully correct, 2 had discrepancies):
+%   1. Fukui2019VestibularCPG -- title/journal/volume/pages/year/DOI all already correct. Fixed:
+%      author "Fujisawa, Hiroaki" -> "Fujisawa, Hisamu" (wrong first name in the original entry;
+%      ScienceDirect's own export confirms "Hisamu"). Added issn/url/keywords from the publisher
+%      export (previously absent).
+%   2. Owaki2017SpontaneousGait -- already fully correct (title/journal/volume/page/year/DOI).
+%      Added issn/number/url from the publisher export.
+%   3. Humphreys2025BioInspired -- already fully correct (this entry was itself an upgrade from
+%      an arXiv preprint under C-13/886e1db). Added volume/number/pages/issn from the publisher
+%      export (previously only journal/year/month/doi/url).
+%   4. Yang2021GaitTransitions -- title/authors correct, but year was wrong: the .bib said 2021
+%      (the year CoRL was held), while PMLR's own official volume-164 record indexes this paper
+%      as a 2022 publication (proceedings publication lag is common for CoRL) -- corrected to
+%      year=2022, added the missing pages (773--783), editor, and month fields from PMLR's own
+%      generated BibTeX. Citation key kept as "Yang2021GaitTransitions" unchanged (introduction.tex
+%      cites it by this key, and CoRL 2021 is still how the venue is commonly referred to) --
+%      the key/year mismatch is intentional and documented here, not an inconsistency to "fix"
+%      further without breaking the citation.
+%
+% All 4 papers' actual abstracts were also re-confirmed (before this patch, during the review
+% that preceded it) to genuinely support the claims introduction.tex cites them for -- autonomous/
+% spontaneous CPG-mediated gait transitions for Fukui2019/Owaki2017, hierarchical RL gait
+% selection for Yang2021 -- not just topical similarity.
+%
+% No sections/*.tex change -- citation keys are unchanged, so introduction.tex's \citet{} calls
+% and table:action_selection_comparison need no edits.
+%
+% Verification: scripts/validate_tex.sh + scripts/check_roundtrip.sh pass; scripts/compile_pdf.sh
+% recompiled the full PDF including a fresh bibtex run -- 0 BibTeX warnings/errors on any of the
+% 4 entries (checked build/tex-src/*.blg directly).
+% Status: applied.
