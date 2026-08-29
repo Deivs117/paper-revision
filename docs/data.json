@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-29T20:31:45+00:00",
-  "progressLastCommit": "2026-08-29T15:29:57-05:00",
+  "generatedAt": "2026-08-29T20:45:37+00:00",
+  "progressLastCommit": "2026-08-29T15:31:45-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -41,6 +41,19 @@
       ],
       "status": "synced-to-overleaf",
       "patchFile": "patches/r2-03-consolidate-limitations.tex"
+    },
+    {
+      "id": "R2-04",
+      "reviewer": "2",
+      "requirement": "Add multi-mode energy consumption + onboard MLP compute overhead analysis",
+      "target": "MLP compute overhead: previous host-only number (1.64 μs/sample, PyTorch on PC) kept, but \"ReLU\" corrected to LeakyReLU(0.01) (results.tex:551) after recovering the real-implementation checkpoint (pesos_red/parametros_modelo.json) — architecture 150-80 already matched the paper, only the activation label was wrong. True onboard (ESP32-S3) latency/footprint still pending: export script + firmware written and validated on host (gcc cross-check of the forward-pass logic against the Python reference, all test vectors match) in experiments/R2-04-mlp-onboard-compute/, but needs the author to flash real hardware (pio run -t upload -t monitor) — no board/PlatformIO in this environment. Multi-mode long-term average energy: tab:mode_steady_state_energy in results.tex is now final (Informe 1 §9.9 via patches/n-05-transition-energy-redaction.tex, closed out by C-09/patches/c-09-omnidirectional-energy-final.tex) reporting pooled intra-segment mean power per mode, transition window excluded: Quadrupedal (C, N=20 segments/1,873 samples, $2.73\\pm2.29$~W), Differential Rolling (H, N=20/3,297, $1.13\\pm1.08$~W), Omnidirectional (X, N=1/194, $5.71\\pm0.73$~W) — all three are now real measurements with a valid SD, no \"preliminary\" flag left; hardware has since been decommissioned so X's single segment is final, no further recordings possible. Physical interpretation (from intake/processed/R2-04-02_energy_analysis_for_writing.md §3) is now written into the paper (C-11/patches/c-11-omnidirectional-friction-interpretation.tex): X-mode's ~5× higher cost vs. H is attributed to parasitic wheel-floor friction from its diagonal wheel configuration (vs. propulsive friction in H) in a new results.tex paragraph, and the lateral-locomotion future-work line is folded into conclusions.tex's existing future-work list. Still not applied — the onboard-compute hardware run happened on the wrong chip: the author flashed a physical board the OS identified as an ESP32-C3, not the ESP32-S3 the physical robot's firmware actually targets (per PETER_SIMULATION/Repository/Peter_arduino/platformio.ini); firmware self-check passed on real hardware (matches the Python reference exactly) but latency came back at 49.9ms — ~30,000x slower than the host number, because the ESP32-C3 has no hardware FPU (software float emulation) unlike the ESP32-S3. Real, correctly-measured number, wrong chip — not usable for the paper (full writeup: experiments/R2-04-mlp-onboard-compute/output/onboard_compute_results.txt). Author decision (2026-08-29): do not write it into results.tex; wait for a real ESP32-S3 (see intake/pending/R2-04-03_mlp_onboard_compute_overhead_plan.md). Target sections: results.tex (tab:mode_steady_state_energy, energy paragraph, LeakyReLU correction)",
+      "dataSource": "experiments/R2-04-mode-energy/, experiments/R2-04-mlp-onboard-compute/",
+      "category": "Métricas",
+      "owner": [
+        "Sam"
+      ],
+      "status": "drafted",
+      "patchFile": "patches/n-05-transition-energy-redaction.tex, patches/c-09-omnidirectional-energy-final.tex, patches/r2-04-mlp-onboard-compute.tex"
     },
     {
       "id": "R3-01",
@@ -106,6 +119,19 @@
       ],
       "status": "drafted",
       "patchFile": "—"
+    },
+    {
+      "id": "R3-06",
+      "reviewer": "3",
+      "requirement": "Literature review comparative tables: Basal Ganglia vs CPG vs RL-based action selection",
+      "target": "Reopened plan (intake/pending/R3-06_literature_review_gait_arbitration_comparison.md) executed in full: the first pass's table reused only existing citations and left CPG framed purely as execution; per the plan's §2/§3/§4 search+verification protocol, found and verified (2 independent sources each) 3 new references genuinely filling the CPG-arbitration and RL-arbitration gaps — Fukui2019VestibularCPG (Robotics and Autonomous Systems 2019, DOI 10.1016/j.robot.2018.10.002) and Owaki2017SpontaneousGait (Scientific Reports 2017, DOI 10.1038/s41598-017-00348-9), both feedback-modulated CPGs that autonomously arbitrate discrete gait transitions (not mere execution); Yang2021GaitTransitions (CoRL 2021/PMLR v164), a hierarchical RL policy selecting among discrete gaits, replacing Lee2024Science in the table's RL row (Lee2024Science covers a full locomotion+navigation pipeline, not specifically mode selection — kept unchanged in the line-9 narrative sentence, per the plan's instruction not to touch it). Also confirmed Humphreys2025BioInspired (already cited) genuinely fits RL-arbitration and upgraded its .bib entry from an arXiv preprint to its peer-reviewed venue, Nature Machine Intelligence (Jul 2025). Basal-ganglia column confirmed to need no new references. Author approved all 4 reference changes before references.bib/introduction.tex were touched (plan's mandatory §4 step 6 gate). introduction.tex: table's CPG/RL rows updated, table-introducing sentence (line 9) and the CPG paragraph (line ~30) reformulated to state that feedback-modulated CPGs can arbitrate transitions elsewhere in the literature and why this work deliberately keeps that decision in the basal-ganglia stage instead. All new/changed prose wrapped in \\revblue{}. validate_tex.sh/check_roundtrip.sh both pass. Target sections: introduction.tex (line 9, CPG paragraph ~line 30, tab:action_selection_comparison CPG/RL rows)",
+      "dataSource": "assets/references.bib (3 new entries + 1 upgraded, see patch)",
+      "category": "Escritura",
+      "owner": [
+        "Sebas"
+      ],
+      "status": "applied",
+      "patchFile": "patches/r3-06-literature-comparison-table.tex (first pass, insufficient), patches/r3-06-cpg-rl-arbitration-refs.tex (this pass)"
     },
     {
       "id": "C-01",
