@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-29T20:55:40+00:00",
-  "progressLastCommit": "2026-08-29T15:45:37-05:00",
+  "generatedAt": "2026-08-29T20:56:57+00:00",
+  "progressLastCommit": "2026-08-29T15:55:40-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -403,7 +403,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-15-decision-latency-47ms-fix.tex"
     },
     {
