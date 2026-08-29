@@ -1,0 +1,34 @@
+% PATCH: R2-04 (second clause -- "embedded computing overhead of the MLP network for onboard
+%   deployment analysis"; the energy clause of R2-04 is patches/n-05-transition-energy-redaction.tex)
+% Target section: sections/results.tex, computational-cost-analysis paragraph (~line 551, 591)
+% Requirement: intake/pending/R2-04-03_mlp_onboard_compute_overhead_plan.md
+%
+% Status as of 2026-08-29: PARTIALLY APPLIED.
+%
+% 1) APPLIED NOW -- activation-function correction (results.tex:551):
+%    Before: "the MLP (150-80 hidden units, ReLU, Adam optimizer)"
+%    After:  \revblue{"the MLP (150-80 hidden units, LeakyReLU with negative slope 0.01,
+%              Adam optimizer)"}
+%    Reason: the recovered real-implementation checkpoint (pesos_red/parametros_modelo.json,
+%    exported from pesos_red/pesos_usados_en_implementacion.pth) confirms LeakyReLU(0.01) on
+%    both hidden layers, not ReLU. Architecture (135->150->80->2) itself already matched the
+%    paper -- only the activation label was wrong. No mlp_imu.py/RED_PETER_CONSOLA.py copy found
+%    under PETER_SIMULATION/ defines this exact architecture (they all hardcode 200-100/ReLU);
+%    the recovered .pth is trusted as the real-implementation source of truth per explicit
+%    author decision (2026-08-29, asked and confirmed in this session) since its name and
+%    weight shapes are what the author identified as "los pesos ya recuperados de la
+%    implementacion real".
+%
+% 2) NOT YET APPLIED -- the actual onboard latency/footprint sentence:
+%    experiments/R2-04-mlp-onboard-compute/ now has a working export script
+%    (scripts/export_weights_to_c.py, stdlib-only, run and validated in this session) and a
+%    complete ESP32-S3 PlatformIO firmware (firmware/) whose forward()/linear()/softmax() logic
+%    was cross-checked against the Python reference by compiling it standalone with host gcc
+%    (all 5 self-check vectors matched EXPECTED_OUTPUT_i exactly). What's missing is a physical
+%    ESP32-S3 to actually run `pio run -t upload -t monitor` -- no board or PlatformIO toolchain
+%    available in this session. Once the author runs it and
+%    experiments/R2-04-mlp-onboard-compute/output/onboard_compute_results.txt exists with a
+%    passing self-check, this patch file gets a second entry adding the on-device latency
+%    (mean +- SD us, N=1000) and RAM/Flash footprint as a new \revblue{} sentence after the
+%    existing host-latency sentence at results.tex:591 -- see that experiment's README.md
+%    "How to regenerate" for the exact wording plan.

@@ -1,8 +1,10 @@
 # R2-04-03 — Plan: overhead de cómputo embebido del MLP en la ESP32-S3 (onboard deployment)
 
-**Estado: 🔲 PLAN, BLOQUEADO** en el paso 1 (esperando checkpoint 150-80 real) — no ejecutable hoy más
-allá de dejar el andamiaje (script de exportación, esqueleto PlatformIO) listo para cuando llegue el
-checkpoint.
+**Estado (2026-08-29): 🟡 DESBLOQUEADO Y PARCIALMENTE EJECUTADO.** El checkpoint 150-80 real llegó
+(`pesos_red/pesos_usados_en_implementacion.pth` + `pesos_red/parametros_modelo.json`, recuperados
+por el autor). Todo el andamiaje de los pasos 3.1–3.3 está escrito y validado en host (ver §5); lo
+único que falta es correr `pio run -t upload -t monitor` en una ESP32-S3 física, que este entorno no
+tiene. Detalle completo en `experiments/R2-04-mlp-onboard-compute/README.md`.
 
 **Origen:** fila `R2-04` de `PROGRESS.md`, cláusula "embedded computing overhead of the MLP network
 for onboard deployment analysis" — distinta de la cláusula de energía por modo (esa ya está cerrada,
@@ -32,31 +34,23 @@ ni energía específica del MLP — no hace falta:
 3. Evita instrumentación adicional (protoboard, resistencia shunt, etc.) — decisión explícita del
    autor de mantener esto simple.
 
-## 2. Bloqueante — checkpoint 150-80 real
+## 2. Bloqueante — checkpoint 150-80 real — ✅ RESUELTO (2026-08-29)
 
-**El autor está buscando por fuera el checkpoint/arquitectura real 150-80** que sí coincide con lo ya
-publicado en `methodology.tex`/`results.tex` (F1=0.771, ablation study). Confirmado en esta sesión de
-planeación (2026-08-29) que **no existe ningún archivo `.pth`/dataset de entrenamiento 150-80 en
-ningún repo de `~/Documents/Paper/`** — el único checkpoint real presente es
-`pesos_red/modelo_mlp.pth` (arquitectura 200-100, confirmada leyendo los tamaños de tensor del zip
-interno del `.pth`, sin necesitar `torch` instalado: `108000B→135×200`, `80000B→200×100`,
-`800B→100×2`). Los números 150-80 ya publicados provienen de vectorización de píxeles de un PNG
-antiguo (`experiments/_plotting/vectorized/README.md`: "no raw training log survives"), no de un
-modelo vivo.
-
-**Este bloque no se puede correr hasta que llegue** (de parte del autor) uno de estos dos:
-- Un checkpoint 150-80 real (`.pth` + `escalador.pkl`/normalizador equivalente), o
-- Confirmación explícita de que se usa la arquitectura 200-100 real (`pesos_red/modelo_mlp.pth`) y que
-  el paper se corrige para coincidir con ella.
-
-**Formato exacto que necesito del checkpoint, sea cual sea la arquitectura final:**
-- Archivo de pesos compatible con `torch.load` (state_dict de `nn.Sequential` con capas `Linear`/
-  `ReLU` alternadas) o, si no es PyTorch, cualquier formato del que se puedan extraer arrays de pesos
-  + biases por capa (no hace falta que sea `.pth` específicamente).
-- El normalizador usado antes de la red (`escalador.pkl` de `sklearn.StandardScaler`, o equivalente) —
-  necesito `mean_`/`scale_` (o `min_`/`max_` si es MinMax) para poder reproducir el mismo
-  preprocesamiento en C.
-- Confirmar `input_size` (135 si sigue siendo ventana de 15×9) y `num_classes` (2: plano/inclinado).
+El autor recuperó el checkpoint real: `pesos_red/pesos_usados_en_implementacion.pth` (PyTorch
+`state_dict`) + `pesos_red/parametros_modelo.json` (el mismo `state_dict` + el `StandardScaler`
+volcados a JSON plano — no hace falta `torch`/`joblib` para leerlo). Confirmado leyendo directamente
+el JSON y los tamaños de tensor del `.pth`:
+- `input_size=135`, `num_classes=2`, capas ocultas **150 y 80** — coincide exactamente con lo
+  publicado en `methodology.tex`/`results.tex` (F1=0.771, ablation study). No hace falta corregir la
+  arquitectura declarada.
+- **Discrepancia encontrada y corregida:** el checkpoint usa **LeakyReLU(negative_slope=0.01)** en
+  ambas capas ocultas, no ReLU como decía `results.tex:551`. Ningún `mlp_imu.py`/
+  `RED_PETER_CONSOLA.py` bajo `PETER_SIMULATION/` define esta arquitectura exacta (todos los que
+  existen ahí son 200-100/ReLU) — se le preguntó al autor y confirmó tratar este `.pth` como fuente
+  de verdad de la implementación real; `results.tex` ya se corrigió (`\revblue{}`, ver
+  `patches/r2-04-mlp-onboard-compute.tex`).
+- `pesos_red/modelo_mlp.pth` (200-100, mencionado en la versión anterior de este plan) ya no está
+  presente en `pesos_red/` — fue reemplazado por el checkpoint real de arriba.
 
 ## 3. Plan de implementación (una vez llegue el checkpoint)
 
@@ -165,13 +159,23 @@ declarado).
   **no** se reporta la latencia embebida de una red cuya arquitectura declarada en el paper no
   coincide con lo que realmente se corrió.
 
-## 5. Trazabilidad — pendiente de completar cuando se cierre
+## 5. Trazabilidad — estado 2026-08-29
 
-- `experiments/R2-04-mlp-onboard-compute/` — carpeta a crear con `scripts/`, `firmware/`, `output/`
-  (seguir `experiments/_TEMPLATE/README.md`).
-- `PROGRESS.md`: fila `R2-04` — actualizar su nota para reflejar que la cláusula "MLP compute
-  overhead" pasa de "already present (host)" a "medido on-device en ESP32-S3" una vez el firmware
-  corra y produzca el número real; no se abre una fila nueva `N-xx`/`C-xx`, sigue siendo el mismo
-  requerimiento de revisor `R2-04`.
-- `git mv` este documento a `intake/processed/` solo cuando el punto 2 (checkpoint real) se resuelva y
-  el firmware haya producido y validado un número real.
+- `experiments/R2-04-mlp-onboard-compute/` — ✅ creada: `scripts/export_weights_to_c.py` (stdlib
+  puro, corrido y validado — genera `output/mlp_weights.h` desde `pesos_red/parametros_modelo.json`
+  más vectores de prueba reales de `experiments/real/*/imu_ina.csv`, con salida esperada calculada
+  en el mismo script), `firmware/` (proyecto PlatformIO standalone, ESP32-S3; `forward()` fue
+  compilado además con `gcc -O2` en host fuera del proyecto y reprodujo `EXPECTED_OUTPUT_i`
+  exactamente en los 5 vectores — de-riesga la lógica antes de tocar hardware real), `README.md` con
+  el detalle completo de limitaciones y el comando exacto para correr en la placa.
+- `results.tex:551` — ✅ corregido "ReLU" → "LeakyReLU(0.01)", envuelto en `\revblue{}`.
+  `patches/r2-04-mlp-onboard-compute.tex` documenta el cambio.
+- `PROGRESS.md`: fila `R2-04` — ✅ actualizada, sigue `drafted` (no `applied`): refleja la corrección
+  de activación ya hecha y que el número real de latencia/footprint on-device sigue pendiente.
+- **Pendiente para cerrar esto:** el autor corre `pio run -t upload -t monitor` en una ESP32-S3 real
+  (comando exacto en el README del experimento), confirma que el self-check imprime "OK, all vectors
+  within 1e-3", y pasa la consola completa (incluye el reporte RAM:/Flash: de PlatformIO) para
+  guardarla en `experiments/R2-04-mlp-onboard-compute/output/onboard_compute_results.txt` y escribir
+  la frase nueva en `results.tex` (~línea 591, ver plan §4).
+- `git mv` este documento a `intake/processed/` solo cuando ese número real llegue y quede escrito en
+  el paper.
