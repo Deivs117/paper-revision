@@ -80,7 +80,54 @@ previsiblemente menores.
 
 ---
 
-## 3. Análisis de despliegue combinado (síntesis para el equipo de redacción)
+## 3. Interpretación física del perfil energético por modo
+
+### 3.1 Por qué el modo X es el más costoso: fricción parásita vs. fricción propulsora
+
+El resultado más llamativo de la tabla es que el modo Omnidireccional (X) consume 5.04× más que
+Differential Rolling (H) en operación estacionaria. La explicación es mecánica directa:
+
+- **Modo H (Differential Rolling):** las ruedas están alineadas con la dirección de movimiento,
+  como en un vehículo convencional. La fricción entre rueda y piso es la fuerza que propulsa al
+  robot — es energía útil, no una pérdida.
+
+- **Modo X (Omnidireccional):** las ruedas se orientan en configuración diagonal (en X). Para
+  generar movimiento, cada rueda debe vencer la fricción lateral que su propia orientación crea
+  contra el piso. Esta fricción es **parasítica**: no contribuye al desplazamiento útil y se
+  disipa como calor. El motor debe suministrar energía extra permanentemente para superar este
+  rozamiento, de ahí el consumo elevado.
+
+En otras palabras, la misma interacción rueda-suelo que en H es la fuente de propulsión, en X se
+convierte en un obstáculo que el sistema debe superar continuamente. Esto explica de forma natural
+la diferencia de ~5× en consumo entre ambos modos.
+
+El modo Quadrupedal (C) se sitúa en posición intermedia (2.73 W): el movimiento con patas implica
+ciclos de contacto/despegue con el suelo que generan pérdidas por impacto y corrientes pico en los
+actuadores, pero sin la fricción lateral continua del modo X.
+
+### 3.2 Implicación para el diseño de misiones
+
+Para misiones que requieran desplazamiento lateral, el modo X incurre en un sobrecoste energético
+estructural respecto a los otros modos. Un controlador de misión energéticamente eficiente debería
+minimizar el tiempo en modo X y reservarlo únicamente para maniobras en las que la movilidad
+omnidireccional sea estrictamente necesaria.
+
+### 3.3 Trabajo futuro: optimización energética del desplazamiento lateral
+
+El elevado coste del modo Omnidireccional (5.71 W, aproximadamente 5× el de Differential Rolling)
+motivado por la fricción parásita de la configuración diagonal de ruedas sugiere que el diseño
+actual no es óptimo para misiones que requieran desplazamiento lateral frecuente. Queda como línea
+de trabajo futuro explorar configuraciones de locomoción lateral alternativas que reduzcan o
+eliminen este sobrecoste, acercando el consumo en desplazamiento lateral al perfil eficiente del
+modo Differential Rolling.
+
+> **Nota para redacción:** esta observación puede integrarse como una línea en el apartado de
+> trabajo futuro del paper, enlazando con los datos de consumo de la tabla. No requiere datos
+> adicionales — es una conclusión físicamente motivada por los resultados existentes.
+
+---
+
+## 4. Análisis de despliegue combinado (síntesis para el equipo de redacción)
 
 Un modelo de consumo energético para una misión arbitraria puede expresarse como:
 
@@ -101,7 +148,7 @@ típica (38 s en X equivalen a ~216 J de operación, frente a ≤ 5 J por transi
 
 ---
 
-## 4. Notas de implementación para el equipo de redacción
+## 5. Notas de implementación para el equipo de redacción
 
 1. **Reemplazar la fila X en `tab:mode_steady_state_energy`:** cambiar de `N=1 / 5.71 (sin SD)`
    a `N=194 muestras / 5.71 ± 0.73 W`. Actualizar también el caption eliminando la referencia a
@@ -115,6 +162,13 @@ típica (38 s en X equivalen a ~216 J de operación, frente a ≤ 5 J por transi
 3. **El párrafo de transiciones** (results.tex ~línea 868) puede extenderse para incorporar el
    argumento de cota superior C↔H (§2.1 de este documento). No es necesario mencionar
    explícitamente qué transiciones no fueron medidas.
+
+4. **Interpretación física** (§3.1–3.2): argumento de fricción parásita vs. propulsora apto para
+   incluirse en el párrafo de discusión de la tabla o en el párrafo de análisis energético de
+   results.tex. No requiere nuevos datos — es la explicación mecánica de los números ya publicados.
+
+5. **Optimización lateral** (§3.3): apto para el apartado de trabajo futuro. Enlazar con los
+   valores de consumo de la tabla (P_X vs P_H) como motivación cuantitativa.
 
 4. **`R2-04-01_omnidireccional_energy_data_request.md`** ha sido movido a `intake/processed/`
    — el camino de datos de hardware está cerrado; la resolución es el reencuadre intra-segmento.
