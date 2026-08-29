@@ -16,37 +16,47 @@ segment entered via `z`, 1.56s via `c` — same values already published in
 full duration unadjusted). Power = `|current_A| × 7.2V` (fixed NiMH 3300mAh pack voltage, confirmed
 by the author's hardware team) averaged over what remains of each segment.
 
-## Result (2026-08-27, current data)
+## Result (2026-08-29, final — intra-segment statistics)
 
-| Mode | N segments | Mean power ± SD |
-|---|---|---|
-| Quadrupedal (C) | 20 | 1.94 ± 1.77 W |
-| Differential Mobile (H) | 20 | 1.36 ± 0.98 W |
-| Omnidirectional (X) | **1** (single 38.6s segment, no replication) | 5.71 W |
+The reporting framework was updated on 2026-08-29: **intra-segment statistics** (mean and SD of
+individual power samples pooled across all steady-state segments per mode) replace the previous
+inter-segment statistics for the paper table. This makes all three modes comparable regardless of
+segment count, and gives X a valid SD (within the single available segment). The hardware was
+subsequently decommissioned — no additional X-mode recordings are possible.
 
-`scripts/build_mode_energy.py` → `output/FigReal_ModeSteadyStateEnergy.png` (bar chart, built for
-this planning round — **the author decided a table fits the manuscript better than a graph for
-this metric**, see decision below; the script and figure stay here as the computation record /
-sanity-check visualization, not as the artifact to promote).
+| Mode | N segments | N samples | Mean power ± SD (intra-segment) |
+|---|---|---|---|
+| Quadrupedal (C) | 20 | 1 873 | 2.73 ± 2.29 W |
+| Differential Rolling (H) | 20 | 3 297 | 1.13 ± 1.08 W |
+| Omnidirectional (X) | 1 | 194 (38.6 s) | 5.71 ± 0.73 W |
+
+Inter-segment stats (C: 1.94 ± 1.82 W / H: 1.36 ± 1.01 W) are preserved in
+`output/mode_energy_stats.csv` for reference.
+
+`scripts/build_mode_energy.py` → `output/FigReal_ModeSteadyStateEnergy.png` (bar chart, sanity-check
+visualization) + `output/mode_energy_stats.csv` (both intra- and inter-segment stats).
+**The author decided a table fits the manuscript better than a graph** — the figure stays as the
+computation record, not the artifact to promote.
+
+The full analysis and writing instructions for the paper update are in
+`intake/pending/R2-04-02_energy_analysis_for_writing.md` — that document is the source of truth
+for what goes into `sections/results.tex`.
 
 ## Caveats
 
-1. **Omnidirectional (X) is a single-sample placeholder, not a real average.** The author's team
-   confirmed (2026-08-27, verbally) that a dedicated Omnidirectional-mode energy test battery is
-   planned. **When that data lands, this is a small, mechanical update** — rerun
-   `scripts/build_mode_energy.py` against the new `experiments/real/` folder(s), the X row's
-   mean±SD/N updates, nothing else in the pipeline changes.
-2. The 20 C/H segments span different physical conditions (flat floor, inclined ramp, static
-   in-place test) mixed together — part of the within-mode variance reflects that heterogeneity,
-   not just measurement noise.
-3. C vs. H is not statistically significant (Welch t≈1.26, two-sample unequal-variance).
-4. "Long-term average" here means "averaged over the available steady-state segments" from short
-   bench recordings, not a multi-hour endurance mission profile.
+1. **Omnidirectional (X):** a single 38.6 s segment from floor_t01. SD (0.73 W, CV 12.8 %) reflects
+   moment-to-moment variability during operation, not between-trial replication. Hardware
+   decommissioned — no further recordings possible.
+2. C/H intra-segment means differ from inter-segment means (C: 2.73 vs 1.94 W; H: 1.13 vs 1.36 W)
+   because longer segments (more samples) weight more in the temporal average. Both are correct;
+   they answer different questions (time-weighted vs. trial-weighted average).
+3. C/H inter-segment CV (~74–94 %) is inflated by physical-condition heterogeneity across recordings
+   (floor/ramp/static), not pure measurement noise.
+4. "Long-term average" = averaged over available bench recordings, not a multi-hour mission profile.
 
 ## Decision: table, not a figure (2026-08-27)
 
-The author's assessment, followed here: a bar chart for 3 categories (one of them N=1, expected to
-be replaced) is not very informative on its own, and a table is far cheaper to update once the
-Omnidirectional data arrives (edit one row vs. regenerate + re-review a figure). See
-`intake/processed/R02-01-03_energia_transicion_y_modo_R2-04.md` §3/§5 for the executed table integration and the
-Omnidirectional-placeholder follow-up note (`intake/R02-01_INDEX.md` for the full block index).
+The author's assessment, followed here: a bar chart for 3 categories is not very informative on its
+own, and a table is far cheaper to update. See
+`intake/processed/R02-01-03_energia_transicion_y_modo_R2-04.md` §3/§5 for the executed table
+integration (`intake/R02-01_INDEX.md` for the full block index).

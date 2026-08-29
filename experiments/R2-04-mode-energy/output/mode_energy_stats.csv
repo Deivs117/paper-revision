@@ -1,0 +1,4 @@
+mode,intra_mean_W,intra_sd_W,intra_n_samples,n_segments,inter_mean_W,inter_sd_W
+Quadrupedal (C),2.7303,2.2942,1873,20,1.942,1.8193
+Differential Mobile (H),1.1319,1.0786,3297,20,1.356,1.0065
+Omnidirectional (X),5.7097,0.7311,194,1,5.7097,
