@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-29T18:45:08+00:00",
-  "progressLastCommit": "2026-08-29T13:36:51-05:00",
+  "generatedAt": "2026-08-29T18:50:28+00:00",
+  "progressLastCommit": "2026-08-29T13:45:08-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -288,6 +288,19 @@
       ],
       "status": "synced-to-overleaf",
       "patchFile": "patches/c-07-limpieza-editorial-menor.tex"
+    },
+    {
+      "id": "C-10",
+      "reviewer": "—",
+      "requirement": "Generalized fix for scripts/check_hardcoded_refs.sh's advisory: introduction.tex:15 (\"Section 2\"/\"Section 3\"/\"Section 4\" in the roadmap paragraph) and methodology.tex:200 (\"Section~3\" in the decision-latency remark) were hardcoded numbers, not \\ref{} — verified both already matched sections/manifest.json's current order (Introduction/Methodology/Results/Conclusions) before editing, so this is a robustness fix, not a numbering correction. Added \\label{sec:introduction}/\\label{sec:methodology}/\\label{sec:results}/\\label{sec:conclusions} to all four top-level \\section{}s (not just the two referenced — generalizes the fix so future prose never needs a new hardcoded number), then replaced both hardcoded spots with \\ref{}. Not wrapped in \\revblue{} (zero meaning/wording change, mechanical substitution, same class as a typo fix). reassemble.py/validate_tex.sh/check_roundtrip.sh all pass; check_hardcoded_refs.sh now reports no hardcoded Section N references anywhere in sections/*.tex.",
+      "target": "introduction.tex (roadmap paragraph), methodology.tex (decision-latency remark) — plus a \\label{} added to each of introduction/methodology/results/conclusions",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-10-section-refs-dynamic.tex"
     },
     {
       "id": "C-09",

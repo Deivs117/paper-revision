@@ -1,0 +1,30 @@
+% PATCH: C-10 -- replace hardcoded "Section N" cross-references with \ref{} (generalized fix)
+% Target sections: introduction.tex:15 (roadmap paragraph), methodology.tex:200 (latency remark)
+% Requirement: scripts/check_hardcoded_refs.sh advisory flagged both as hardcoded numbers, not
+%   \ref{} -- risk being asked about: they'd silently go stale if sections/manifest.json is ever
+%   reordered, since split_sections.py/reassemble.py don't touch prose numbers.
+%
+% What changed:
+%   1. Added \label{sec:introduction}, \label{sec:methodology}, \label{sec:results},
+%      \label{sec:conclusions} immediately after each top-level \section{} (one per section file,
+%      naming convention matches the existing ssec:/sssec:/table: label families already used
+%      throughout methodology.tex/results.tex). Doing all four now (not just the two referenced)
+%      is the generalization the author asked for -- costs nothing and makes any future prose
+%      that needs to point at a whole section able to use \ref{} instead of a new hardcoded number.
+%   2. introduction.tex:15 -- "Section 2"/"Section 3"/"Section 4" -> \ref{sec:methodology} /
+%      \ref{sec:results} / \ref{sec:conclusions} respectively (verified against the actual numbers
+%      before editing: they already matched sections/manifest.json's current order --
+%      Introduction/Methodology/Results/Conclusions -- so this is a robustness fix, not a
+%      correction of a wrong number).
+%   3. methodology.tex:200 -- "Section~3" (referring to the ~47ms decision-latency result) ->
+%      Section~\ref{sec:results} -- same verification, already correct, made robust.
+%   4. Not wrapped in \revblue{} -- zero meaning/wording change, purely mechanical
+%      hardcoded-number -> \ref{} substitution (same class as a typo fix per CLAUDE.md's
+%      revblue convention).
+%
+% Verification: scripts/reassemble.py + scripts/validate_tex.sh + scripts/check_roundtrip.sh all
+%   pass. scripts/check_hardcoded_refs.sh now reports "No hardcoded 'Section N' references found
+%   in sections/*.tex." (previously flagged introduction.tex:15 x3, methodology.tex:200 x1). No
+%   LaTeX toolchain available locally to run compile_pdf.sh -- \ref{} to a \label{} on the same
+%   \section{} that already compiled correctly is a standard, low-risk LaTeX construct.
+% Status: applied.
