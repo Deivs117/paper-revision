@@ -1,0 +1,65 @@
+% R3-06 -- Literature review comparative tables: Basal Ganglia vs CPG vs RL-based action
+% selection (follow-up fixing the gap left by the first pass, patches/r3-06-literature-
+% comparison-table.tex). Audit copy of the change applied to sections/introduction.tex and
+% assets/references.bib. The live files are the source of truth -- this is a record.
+%
+% Why reopened: the first pass converted the existing narrative comparison into a table but
+% left CPG framed purely as a rhythm-generation (execution) mechanism, reusing only citations
+% already present in the surrounding prose. Per the reopened plan
+% (intake/pending/R3-06_literature_review_gait_arbitration_comparison.md), that does not
+% satisfy the reviewer: CPG needs to be genuinely represented as one of the three
+% action-selection paradigms, which required new literature -- CPGs-as-execution and
+% CPGs-as-arbitration are different claims, and the CPG-arbitration column was empty.
+%
+% Search + verification (protocol in the intake doc, Sec 3/Sec 4): searched Google
+% Scholar / Semantic Scholar / arXiv for CPGs that themselves decide discrete gait
+% transitions (not merely execute an externally-selected gait), and for RL policies
+% specifically arbitrating among discrete gaits/modes (not full-pipeline RL). Each
+% candidate cross-checked against two independent sources (publisher page / arXiv +
+% a second index) for title/authors/venue/year before adding to references.bib; no
+% duplicates found against the existing ~50 entries.
+%
+% New references added to assets/references.bib (grouped under "R3-06 -- gait arbitration
+% comparison, added 2026-08-29"):
+%   - Fukui2019VestibularCPG: Fukui, Fujisawa, Otaka, Fukuoka (2019), Robotics and
+%     Autonomous Systems 111:1-19, DOI 10.1016/j.robot.2018.10.002 -- CPG modulated by
+%     vestibular feedback autonomously transitions walk->trot->gallop; same journal as the
+%     present manuscript. Verified: ScienceDirect + independent secondary search.
+%   - Owaki2017SpontaneousGait: Owaki & Ishiguro (2017), Scientific Reports 7:277,
+%     DOI 10.1038/s41598-017-00348-9 -- canonical, highly-cited foundational result on
+%     self-organized CPG gait transitions from local load feedback alone, no preprogrammed
+%     pattern. Verified: Nature.com + PubMed.
+%   - Yang2021GaitTransitions: Yang, Zhang, Coumans, Tan, Boots (2021), CoRL / PMLR v164,
+%     "Fast and Efficient Locomotion via Learned Gait Transitions" -- hierarchical RL policy
+%     selecting among discrete gaits, a cleaner fit for the table's "arbitration" claim than
+%     Lee2024Science (which covers a full locomotion+navigation pipeline, not specifically
+%     mode/gait selection -- Lee2024Science is therefore kept in the unchanged narrative
+%     sentence at introduction.tex line 9 but dropped from this table row). Verified:
+%     arXiv 2104.04644 + PMLR proceedings page.
+%   - Humphreys2025BioInspired: existing citation verified to genuinely fit RL-arbitration
+%     (DRL framework that fluidly switches among multiple gaits in real time) and upgraded
+%     from an arXiv @misc entry to its peer-reviewed venue, Nature Machine Intelligence
+%     (Jul 2025), DOI 10.1038/s42256-025-01065-z.
+% Basal ganglia column: confirmed no new references needed, already well covered.
+%
+% Changes to sections/introduction.tex:
+%   1. Table~\ref{table:action_selection_comparison}'s RL row: representative work
+%      Lee2024Science -> Yang2021GaitTransitions (kept Humphreys2025BioInspired); "Selection
+%      Mechanism" reworded to "Learned high-level policy selecting among discrete gaits/modes".
+%   2. Table's CPG row: "Role in Control Stack" reworded to acknowledge feedback-modulated
+%      variants also arbitrate transitions; "Representative Work" split into
+%      execution-only citations (unchanged: ijspeert2008, Bellegarda2022CPGRL,
+%      Manoonpong2013Neural) vs. the new arbitration-variant citations (Fukui2019VestibularCPG,
+%      Owaki2017SpontaneousGait).
+%   3. The table-introducing sentence (line 9) and the CPG paragraph (line ~30, "For the
+%      rhythmic generation...") both reformulated to state explicitly that feedback-modulated
+%      CPGs CAN arbitrate transitions in other published designs, and why this work instead
+%      keeps that decision in the basal-ganglia stage (a single interpretable locus vs. an
+%      emergent, distributed property) -- this is the "why CPG isn't just a formatting gap"
+%      point the reviewer's comment and the reopened plan both required.
+%   4. Line 9's original threshold-logic/MPC/RL narrative sentence left untouched, per the
+%      plan's explicit instruction not to replace it.
+%
+% All new/changed prose wrapped in \revblue{}. validate_tex.sh / check_roundtrip.sh both pass.
+% Manual author approval for the 4 references obtained before this patch was applied
+% (see PROGRESS.md R3-06 row).

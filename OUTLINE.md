@@ -33,14 +33,15 @@ robots: ANYmal, CERBERUS, CENTAURO, Ascento; basal-ganglia computational models:
 Prescott, Girard, Baston, Prescott2024), the novelty claim, contribution, and a closing paragraph that
 maps the paper's own section structure.
 
-- **R3-06 target, easier than expected**: the literature review **already narratively contrasts**
-  action-selection approaches — "hand-coded threshold logic", MPC, and "end-to-end RL policies [...]
-  as a black-box behavior" are explicitly named as the alternatives to the basal-ganglia approach used
-  here (paragraph starting "A critical observation emerges..."). R3-06 likely just needs this existing
-  comparison **converted into a table**, not written from scratch. One gap: CPG is discussed elsewhere
-  in the intro (next paragraph) only as a *rhythm-execution* layer below BG arbitration, not framed as
-  an alternative *action-selection* paradigm — the table will need to reframe CPG as a third
-  comparison point even though this paper doesn't use it that way itself.
+- **R3-06 closed (2026-08-29)**: the first pass (table conversion reusing only existing citations,
+  CPG left as execution-only) turned out to be insufficient — that framing is exactly what the
+  reviewer's comment rejects. Reopened, then closed for real with 3 new verified references
+  (`Fukui2019VestibularCPG`, `Owaki2017SpontaneousGait` for CPG-as-arbitration; `Yang2021GaitTransitions`
+  for RL-arbitration, replacing `Lee2024Science` in the table row) plus an upgrade of
+  `Humphreys2025BioInspired` to its peer-reviewed venue. `introduction.tex`'s table and CPG paragraph
+  now explain that feedback-modulated CPGs *can* arbitrate transitions in other published designs, and
+  why this work keeps that decision in the basal-ganglia stage instead. See `PROGRESS.md` R3-06 row and
+  `intake/processed/R3-06_literature_review_gait_arbitration_comparison.md`.
 - **Cross-reference risk**: the last paragraph literally says *"Section 2 details the methodology...
   Section 3 presents the experimental results... Section 4 outlines the conclusions"* — hardcoded
   numbers, not `\ref{}`. If R2-03 (or anything else) adds/removes/reorders a top-level `\section`,

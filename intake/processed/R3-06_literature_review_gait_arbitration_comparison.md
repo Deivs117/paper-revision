@@ -216,8 +216,15 @@ los resultados).
 
 ---
 
-## Referencias verificadas (Sebas añade aquí según avanza — no dejar vacío al final del día)
+## Referencias verificadas
 
 | Clave BibTeX propuesta | Título | Columna | DOI/URL fuente primaria | URL fuente de cruce | Nota |
 |---|---|---|---|---|---|
-| *(pendiente de completar)* | | | | | |
+| `Fukui2019VestibularCPG` | Autonomous gait transition and galloping over unperceived obstacles of a quadruped robot with CPG modulated by vestibular feedback | CPG-arbitraje | https://doi.org/10.1016/j.robot.2018.10.002 (Robotics and Autonomous Systems, vol. 111, pp. 1–19, 2019) | https://www.sciencedirect.com/science/article/abs/pii/S0921889018300137 | El CPG decide autónomamente walk→trot→gallop según velocidad/retroalimentación vestibular, sin patrón preprogramado — arbitraje genuino. Misma revista que el manuscrito. |
+| `Owaki2017SpontaneousGait` | A Quadruped Robot Exhibiting Spontaneous Gait Transitions from Walking to Trotting to Galloping | CPG-arbitraje | https://doi.org/10.1038/s41598-017-00348-9 (Scientific Reports 7:277, 2017) | https://pubmed.ncbi.nlm.nih.gov/28325917/ | Paper fundacional muy citado: auto-organización CPG con solo retroalimentación de carga local, sin patrón preprogramado. |
+| `Yang2021GaitTransitions` | Fast and Efficient Locomotion via Learned Gait Transitions | RL-arbitraje | https://arxiv.org/abs/2104.04644 (CoRL 2021 / PMLR v164) | https://proceedings.mlr.press/v164/yang22d/yang22d.pdf | Política jerárquica de alto nivel que selecciona entre marchas discretas — mejor ajuste que `Lee2024Science` (que cubre todo el pipeline de locomoción+navegación, no selección de modo específicamente). |
+| `Humphreys2025BioInspired` *(ya citado, entrada actualizada)* | Learning to Adapt through Bio-Inspired Gait Strategies for Versatile Quadruped Locomotion | RL-arbitraje | https://doi.org/10.1038/s42256-025-01065-z (Nature Machine Intelligence, jul. 2025) | https://arxiv.org/abs/2412.09440 | Confirmado que sí encaja: DRL que cambia fluidamente entre múltiples marchas en tiempo real. Entrada `.bib` actualizada de preprint arXiv a la versión revisada por pares. |
+
+## Estado final (2026-08-29)
+
+Ejecutado en su totalidad: escaneo §1 confirmado sin hallazgos adicionales, 4 referencias verificadas y aprobadas por el autor (Sebas) antes de tocar `references.bib`/`introduction.tex`, tabla y prosa de `introduction.tex` actualizadas, `validate_tex.sh`/`check_roundtrip.sh` pasan. Ver fila `R3-06` en `PROGRESS.md` (`applied`) y `patches/r3-06-cpg-rl-arbitration-refs.tex`.
