@@ -1,0 +1,28 @@
+% PATCH: C-11 -- write the physical interpretation of the per-mode energy profile into the paper
+% Target sections: results.tex (energy paragraph, after tab:mode_steady_state_energy),
+%   conclusions.tex (future-work list)
+% Requirement: intake/processed/R2-04-02_energy_analysis_for_writing.md §3 (added 2026-08-29 by
+%   another contributor, commit 45e3532, after C-09 had already closed the table/paragraph
+%   update) -- §3.1/§3.2 explain the mechanism, §3.3 proposes a future-work line. Neither had
+%   been written into sections/ yet; this patch closes that gap.
+%
+% What changed:
+%   1. results.tex, immediately after tab:mode_steady_state_energy: added one \revblue{} paragraph
+%      giving the mechanical explanation for the ~5x Omnidirectional-vs-Differential-Rolling gap
+%      (propulsive vs. parasitic wheel-floor friction, per wheel orientation) and where Quadrupedal
+%      falls (contact/lift-off impact losses, no continuous lateral friction), plus the mission-
+%      design implication (minimize time in Omnidirectional mode). Condensed §3.1+§3.2 of the
+%      intake doc into a single paragraph rather than two, per the R2-01 streamlining convention
+%      already applied elsewhere in this section.
+%   2. conclusions.tex: added one clause to the existing future-work list (§3.3 of the intake doc)
+%      -- "exploring energy-efficient lateral-locomotion alternatives that reduce the
+%      Omnidirectional mode's parasitic-friction overhead (Section~\ref{sec:results})" -- inserted
+%      into the same \revblue{} sentence rather than as a new sentence, matching that list's
+%      existing structure (one sentence, semicolon-separated items) instead of adding narrative.
+%
+% PROGRESS.md: updated the R2-04 row's physical-interpretation note from "not yet in results.tex
+%   prose" to written/applied; added this row (C-11, status applied).
+%
+% Verification: scripts/reassemble.py + scripts/validate_tex.sh + scripts/check_roundtrip.sh all
+%   pass. No LaTeX toolchain available locally to run compile_pdf.sh.
+% Status: applied.

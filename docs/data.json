@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-29T18:56:32+00:00",
-  "progressLastCommit": "2026-08-29T13:52:18-05:00",
+  "generatedAt": "2026-08-29T19:05:23+00:00",
+  "progressLastCommit": "2026-08-29T13:58:52-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -98,13 +98,13 @@
       "id": "R3-05",
       "reviewer": "3",
       "requirement": "Inspection task performance metrics (tracking accuracy, coverage rate, autonomous re-planning)",
-      "target": "results.tex — no coverage-rate or autonomous-replanning metrics found; genuine gap",
-      "dataSource": "experiments/R3-05-inspection-metrics/",
+      "target": "results.tex — nueva subsección en Simulation Results (Experimento E, obstaculos.world, 20 trials). Datos y análisis completos en intake/pending/R3-05_inspection_handoff.md (§0: instrucciones de escritura; §9: resultados). Métricas principales: SR=85 % (17/20), d\\_final=1.076±0.038 m (target tracking accuracy), ratio N\\_lidar/N\\_mode\\_X≈2.3× (re-enrutamiento reactivo). Coverage rate no medida — argumento de sustitución en el intake doc §1.1. Writing team: leer §0 del intake doc; brevedad prioritaria, una tabla de los 20 ensayos puede ser suficiente sin figura adicional.",
+      "dataSource": "—",
       "category": "Métricas",
       "owner": [
-        "Sam"
+        "Deivi"
       ],
-      "status": "pending",
+      "status": "drafted",
       "patchFile": "—"
     },
     {
@@ -301,6 +301,19 @@
       ],
       "status": "synced-to-overleaf",
       "patchFile": "patches/c-10-section-refs-dynamic.tex"
+    },
+    {
+      "id": "C-11",
+      "reviewer": "—",
+      "requirement": "Wrote the physical interpretation of the per-mode energy profile into the paper, closing the gap left by intake/processed/R2-04-02_energy_analysis_for_writing.md §3 (added 2026-08-29 by another contributor after C-09 had already closed the table/paragraph, so it arrived as unaddressed content in an already-processed doc — merged in via git pull, then written up here). results.tex: one \\revblue{} paragraph after tab:mode_steady_state_energy explaining the ~5× Omnidirectional-vs-Differential-Rolling gap as propulsive (H) vs. parasitic (X) wheel-floor friction depending on wheel orientation, Quadrupedal's intermediate cost as contact/lift-off impact losses, and the mission-design implication (minimize time in Omnidirectional mode). conclusions.tex: added a clause to the existing future-work list — exploring energy-efficient lateral-locomotion alternatives to reduce the Omnidirectional mode's parasitic-friction overhead — matching that list's existing one-sentence, semicolon-separated structure rather than adding a new sentence. reassemble.py/validate_tex.sh/check_roundtrip.sh all pass; no LaTeX toolchain available locally to compile.",
+      "target": "results.tex (energy paragraph, after tab:mode_steady_state_energy), conclusions.tex (future-work list)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-11-omnidirectional-friction-interpretation.tex"
     },
     {
       "id": "C-09",
