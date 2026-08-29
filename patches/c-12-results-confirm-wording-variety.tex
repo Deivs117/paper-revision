@@ -1,0 +1,46 @@
+% C-12 -- Stylistic wording-variety pass on results.tex, requested as a follow-up to C-10's
+% redundancy pass. Not a content or redundancy fix (that was C-10/C-11) -- a pure prose-variety
+% polish. Audit copy of the change applied to sections/results.tex. The live file is the source
+% of truth -- this is a record.
+%
+% Why: grepping results.tex found the word family confirm/confirms/confirming/confirmed used
+% 15 times across 930 lines -- well above the other three sections (conclusions.tex: 3,
+% methodology.tex: 1, introduction.tex: 1). Each instance attaches to a genuinely different
+% finding (checked -- this is not duplicated content, C-10 already covers actual redundancy),
+% but the repeated rhetorical scaffolding ("X, confirming that Y...") reads as formulaic across
+% one continuous section. User explicitly chose this option (of 4 offered: condense the
+% conclusions.tex STN/GPe/GPi paragraph, file a C-xx for an unverified "600ms" claim, this
+% wording-variety pass, or stop) as the one to execute this round.
+%
+% Fix: reworded 8 of the 15 occurrences with verbs matched to each sentence's actual logical
+% relationship -- "demonstrating"/"demonstrated" where the result exhibits a property,
+% "indicating" where it's an inference from a pattern, "showing"/"shows" where it's a direct
+% readout, "verified" where a specific hypothesis was checked. Left 7 occurrences as
+% "confirms/confirming" where that word was already the most natural fit (e.g. the $TR$
+% safety-margin discussion, the classifier evaluation, the architecture-ablation trade-off) --
+% the goal was variety, not eliminating the word.
+%
+% Locations changed (line numbers as of this patch):
+%   L98  "confirming the efficiency..."                  -> "demonstrating the efficiency..."
+%   L172 "confirming the network does not suffer..."      -> "indicating the network does not suffer..."
+%   L277 "confirming that the threshold-based..."         -> "showing that the threshold-based..."
+%   L277 "...confirmed that neural decision dispatch..."  -> "...verified that neural decision dispatch..."
+%        (both in the same paragraph -- the original had "confirming"/"confirmed" twice ~4
+%        sentences apart, the single worst concentration in the section)
+%   L452 "confirming that the mode-switching protocol..." -> "indicating that the mode-switching protocol..."
+%   L696 "confirming reliable, autonomous failure..."     -> "demonstrating reliable, autonomous failure..."
+%   L818 "step response confirms that..."                 -> "step response shows that..."
+%   L818 "...confirming the wheel-driven configuration..." -> "...indicating the wheel-driven configuration..."
+%        (also two in the same paragraph -- the Complex physical-scenario paragraph)
+%
+% Left unchanged (7 remaining "confirm" family words): L174, L260 (figure caption), L363,
+% L553, L571, L580, L841.
+%
+% No claim, number, statistic, or citation changed anywhere -- verified by diff review: every
+% edit is a same-clause verb substitution, nothing else on the line moved. Per the revision-
+% convention hard rule, this qualifies as "a pure prose polish that changes zero meaning" and
+% was left unwrapped in \revblue{} (the explicit named exception to the default-wrap rule);
+% none of the 8 substitutions shifted emphasis or interpretation on review.
+% validate_tex.sh / check_roundtrip.sh both pass. check_target_conflicts.sh results shows no
+% collision with other in-flight rows targeting results.tex (R2-02, R2-04, R3-01, R3-02, R3-04,
+% R3-05, N-01, N-06/07/08 -- none touch these lines).

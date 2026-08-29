@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-29T18:25:03+00:00",
-  "progressLastCommit": "2026-08-29T10:56:15-05:00",
+  "generatedAt": "2026-08-29T18:38:27+00:00",
+  "progressLastCommit": "2026-08-29T13:25:03-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -340,6 +340,19 @@
       ],
       "status": "pending",
       "patchFile": "—"
+    },
+    {
+      "id": "C-12",
+      "reviewer": "—",
+      "requirement": "Follow-up deep-review pass on results.tex, user-selected option (of 4 offered: condense conclusions.tex's STN/GPe/GPi paragraph vs methodology.tex, file a C-xx for an unverified \"600ms\" claim in conclusions.tex, this wording-variety pass, or stop). Pure prose-variety polish, not redundancy: the word family confirm/confirms/confirming/confirmed appeared 15x in results.tex (vs. 1-3x in the other three sections) — reworded 8 of the 15 with verbs matched to each sentence's actual logical relationship (demonstrating/demonstrated, indicating, showing/shows, verified), left the remaining 7 where \"confirms/confirming\" was already the best fit. No claim, number, or citation changed anywhere — pure same-clause verb substitution, confirmed via diff review, left unwrapped in \\revblue{} per the \"pure prose polish, zero meaning change\" exception. The two options NOT selected (STN/GPe/GPi condensation, \"600ms\" traceability row) remain open for a future round if wanted.",
+      "target": "results.tex",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sebas"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-12-results-confirm-wording-variety.tex"
     }
   ]
 }
