@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-28T03:49:41+00:00",
-  "progressLastCommit": "2026-08-27T22:44:44-05:00",
+  "generatedAt": "2026-08-29T18:56:32+00:00",
+  "progressLastCommit": "2026-08-29T13:52:18-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -288,6 +288,32 @@
       ],
       "status": "synced-to-overleaf",
       "patchFile": "patches/c-07-limpieza-editorial-menor.tex"
+    },
+    {
+      "id": "C-10",
+      "reviewer": "—",
+      "requirement": "Generalized fix for scripts/check_hardcoded_refs.sh's advisory: introduction.tex:15 (\"Section 2\"/\"Section 3\"/\"Section 4\" in the roadmap paragraph) and methodology.tex:200 (\"Section~3\" in the decision-latency remark) were hardcoded numbers, not \\ref{} — verified both already matched sections/manifest.json's current order (Introduction/Methodology/Results/Conclusions) before editing, so this is a robustness fix, not a numbering correction. Added \\label{sec:introduction}/\\label{sec:methodology}/\\label{sec:results}/\\label{sec:conclusions} to all four top-level \\section{}s (not just the two referenced — generalizes the fix so future prose never needs a new hardcoded number), then replaced both hardcoded spots with \\ref{}. Not wrapped in \\revblue{} (zero meaning/wording change, mechanical substitution, same class as a typo fix). reassemble.py/validate_tex.sh/check_roundtrip.sh all pass; check_hardcoded_refs.sh now reports no hardcoded Section N references anywhere in sections/*.tex.",
+      "target": "introduction.tex (roadmap paragraph), methodology.tex (decision-latency remark) — plus a \\label{} added to each of introduction/methodology/results/conclusions",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "synced-to-overleaf",
+      "patchFile": "patches/c-10-section-refs-dynamic.tex"
+    },
+    {
+      "id": "C-09",
+      "reviewer": "—",
+      "requirement": "Closed the Omnidirectional-energy placeholder that N-05 left open in tab:mode_steady_state_energy (sections/results.tex): real test-battery data landed (experiments/R2-04-mode-energy/, updated 2026-08-29, intake/processed/R2-04-02_energy_analysis_for_writing.md). Table switched from mixed inter-/intra-segment stats (X was a single N=1 point estimate, no SD, flagged \"preliminary\") to pooled intra-segment power samples for all three modes: Quadrupedal $2.73\\pm2.29$~W, Differential Rolling $1.13\\pm1.08$~W, Omnidirectional $5.71\\pm0.73$~W (N segments unchanged 20/20/1; intra-sample counts 1,873/3,297/194 added as a table footnote). \"Preliminary\" language removed from caption/footnote — hardware has since been decommissioned, this is final. Transition-energy paragraph extended with the upper-bound argument (Quadrupedal$\\leftrightarrow$Differential Rolling is the largest morphological reconfiguration of the three modes, so its $\\leq5.06$~J transition cost upper-bounds any mode transition). reassemble.py/validate_tex.sh/check_roundtrip.sh all pass; no LaTeX toolchain available locally to compile. R2-04-02_energy_analysis_for_writing.md moved to intake/processed/.",
+      "target": "results.tex (transition-energy paragraph, tab:mode_steady_state_energy)",
+      "dataSource": "experiments/R2-04-mode-energy/",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "synced-to-overleaf",
+      "patchFile": "patches/c-09-omnidirectional-energy-final.tex"
     },
     {
       "id": "C-08",
