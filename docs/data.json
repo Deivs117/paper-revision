@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-29T22:45:52+00:00",
-  "progressLastCommit": "2026-08-29T15:56:57-05:00",
+  "generatedAt": "2026-08-29T22:48:37+00:00",
+  "progressLastCommit": "2026-08-29T17:45:52-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -52,7 +52,7 @@
       "owner": [
         "Sam"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/n-05-transition-energy-redaction.tex, patches/c-09-omnidirectional-energy-final.tex, patches/r2-04-mlp-onboard-compute.tex"
     },
     {
