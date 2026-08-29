@@ -5,6 +5,14 @@ implementation details it doesn't fully restate. See `README.md` §8.3.
 
 - **PETER_SIMULATION** — `../PETER_SIMULATION` — firmware, ROS 2 simulation, hardware findings (`Findings/`,
   `Repository/`, `ros2_ws/`). Read-only.
+  - **R3-05 (reactive inspection task, Experiment E) pins branch `sam`, commit `6d5a2e6`**
+    ("feat(exp-e): implementar experimento de inspección reactiva (Reviewer #3.5)"), not `main`.
+    `inspection_recorder.py` and the `familia_e_inspeccion` suite (`test_manager.py`'s
+    `SUITE_INSPECTION`/`_eval_inspection`, `experiments_config.yaml`'s `familia_e_inspeccion` entry)
+    exist only on `sam` as of 2026-08-29 — verified absent on `main`/`dieguito`/`Deiv`. If a future
+    check on `main` doesn't find this code, that's expected; re-check `sam` before assuming it
+    regressed. Delivered results from this run live in `experiments/R3-05-inspection/data/` (see
+    that experiment's own `README.md` for full provenance).
 
 ## Atomic task blocks — when a pending document grows too large
 
