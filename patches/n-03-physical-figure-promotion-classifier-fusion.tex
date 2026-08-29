@@ -1,0 +1,67 @@
+% PATCH: N-03
+% Target section: sections/results.tex (4 physical-scenario figure* blocks, §MLP classifier
+%   figures/prose) + assets/
+% Requirement: intake/pending/R02-01_metric_and_figure_audit.md §9.1-9.3/9.5 ("Informe 1") and
+%   intake/pending/R02-01_data_traceability_and_plotting_plan.md ("Informe 2") — promote the 12
+%   author-approved physical figures from experiments/N-02-physical-figure-regeneration/output/
+%   to assets/, remove the now-redundant *_Real_Plot_2_Basal_Ganglia_Dynamics.png panel (folded
+%   into *_Real_Plot_3, answering the reviewer's "cut repetitive... duplicated neural raster
+%   plots" request), and execute the F-03 fusion (fig5_classifier_comparison.png +
+%   fig6_computational_cost.png -> fig_classifier_tradeoff_fused.png).
+%
+% Fix, in three parts:
+%
+% 1. assets/ (scripts/promote_figure.sh --force for the 12 pre-existing filenames, no --force for
+%    the new fig_classifier_tradeoff_fused.png):
+%    fig1_confusion_matrix.png, fig4_architecture_ablation.png, GRAPH_IMU_real.png,
+%    GRAPH_IMU2_real.png, NEU_EST_UNIG_real.png, NEU_EST_MUL_real.png, NEU_IMU_real.png,
+%    NEU_IMU2_real.png, FigReal_Terrain_Latencies_4Panels.png,
+%    {Appetitive,Aversive,Complex,Obstacle}_Real_Plot_1_Switching_Delay_ECDF.png,
+%    {Appetitive,Aversive,Complex,Obstacle}_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png,
+%    fig_classifier_tradeoff_fused.png (new).
+%    Removed via `git rm` (unreferenced once part 2/3 below landed):
+%    {Appetitive,Aversive,Complex,Obstacle}_Real_Plot_2_Basal_Ganglia_Dynamics.png,
+%    fig5_classifier_comparison.png, fig6_computational_cost.png.
+%
+% 2. sections/results.tex, 4x figure* blocks (Appetitive/Aversive/Complex/Obstacle physical
+%    scenarios): deleted the \begin{subfigure}...\end{subfigure} referencing
+%    *_Real_Plot_2_Basal_Ganglia_Dynamics.png (and its \hfill separator) from each block; the
+%    remaining 2 subfigures re-letter automatically. Rewrote each block's external \caption{} to
+%    drop the "(b) ..." (neural-dynamics) sentence and rename "(c)" to "(b)", describing the
+%    now-composite panel (neural dynamics on top, kinematics on bottom) -- e.g. Appetitive:
+%
+%    Before: "(b) Temporal evolution of the basal ganglia firing variance $Var(z)$. (c) Coupled
+%      Roll and Pitch RMS attitude profile throughout the trial."
+%    After:  "\revblue{(b) Coupled neural and kinematic response: (top) temporal evolution of the
+%      basal ganglia firing variance $Var(z)$ with red/blue stimulus-presence shading; (bottom)
+%      Roll and Pitch RMS attitude profile throughout the trial.}"
+%
+%    Same pattern applied to Aversive/Complex/Obstacle with their own panel descriptions (per
+%    Informe 1 §9.2's suggested text). The 4 \revblue{} prose paragraphs following each figure
+%    were left untouched (already describe the combined content without depending on the removed
+%    subfigure).
+%
+% 3. sections/results.tex, §MLP classifier (F-03 fusion): replaced the two separate figure blocks
+%    (fig5_classifier_comparison.png, \label{fig:classifier_comparison}; and
+%    fig6_computational_cost.png, \label{fig:computational_cost}) with one figure block for
+%    fig_classifier_tradeoff_fused.png under \label{fig:classifier_tradeoff}; updated both
+%    \ref{} call sites (results.tex:607, :616) accordingly. Also corrected the SVM-RBF/Random
+%    Forest F1 scores cited in the same paragraph:
+%
+%    Before: "SVM-RBF ($\text{F1} = 0.900$) and Random Forest ($\text{F1} = 0.995$)"
+%    After:  "SVM-RBF (\revblue{$\text{F1} = 0.857$}) and Random Forest (\revblue{$\text{F1} =
+%      0.947$})"
+%
+%    per the vectorized extraction in experiments/_plotting/vectorized/classifier_fig5.csv
+%    (0.8574/0.9473) -- author confirmed 2026-08-27 that the vectorized/figure values are
+%    correct and the pre-existing prose values were stale (no notebook survives to
+%    independently re-derive them; same "figure was right, text was stale" pattern as M-01-M-04,
+%    see N-04). Did not fuse the two prose paragraphs discussing the figure (Informe 1 explicitly
+%    flagged this as editorial judgment, not systematic) -- left as two paragraphs citing the
+%    same fused figure. Added one sentence connecting the fused figure's model-size panel (c) to
+%    the resource-constrained-hardware argument already present in the surrounding prose (F-03's
+%    "orphaned panel" finding).
+%
+% Verification: scripts/validate_tex.sh and scripts/check_roundtrip.sh both pass after
+%   reassemble.py. No LaTeX toolchain available locally to run compile_pdf.sh.
+% Status: applied

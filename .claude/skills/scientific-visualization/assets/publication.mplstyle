@@ -1,0 +1,84 @@
+# General scientific-publication starting style
+# Usage: plt.style.use('publication.mplstyle')
+#
+# Reviewed with Matplotlib 3.11.1 on 2026-07-23.
+# This is not a journal-compliance profile.
+# Source: https://github.com/K-Dense-AI/scientific-agent-skills/blob/main/skills/scientific-visualization/assets/publication.mplstyle
+# Imported 2026-08-27, wired into experiments/_plotting/style.py.
+
+# Figure properties
+figure.dpi: 100
+figure.facecolor: white
+figure.autolayout: False
+figure.constrained_layout.use: False
+figure.figsize: 3.5, 2.5
+
+# Font properties
+# 2026-08-27: switched from the upstream skill's sans-serif default to serif, matching this
+# project's existing published figures (e.g. assets/fig1_Obstacle_macro.png) and the manuscript's
+# own LaTeX body typeface -- confirmed visually against fig1_Obstacle_macro.png before this change,
+# per the author's explicit request. This is now this project's house default, not an override.
+font.size: 10
+font.family: serif
+font.serif: Times New Roman, Times, DejaVu Serif, Computer Modern Roman
+mathtext.fontset: dejavuserif
+
+# Axes properties
+axes.linewidth: 0.6
+axes.labelsize: 11
+axes.titlesize: 12
+axes.labelweight: normal
+axes.spines.top: False
+axes.spines.right: False
+axes.spines.left: True
+axes.spines.bottom: True
+axes.edgecolor: black
+axes.labelcolor: black
+axes.axisbelow: True
+axes.grid: False
+# Five Okabe-Ito colors that meet 3:1 against white in sRGB.
+# Still add markers, line styles, hatching, or direct labels.
+axes.prop_cycle: cycler('color', ['0072B2', 'D55E00', '009E73', 'CC79A7', '000000'])
+
+# Tick properties
+xtick.major.size: 3
+xtick.minor.size: 2
+xtick.major.width: 0.6
+xtick.minor.width: 0.5
+xtick.labelsize: 10
+xtick.direction: out
+ytick.major.size: 3
+ytick.minor.size: 2
+ytick.major.width: 0.6
+ytick.minor.width: 0.5
+ytick.labelsize: 10
+ytick.direction: out
+
+# Line properties
+lines.linewidth: 1.5
+lines.markersize: 4
+lines.markeredgewidth: 0.5
+
+# Legend properties
+legend.fontsize: 10
+legend.frameon: False
+legend.loc: best
+
+# Save properties
+savefig.dpi: 300
+savefig.format: pdf
+# "tight" changes physical output dimensions; request it explicitly if wanted.
+savefig.bbox: standard
+savefig.pad_inches: 0.05
+savefig.transparent: False
+savefig.facecolor: white
+savefig.edgecolor: white
+
+# Editable TrueType text in PDF/PS. SVG text stays as text and is not embedded.
+pdf.fonttype: 42
+ps.fonttype: 42
+svg.fonttype: none
+
+# Image properties
+image.cmap: viridis
+image.aspect: auto

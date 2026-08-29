@@ -29,6 +29,14 @@ doesn't exist yet (common for write-ups of a teammate's simulation/hardware work
 to `experiments/<id>-<slug>/` and follow README.md §9 before touching `sections/`. `git mv` the doc to
 `intake/processed/` once every change it produced has reached `applied` or later.
 
+**Any analysis, audit, or proposed plan of action you produce — regardless of format (markdown, PDF, notebook)
+— goes into `intake/pending/`. Never create a new top-level folder for this (e.g. a `reports/` directory at the
+repo root).** `intake/` is the only place raw analysis gets computed, documented, and tracked through to
+`processed/` — a report sitting anywhere else is invisible to that pipeline and to anyone using `PROGRESS.md`/
+`OUTLINE.md` to understand repo state. If a large `intake/pending/` document ends up covering several unrelated
+task families, split it per `intake/SOURCES.md`'s "Atomic task blocks" convention instead of leaving it
+monolithic or moving it elsewhere.
+
 ## Hard rules
 
 - Never edit `source/main_monolithic.tex` by hand. It is generated: written by `scripts/pull_from_overleaf.sh`

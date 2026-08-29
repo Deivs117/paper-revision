@@ -371,7 +371,7 @@ Commit convention: stage the modified `sections/<slug>.tex` (and/or `assets/` fi
 The entry point for anything that isn't a reviewer requirement: context on a new system a teammate built (to be written up in, say, the Results section), a loose list of corrections, notes copied from elsewhere. This is the repo owner's primary way of feeding work into the pipeline.
 
 #### 8.1 Dropping in a document
-Place a markdown file in `intake/pending/`. No fixed format required — it can be freeform notes, a bullet list of corrections, a teammate's existing doc pasted in as-is. If it references material from another repo (e.g. firmware/simulation findings), say so in the doc and/or check `intake/SOURCES.md` for the right path — don't inline large external content, point at it.
+Place the document in `intake/pending/`. No fixed format required — freeform notes, a bullet list of corrections, a teammate's existing doc pasted in as-is, or a non-text file (e.g. a PDF report) if that's the source format — but the location is not optional: **`intake/pending/` is the only place a Claude session should ever put a new analysis, audit, or proposed plan of action.** Never create a separate top-level folder for this (a `reports/` directory at the repo root, for instance) — anything outside `intake/` is invisible to the triage flow below and to anyone reading `PROGRESS.md`/`OUTLINE.md` to understand what's tracked. If it references material from another repo (e.g. firmware/simulation findings), say so in the doc and/or check `intake/SOURCES.md` for the right path — don't inline large external content, point at it. If a document grows to cover several unrelated task families, split it per `intake/SOURCES.md`'s "Atomic task blocks" section rather than letting one file (or two cross-referencing files) become unwieldy.
 
 #### 8.2 Processing a pending document
 1. Read `OUTLINE.md` first (§4) for global context — same discipline as any other patch.
@@ -443,6 +443,17 @@ Four smaller gaps, all low-risk given a single primary writer, addressed with li
 Prose like *"Section 2 details the methodology"* (not a real `\ref{}`) goes stale silently if the top-level `\section{}` structure changes — e.g. R2-03 promoting Limitations to its own section would shift every number after it. Auto-fixing this is unsafe (a script can't tell whether "Section 2" still means the same thing after a restructure), so this is **detection only**: greps `sections/*.tex` for `Section(s) <number>` patterns and prints file:line matches. Always exits 0 — never blocks anything.
 
 Wired into `scripts/push_to_overleaf.sh` as an unconditional advisory step (prints after the validate/compile step, before mirroring) so it surfaces on every push without gating it. Known instances as of 2026-08-25: `introduction.tex` ("Section 2/3/4" in the closing paragraph) and `methodology.tex` ("Section~3" in the basal-ganglia justification paragraph) — see `OUTLINE.md`.
+
+**`scripts/check_word_growth.sh` — verbosity/redundancy tripwire, same advisory pattern, wired
+right after it in `push_to_overleaf.sh`.** Referee 2 originally asked to cut repetitive content
+(addressed once in full by `R2-01`, `results.tex` 9668→8524 words across a 4-section sweep); every
+`N-xx`/`R2-xx`/`R3-xx` row landing since then adds prose back, some of it genuinely new required
+content, some of it a risk of quietly re-introducing the same restatement problem. This script does
+**not** judge redundancy (that's semantic, needs a human/LLM re-read) — it just prints each
+`sections/*.tex` file's current raw `wc -w` against its word count at `R2-01`'s closing commit
+(`51c07b4`), so growth is visible on every push instead of only being discovered at final compile.
+Always exits 0. A growing `results.tex` is expected and fine on its own; use it as a prompt to ask
+"is this growth new content or restatement?", not as a fail condition.
 
 #### 10.2 Pre-commit hook — `scripts/hooks/pre-commit` + `scripts/install_hooks.sh`
 

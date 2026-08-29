@@ -1,0 +1,61 @@
+% PATCH: N-05 (also closes the drafted part of R2-04)
+% Target section: sections/results.tex (FigReal_Morphological_Transition_Energy.png caption +
+%   energy paragraph, new tab:mode_steady_state_energy)
+% Requirement: intake/pending/R02-01_metric_and_figure_audit.md §9.7 and §9.9 ("Informe 1") --
+%   both explicitly marked "AUTORIZADA PARA EJECUTAR (2026-08-27)" by the author.
+%
+% §9.7 -- FigReal_Morphological_Transition_Energy.png (transition energy, previously rejected):
+%   The figure was rewritten (experiments/_plotting/builders/energy_transition.py) to derive
+%   power from |current_A| x 7.2V (fixed NiMH pack voltage, confirmed reliable by the hardware
+%   team) integrated over the pre-calibrated electromechanical coupling window (2.92s for
+%   Quadrupedal->Differential Mobile, 1.56s for the reverse), across 35 individually-detected
+%   robot_cmd structural-command transitions -- not an inferred power-peak against no verified
+%   event, which is why the prior version was rejected. Promoted with the same filename
+%   (scripts/promote_figure.sh ... --force).
+%
+%   Caption (results.tex ~894):
+%   Before: "Energetic footprint of physical morphological transitions. Integrated INA power
+%     telemetry during the Quadrupedal -> Differential Mobile and Differential Mobile ->
+%     Quadrupedal electromechanical coupling windows, across all hardware replicates."
+%   After:  \revblue{"Morphological transition energy per direction, derived from
+%     |I_current| x 7.2V (fixed NiMH pack voltage) integrated over the pre-calibrated
+%     electromechanical coupling window (2.92s / 1.56s, matching Fig.~\ref{fig:FourPanelLatencies}),
+%     across N=16 (Quadrupedal->Differential Mobile) and N=19 (Differential Mobile->Quadrupedal)
+%     individually detected structural-command transitions. Error bars: +-1 SD; the
+%     between-direction difference is not statistically significant (Welch's t~=1.18)."}
+%
+%   Paragraph (results.tex ~899): the old text claimed an "invariant energetic cost" for
+%   Quad->Diff and "greater dispersion" for Diff->Quad, with a causal explanation (river-pebble
+%   terrain, wheel slippage) written for the previously-rejected figure. The real numbers
+%   contradict this directly -- SD is *higher* in Quad->Diff (2.93 J) than in Diff->Quad
+%   (1.19 J), the opposite of the old claim -- so the causal narrative could not be kept; the
+%   paragraph was rewritten around the real figures (5.06+-2.93 J, N=16; 4.13+-1.19 J, N=19;
+%   Welch t~=1.18, not significant), with the observed extra dispersion in Quad->Diff stated
+%   without attributing an unverified mechanical cause (per §9.7 step 3's explicit instruction).
+%
+% §9.9 -- R2-04 steady-state per-mode energy (author decision: table, not figure -- a 3-category
+%   bar chart with one N=1 category communicates poorly, and a table is far cheaper to update
+%   once real Omnidirectional data lands):
+%   Added \label{tab:mode_steady_state_energy} immediately after the (now-rewritten) transition
+%   energy paragraph, same subsection ("ENERGY CONSUMPTION"), same tabularx style as
+%   tab:consolidated_physical_metrics. Quadrupedal (C, N=20, 1.94+-1.77 W) and Differential
+%   Mobile (H, N=20, 1.36+-0.98 W) are real replicated measurements from
+%   experiments/R2-04-mode-energy/; Omnidirectional (X) is a single-segment N=1 preliminary
+%   estimate (5.71 W, no SD), marked as such in the caption and a table footnote -- per the
+%   hardware team's 2026-08-27 confirmation that a dedicated Omnidirectional test battery is
+%   coming, this row is explicitly NOT final. Appended one sentence to the transition-energy
+%   paragraph connecting the table to the reviewer's explicit request, without claiming a
+%   significant Quadrupedal-vs-Differential difference (Welch t~=1.26, not significant).
+%
+% PROGRESS.md: added row N-05 (this patch, status applied) for the §9.7 work; updated the
+%   existing R2-04 row's Data source/Target section(s)/Patch file, status raised to `drafted`
+%   (not `applied` -- the Omnidirectional row is a placeholder pending real replicated data, per
+%   §9.9 step 3's explicit instruction not to close R2-04 while X stays N=1). When the real
+%   Omnidirectional data lands: re-run experiments/R2-04-mode-energy/scripts/build_mode_energy.py,
+%   update the table's X row and drop the preliminary footnote, and log that update as a new
+%   `C-xx` correction row (not a new `N-xx`) per §9.9 step 4 -- only then does R2-04 move to
+%   `applied`.
+%
+% Verification: scripts/validate_tex.sh and scripts/check_roundtrip.sh both pass after
+%   reassemble.py. No LaTeX toolchain available locally to run compile_pdf.sh.
+% Status: applied (N-05); R2-04 stays `drafted` pending real Omnidirectional data (see above).

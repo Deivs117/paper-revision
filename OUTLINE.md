@@ -115,11 +115,20 @@ neuronal control circuits, (4) physical construction. Four subsections:
   compensating measured servo sag under load. Plus a one-sentence mention of four supporting
   safeguards (per-actuator PWM calibration, joint-angle saturation, IK-feasibility rejection).
   **Deliberately excludes** the firmware's IMU-based tilt safety-stop and its supporting
-  complementary-filter/bias-nulling — `USE_IMU=0` by default in that firmware, unconfirmed whether
-  it was active during the real-robot experiments reported in results.tex (pending confirmation from
-  the firmware's developer, Sam) — revisit and potentially add once confirmed. Also excludes
-  `IMU_GAIN_X`/`IMU_GAIN_Y` — defined in that firmware's config but never referenced anywhere, i.e.
-  designed but not implemented, not a real technique to cite.
+  complementary-filter/bias-nulling. **Confirmed closed 2026-08-26** by the firmware's developer
+  (Sam, 7 questions answered): `USE_IMU` was **not** active during the real-robot tests reported in
+  results.tex — the safety-stop/tilt-correction path never ran on the hardware that produced the
+  paper's results, so citing it would misrepresent what actually executed. Exclusion is therefore
+  permanent, not pending. Also excludes `IMU_GAIN_X`/`IMU_GAIN_Y` (confirmed: defined but never
+  wired to anything, in any branch) and `IMU_MAX_TILT=25°` (confirmed: an empirical no-grip-loss
+  margin, but moot since the IMU path never ran). Sam also confirmed: `TIBIA_BIAS_DEG=22°` is
+  purely empirical (measured servo sag under load-bearing angles, not derived); `REST_X=0.00f` is
+  an intentional pose trade-off that did not affect the reported results (not the bug it looks
+  like from the code comment); no additional hardware-level compensation (current sensing, torque
+  limiting, PID retuning) was applied outside this code; and `Peter_arduino/src` (not `ver_def/`)
+  is confirmed as the exact firmware version that ran the reported tests. None of these add new
+  citable techniques — techniques (1)-(3) already in ssec:ServoCompensation remain the full,
+  confirmed set.
 - Confirmed by full read: **no mention of FSM (Finite State Machine) anywhere in this file** —
   R2-02's baseline comparison is entirely new content, not a rewrite of existing material.
 

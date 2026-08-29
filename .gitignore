@@ -8,6 +8,9 @@
 *.synctex.gz
 /build/
 experiments/*/data/
+experiments/.venv_plotting/
+__pycache__/
+*.pyc
 
 # assets/ mirrors the Overleaf project 1:1 and legitimately contains PDF figures/graphics (e.g.
 # GRAPHICAL_ABSTRACT.pdf) — the *.pdf rule above is meant for compile byproducts (build/paper.pdf),

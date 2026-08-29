@@ -1,0 +1,34 @@
+{
+  "trial_index": 6,
+  "suite_name": "familia_a_apetitivo",
+  "verdict": "SUCCESS",
+  "seed_info": {
+    "trial_index": 6,
+    "noise_level_idx": 0,
+    "perturbations": {
+      "stimulus_x": {
+        "base": 4.0,
+        "delta": -0.0438
+      },
+      "stimulus_y": {
+        "base": -2.0,
+        "delta": 0.0788
+      }
+    }
+  },
+  "final_metrics": {
+    "sim_time_s": 37.736,
+    "tresponse": -5.4103,
+    "tswitch": 0.0,
+    "roll_rms": 0.5367,
+    "pitch_rms": 1.0704,
+    "noise_idx": 0,
+    "exp_latency": 0.1026,
+    "exp_lambda": 1.0,
+    "tr": 0.0,
+    "mode": "H",
+    "bb_red": 0.0,
+    "bb_blue": 41538.0,
+    "bb_green": 0.0
+  }
+}

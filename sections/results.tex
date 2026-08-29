@@ -6,7 +6,7 @@ Initially, simulations of the platform were performed in the Gazebo environment 
 
 In the first phase, the robot's behavior was analyzed under a single type of stimulus, following an approach similar to that presented by \citet{sarvestani2013computational}. Then, to assess performance in more complex environments, the platform was exposed to multiple stimuli of different modalities. Simulations were performed to verify that the selected gait corresponded to the most appropriate mode based on the perceived terrain. This stage emphasized the analysis of neuronal responses in the obstacle sensory module, the locomotor decision network, and the locomotion-mode decision network.
 
-Additionally, to contextualize the simulation within its intended inspection application domain, a Gazebo environment inspired by the spatial layout of an industrial warehouse was constructed (Figure~\ref{fig:depot_simulation}); its scope and caveats as a symbolic, non-certified test arena are discussed in Section~\ref{ssec:Limitations}.
+Additionally, to contextualize the simulation within its intended inspection application domain, a Gazebo environment inspired by the spatial layout of an industrial warehouse was constructed (Figure~\ref{fig:depot_simulation}); its scope and caveats as a symbolic representation rather than a certified test arena are discussed in Section~\ref{ssec:Limitations}.
 
 \begin{figure}[t]
     \centering
@@ -74,7 +74,7 @@ The performance of the platform was evaluated under isolated sensory stimuli to 
     \label{fig:appetitive_results}
 \end{figure*}
 
-\textbf{Appetitive Targeting (see Figure~\ref{fig:appetitive_results}):} The appetitive module shows high resilience under perceptual uncertainty across all noise levels ($\sigma \in [0, 4]$): the neural controller dampens stochastic disturbances, decision latency stays clamped at $\approx 47$~ms, and gait generation operates independently of visual tracking variance (see Table~\ref{tab:consolidated_simulation_metrics} for completion-time and attitude statistics).
+\textbf{Appetitive Targeting (see Figure~\ref{fig:appetitive_results}):} The appetitive module shows high resilience under perceptual uncertainty across all noise levels ($\sigma \in [0, 4]$): the neural controller dampens stochastic disturbances, and gait generation operates independently of visual tracking variance (see Table~\ref{tab:consolidated_simulation_metrics} for completion-time and attitude statistics). \revblue{Decision latency itself is noise-dependent rather than constant, remaining near-instantaneous at $\sigma = 0$ ($\approx 60$~ms mean) and rising to the $1.6$--$2.0$~s range as sensory noise increases (panel C of Figure~\ref{fig:appetitive_results}).}
 
 \begin{figure*}[t]
     \centering
@@ -175,7 +175,7 @@ Table~\ref{tab:consolidated_simulation_metrics} consolidates these performance m
 
 \begin{table}[htbp]
 \centering
-\caption{Consolidated Quantitative Performance Metrics. Latency remained constant at $\approx 47$~ms.}
+\caption{\revblue{Consolidated Quantitative Performance Metrics.}}
 \label{tab:consolidated_simulation_metrics}
 % Definimos columnas centradas en X
 \begin{tabularx}{\textwidth}{l >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
@@ -194,7 +194,7 @@ Complex Navigation   & 100.0\% & 58.41 $\pm$ 3.12 & 0.58 $\pm$ 0.03 & 1.12 $\pm$
 
 For the experiments involving variable and unstable topographies in simulation, a three‐section terrain map was designed, as shown in Figure~\ref{fig:TERR_IMU}. In the first simulated experiment, the robot begins moving forward driven by the hunting instinct encoded in the locomotor decision network. Subsequently, the transition from regular to rough terrain is introduced to analyze the standard deviation of the acceleration along the $Z$ axis throughout the simulation. In the physical robot, this information corresponds to the MLP outputs: $N_{0}$ (flat-terrain probability), $N_{1}$ (inclined-terrain probability), and $N_{2}$ (binary stagnation indicator). 
 
-In a second test, the transition from flat terrain to an inclined slope is defined to evaluate the platform’s response to a sudden change in ground inclination. In this configuration, both in Gazebo and in the real robot, an aversive stimulus is positioned behind the platform; according to the previously defined behaviors, the robot must avoid it by switching to the quadrupedal mode. However, due to the slope, the platform adopts the differential rolling mode, achieving a more stable and efficient displacement. 
+In a second test, the transition from flat terrain to an inclined slope is defined to evaluate the platform’s response to a sudden change in ground inclination. In this configuration, both in Gazebo and in the real robot, an aversive stimulus is positioned behind the platform; according to the previously defined behaviors, the robot must avoid it by switching to the quadrupedal mode. However, due to the slope, the platform adopts the differential rolling mode, achieving a more stable and efficient displacement. \revblue{Note that while the simulated sloped terrain visually approximates a continuous curved trajectory in the Gazebo environment, the digital model (STL mesh) discretizes continuous geometry into planar facets. Consequently, the IMU telemetry in simulation captures these piecewise linear segments during motion, manifesting as alternating phases of dynamic angular change and transient stationary plateaus in the pitch response plots.}
 
 In the first simulation experiment shown in Figure~\ref{fig:RES_IMU}, the platform transitions immediately after entering the unstable terrain, adopting an appropriate gait to maintain efficient displacement. This behavior is reflected in the neural responses (Figure~\ref{fig:NEU_IMU}), where at 16 seconds, the unit $X_{0}$ shows the highest activity due to the large variation in vertical acceleration, a direct indicator of terrain irregularities. This phenomenon is also visible in Figure~\ref{fig:GRAPH_IMU}, where the standard deviation of the robot's vertical acceleration is plotted over time. The graph highlights the instant when this value exceeds the 3.7 threshold defined in the neural dynamics.
 
@@ -220,8 +220,6 @@ In the first simulation experiment shown in Figure~\ref{fig:RES_IMU}, the platfo
 \end{figure}
 
 For the second stability test in simulation, the neural activities of the gait-mode control structure were recorded (Figure~\ref{fig:NEU_IMU2}b). At $t=41$~seconds, neuron $X_{1}$---associated with detecting an inclination greater than five degrees---excites unit $X_{15}$, issuing the command to transform into quadrupedal mode. The transition during locomotion is illustrated in Figure~\ref{fig:RES_IMU2}, with snapshots of the platform posture taken every 12 seconds from a lateral perspective. It is important to highlight the neural responses shown in Figure~\ref{fig:NEU_IMU2}a, where the persistent activation of neuron $X_{4}$ produces sustained activity in neurons $X_{11}$ and $X_{12}$, which in turn drive neuron $X_{13}$ and ultimately generate the forward escape behavior. In Figure~\ref{fig:GRAPH_IMU2}, the data recorded by the inertial sensor are shown.
-
-Note that while the simulated sloped terrain visually approximates a continuous curved trajectory in the Gazebo environment, the digital model (STL mesh) discretizes continuous geometry into planar facets. Consequently, the IMU telemetry in simulation captures these piecewise linear segments during motion, manifesting as alternating phases of dynamic angular change and transient stationary plateaus in the pitch response plots.
 
 \begin{figure}[t]
     \centering
@@ -259,26 +257,26 @@ Note that while the simulated sloped terrain visually approximates a continuous 
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{FigB_Decision_Delay.png}
-        \caption{Empirical Cumulative Distribution Functions (ECDF) of neural response latency ($T_{\text{response}}$, Panel A) and mechanical transition time ($T_{\text{switch}}$, Panels B--C) across 15 randomised trials per test. Heaviside step responses at $T_{\text{response}} = 0.0\,\text{s}$ and $T_{\text{switch}} = 0.3\,\text{ms}$ confirm absolute temporal determinism and the complete absence of control chattering across both terrain types.}
+        \caption{\revblue{Empirical Cumulative Distribution Functions (ECDF) of neural response latency ($T_{\text{response}}$, Panel A) and mechanical transition time ($T_{\text{switch}}$, Panels B--C) across 15 randomised trials per test. A perfect Heaviside step response at $T_{\text{response}} = 0.0\,\text{s}$ (Panel A) confirms deterministic neural decision dispatch; the mechanical hand-off (Panels B--C) is sub-millisecond in the majority of trials but shows a long tail to $\approx 0.6\,\text{s}$ in 2/15 rugged-terrain trials (Panel B) and a five-to-six-step spread across $0.9$--$1.8\,\text{ms}$ on the inclined slope (Panel C).}}
         \label{fig:decision_delay}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{FigC_Terrain_Adaptability.png}
-        \caption{Kinematic phase-space scatter plot of chassis Roll RMS vs. Pitch RMS for all 30 trials. Blue squares (Rugged Terrain) and orange triangles (Inclined Slope) form two perfectly non-overlapping clusters, demonstrating that the neural controller synthesises a distinct, terrain-specialised locomotive signature for each environment.}
+        \caption{\revblue{Kinematic phase-space scatter plot of chassis Roll RMS vs. Pitch RMS for all 30 trials. Blue squares (Rugged Terrain) and orange triangles (Inclined Slope) separate clearly along the Pitch RMS axis, with overlapping Roll RMS ranges, demonstrating that the neural controller synthesises a distinct, terrain-specialised locomotive signature for each environment.}}
         \label{fig:terrain_adaptability}
     \end{subfigure}
     \caption{Quantitative performance profiles for the variable-topography experimental battery (15 trials each terrain type). (A)~Dynamic Stability and Tipover Risk profile aligned at the mode-switch instant. (B)~Decision Delay and Temporal Consistency via ECDF analysis of neural latency and mechanical transition time. (C)~Terrain Adaptability Phase Space mapping chassis Roll RMS against Pitch RMS. Together, these three profiles provide the quantitative evidence base for evaluating the bio-inspired controller's safety, speed, and kinematic adaptability under stochastic variable-topography conditions.}
     \label{fig:variable_topo_metrics}
 \end{figure*}
 
-To quantitatively evaluate the dynamic stability and structural safety of the hybrid platform during high-transient morphological changes, the Tipover Risk ($TR$) index was tracked and unified across 15 randomised experimental runs for both rugged terrain and inclined slope, as depicted in Fig.~\ref{fig:stability_profile}. The $TR$ metric was formally derived from the McGhee--Frank Normalised Stability Margin as $TR = 1 - SM/r_{in}$, where $SM$ is the shortest horizontal distance between the Centre of Mass projection and the support polygon boundary, and $r_{in}$ is the inradius of that polygon. Values approaching $TR = 0.0$ represent maximum structural safety, while $TR = 1.0$ marks the critical overturning threshold. By aligning the temporal records around the exact neural mode-switch instant ($t = 0.0\,\text{s}$), the physical efficacy of the bio-inspired controller was made directly observable. In the rugged terrain, the platform maintained a bounded risk profile with a mean of $\mu_{TR} \approx 0.42$; the characteristic sawtooth oscillations reflected the periodic contraction of the support polygon as individual legs were lifted during each quadrupedal gait cycle. In the inclined slope, a severe monotonic risk escalation was recorded as the platform backed onto the inclined slope in standard quadrupedal configuration, reaching a dangerous peak of $TR \approx 0.58$---a $45\%$ increase relative to its initial baseline. Precisely at $t = 0.0\,\text{s}$, the neural network commanded a transition to Hybrid Mode, which expanded the support polygon and lowered the centre of mass; this produced an immediate drop in tipover vulnerability back to a safe baseline of $TR \approx 0.42$. Across all 30 trials, the $\pm 1\sigma$ statistical envelope never crossed the critical overturning boundary ($TR = 1.0$), providing empirical validation of the safety and repeatability of the control architecture under stochastic noise conditions.
+To quantitatively evaluate the dynamic stability and structural safety of the hybrid platform during high-transient morphological changes, the Tipover Risk ($TR$) index was tracked and unified across 15 randomised experimental runs for both rugged terrain and inclined slope, as depicted in Fig.~\ref{fig:stability_profile}. The $TR$ metric was formally derived from the McGhee--Frank Normalised Stability Margin as $TR = 1 - SM/r_{in}$, where $SM$ is the shortest horizontal distance between the Centre of Mass projection and the support polygon boundary, and $r_{in}$ is the inradius of that polygon. Values approaching $TR = 0.0$ represent maximum structural safety, while $TR = 1.0$ marks the critical overturning threshold. By aligning the temporal records around the exact neural mode-switch instant ($t = 0.0\,\text{s}$), the physical efficacy of the bio-inspired controller was made directly observable. \revblue{In both terrains, the platform maintained a consistently bounded risk profile around $\mu_{TR} \approx 0.58$--$0.60$ (rugged terrain mean $0.600$; inclined slope mean $0.593$), well below the critical overturning threshold throughout the recorded window. Rather than a monotonic escalation, the rugged-terrain trace showed an isolated transient spike reaching $TR \approx 0.77$ shortly before the mode-switch instant ($t \approx -1.3$ to $-0.5\,\text{s}$), consistent with the periodic contraction of the support polygon as individual legs were lifted during the quadrupedal gait cycle, before settling back to the $\approx 0.59$ baseline across the transition at $t = 0.0\,\text{s}$. The inclined-slope trace remained flat at $TR \approx 0.59$ across the entire window, with no escalation or drop coincident with the mode switch. Across all 30 trials, the $\pm 1\sigma$ statistical envelope never crossed the critical overturning boundary ($TR = 1.0$), providing empirical validation of the safety and repeatability of the control architecture under stochastic noise conditions.}
 
 
-To quantify the computational efficiency and temporal determinism of the proposed bio-inspired control architecture under stochastic conditions, the Empirical Cumulative Distribution Functions (ECDF) of the neural response latency ($T_{\text{response}}$) and the mechanical state-switching delay ($T_{\text{switch}}$) were analysed across 15 randomised trials for both experimental terrains, as illustrated in Fig.~\ref{fig:decision_delay}. Both ECDF distributions collapsed into a perfect Heaviside step function: the neural latency was $T_{\text{response}} = 0.0\,\text{s}$ for both terrain types, confirming that the threshold-based basal ganglia selection logic filtered out the injected sensor noise and dispatched the correct locomotion command within the same simulation frame as the environmental disturbance. The mechanical transition latency was equally deterministic, remaining invariant at $T_{\text{switch}} = 0.3\,\text{ms}$ for both terrain types. This value corresponded precisely to a single discrete update cycle of the ROS~2 Control loop operating at $3.3\,\text{kHz}$, proving that the software architecture completed the full locomotion-matrix hot-swap in a single integration step without introducing computational overhead or thread-blocking delays. The absolute alignment of both ECDF step responses across all 30 independent trials confirmed that the controller achieved structurally deterministic switching behaviour, completely free from chattering effects.
+To quantify the computational efficiency and temporal determinism of the proposed bio-inspired control architecture under stochastic conditions, the Empirical Cumulative Distribution Functions (ECDF) of the neural response latency ($T_{\text{response}}$) and the mechanical state-switching delay ($T_{\text{switch}}$) were analysed across 15 randomised trials for both experimental terrains, as illustrated in Fig.~\ref{fig:decision_delay}. Both ECDF distributions collapsed into a perfect Heaviside step function: the neural latency was $T_{\text{response}} = 0.0\,\text{s}$ for both terrain types, confirming that the threshold-based basal ganglia selection logic filtered out the injected sensor noise and dispatched the correct locomotion command within the same simulation frame as the environmental disturbance. \revblue{The mechanical transition latency was likewise sub-millisecond in the vast majority of trials, but not fully invariant across terrain types. On rugged terrain, $T_{\text{switch}}$ fell within $0.2$--$0.7\,\text{ms}$ for 13 of 15 trials (a single discrete update cycle of the ROS~2 Control loop operating at $3.3\,\text{kHz}$), while the remaining 2 trials ($13.3\%$) exhibited a long tail out to $\approx 0.6\,\text{s}$, indicating that occasional trials require additional update cycles to complete the locomotion-matrix hot-swap under this terrain's contact conditions. On the inclined slope, $T_{\text{switch}}$ spread across $0.9$--$1.8\,\text{ms}$ in a five-to-six-step staircase rather than collapsing onto a single value, reflecting genuine trial-to-trial dispersion of a comparable order of magnitude rather than a perfectly deterministic delay. The absolute alignment of the $T_{\text{response}}$ ECDF step response across all 30 independent trials confirmed that neural decision dispatch itself remained structurally deterministic; the mechanical hand-off exhibits this small residual variability, including the rugged-terrain long tail, which should be read as a bounded, terrain-dependent effect rather than chattering.}
 
-To quantitatively assess the adaptive morphology and environmental specialisation of the control architecture, the steady-state kinematic behaviors of both experimental terrains were mapped onto a phase space defined by the chassis Roll RMS ($\phi_{\text{RMS}}$) and Pitch RMS ($\theta_{\text{RMS}}$) across all 30 successful trials, as shown in Fig.~\ref{fig:terrain_adaptability}. The results revealed a clear orthogonal phase separation, with the data forming two tightly bound, non-overlapping clusters. The rugged terrain converged into a high-roll, low-pitch operational zone ($\mu_{\phi} \approx 1.36^{\circ}$, $\mu_{\theta} \approx 1.25^{\circ}$), capturing the kinematic footprint of asymmetric foot-ground interactions on uneven stones while maintaining a longitudinally level chassis. Conversely, the inclined slope clustered exclusively in a high-pitch, low-roll region ($\mu_{\phi} \approx 0.43^{\circ}$, $\mu_{\theta} \approx 6.95^{\circ}$). This spatial distribution demonstrated the geometric adaptation triggered by the Hybrid morphological transformation: during slope ascent, the chassis aligned longitudinally with the ramp gradient (high Pitch RMS), while the deployment of the coaxial wheel base widened the lateral support polygon, reducing parasitic roll disturbances by $68.3\%$ relative to the rugged terrain baseline. The complete statistical separation between both domains ---with zero cluster overlap across all 30 trials--- provided definitive empirical evidence that the bio-inspired network selected a distinct, repeatable, and terrain-specialised kinematic posture for each environmental condition, rather than applying a generic, environment-agnostic control law.
+To quantitatively assess the adaptive morphology and environmental specialisation of the control architecture, the steady-state kinematic behaviors of both experimental terrains were mapped onto a phase space defined by the chassis Roll RMS ($\phi_{\text{RMS}}$) and Pitch RMS ($\theta_{\text{RMS}}$) across all 30 successful trials, as shown in Fig.~\ref{fig:terrain_adaptability}. \revblue{The results revealed a clear separation in Pitch RMS between the two terrains, with partial overlap in Roll RMS. The rugged terrain converged into a low-to-moderate roll, low-pitch operational zone ($\mu_{\phi} \approx 1.59^{\circ}$, $\mu_{\theta} \approx 1.67^{\circ}$), capturing the kinematic footprint of asymmetric foot-ground interactions on uneven stones while maintaining a largely level chassis. Conversely, the inclined slope clustered in a higher-pitch region with comparable roll magnitude ($\mu_{\phi} \approx 1.47^{\circ}$, $\mu_{\theta} \approx 2.29^{\circ}$). This spatial distribution reflects the geometric adaptation triggered by the Hybrid morphological transformation: during slope ascent, the chassis aligned longitudinally with the ramp gradient (higher Pitch RMS), while the deployment of the coaxial wheel base kept the lateral support polygon wide enough that roll disturbances remained similar in magnitude to the rugged-terrain baseline rather than being further suppressed. The Pitch-RMS separation between both domains provides empirical evidence that the bio-inspired network selected a distinct, repeatable, terrain-specialised kinematic posture for each environmental condition, rather than applying a generic, environment-agnostic control law, while the Roll-RMS overlap indicates that lateral stabilisation was comparably effective across both terrains rather than being terrain-specific.}
 
 \subsubsection{Quantitative Stability Analysis of Locomotion Mode Transitions}
 \label{sssec:transition_stability}
@@ -495,9 +493,7 @@ In the obstacle-evasion response, the neuronal activations measured in the contr
 
 During the 5 seconds corresponding to the locomotion-mode change-from differential drive to omnidirectional-the signals of units $X_{15}$ and $X_{16}$ remain nearly constant, as no displacement occurs during this period. After roughly 40 seconds, these activations decrease and progressively shift toward neighboring neurons, indicating the successful completion of the evasive maneuver. 
 
-For the appetitive stimulus in the physical robot, the robot exhibits a frontal-approach behavior. Approximately halfway through the trial, the robot performs an orientation correction to center the target; unlike the simulation, where the angular correction occurs from the beginning. This difference arises because the stimulus was initially located directly in front of the robot in the physical experiment. 
-
-The angle correction occurs after 23 seconds, when neurons $X_{5}$ and $X_{7}$ in the sensory and integrative layers, respectively (Figure~\ref{fig:NEU_EST_UNIG_real}b), indicate a leftward rotation mediated by activation of $X_{11}$. In contrast, in the simulation (Figure~\ref{fig:NEU_EST_UNIB}), neuron $X_{12}$ shows the highest activity at the beginning, reflecting a rightward rotation from the start to align the robot’s orientation with the laterally positioned stimulus. 
+\revblue{For the appetitive stimulus in the physical robot, the robot exhibits a frontal-approach behavior. Approximately halfway through the trial---at 23 seconds, when neurons $X_{5}$ and $X_{7}$ in the sensory and integrative layers, respectively (Figure~\ref{fig:NEU_EST_UNIG_real}b), indicate a leftward rotation mediated by activation of $X_{11}$---the robot performs an orientation correction to center the target. This is unlike the simulation (Figure~\ref{fig:NEU_EST_UNIB}), where neuron $X_{12}$ shows the highest activity at the beginning, reflecting a rightward rotation from the start to align the robot's orientation with the laterally positioned stimulus, so the angular correction occurs from the beginning rather than mid-trial. This difference arises because the stimulus was initially located directly in front of the robot in the physical experiment.}
 
 
 \subsubsection{Response to Multiple Stimuli of Different Natures}
@@ -515,48 +511,34 @@ A simultaneous activation between units $X_{15}$ and $X_{16}$ (Figure~\ref{fig:N
 
 \begin{figure}[t]
   \centering
-  % ---- Fila 1 ----
-  \begin{subfigure}[t]{0.3\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{D1.png}
-    \caption{Frame 1 - Initial state.}
+    \caption{\revblue{Initial state: the platform holds a quadrupedal stance with all three stimulus classes in view --- the appetitive target (upper field), the near obstacle, and the more distant LiDAR-detected object that the network deems too far to warrant an evasive response.}}
     \label{fig:frames-a}
   \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.3\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{D2.png}
-    \caption{Frame 2 - Obstacle evasion.}
-    \label{fig:frames-b}
-  \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.3\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{D3.png}
-    \caption{Frame 3 - Mid response.}
+    \caption{\revblue{Indecisive hold: the constant \emph{Hunting Instinct} stimulus keeps unit $X_{16}$ active and uninhibited by $X_{15}$, holding the platform stationary in quadrupedal stance until the aversive threat signal reaches its dispatch threshold.}}
     \label{fig:frames-c}
   \end{subfigure}
 
   \vspace{0.6em}
 
-  % ---- Fila 2 ----
-  \begin{subfigure}[t]{0.3\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{D4.png}
-    \caption{Frame 4 - Aversive stimulus evasion.}
-    \label{fig:frames-d}
-  \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.3\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{D5.png}
-    \caption{Frame 5 - Approach.}
+    \caption{\revblue{Morphological transformation: following the aversive stimulus's peak activation ($\approx46$~s) and the resulting evasive gait dispatch, the platform reconfigures into differential-rolling mode.}}
     \label{fig:frames-e}
   \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.3\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{D6.png}
-    \caption{Frame 6 - Final state.}
+    \caption{\revblue{Final approach: after evading the aversive threat and detecting the appetitive target ($\approx50$~s), the platform completes an orientation correction and advances to the goal, coming to rest once neuron $X_{17}$ fully inhibits locomotion ($\approx90$~s).}}
     \label{fig:frames-f}
   \end{subfigure}
-  \caption{Six frames from the real-robot experiment facing visual stimuli of different nature: (a)–(f) show the temporal evolution across the trial.}
+  \caption{\revblue{Four representative frames from the real-robot experiment facing visual stimuli of different nature: (a)–(d) show the temporal evolution across the trial.}}
   \label{fig:robot-6frames}
 \end{figure}
 
@@ -604,23 +586,16 @@ To justify the choice of architecture, an ablation study compared the proposed 1
     \label{fig:architecture_ablation}
 \end{figure}
 
-The MLP was further benchmarked against alternative classifiers (Logistic Regression, SVM with RBF kernel, and Random Forest) under the same cross-validation protocol. Logistic Regression underperformed ($\text{F1} = 0.692$), reflecting the non-linear separability of the IMU features, while SVM-RBF ($\text{F1} = 0.900$) and Random Forest ($\text{F1} = 0.995$) achieved higher raw scores (Figure~\ref{fig:classifier_comparison}); the rationale for nonetheless selecting the MLP is given below, alongside the per-sample latency comparison.
+The MLP was further benchmarked against alternative classifiers (Logistic Regression, SVM with RBF kernel, and Random Forest) under the same cross-validation protocol. Logistic Regression underperformed ($\text{F1} = 0.692$), reflecting the non-linear separability of the IMU features, while SVM-RBF (\revblue{$\text{F1} = 0.857$}) and Random Forest (\revblue{$\text{F1} = 0.947$}) achieved higher raw scores (Figure~\ref{fig:classifier_tradeoff}a); the rationale for nonetheless selecting the MLP is given below, alongside the per-sample latency comparison.
 
-\begin{figure}[htbp]
+To assess whether the accuracy gap with respect to SVM-RBF and Random Forest justifies their adoption in an embedded, real-time control loop, a computational-cost analysis was conducted measuring per-sample inference latency for each classifier. As shown in Figure~\ref{fig:classifier_tradeoff}b, the MLP requires only $1.64\,\mu\text{s}$ per sample, approximately $14\times$ faster than the SVM-RBF ($23.5\,\mu\text{s}$) and $25\times$ faster than the Random Forest ($41.0\,\mu\text{s}$), while substantially outperforming Logistic Regression ($\text{F1} = 0.692$) at a comparable latency of $0.54\,\mu\text{s}$. Given the hard real-time constraints of the neural-arbitration pipeline on the resource-constrained embedded microcontroller, the MLP (150–80) was therefore selected as the configuration offering the best accuracy-to-latency trade-off for terrain classification, rather than the configuration with the highest raw classification score. Figure~\ref{fig:classifier_tradeoff}c additionally reports model size (parameters/tree nodes) for the same four classifiers, a directly relevant factor for deployment on resource-constrained embedded hardware.
+
+\revblue{\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{fig5_classifier_comparison.png}
-    \caption{Performance comparison with alternative baseline classifiers (Logistic Regression, SVM-RBF, Random Forest, and MLP).}
-    \label{fig:classifier_comparison}
-\end{figure}
-
-To assess whether the accuracy gap with respect to SVM-RBF and Random Forest justifies their adoption in an embedded, real-time control loop, a computational-cost analysis was conducted measuring per-sample inference latency for each classifier. As shown in Figure~\ref{fig:computational_cost}, the MLP requires only $1.64\,\mu\text{s}$ per sample, approximately $14\times$ faster than the SVM-RBF ($23.5\,\mu\text{s}$) and $25\times$ faster than the Random Forest ($41.0\,\mu\text{s}$), while substantially outperforming Logistic Regression ($\text{F1} = 0.692$) at a comparable latency of $0.54\,\mu\text{s}$. Given the hard real-time constraints of the neural-arbitration pipeline on the resource-constrained embedded microcontroller, the MLP (150–80) was therefore selected as the configuration offering the best accuracy-to-latency trade-off for terrain classification, rather than the configuration with the highest raw classification score.
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.48\textwidth]{fig6_computational_cost.png}
-    \caption{Computational cost and execution latency analysis of the MLP-based terrain classifier across distinct un-cached edge evaluation cycles.}
-    \label{fig:computational_cost}
-\end{figure}
+    \includegraphics[width=\textwidth]{fig_classifier_tradeoff_fused.png}
+    \caption{Classification/deployment trade-off across baseline classifiers (Logistic Regression, SVM-RBF, Random Forest, and MLP). (a) Accuracy, precision, recall, and F1-score. (b) Per-sample inference latency. (c) Model size (parameters/tree nodes).}
+    \label{fig:classifier_tradeoff}
+\end{figure}}
 
 
 \subsubsection{Response to Variable Topographies}
@@ -629,48 +604,35 @@ In the real implementation (Figure~\ref{fig:RES_IMU_real}), images were captured
 
 \begin{figure}[t]
   \centering
-  \begin{subfigure}[t]{0.31\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{E1.png}
-    \caption{Frame 1 - Initial state.}
+    \caption{\revblue{Entering the terrain: the platform advances onto the irregular surface (height variance below 1.2~cm), a region it clears within the first $\approx13$~s in its initial locomotion mode.}}
     \label{fig:frames-a2}
   \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.31\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{E2.png}
-    \caption{Frame 2 - Entering unstable ground.}
-    \label{fig:frames-b2}
-  \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.31\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{E3.png}
-    \caption{Frame 3 - Quadruped transformation.}
+    \caption{\revblue{Quadrupedal transformation: once the stagnation signal reaches its maximum sustained amplitude, the network commits to the quadrupedal gait to negotiate the roughest section of the mat.}}
     \label{fig:frames-c2}
   \end{subfigure}
 
   \vspace{0.6em}
 
-  % ---- Fila 2 ----
-  \begin{subfigure}[t]{0.31\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{E4.png}
-    \caption{Frame 4 - Mid transportation.}
-    \label{fig:frames-d2}
-  \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.31\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{E5.png}
-    \caption{Frame 5 - Leaving irregular terrain.}
+    \caption{\revblue{Approaching the exit: the platform sustains ground clearance in quadrupedal mode across the highest-relief sections, nearing the mat's far edge.}}
     \label{fig:frames-e2}
   \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.31\textwidth}
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{E6.png}
-    \caption{Frame 6 - Final differential mobile transformation.}
+    \caption{\revblue{Recovery: around $t\approx86$~s, once unit $X_0$'s activity ceases (Figure~\ref{fig:NEU_IMU_real}), the platform exits the rough section and reverts to differential-rolling mode, completing the crossing.}}
     \label{fig:frames-f2}
   \end{subfigure}
 
-  \caption{Six frames from the real-robot experiment facing an irregular terrain: (a)–(f) show the temporal evolution across the trial.}
+  \caption{\revblue{Four representative frames from the real-robot experiment facing an irregular terrain: (a)–(d) show the temporal evolution across the trial.}}
   \label{fig:RES_IMU_real}
 \end{figure}
 
@@ -721,12 +683,12 @@ To further consolidate the physical validation under complex, multi-section topo
 \toprule
 \textbf{Frame} & \textbf{Terrain segment} & \textbf{Mode} & \textbf{Trigger / mechanism} \\
 \midrule
-1 & Double-ramp ascent & Quadrupedal walking & Static stability \& traction priority; elevated support polygon keeps CoM within bound during climb \\
-2 & Transition to flat elevated segment & $\rightarrow$ Differential rolling & MLP-detected drop in vertical-IMU acceleration std.\ dev.\ below threshold suppresses quadrupedal salience, disinhibits rolling channel \\
-3 & Horizontal elevated plane & Differential rolling (sustained) & Energy-conservative wheeled traversal; rolling channel remains stable \\
-4 & Controlled ramp descent & Differential rolling (sustained) & Pitch disturbance stays below quadrupedal re-engagement threshold ($\approx 5^{\circ}$) \\
-5 & Perlin-noise rough terrain & Rolling $\rightarrow$ stagnation & Wheels lose traction on high-variance surface; MLP stagnation channel triggers sustained signal \\
-6 & Rough terrain (recovery) & $\rightarrow$ Quadrupedal walking & Stagnation triggers reactive disinhibition of quadrupedal channel; limbs redeploy, restoring support polygon \\
+1 & Double-ramp ascent & Quadrupedal Walking & Static stability \& traction priority; elevated support polygon keeps CoM within bound during climb \\
+2 & Transition to flat elevated segment & $\rightarrow$ Differential Rolling & MLP-detected drop in vertical-IMU acceleration std.\ dev.\ below threshold suppresses quadrupedal salience, disinhibits rolling channel \\
+3 & Horizontal elevated plane & Differential Rolling (sustained) & Energy-conservative wheeled traversal; rolling channel remains stable \\
+4 & Controlled ramp descent & Differential Rolling (sustained) & Pitch disturbance stays below quadrupedal re-engagement threshold ($\approx 5^{\circ}$) \\
+5 & Perlin-noise rough terrain & Rolling $\rightarrow$ Stagnation & Wheels lose traction on high-variance surface; MLP stagnation channel triggers sustained signal \\
+6 & Rough terrain (recovery) & $\rightarrow$ Quadrupedal Walking & Stagnation triggers reactive disinhibition of quadrupedal channel; limbs redeploy, restoring support polygon \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -745,7 +707,7 @@ Across the compound course (double-ascent ramp $\rightarrow$ elevated plane $\ri
   \begin{subfigure}[t]{0.31\textwidth}
     \centering
     \includegraphics[width=\linewidth]{Prueba_Terreno_Parte_2.png}
-    \caption{Frame 2: Neural arbitration network detects the flat elevated segment and switches to differential rolling (mobile) mode.}
+    \caption{Frame 2: Neural arbitration network detects the flat elevated segment and switches to differential rolling mode.}
     \label{fig:real_terrain_frame2}
   \end{subfigure}\hfill
   \begin{subfigure}[t]{0.31\textwidth}
@@ -761,7 +723,7 @@ Across the compound course (double-ascent ramp $\rightarrow$ elevated plane $\ri
   \begin{subfigure}[t]{0.31\textwidth}
     \centering
     \includegraphics[width=\linewidth]{Prueba_Terreno_Parte_4.png}
-    \caption{Frame 4: Differential mobile mode maintained throughout the controlled ramp descent; pitch disturbance remains below the quadrupedal re-engagement threshold.}
+    \caption{Frame 4: Differential rolling mode maintained throughout the controlled ramp descent; pitch disturbance remains below the quadrupedal re-engagement threshold.}
     \label{fig:real_terrain_frame4}
   \end{subfigure}\hfill
   \begin{subfigure}[t]{0.31\textwidth}
@@ -799,18 +761,11 @@ This subsection presents a rigorous quantitative analysis of the proposed bio-in
   \hfill
   \begin{subfigure}[b]{0.32\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{Appetitive_Real_Plot_2_Basal_Ganglia_Dynamics.png}
-    \caption{Basal ganglia neural dynamics.}
-    \label{fig:appetitive_bg_real}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[b]{0.32\textwidth}
-    \centering
     \includegraphics[width=\linewidth]{Appetitive_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png}
     \caption{Pitch/Roll RMS attitude dynamics.}
     \label{fig:appetitive_rms_real}
   \end{subfigure}
-  \caption{Real-world Appetitive Stimulus Scenario (\textit{Appetitive\_Real} family, three hardware replicates). (a) ECDF of locomotion mode-switching latency $T_{switch}$. (b) Temporal evolution of the basal ganglia firing variance $Var(z)$. (c) Coupled Roll and Pitch RMS attitude profile throughout the trial.}
+  \caption{Real-world Appetitive Stimulus Scenario (\textit{Appetitive\_Real} family, three hardware replicates). (a) ECDF of locomotion mode-switching latency $T_{switch}$. \revblue{(b) Coupled neural and kinematic response: (top) temporal evolution of the basal ganglia firing variance $Var(z)$ with red/blue stimulus-presence shading; (bottom) Roll and Pitch RMS attitude profile throughout the trial.}}
   \label{fig:appetitive_real_compound}
 \end{figure*}
 
@@ -829,18 +784,11 @@ This subsection presents a rigorous quantitative analysis of the proposed bio-in
   \hfill
   \begin{subfigure}[b]{0.32\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{Aversive_Real_Plot_2_Basal_Ganglia_Dynamics.png}
-    \caption{Basal ganglia neural dynamics.}
-    \label{fig:aversive_bg_real}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[b]{0.32\textwidth}
-    \centering
     \includegraphics[width=\linewidth]{Aversive_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png}
     \caption{Pitch/Roll RMS attitude dynamics.}
     \label{fig:aversive_rms_real}
   \end{subfigure}
-  \caption{Real-world Aversive Stimulus Scenario (\textit{Aversive\_Real} family, three hardware replicates). (a) ECDF of mode-switching latency $T_{switch}$ revealing the near-instantaneous emergency reflex. (b) Neural firing variance $Var(z)$ displaying the dual-peak evasion signature. (c) Chassis attitude micro-dynamics during and after the evasive manoeuvre.}
+  \caption{Real-world Aversive Stimulus Scenario (\textit{Aversive\_Real} family, three hardware replicates). (a) ECDF of mode-switching latency $T_{switch}$ revealing the near-instantaneous emergency reflex. \revblue{(b) Coupled neural and kinematic response: (top) neural firing variance $Var(z)$ displaying the dual-peak evasion signature, with red/blue stimulus-presence shading; (bottom) chassis attitude micro-dynamics during and after the evasive manoeuvre.}}
   \label{fig:aversive_real_compound}
 \end{figure*}
 
@@ -859,18 +807,11 @@ This subsection presents a rigorous quantitative analysis of the proposed bio-in
   \hfill
   \begin{subfigure}[b]{0.32\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{Complex_Real_Plot_2_Basal_Ganglia_Dynamics.png}
-    \caption{Basal ganglia neural dynamics.}
-    \label{fig:complex_bg_real}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[b]{0.32\textwidth}
-    \centering
     \includegraphics[width=\linewidth]{Complex_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png}
     \caption{Pitch/Roll RMS attitude dynamics.}
     \label{fig:complex_rms_real}
   \end{subfigure}
-  \caption{Real-world Complex Multi-Stimulus Scenario (\textit{Complex\_Real} family, three hardware replicates). (a) ECDF of mode-switching latency under chained sequential transformations. (b) Three-phase neural variance profile mapping obstacle avoidance, aversive escape, and appetitive convergence phases. (c) Step-like attitude excursions during transitions and final stabilisation at ${\approx}\,4^{\circ}$.}
+  \caption{Real-world Complex Multi-Stimulus Scenario (\textit{Complex\_Real} family, three hardware replicates). (a) ECDF of mode-switching latency under chained sequential transformations. \revblue{(b) Coupled neural and kinematic response: (top) three-phase neural variance profile mapping obstacle avoidance, aversive escape, and appetitive convergence phases, with red/blue stimulus-presence shading; (bottom) step-like attitude excursions during transitions and final stabilisation at ${\approx}\,4^{\circ}$.}}
   \label{fig:complex_real_compound}
 \end{figure*}
 
@@ -889,18 +830,11 @@ This subsection presents a rigorous quantitative analysis of the proposed bio-in
   \hfill
   \begin{subfigure}[b]{0.32\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{Obstacle_Real_Plot_2_Basal_Ganglia_Dynamics.png}
-    \caption{Basal ganglia neural dynamics.}
-    \label{fig:obstacle_bg_real}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[b]{0.32\textwidth}
-    \centering
     \includegraphics[width=\linewidth]{Obstacle_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png}
     \caption{Pitch/Roll RMS attitude dynamics.}
     \label{fig:obstacle_rms_real}
   \end{subfigure}
-  \caption{Real-world Static Obstacle Avoidance Scenario (\textit{Obstacle\_Real} family, three hardware replicates). (a) Instantaneous ECDF of mode-switching latency. (b) Massive transient hyper-excitation peak in neural firing variance $Var(z)$ induced by volumetric geometric input. (c) Rhythmic Roll RMS expansion during active lateral flanking and post-avoidance stabilisation.}
+  \caption{Real-world Static Obstacle Avoidance Scenario (\textit{Obstacle\_Real} family, three hardware replicates). (a) Instantaneous ECDF of mode-switching latency. \revblue{(b) Coupled neural and kinematic response: (top) massive transient hyper-excitation peak in neural firing variance $Var(z)$ induced by volumetric geometric input (no stimulus-presence shading---this scenario uses a non-chromatic obstacle cue); (bottom) rhythmic Roll RMS expansion during active lateral flanking and post-avoidance stabilisation.}}
   \label{fig:obstacle_real_compound}
 \end{figure*}
 
@@ -916,7 +850,7 @@ This subsection presents a rigorous quantitative analysis of the proposed bio-in
 \midrule
 Appetitive & $3.0$--$9.0\,\text{s}$ (mechanically limited) & Sustained, non-zero post-completion & $3.0^{\circ}$--$3.5^{\circ}$ (cyclic) & $t > 25\,\text{s}$ \\
 Aversive   & ${\approx}\,0.0\,\text{s}$ (instantaneous) & Dual-peak (detection + retreat-FOV) & Pitch step $\uparrow$, Roll cyclic ($t{=}4$--$9\,\text{s}$) & $t > 10\,\text{s}$ \\
-Complex    & ${\approx}\,1.0$--$1.2\,\text{s}$ & Three-phase, peak $>30{,}000$ & Roll ${\approx}\,7^{\circ}$, Pitch ${\approx}\,5^{\circ} \to 4^{\circ}$ & $t > 25\,\text{s}$ \\
+Complex    & ${\approx}\,1.0$--$1.2\,\text{s}$ & \revblue{Three-phase, peak ${\approx}\,27\times$ Obstacle baseline} & Roll ${\approx}\,7^{\circ}$, Pitch ${\approx}\,5^{\circ} \to 4^{\circ}$ & $t > 25\,\text{s}$ \\
 Obstacle   & ${\approx}\,0.0\,\text{s}$ (instantaneous) & ${\approx}\,1100$, transient ($t < 7\,\text{s}$) & Roll $3.5^{\circ}$ (rhythmic) & $t = 8\,\text{s}$ \\
 \bottomrule
 \end{tabularx}
@@ -927,24 +861,46 @@ Obstacle   & ${\approx}\,0.0\,\text{s}$ (instantaneous) & ${\approx}\,1100$, tra
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.75\textwidth]{FigReal_Morphological_Transition_Energy.png}
-  \caption{Energetic footprint of physical morphological transitions. Integrated INA power telemetry during the Quadrupedal $\rightarrow$ Differential Mobile and Differential Mobile $\rightarrow$ Quadrupedal electromechanical coupling windows, across all hardware replicates.}
+  \caption{\revblue{Morphological transition energy per direction, derived from $|I_{\text{current}}| \times 7.2\,\text{V}$ (fixed NiMH pack voltage) integrated over the pre-calibrated electromechanical coupling window (2.92\,s / 1.56\,s, matching Fig.~\ref{fig:FourPanelLatencies}), across $N=16$ (Quadrupedal $\rightarrow$ Differential Rolling) and $N=19$ (Differential Rolling $\rightarrow$ Quadrupedal) individually detected structural-command transitions. Error bars: $\pm 1$ SD; the between-direction difference is not statistically significant (Welch's $t \approx 1.18$).}}
   \label{fig:MorphologicalEnergy}
 \end{figure}
 
-\revblue{The energetic cost of physical adaptation was quantified by integrating INA-sensor power telemetry during the electromechanical coupling windows (Fig.~\ref{fig:MorphologicalEnergy}). The Quadrupedal $\rightarrow$ Differential Mobile transition shows an invariant energetic cost across replicates, reflecting the deterministic leg-extension trajectory under managed slope gradients. The reverse transition (Differential Mobile $\rightarrow$ Quadrupedal) shows greater dispersion, consistent with the stochastic river-pebble terrain: unpredictable wheel slippage and localised mechanical resistance during limb retraction force the actuators to modulate peak torque dynamically to secure foothold anchors, introducing genuine sample-to-sample current variability.}
+\revblue{The energetic cost of physical adaptation was quantified from individually detected structural-command transitions (Fig.~\ref{fig:MorphologicalEnergy}), integrating instantaneous power ($|I_{\text{current}}| \times 7.2\,\text{V}$) over each direction's pre-calibrated electromechanical coupling window. The Quadrupedal $\rightarrow$ Differential Rolling transition required $5.06 \pm 2.93$~J ($N=16$), and the reverse transition (Differential Rolling $\rightarrow$ Quadrupedal) required $4.13 \pm 1.19$~J ($N=19$); the between-direction difference is not statistically significant (Welch's $t \approx 1.18$), so neither direction should be read as more energetically costly than the other. Greater trial-to-trial variability was observed in the Quadrupedal $\rightarrow$ Differential Rolling direction, though the present dataset does not isolate a specific mechanical cause for this dispersion. To directly address the reviewer's request for long-term average energy consumption across locomotion modes, Table~\ref{tab:mode_steady_state_energy} reports the mean steady-state power draw for each of the three modes, computed by excluding the electromechanical coupling window from each \texttt{robot\_cmd}-detected mode segment; the Omnidirectional estimate is preliminary pending a dedicated test battery.}
+
+\begin{table}[htbp]
+\centering
+\caption{\revblue{Long-term average steady-state power consumption per locomotion mode (three hardware
+replicates' worth of instrumented segments; transition windows excluded per segment, see
+Fig.~\ref{fig:MorphologicalEnergy}). Power derived as $|I|\times7.2\,\text{V}$ (fixed NiMH pack
+voltage). \textbf{Omnidirectional is a single-segment preliminary estimate (N=1), pending a dedicated
+test battery.}}}
+\label{tab:mode_steady_state_energy}
+\begin{tabularx}{\textwidth}{l >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
+\toprule
+\textbf{Locomotion Mode} & \textbf{N (segments)} & \textbf{Mean Power $\pm$ SD (W)} \\
+\midrule
+Quadrupedal ($C$) & 20 & $1.94 \pm 1.77$ \\
+Differential Rolling ($H$) & 20 & $1.36 \pm 0.98$ \\
+Omnidirectional ($X$)\textsuperscript{*} & 1 & $5.71$ (no SD, single segment) \\
+\bottomrule
+\end{tabularx}
+\\[2pt]
+\footnotesize{\textsuperscript{*}Preliminary --- a dedicated Omnidirectional-mode energy test battery is
+planned; this row will be updated once that data is available.}
+\end{table}
 
 %% ─── TERRAIN LATENCY (4 PANELS) ───────────────────────────────────────────
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.90\textwidth]{FigReal_Terrain_Latencies_4Panels.png}
-  \caption{Four-panel latency partitioning for real-world autonomous multi-terrain navigation (15 hardware replicates). Panel~A: neural processing latency, Quadrupedal $\rightarrow$ Differential Mobile ($\mu = 0.184\,\text{s}$). Panel~B: neural processing latency, Differential Mobile $\rightarrow$ Quadrupedal ($\mu = 0.534\,\text{s}$). Panel~C: electromechanical coupling latency, Quadrupedal $\rightarrow$ Differential Mobile ($\mu = 2.92\,\text{s}$). Panel~D: emergency retraction latency, Differential Mobile $\rightarrow$ Quadrupedal ($\mu = 1.56\,\text{s}$).}
+  \caption{Four-panel latency partitioning for real-world autonomous multi-terrain navigation (15 hardware replicates). Panel~A: neural processing latency, Quadrupedal $\rightarrow$ Differential Rolling ($\mu = 0.184\,\text{s}$). Panel~B: neural processing latency, Differential Rolling $\rightarrow$ Quadrupedal ($\mu = 0.534\,\text{s}$). Panel~C: electromechanical coupling latency, Quadrupedal $\rightarrow$ Differential Rolling ($\mu = 2.92\,\text{s}$). Panel~D: emergency retraction latency, Differential Rolling $\rightarrow$ Quadrupedal ($\mu = 1.56\,\text{s}$).}
   \label{fig:FourPanelLatencies}
 \end{figure}
 
-\revblue{To evaluate repeatability and determinism under uncalibrated physical environments, a continuous multi-terrain navigation mission was executed across 15 hardware replicates. The track forced the robot from Quadrupedal to Differential Mobile Mode to climb a steep incline, then back to Quadrupedal Mode on unstructured terrain inducing wheel slippage. The resulting temporal dynamics are partitioned into a four-panel layout to preserve resolution against low statistical variance (Fig.~\ref{fig:FourPanelLatencies}).}
+\revblue{To evaluate repeatability and determinism under uncalibrated physical environments, a continuous multi-terrain navigation mission was executed across 15 hardware replicates. The track forced the robot from Quadrupedal to Differential Rolling Mode to climb a steep incline, then back to Quadrupedal Mode on unstructured terrain inducing wheel slippage. The resulting temporal dynamics are partitioned into a four-panel layout to preserve resolution against low statistical variance (Fig.~\ref{fig:FourPanelLatencies}).}
 
-\revblue{The basal ganglia loop's decision latency (Fig.~\ref{fig:FourPanelLatencies}, values in caption) shows a clear task-dependent split. The Quadrupedal $\rightarrow$ Differential Mobile transition (Panel~A) achieves an instantaneous step response, reflecting immediate pitch-gradient adaptation. The reverse transition (Panel~B), triggered by wheel slippage on rugged terrain, settles at a markedly longer latency; this extended window is a deliberate stability feature, filtering transient high-frequency impact noise to suppress control chattering and false-positive switches on noisy surfaces.}
+\revblue{The basal ganglia loop's decision latency (Fig.~\ref{fig:FourPanelLatencies}, values in caption) shows a clear task-dependent split. The Quadrupedal $\rightarrow$ Differential Rolling transition (Panel~A) achieves an instantaneous step response, reflecting immediate pitch-gradient adaptation. The reverse transition (Panel~B), triggered by wheel slippage on rugged terrain, settles at a markedly longer latency; this extended window is a deliberate stability feature, filtering transient high-frequency impact noise to suppress control chattering and false-positive switches on noisy surfaces.}
 
 \revblue{The electromechanical coupling timelines reflect these commands mechanically: achieving full wheel-ground alignment (Panel~C) requires an extended settling window, capturing the kinematic cost of leg extension under slope conditions. The emergency retraction to the high-traction articulated stance (Panel~D), by contrast, is a rapid recovery reflex, minimising the wheel-spin window and securing foothold anchors quickly on unstable terrain.}
 
@@ -970,5 +926,5 @@ constrained environment, rather than as performance guarantees
 for deployment in specific industrial buildings.%
 
 
-Beyond the hardware and simulation-environment constraints above, the neural and locomotion-control parameters were manually tuned and kept constant throughout all experiments, without applying adaptive optimization processes that could enhance performance in more diverse scenarios; system resilience was also not assessed under partial hardware failures or temporary sensory dropout conditions likely to occur in real industrial environments. The multimodal sensory integration, moreover, does not follow a formal fusion framework in the classical signal-processing sense---such as Kalman filtering, Bayesian estimation, or deep sensor fusion. Instead, cross-modal integration emerges implicitly within the bio-inspired neural network: each sensory channel feeds differentiated neural pathways that converge through Winner-Take-All competition dynamics in the basal ganglia module, effectively distributing the fusion function across the network topology. While this approach is biologically grounded, it has not been formally compared against standard fusion methods. Similarly, visual stimulus detection relies on color-based segmentation calibrated under controlled illumination, without evaluation under varying lighting conditions or occlusion. Notwithstanding these design simplifications, the system demonstrated empirical robustness to stochastic sensory perturbations: under artificially introduced noise levels ($\sigma \in [0, 4]$), mission completion times remained tightly bounded, decision latency remained invariant (see the simulation quantitative-validation results above), and kinematic variance was minimal across all tested conditions---evidencing that the neural architecture effectively absorbs sensory disturbances without compromising behavioral integrity. These constraints do not invalidate the results but indicate that the next development stage should focus on validating the proposed architecture in a prototype that includes robustness and adaptability tests under real, non-controlled conditions.
+Beyond the hardware and simulation-environment constraints above, the neural and locomotion-control parameters were manually tuned and kept constant throughout all experiments, without applying adaptive optimization processes that could enhance performance in more diverse scenarios; system resilience was also not assessed under partial hardware failures or temporary sensory dropout conditions likely to occur in real industrial environments. The multimodal sensory integration, moreover, does not follow a formal fusion framework in the classical signal-processing sense---such as Kalman filtering, Bayesian estimation, or deep sensor fusion. Instead, cross-modal integration emerges implicitly within the bio-inspired neural network: each sensory channel feeds differentiated neural pathways that converge through Winner-Take-All competition dynamics in the basal ganglia module, effectively distributing the fusion function across the network topology. While this approach is biologically grounded, it has not been formally compared against standard fusion methods. Similarly, visual stimulus detection relies on color-based segmentation calibrated under controlled illumination, without evaluation under varying lighting conditions or occlusion. Notwithstanding these design simplifications, the system demonstrated empirical robustness to stochastic sensory perturbations: under artificially introduced noise levels ($\sigma \in [0, 4]$), mission completion times remained tightly bounded and kinematic variance was minimal across all tested conditions, \revblue{even though decision latency itself scales with noise level rather than staying invariant (see the simulation quantitative-validation results above)}---evidencing that the neural architecture effectively absorbs sensory disturbances without compromising behavioral integrity. These constraints do not invalidate the results but indicate that the next development stage should focus on validating the proposed architecture in a prototype that includes robustness and adaptability tests under real, non-controlled conditions.
 
