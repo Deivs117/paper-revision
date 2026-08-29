@@ -1,17 +1,16 @@
 # R2-04-03 — Plan: overhead de cómputo embebido del MLP en la ESP32-S3 (onboard deployment)
 
-**Estado (2026-08-29): 🟡 CORRIDO EN HARDWARE, PERO EN EL CHIP EQUIVOCADO.** El checkpoint 150-80
-real llegó (`pesos_red/pesos_usados_en_implementacion.pth` + `parametros_modelo.json`). Todo el
-andamiaje (3.1–3.3) se corrió de punta a punta: el self-check pasó en hardware real (5/5 vectores
-coinciden con la referencia Python). Pero la placa que el autor conectó fue identificada por el
-sistema operativo como una **ESP32-C3**, no la ESP32-S3 que usa el firmware real del robot
-(`PETER_SIMULATION/Repository/Peter_arduino/platformio.ini`). La ESP32-C3 no tiene FPU por
-hardware (RISC-V, emulación por software), lo que dio una latencia de **49.9 ms** — ~30.000× más
-lenta que el host — un número real pero no representativo del ESP32-S3 objetivo. **Decisión del
-autor (2026-08-29): no escribir este número en el paper; esperar una ESP32-S3 real.** Detalle
-completo, incluyendo los dos bugs de compilación reales que hubo que arreglar (macro `B1`/`B2`/`B3`
-de Arduino, y flags `ARDUINO_USB_MODE`/`ARDUINO_USB_CDC_ON_BOOT` para que `Serial` salga por el USB
-correcto), en `experiments/R2-04-mlp-onboard-compute/README.md` y
+**Estado (2026-08-29): ✅ CERRADO.** El checkpoint 150-80 real llegó
+(`pesos_red/pesos_usados_en_implementacion.pth` + `parametros_modelo.json`). Primer intento de
+hardware fue en una placa identificada por el sistema como ESP32-C3 (no la S3 objetivo) — self-
+check pasó pero la latencia (49.9 ms) no era representativa por falta de FPU por hardware en la
+C3, así que no se usó. El mismo día el autor consiguió una **ESP32-S3 real**: self-check pasó
+exacto (5/5 vectores) y la latencia final, **8.814 ms (SD 2.672µs, N=1000)**, más el footprint de
+memoria (RAM 7.4%, Flash 30.4% de 4MB), ya están escritos en `results.tex:592` (envuelto en
+`\revblue{}`). Cuatro problemas reales de hardware/compilación encontrados y resueltos en el
+camino (macro `B1`/`B2`/`B3` de Arduino, flags `ARDUINO_USB_MODE`/`ARDUINO_USB_CDC_ON_BOOT`,
+desconexión transitoria de `esptool`, y bootloop por asumir flash de 8MB en una placa de 4MB) —
+detalle completo en `experiments/R2-04-mlp-onboard-compute/README.md` y
 `experiments/R2-04-mlp-onboard-compute/output/onboard_compute_results.txt`.
 
 **Origen:** fila `R2-04` de `PROGRESS.md`, cláusula "embedded computing overhead of the MLP network
@@ -178,11 +177,10 @@ declarado).
   el detalle completo de limitaciones y el comando exacto para correr en la placa.
 - `results.tex:551` — ✅ corregido "ReLU" → "LeakyReLU(0.01)", envuelto en `\revblue{}`.
   `patches/r2-04-mlp-onboard-compute.tex` documenta el cambio.
-- `PROGRESS.md`: fila `R2-04` — ✅ actualizada, sigue `drafted` (no `applied`): refleja la corrección
-  de activación ya hecha y que el número real de latencia/footprint on-device sigue pendiente.
-- **Corrida en hardware (2026-08-29):** el autor conectó una placa identificada por el sistema
-  como ESP32-C3 (no la ESP32-S3 objetivo). Dos bugs reales de compilación encontrados y arreglados
-  en el proceso (ver README.md del experimento para el detalle técnico completo):
+- **Corrida en hardware, primer intento (2026-08-29):** el autor conectó una placa identificada
+  por el sistema como ESP32-C3 (no la ESP32-S3 objetivo). Dos bugs reales de compilación
+  encontrados y arreglados en el proceso (ver README.md del experimento para el detalle técnico
+  completo):
   1. Los arrays de bias se llamaban `B1`/`B2`/`B3`, que chocan con las macros de literal binario
      de Arduino (`binary.h` define `B0`..`B11111111`) — renombrados a `BIAS1`/`BIAS2`/`BIAS3` en
      `export_weights_to_c.py` y `main.cpp`.
@@ -192,12 +190,25 @@ declarado).
      `Peter_arduino/platformio.ini`.)
   - Con eso, el firmware compiló, subió y el self-check pasó (5/5 vectores exactos) en hardware
     real. La latencia salió en 49.9ms (SD 2.166µs, N=1000) — real pero del chip equivocado: la
-    ESP32-C3 no tiene FPU por hardware, la ESP32-S3 sí. **No se escribió nada en `results.tex`**
-    (decisión del autor) — resultado completo archivado en
+    ESP32-C3 no tiene FPU por hardware, la ESP32-S3 sí. No se escribió nada en `results.tex`
+    todavía — resultado archivado como referencia en
     `experiments/R2-04-mlp-onboard-compute/output/onboard_compute_results.txt`.
-- **Pendiente para cerrar esto:** repetir exactamente lo mismo en una ESP32-S3 real —
-  `pio run -e esp32-s3-devkitc-1 -t upload` (el entorno ya está en `platformio.ini`, mismo
-  firmware, sin cambios de código) — y, si el self-check pasa, escribir la frase nueva en
-  `results.tex` (~línea 591, ver plan §4) con ese número.
-- `git mv` este documento a `intake/processed/` solo cuando ese número de la ESP32-S3 llegue y
-  quede escrito en el paper.
+- **Corrida en hardware, ESP32-S3 real (2026-08-29, mismo día):** el autor consiguió y conectó una
+  ESP32-S3 real. Dos problemas reales más, ya arreglados permanentemente en `platformio.ini`:
+  3. Primer intento de subida falló transitoriamente (`esptool`: `write failed: [Errno 19] No
+     such device` a mitad del handshake) — un simple reintento del mismo comando funcionó.
+  4. Bootloop real tras la primera subida exitosa (`assert failed: do_core_init` /
+     `Detected size(4096k) smaller than the size in the binary image header(8192k)`) — la
+     definición de placa `esp32-s3-devkitc-1` de PlatformIO asume por defecto flash de 8MB ("N8"),
+     pero la placa física tiene 4MB. Arreglado con el mismo override
+     (`board_build.flash_size=4MB` + afines) que ya usa `Peter_arduino/platformio.ini`.
+  - Con eso, self-check pasó exacto (5/5 vectores) en el chip objetivo real. **Latencia final:
+    8.814 ms (SD 2.672µs, N=1000)**, RAM 24.140 B (7.4%), Flash 397.829 B (30.4% de 4MB).
+- ✅ **Escrito en el paper:** nueva frase en `results.tex:592` (envuelta en `\revblue{}`), después
+  de la frase existente de latencia en host (1.64µs), aclarando explícitamente que una es
+  referencia en host y la otra es la medición real en la ESP32-S3 objetivo — sin quitar el dato
+  de host. `patches/r2-04-mlp-onboard-compute.tex` documenta el diff exacto.
+- `PROGRESS.md`: fila `R2-04` — ✅ actualizada a estado `applied` (ambas cláusulas de R2-04 —
+  energía y cómputo embebido — cerradas). No `synced-to-overleaf` todavía — falta el push a
+  Overleaf de esta ronda de cambios.
+- `reassemble.py` + `validate_tex.sh` corridos, LaTeX válido.

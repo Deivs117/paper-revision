@@ -93,14 +93,15 @@ report) into `output/onboard_compute_results.txt`.
 
 | File in `output/` | Promoted to (`assets/...`) | Used in |
 |---|---|---|
-| `onboard_compute_results.txt` | n/a (numbers only, no figure) | **not yet** — see status below |
+| `onboard_compute_results.txt` | n/a (numbers only, no figure) | `results.tex:592`, computational-cost-analysis paragraph |
 | `mlp_weights.h` | n/a (build input, not a paper asset) | `firmware/` build only, via `platformio.ini`'s `-I../output` |
 
-**Status as of 2026-08-29: hardware run done, but on the WRONG chip — do not write into
-`results.tex` yet.** The board the author had on hand and connected was identified by the OS as
-an **ESP32-C3**, not the ESP32-S3 the physical robot's firmware actually targets (confirmed in
-`PETER_SIMULATION/Repository/Peter_arduino/platformio.ini`). Getting it running took two real
-fixes, both left in place for the next run on any board:
+**Status as of 2026-08-29: CLOSED — real ESP32-S3 number is in `results.tex`.**
+
+First hardware run was on the wrong chip: the board the author had on hand was identified by the
+OS as an **ESP32-C3**, not the ESP32-S3 the physical robot's firmware actually targets (confirmed
+in `PETER_SIMULATION/Repository/Peter_arduino/platformio.ini`). Getting it running took two real
+fixes, both kept in the firmware for every subsequent run:
 1. `BIAS1/2/3` instead of `B1/B2/B3` in the generated header — Arduino's `binary.h` `#define`s
    `B0`..`B11111111` as binary-literal macros, so `B1`/`B2`/`B3` silently expanded to `1`/`2`/`3`.
 2. `-D ARDUINO_USB_MODE=1 -D ARDUINO_USB_CDC_ON_BOOT=1` build flags — without them, Arduino's
@@ -109,16 +110,29 @@ fixes, both left in place for the next run on any board:
    so `Serial.println()` output silently goes nowhere reachable. (These are already the flags
    `Peter_arduino/platformio.ini` uses for the same reason — matches the established convention.)
 
-**Result obtained (ESP32-C3, NOT usable for the paper):** self-check passed (all 5 vectors match
-the Python reference within 1e-3 on real hardware — corroborates the earlier host-gcc check), RAM
-5.9%/Flash 29.4%, but mean latency = **49.892 ms** (SD 2.166 μs, N=1000) — ~30,000x slower than
-the host number. Root cause: the ESP32-C3 has no hardware FPU (RISC-V core, software float
-emulation); the ESP32-S3 (Xtensa LX7) does. This is a real, correctly-measured number for the
-board tested, but citing it as "the ESP32-S3 onboard latency" would misrepresent the target
-hardware — full writeup of the finding and why it's not extrapolable in
-`output/onboard_compute_results.txt`.
+Result on that ESP32-C3 (NOT used in the paper): self-check passed, RAM 5.9%/Flash 29.4%, mean
+latency **49.892 ms** (SD 2.166 μs, N=1000) — ~30,000x slower than host, because the C3 has no
+hardware FPU (RISC-V, software float emulation) unlike the S3. Real number, wrong chip — kept on
+file in `output/onboard_compute_results.txt` for traceability only.
 
-**Next step:** re-run identically once a real ESP32-S3 is available —
-`pio run -e esp32-s3-devkitc-1 -t upload` (env already in `platformio.ini` from the original
-plan, no code changes needed) — and append that result to `output/onboard_compute_results.txt`
-before writing anything into `results.tex`.
+**A real ESP32-S3 was then connected (same day).** Two more real issues, both now permanently
+fixed in `platformio.ini`'s `esp32-s3-devkitc-1` env:
+3. First upload attempt failed transiently (`esptool`: `write failed: [Errno 19] No such device`
+   mid-handshake) — a bare retry of the identical command succeeded; not seen again.
+4. Genuine bootloop after that first successful flash (`assert failed: do_core_init` /
+   `Detected size(4096k) smaller than the size in the binary image header(8192k)`) —
+   PlatformIO's `esp32-s3-devkitc-1` board definition defaults to the 8MB "N8" flash variant, but
+   the physical board has 4MB. Fixed with the same `board_build.flash_size=4MB` /
+   `board_upload.flash_size=4MB` / `board_build.flash_mode=dio` /
+   `board_build.flash_frequency=80m` / `board_build.partitions=default.csv` overrides
+   `Peter_arduino/platformio.ini` already uses for this exact reason.
+
+**Final result (ESP32-S3, this is what's in the paper):** self-check passed exactly — all 5
+vectors match the Python reference within 1e-3 on the real target chip. Mean on-device latency
+**8.814 ms** (SD 2.672 μs, N=1000), RAM 24,140 B (7.4% of 320 KB), Flash 397,829 B (30.4% of the
+board's 4 MB partition, almost entirely the model weights). Still ~5,000x slower than the host
+figure despite the hardware FPU — plausible given the firmware's naive scalar (non-vectorized)
+matmul and `static const` weight arrays living in flash rather than RAM; noted alongside the
+number in `results.tex`, see `output/onboard_compute_results.txt` for the full account. Written
+into `results.tex:592` as a new `\revblue{}` sentence following the existing host-latency
+sentence — see `patches/r2-04-mlp-onboard-compute.tex` for the exact wording diff.

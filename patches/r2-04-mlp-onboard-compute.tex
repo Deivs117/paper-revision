@@ -3,7 +3,7 @@
 % Target section: sections/results.tex, computational-cost-analysis paragraph (~line 551, 591)
 % Requirement: intake/pending/R2-04-03_mlp_onboard_compute_overhead_plan.md
 %
-% Status as of 2026-08-29: PARTIALLY APPLIED.
+% Status as of 2026-08-29 (later same day): FULLY APPLIED.
 %
 % 1) APPLIED NOW -- activation-function correction (results.tex:551):
 %    Before: "the MLP (150-80 hidden units, ReLU, Adam optimizer)"
@@ -19,16 +19,31 @@
 %    weight shapes are what the author identified as "los pesos ya recuperados de la
 %    implementacion real".
 %
-% 2) NOT YET APPLIED -- the actual onboard latency/footprint sentence:
-%    experiments/R2-04-mlp-onboard-compute/ now has a working export script
-%    (scripts/export_weights_to_c.py, stdlib-only, run and validated in this session) and a
-%    complete ESP32-S3 PlatformIO firmware (firmware/) whose forward()/linear()/softmax() logic
-%    was cross-checked against the Python reference by compiling it standalone with host gcc
-%    (all 5 self-check vectors matched EXPECTED_OUTPUT_i exactly). What's missing is a physical
-%    ESP32-S3 to actually run `pio run -t upload -t monitor` -- no board or PlatformIO toolchain
-%    available in this session. Once the author runs it and
-%    experiments/R2-04-mlp-onboard-compute/output/onboard_compute_results.txt exists with a
-%    passing self-check, this patch file gets a second entry adding the on-device latency
-%    (mean +- SD us, N=1000) and RAM/Flash footprint as a new \revblue{} sentence after the
-%    existing host-latency sentence at results.tex:591 -- see that experiment's README.md
-%    "How to regenerate" for the exact wording plan.
+% 2) APPLIED -- the onboard latency/footprint sentence (results.tex:592, after the existing
+%    host-latency sentence):
+%    Added: \revblue{"The $1.64\,\mu\text{s}$ figure above was measured on a host PC (PyTorch);
+%      to directly address the reviewer's request for an onboard deployment analysis, the same
+%      forward pass was additionally re-implemented in C and benchmarked on the target ESP32-S3
+%      microcontroller ($N=1000$ repeated inferences), yielding a mean on-device latency of
+%      $8.81\,\text{ms}$ ($\text{SD}=2.67\,\mu\text{s}$) and a memory footprint of 24,140~B RAM
+%      (7.4\% of 320~KB) and 397,829~B flash (30.4\% of the board's 4~MB partition, almost
+%      entirely the ~47k-parameter model itself). The on-device number is markedly higher than
+%      the host figure, consistent with a straightforward, non-vectorized scalar implementation
+%      reading weights from flash rather than from a host CPU's cache hierarchy."}
+%    Provenance: experiments/R2-04-mlp-onboard-compute/ (export_weights_to_c.py, stdlib-only,
+%    run and validated in this session; ESP32-S3 PlatformIO firmware whose forward()/linear()/
+%    softmax() logic was cross-checked against the Python reference by compiling it standalone
+%    with host gcc before ever touching hardware -- all 5 self-check vectors matched
+%    EXPECTED_OUTPUT_i exactly). Run twice on real hardware, same day (2026-08-29):
+%      - First on a board the OS identified as an ESP32-C3 (not the target chip) -- self-check
+%        passed but latency was 49.9ms, ~30,000x slower than host, because the C3 has no
+%        hardware FPU. Kept on file for traceability, NOT used in the paper.
+%      - Then on a real ESP32-S3 (same USB port, board correctly identified this time). Two
+%        more real issues fixed to get there: a transient esptool "[Errno 19] No such device"
+%        on first connect (resolved by retrying the same upload command); a genuine bootloop
+%        from PlatformIO's esp32-s3-devkitc-1 board defaulting to 8MB "N8" flash while the
+%        physical board has 4MB (fixed with the same board_build.flash_size=4MB override
+%        Peter_arduino/platformio.ini already uses). Self-check then passed exactly (5/5
+%        vectors match the Python reference) -- this run's number is what's in the paper.
+%    Full console logs and RAM/Flash reports for both runs:
+%    experiments/R2-04-mlp-onboard-compute/output/onboard_compute_results.txt
