@@ -506,6 +506,7 @@ docs/
 ├── index.html      # page structure — fetches data.json, no inline data
 ├── styles.css       # theme tokens (light/dark), stat tiles, filter pills, task cards
 ├── app.js           # fetch + render + client-side filter/search logic, no dependencies
+├── activity.json     # hand-maintained, optional — see §12.2 ("En desarrollo" badge input)
 └── data.json        # generated — never hand-edited (scripts/build_dashboard.py)
 ```
 
@@ -518,7 +519,9 @@ docs/
 - **`Category`** — one of `Escritura` (prose/text editing), `Pruebas` (experiments/ablations/comparisons to run), `Métricas` (new measurements/quantitative analysis).
 - **`Owner`** — the person(s) actually doing the work, comma-separated if shared (e.g. `Diego, Sam`).
 
-`scripts/build_dashboard.py` parses the whole table (stdlib-only `re`/`json`, no markdown library) into `docs/data.json`: one object per row (`id`, `reviewer`, `requirement`, `target`, `dataSource`, `category`, `owner` as an array, `status`, `patchFile`), plus a `generatedAt` timestamp and `PROGRESS.md`'s last commit time (via `git log`). `**bold**`/`` `code` ``/`*italic*` markdown is stripped for plain-text display — the dashboard shows prose, not rendered markdown.
+`scripts/build_dashboard.py` parses the whole table (stdlib-only `re`/`json`, no markdown library) into `docs/data.json`: one object per row (`id`, `reviewer`, `requirement`, `target`, `dataSource`, `category`, `owner` as an array, `status`, `patchFile`), plus a `generatedAt` timestamp and `PROGRESS.md`'s last commit time (via `git log`). `**bold**`/`` `code` ``/`*italic*` markdown is stripped for plain-text display — the dashboard shows prose, not rendered markdown. A malformed row (wrong column count — almost always a stray unescaped `|` in a free-text cell) is a hard error (`sys.exit(1)`), not a silent skip: this is a status-tracking table, so a row silently vanishing from the dashboard is worse than a blocked commit.
+
+`docs/activity.json` (optional, `{"ID": "short note", ...}`) is a second, independent input: a hand-maintained list of rows with work happening *right now*, orthogonal to the `Status` column above. `Status` tracks the writing pipeline only (pending → drafted → applied → synced-to-overleaf) — it says nothing about, say, a team actively running simulations for a row that's still `pending` on the writing side. `build_dashboard.py` merges a matching entry in as `activity` on that task; the dashboard renders it as a distinct "En desarrollo" badge, never conflated with a `Status` badge. Not generated, not required — delete an entry once that work is no longer active; an ID with no matching `PROGRESS.md` row prints a warning (typo, or the row closed) but never blocks the build.
 
 #### 12.3 Keeping it in sync
 

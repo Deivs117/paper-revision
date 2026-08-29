@@ -17,6 +17,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PROGRESS_FILE = REPO_ROOT / "PROGRESS.md"
+ACTIVITY_FILE = REPO_ROOT / "docs" / "activity.json"
 OUT_FILE = REPO_ROOT / "docs" / "data.json"
 
 EXPECTED_COLUMNS = 9
@@ -64,6 +65,22 @@ def parse_table(md_text: str):
     return rows
 
 
+def load_activity() -> dict:
+    """docs/activity.json: manually maintained, ID -> short note, for work happening right now
+    independent of the writing-pipeline Status column (e.g. a team running simulations while the
+    corresponding row is still `pending` on the writing side). Optional -- an empty dict if the
+    file doesn't exist or fails to parse, never a hard error (this is a nice-to-have annotation,
+    not part of PROGRESS.md's tracked contract)."""
+    if not ACTIVITY_FILE.exists():
+        return {}
+    try:
+        data = json.loads(ACTIVITY_FILE.read_text(encoding="utf-8"))
+    except Exception as e:
+        print(f"warning: could not parse {ACTIVITY_FILE.relative_to(REPO_ROOT)}: {e}", file=sys.stderr)
+        return {}
+    return {k: v for k, v in data.items() if not k.startswith("_")}
+
+
 def git_last_commit_iso(path: Path) -> str:
     try:
         out = subprocess.run(
@@ -81,12 +98,14 @@ def main():
         sys.exit(1)
 
     rows = parse_table(PROGRESS_FILE.read_text(encoding="utf-8"))
+    activity = load_activity()
 
     tasks = []
     for cells in rows:
         task_id, reviewer, requirement, target, data_source, category, owner, status, patch_file = cells
-        tasks.append({
-            "id": strip_md_inline(task_id),
+        clean_id = strip_md_inline(task_id)
+        task = {
+            "id": clean_id,
             "reviewer": strip_md_inline(reviewer),
             "requirement": strip_md_inline(requirement),
             "target": strip_md_inline(target),
@@ -95,7 +114,18 @@ def main():
             "owner": [o.strip() for o in strip_md_inline(owner).split(",") if o.strip()],
             "status": strip_md_inline(status),
             "patchFile": strip_md_inline(patch_file),
-        })
+        }
+        if clean_id in activity:
+            task["activity"] = activity[clean_id]
+        tasks.append(task)
+
+    unmatched = sorted(set(activity) - {t["id"] for t in tasks})
+    if unmatched:
+        print(
+            f"warning: {ACTIVITY_FILE.relative_to(REPO_ROOT)} has entries for IDs not found in "
+            f"PROGRESS.md (typo, or the row was renamed/closed?): {', '.join(unmatched)}",
+            file=sys.stderr,
+        )
 
     payload = {
         "generatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),

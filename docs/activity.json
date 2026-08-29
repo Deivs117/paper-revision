@@ -1,0 +1,5 @@
+{
+  "_comment": "Manually maintained. Maps a PROGRESS.md task ID to a short note shown as an 'En desarrollo' badge on the dashboard -- independent of the Status column (pending/drafted/applied/synced-to-overleaf), which tracks the WRITING pipeline only. Use this for work that's actively happening right now regardless of writing status (e.g. a team running simulations, collecting metrics) so the dashboard reflects real activity, not just text state. Add/remove entries by hand as work starts/stops; read by scripts/build_dashboard.py, never auto-generated.",
+  "R2-02": "En desarrollo — equipo corriendo simulaciones para la comparación FSM",
+  "R3-04": "En desarrollo — pruebas de robustez a ruido en curso"
+}

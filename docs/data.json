@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-29T23:09:11+00:00",
-  "progressLastCommit": "2026-08-29T18:02:52-05:00",
+  "generatedAt": "2026-08-29T23:29:14+00:00",
+  "progressLastCommit": "2026-08-29T18:09:11-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -27,7 +27,8 @@
         "Sam"
       ],
       "status": "pending",
-      "patchFile": "—"
+      "patchFile": "—",
+      "activity": "En desarrollo — equipo corriendo simulaciones para la comparación FSM"
     },
     {
       "id": "R2-03",
@@ -105,14 +106,15 @@
         "Diego"
       ],
       "status": "pending",
-      "patchFile": "—"
+      "patchFile": "—",
+      "activity": "En desarrollo — pruebas de robustez a ruido en curso"
     },
     {
       "id": "R3-05",
       "reviewer": "3",
       "requirement": "Inspection task performance metrics (tracking accuracy, coverage rate, autonomous re-planning)",
-      "target": "results.tex — nueva subsección en Simulation Results (Experimento E, obstaculos.world, 20 trials). Datos y análisis completos en intake/pending/R3-05_inspection_handoff.md (§0: instrucciones de escritura; §9: resultados). Métricas principales: SR=85 % (17/20), d\\_final=1.076±0.038 m (target tracking accuracy), ratio N\\_lidar/N\\_mode\\_X≈2.3× (re-enrutamiento reactivo). Coverage rate no medida — argumento de sustitución en el intake doc §1.1. Writing team: leer §0 del intake doc; brevedad prioritaria, una tabla de los 20 ensayos puede ser suficiente sin figura adicional.",
-      "dataSource": "—",
+      "target": "results.tex — nueva subsección Reactive Inspection Task en Simulation Results, insertar justo antes de \\subsection{Physical Implementation Results} (línea 471 al 2026-08-29, reverificar antes de parchear). Plan de escritura completo (tabla agregada, figura, pseudo-texto listo para \\revblue{}, checklist de ejecución) en intake/pending/R3-05-inspection_writing_plan.md; diagnóstico técnico original en intake/pending/R3-05_inspection_handoff.md. Métricas: SR=85 % (17/20), d\\_final=1.076±0.038 m, ratio N\\_lidar/N\\_mode\\_X≈2.3×. Las 4 limitaciones (§8 del handoff) van consolidadas en \\label{ssec:Limitations}, no repetidas inline, por el pedido de R2 de consolidar limitaciones.",
+      "dataSource": "experiments/R3-05-inspection/",
       "category": "Métricas",
       "owner": [
         "Deivi"

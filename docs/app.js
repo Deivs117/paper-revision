@@ -56,13 +56,15 @@ function renderStats(tasks) {
 
   const total = tasks.length;
   const synced = tasks.filter((t) => t.status === "synced-to-overleaf").length;
-  const applied = tasks.filter((t) => t.status === "applied" || t.status === "drafted").length;
+  const drafted = tasks.filter((t) => t.status === "drafted").length;
+  const applied = tasks.filter((t) => t.status === "applied").length;
   const pending = tasks.filter((t) => t.status === "pending").length;
 
   const tiles = [
     { label: "Total de tareas", value: total, accent: "accent-total" },
     { label: "Sincronizadas a Overleaf", value: synced, accent: "accent-synced" },
-    { label: "Aplicadas (sin sincronizar)", value: applied, accent: "accent-applied" },
+    { label: "Borrador", value: drafted, accent: "accent-drafted" },
+    { label: "Aplicado (sin sincronizar)", value: applied, accent: "accent-applied" },
     { label: "Pendientes", value: pending, accent: "accent-pending" },
   ];
 
@@ -84,6 +86,7 @@ function renderStats(tasks) {
   const segments = [
     { cls: "synced", count: synced },
     { cls: "applied", count: applied },
+    { cls: "drafted", count: drafted },
     { cls: "pending", count: pending },
   ];
   for (const seg of segments) {
@@ -163,11 +166,23 @@ function renderTaskCard(task) {
 
   const top = el("div", "card-top");
   top.appendChild(el("span", "task-id", task.id));
+  const badgeGroup = el("span", "badge-group");
   const statusBadge = el("span", `badge status-${task.status}`);
   statusBadge.appendChild(el("span", "dot"));
   statusBadge.appendChild(document.createTextNode(STATUS_LABEL[task.status] || task.status));
-  top.appendChild(statusBadge);
+  badgeGroup.appendChild(statusBadge);
+  if (task.activity) {
+    const activityBadge = el("span", "badge activity");
+    activityBadge.title = task.activity;
+    activityBadge.appendChild(el("span", "dot"));
+    activityBadge.appendChild(document.createTextNode("En desarrollo"));
+    badgeGroup.appendChild(activityBadge);
+  }
+  top.appendChild(badgeGroup);
   card.appendChild(top);
+  if (task.activity) {
+    card.appendChild(el("div", "task-activity-note", task.activity));
+  }
 
   card.appendChild(el("div", "task-requirement", task.requirement));
 

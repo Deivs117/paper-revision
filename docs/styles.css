@@ -1,7 +1,8 @@
 /* Trazabilidad de tareas — ROBOT-D-26-00122R1
    Palette source: validated categorical/status/sequential steps (blue/orange/aqua categorical,
-   fixed status palette for state, blue sequential ramp for the "en progreso" step). Both light
-   and dark values are pre-validated instances, not generated. */
+   fixed status palette for state -- pending/drafted/applied/synced-to-overleaf -- plus a
+   deliberately distinct "activity" accent for the independent En-desarrollo badge, see
+   docs/activity.json). Both light and dark values are pre-validated instances, not generated. */
 
 :root {
   color-scheme: light;
@@ -23,10 +24,18 @@
 
   --status-pending: #b8860a;
   --status-pending-bg: #fdf3d9;
+  --status-drafted: #1c7fc4;
+  --status-drafted-bg: #e4f0fa;
   --status-applied: #4a3aa7;
   --status-applied-bg: #ece9f9;
   --status-synced: #0ca30c;
   --status-synced-bg: #e2f6e2;
+
+  /* "En desarrollo" activity badge -- deliberately NOT reusing a status color: this tracks
+     whether someone is actively working right now (e.g. running simulations), an axis
+     independent of the writing-pipeline Status above. See docs/activity.json. */
+  --activity: #b8186a;
+  --activity-bg: #fbe3ef;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -50,10 +59,15 @@
 
     --status-pending: #d9a021;
     --status-pending-bg: #3a2f0f;
+    --status-drafted: #4fa3e0;
+    --status-drafted-bg: #132a3a;
     --status-applied: #9085e9;
     --status-applied-bg: #251f42;
     --status-synced: #0ca30c;
     --status-synced-bg: #123312;
+
+    --activity: #e0559c;
+    --activity-bg: #3a1327;
   }
 }
 
@@ -77,10 +91,15 @@
 
   --status-pending: #d9a021;
   --status-pending-bg: #3a2f0f;
+  --status-drafted: #4fa3e0;
+  --status-drafted-bg: #132a3a;
   --status-applied: #9085e9;
   --status-applied-bg: #251f42;
   --status-synced: #0ca30c;
   --status-synced-bg: #123312;
+
+  --activity: #e0559c;
+  --activity-bg: #3a1327;
 }
 
 * { box-sizing: border-box; }
@@ -165,6 +184,7 @@ header.top p {
 
 .stat-tile.accent-total .value { color: var(--text-primary); }
 .stat-tile.accent-synced .value { color: var(--status-synced); }
+.stat-tile.accent-drafted .value { color: var(--status-drafted); }
 .stat-tile.accent-applied .value { color: var(--status-applied); }
 .stat-tile.accent-pending .value { color: var(--status-pending); }
 
@@ -197,6 +217,7 @@ header.top p {
 .progress-seg { height: 100%; }
 .progress-seg.synced { background: var(--status-synced); }
 .progress-seg.applied { background: var(--status-applied); }
+.progress-seg.drafted { background: var(--status-drafted); }
 .progress-seg.pending { background: var(--status-pending); }
 
 /* ── Filters ────────────────────────────────────────────────────────── */
@@ -251,6 +272,7 @@ header.top p {
 .pill.active[data-cat="Pruebas"] { background: var(--cat-pruebas); }
 .pill.active[data-cat="Métricas"] { background: var(--cat-metricas); }
 .pill.active[data-status="pending"] { background: var(--status-pending); }
+.pill.active[data-status="drafted"] { background: var(--status-drafted); }
 .pill.active[data-status="applied"] { background: var(--status-applied); }
 .pill.active[data-status="synced-to-overleaf"] { background: var(--status-synced); }
 .pill.active[data-owner],
@@ -322,6 +344,19 @@ header.top p {
   gap: 8px;
 }
 
+.badge-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.task-activity-note {
+  font-size: 0.78rem;
+  color: var(--activity);
+  line-height: 1.35;
+}
+
 .task-id {
   font-weight: 700;
   font-size: 0.95rem;
@@ -348,10 +383,16 @@ header.top p {
 
 .badge.status-pending { background: var(--status-pending-bg); color: var(--status-pending); }
 .badge.status-pending .dot { background: var(--status-pending); }
+.badge.status-drafted { background: var(--status-drafted-bg); color: var(--status-drafted); }
+.badge.status-drafted .dot { background: var(--status-drafted); }
 .badge.status-applied { background: var(--status-applied-bg); color: var(--status-applied); }
 .badge.status-applied .dot { background: var(--status-applied); }
 .badge.status-synced-to-overleaf { background: var(--status-synced-bg); color: var(--status-synced); }
 .badge.status-synced-to-overleaf .dot { background: var(--status-synced); }
+
+/* "En desarrollo" activity badge -- an orthogonal signal to Status, see docs/activity.json. */
+.badge.activity { background: var(--activity-bg); color: var(--activity); }
+.badge.activity .dot { background: var(--activity); }
 
 .task-requirement {
   font-size: 0.86rem;
