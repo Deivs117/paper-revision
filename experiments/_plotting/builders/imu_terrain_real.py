@@ -215,19 +215,27 @@ if __name__ == "__main__":
     build_neu_imu(f"{vec}/neu_imu2_real.csv", f"{out}/NEU_IMU2_real.png")
     build_terrain_latencies(f"{vec}/terrain_latencies.csv", f"{out}/FigReal_Terrain_Latencies_4Panels.png")
 
+    # group_letters restores the a)/b)/c)/d) annotations results.tex cites by letter
+    # (\ref{fig:NEU_EST_UNIG_real}a/c, \ref{fig:NEU_EST_MUL_real}b/c/d) -- see C-18 (PROGRESS.md)
+    # and R02-01-05 §0ter for the diagnosis (same defect found and fixed first in the simulation
+    # versions, N-06). NEU_EST_MUL_real's panel order below has Lidar BEFORE Locomotion
+    # (swapped from how it read before this fix) so the letters land on the correct content.
     build_neu_est(
         f"{vec}/neu_est_unig_real.csv", f"{out}/NEU_EST_UNIG_real.png",
         ["Lidar", "Input", "Response", "Auxiliary", "Locomotion_1", "Locomotion_2",
          "Decision_1", "Decision_2"],
         {"Lidar": "Lidar Network Module", "Locomotion_1": "Locomotion Module",
          "Decision_1": "Gait Decision Module"},
+        group_letters={"Lidar": "a", "Locomotion_1": "b", "Decision_1": "c"},
     )
     build_neu_est(
         f"{vec}/neu_est_mul_real.csv", f"{out}/NEU_EST_MUL_real.png",
         ["BasalGanglia_GPi", "BasalGanglia_GPe", "BasalGanglia_STN", "BasalGanglia_STR",
-         "Locomotion_1", "Locomotion_2", "Lidar", "Input", "Response", "Auxiliary",
+         "Lidar", "Input", "Response", "Auxiliary",
+         "Locomotion_1", "Locomotion_2",
          "Decision_1", "Decision_2"],
         {"BasalGanglia_GPi": "Basal Ganglia Module", "Lidar": "Lidar Network Module",
          "Locomotion_1": "Locomotion Module", "Decision_1": "Gait Decision Module"},
+        group_letters={"BasalGanglia_GPi": "a", "Lidar": "b", "Locomotion_1": "c", "Decision_1": "d"},
     )
     print("Wrote all 7 vectorized-figure regenerations to", out)

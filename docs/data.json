@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-30T01:47:22+00:00",
-  "progressLastCommit": "2026-08-29T20:28:49-05:00",
+  "generatedAt": "2026-08-30T02:03:23+00:00",
+  "progressLastCommit": "2026-08-29T20:47:22-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -459,6 +459,19 @@
       ],
       "status": "synced-to-overleaf",
       "patchFile": "patches/c-17-no-raw-sim-identifiers-in-prose.tex"
+    },
+    {
+      "id": "C-18",
+      "reviewer": "—",
+      "requirement": "Fixes the missing-panel-letter defect found in N-06 (see that row / R02-01-05 §0ter) in the two already-published, synced-to-overleaf physical-figure counterparts: NEU_EST_UNIG_real.png (\\ref{fig:NEU_EST_UNIG_real}a/c) and NEU_EST_MUL_real.png (\\ref{fig:NEU_EST_MUL_real}b/c/d). Author explicitly requested the fix, \"teniendo en cuenta la organización original de estas imágenes\" (i.e. preserve the original letter-to-content mapping, not just re-letter in whatever order the current layout happens to read). Same generator fix as N-06/N-08 (imu_terrain_real.py's build_neu_est() group_letters param, already built for those) applied to the __main__ call sites that produce the _real figures: NEU_EST_UNIG_real needed only letters added (a=Lidar Network, b=Locomotion, c=Gait Decision — panel order was already correct); NEU_EST_MUL_real needed both letters and the same Lidar/Locomotion panel-order swap as its simulation counterpart (a=Basal Ganglia, b=Lidar Network, c=Locomotion, d=Gait Decision). Verified both against every letter citation in results.tex (lines 488/499/504/513/548) — all correct. Promoted with --force; the other 4 __main__ outputs (GRAPH_IMU_real/GRAPH_IMU2_real/NEU_IMU_real/NEU_IMU2_real) got re-rendered as a side effect of running the script but were not committed — their pixel diffs are unrelated to this fix (different DPI than what's currently in assets/, likely a stale local render) and out of scope for this correction.",
+      "target": "— (no results.tex changes needed — letters/order now match what the prose already cites)",
+      "dataSource": "experiments/N-02-physical-figure-regeneration/",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-18-neu-est-real-panel-letters.tex"
     }
   ]
 }

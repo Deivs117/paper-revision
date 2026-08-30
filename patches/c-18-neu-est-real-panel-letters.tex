@@ -1,0 +1,22 @@
+% Patch record for C-18 -- restore a)/b)/c)/d) panel letters + correct panel order in the
+% already-published NEU_EST_UNIG_real.png / NEU_EST_MUL_real.png (physical-robot figures).
+%
+% No sections/*.tex changes -- this is an assets/-only fix. The generator fix itself lives in
+% experiments/_plotting/builders/imu_terrain_real.py (build_neu_est()'s group_letters param,
+% already introduced for N-06/N-08's simulation-figure fix) -- this patch only adds the
+% corresponding __main__ call-site arguments for the _real figures:
+%
+%   NEU_EST_UNIG_real: group_letters={"Lidar": "a", "Locomotion_1": "b", "Decision_1": "c"}
+%                       (panel order unchanged -- was already correct)
+%   NEU_EST_MUL_real:  panel order changed to put Lidar before Locomotion (previously
+%                       Locomotion came first), group_letters={"BasalGanglia_GPi": "a",
+%                       "Lidar": "b", "Locomotion_1": "c", "Decision_1": "d"}
+%
+% Verified against every letter citation in results.tex:
+%   line 488: \ref{fig:NEU_EST_UNIG_real}a -- obstacle-evasion / Lidar content -- letter a
+%   line 499: \ref{fig:NEU_EST_UNIG_real}b -- sensory/integrative layers -- letter b
+%   line 504: \ref{fig:NEU_EST_MUL_real}b  -- LiDAR-detected object, Input panel -- letter b
+%   line 513: \ref{fig:NEU_EST_MUL_real}d  -- X15/X16, Decision_2 panel -- letter d
+%   line 548: \ref{fig:NEU_EST_MUL_real}c  -- X8/X12, locomotion module -- letter c
+%
+% Promoted assets: assets/NEU_EST_UNIG_real.png, assets/NEU_EST_MUL_real.png (--force).
