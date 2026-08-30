@@ -11,7 +11,7 @@ a la re-corrida de simulación pendiente (§3) — el pipeline ya soporta el swa
 
 **Origen:** `intake/pending/R02-01_metric_and_figure_audit.md` §3 (F-02, D-9) + `intake/pending/R02-01_data_traceability_and_plotting_plan.md`
 §1.1/§3.4 Grupo 1 (ambos eliminados tras atomizarse, ver `intake/R02-01_INDEX.md`) + `PROGRESS.md` fila `N-01` +
-`experiments/N-01-simulation-figure-regeneration/README.md` + `intake/pending/n01_audit_notes_2026-08-29.md`
+`experiments/N-01-simulation-figure-regeneration/README.md` + `intake/processed/n01_audit_notes_2026-08-29.md`
 (auditoría del autor sobre el output ya generado, ver §1c).
 
 ## 1. Qué falta hacer (dos piezas independientes, mismo pipeline)
@@ -41,7 +41,7 @@ plano ≈0.58–0.60 con pico transitorio t=-1.3 a -0.5s en rugoso; TR plano ≈
 
 ### 1c. Ajustes del autor sobre FigA/B/C, auditoría 2026-08-29 (nuevo, va MÁS ALLÁ de "regenerar trazable")
 
-Notas crudas en `intake/pending/n01_audit_notes_2026-08-29.md`. A diferencia de §1b (que asumía cero cambios de
+Notas crudas en `intake/processed/n01_audit_notes_2026-08-29.md`. A diferencia de §1b (que asumía cero cambios de
 contenido, solo trazabilidad de código), estos 3 ajustes sí cambian lo que la figura muestra — hay que aplicarlos
 sobre `ecdf_phase_space.py` antes de volver a promover ninguna de las 3.
 

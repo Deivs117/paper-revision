@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-30T02:03:23+00:00",
-  "progressLastCommit": "2026-08-29T20:47:22-05:00",
+  "generatedAt": "2026-08-30T02:17:18+00:00",
+  "progressLastCommit": "2026-08-29T21:03:23-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -113,7 +113,7 @@
       "id": "R3-05",
       "reviewer": "3",
       "requirement": "Inspection task performance metrics (tracking accuracy, coverage rate, autonomous re-planning)",
-      "target": "results.tex — nueva subsección Reactive Inspection Task en Simulation Results, insertar justo antes de \\subsection{Physical Implementation Results} (línea 471 al 2026-08-29, reverificar antes de parchear). Plan de escritura completo (tabla agregada, figura, pseudo-texto listo para \\revblue{}, checklist de ejecución) en intake/pending/R3-05-inspection_writing_plan.md; diagnóstico técnico original en intake/pending/R3-05_inspection_handoff.md. Métricas: SR=85 % (17/20), d\\_final=1.076±0.038 m, ratio N\\_lidar/N\\_mode\\_X≈2.3×. Las 4 limitaciones (§8 del handoff) van consolidadas en \\label{ssec:Limitations}, no repetidas inline, por el pedido de R2 de consolidar limitaciones. Edición post-sync del autor (2026-08-29, vía Overleaf, sync: pull from Overleaf 5d5f5e2): quitó \"(Experiment E)\" de las dos apariciones en la subsección (título de párrafo y el que abre \"Regarding the Reactive Inspection Task\") — ninguna otra suite del paper usa numeración tipo \"Experiment A/B/C/D\", así que queda más consistente sin ella. Solo wording, sin cambio de métricas/tabla/figura; validate_tex.sh/check_roundtrip.sh/compile_pdf.sh reverificados tras el pull.",
+      "target": "results.tex — nueva subsección Reactive Inspection Task en Simulation Results, insertar justo antes de \\subsection{Physical Implementation Results} (línea 471 al 2026-08-29, reverificar antes de parchear). Plan de escritura completo (tabla agregada, figura, pseudo-texto listo para \\revblue{}, checklist de ejecución) en intake/processed/R3-05-inspection_writing_plan.md; diagnóstico técnico original en intake/processed/R3-05_inspection_handoff.md. Métricas: SR=85 % (17/20), d\\_final=1.076±0.038 m, ratio N\\_lidar/N\\_mode\\_X≈2.3×. Las 4 limitaciones (§8 del handoff) van consolidadas en \\label{ssec:Limitations}, no repetidas inline, por el pedido de R2 de consolidar limitaciones. Edición post-sync del autor (2026-08-29, vía Overleaf, sync: pull from Overleaf 5d5f5e2): quitó \"(Experiment E)\" de las dos apariciones en la subsección (título de párrafo y el que abre \"Regarding the Reactive Inspection Task\") — ninguna otra suite del paper usa numeración tipo \"Experiment A/B/C/D\", así que queda más consistente sin ella. Solo wording, sin cambio de métricas/tabla/figura; validate_tex.sh/check_roundtrip.sh/compile_pdf.sh reverificados tras el pull.",
       "dataSource": "experiments/R3-05-inspection/",
       "category": "Métricas",
       "owner": [
@@ -450,7 +450,7 @@
     {
       "id": "C-17",
       "reviewer": "—",
-      "requirement": "New rule found during R3-05 write-up (author-requested): reader-facing prose in sections/.tex must never name a raw implementation/simulation identifier (a PETER_SIMULATION file/variable/topic/column name) as if it were itself the finding — describe what it represents functionally instead, regardless of \\texttt{} wrapping. Documented as README.md §11.1. Two instances found and fixed: R3-05's own (obstaculos.world) (already removed as part of that patch) and R2-04's \\texttt{robot\\_cmd} (2 occurrences, tab:mode_steady_state_energy paragraph/caption) — reworded to \"the robot's structural-command signal\" / \"structural-command-detected mode segment\", no \\texttt{}, same meaning. Repo-wide grep (file extensions, known ROS node/topic/package names, every \\texttt{} in sections/.tex) confirmed no other instances as of 2026-08-29 — full audit trail in intake/pending/R3-05-inspection_writing_plan.md §7bis. Legitimate tool/hardware names (Gazebo, ROS 2, ESP32-S3, PlatformIO, SolidWorks) are explicitly exempt and untouched.",
+      "requirement": "New rule found during R3-05 write-up (author-requested): reader-facing prose in sections/.tex must never name a raw implementation/simulation identifier (a PETER_SIMULATION file/variable/topic/column name) as if it were itself the finding — describe what it represents functionally instead, regardless of \\texttt{} wrapping. Documented as README.md §11.1. Two instances found and fixed: R3-05's own (obstaculos.world) (already removed as part of that patch) and R2-04's \\texttt{robot\\_cmd} (2 occurrences, tab:mode_steady_state_energy paragraph/caption) — reworded to \"the robot's structural-command signal\" / \"structural-command-detected mode segment\", no \\texttt{}, same meaning. Repo-wide grep (file extensions, known ROS node/topic/package names, every \\texttt{} in sections/.tex) confirmed no other instances as of 2026-08-29 — full audit trail in intake/processed/R3-05-inspection_writing_plan.md §7bis. Legitimate tool/hardware names (Gazebo, ROS 2, ESP32-S3, PlatformIO, SolidWorks) are explicitly exempt and untouched.",
       "target": "results.tex (tab:mode_steady_state_energy paragraph + caption)",
       "dataSource": "—",
       "category": "Escritura",
