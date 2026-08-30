@@ -19,6 +19,29 @@ ROW_LABELS_F05 = {"Flat": "Flat ($N_0$)", "Inclined": "Inclined ($N_1$)", "Stuck
 ROW_ORDER = ["Stuck", "Flat", "Inclined"]  # top-to-bottom, matches the published figure
 
 
+def _place_group_letter(fig, ax, letter: str) -> None:
+    """Draws '<letter>)' centered below `ax`'s x-axis label, used to restore the a)/b)/c)/d)
+    panel-letter annotations `results.tex` cites (see R02-01-05 §0ter). Reads the x-axis label's
+    actual rendered bounding box (requires the figure to already be drawn -- callers must call this
+    after `fig.tight_layout()`/`fig.canvas.draw()`) rather than a hand-tuned offset, since a fixed
+    offset drifts out of place whenever font size, DPI, or layout spacing changes elsewhere."""
+    fig.canvas.draw()
+    bbox = ax.xaxis.label.get_window_extent()
+    bbox_fig = bbox.transformed(fig.transFigure.inverted())
+    y = max(0.005, bbox_fig.y0 - 0.035)
+    fig.text(0.5, y, f"{letter})", ha="center", fontsize=28)
+
+
+def _place_group_title_above(fig, ax, text: str) -> None:
+    """Draws `text` (e.g. "Locomotion Module") centered above `ax`'s own per-panel title (e.g.
+    "Locomotion 1"), reading the real rendered position the same way `_place_group_letter` does
+    for xlabels -- see that function's docstring for why a fixed offset isn't used."""
+    fig.canvas.draw()
+    bbox = ax.title.get_window_extent()
+    bbox_fig = bbox.transformed(fig.transFigure.inverted())
+    fig.text(0.5, bbox_fig.y1 + 0.015, text, ha="center", fontsize=11)
+
+
 def build_graph_imu(csv_path: str, output_path: str, title_suffix: str) -> None:
     df = pd.read_csv(csv_path)
     t = sorted(df[df.row == "Stuck"]["time_s"].unique())
@@ -36,11 +59,18 @@ def build_graph_imu(csv_path: str, output_path: str, title_suffix: str) -> None:
     plt.close(fig)
 
 
-def build_neu_imu(csv_path: str, output_path: str) -> None:
+def build_neu_imu(csv_path: str, output_path: str, group_letters: dict[str, str] | None = None) -> None:
+    """group_letters (optional): {"Locomotion_1": "a", "Decision_1": "b"} -- draws that letter,
+    matplotlib-figure-text style (see build_neu_est's docstring), centered below the
+    corresponding group. Omit to reproduce the old (letter-less) behavior unchanged -- e.g. the
+    already-published _real outputs in __main__ below, which this function still generates as-is
+    unless a future patch decides to also add letters there (see R02-01-05 §0ter: the same
+    missing-letter defect already exists in NEU_IMU_real/NEU_IMU2_real, out of scope for this fix)."""
     df = pd.read_csv(csv_path)
     panels = ["Locomotion_1", "Locomotion_2", "Decision_1", "Decision_2"]
     titles = {"Locomotion_1": "Locomotion 1", "Locomotion_2": "Locomotion 2",
               "Decision_1": "Decision 1", "Decision_2": "Decision 2"}
+    group_letters = group_letters or {}
     fig, axes = plt.subplots(4, 1, figsize=(8, 10))
     for ax, p in zip(axes, panels):
         sub = df[df.panel == p]
@@ -56,10 +86,29 @@ def build_neu_imu(csv_path: str, output_path: str) -> None:
         ax.set_ylabel("Neuron")
         ax.set_title(titles[p])
     # Two group titles matching the original figure's layout (Locomotion Module above panels
-    # 0-1, Gait Decision Module above panels 2-3) instead of one combined suptitle.
-    fig.tight_layout(rect=(0, 0, 1, 0.94), h_pad=3.5)
-    fig.text(0.5, 0.975, "Locomotion Module", ha="center", fontsize=11)
-    fig.text(0.5, 0.475, "Gait Decision Module", ha="center", fontsize=11)
+    # 0-1, Gait Decision Module above panels 2-3) instead of one combined suptitle. Positioned
+    # from each group's first axes' own rendered title, not a fixed fraction -- a fixed fraction
+    # (the original approach) collides with the letter below it once `bottom` reserves extra
+    # vertical space for group_letters (see R02-01-05 §0ter: this collision was found and fixed
+    # while restoring the a)/b) letters).
+    bottom = 0.08 if group_letters else 0.0
+    h_pad = 6.5 if group_letters else 3.5  # extra room for the letter *and* the next group's
+    # title to both fit in the gap between Locomotion_2's xlabel and Decision_1's title.
+    fig.tight_layout(rect=(0, bottom, 1, 0.94), h_pad=h_pad)
+    if group_letters:
+        _place_group_title_above(fig, axes[0], "Locomotion Module")
+        _place_group_title_above(fig, axes[2], "Gait Decision Module")
+    else:
+        # Original fixed positions, kept byte-for-byte unchanged for the no-letters case (the
+        # already-published NEU_IMU_real/NEU_IMU2_real in __main__ below use this path).
+        fig.text(0.5, 0.975, "Locomotion Module", ha="center", fontsize=11)
+        fig.text(0.5, 0.475, "Gait Decision Module", ha="center", fontsize=11)
+    # axes[1]/axes[3] = each group's last axes (Locomotion_2, Decision_2) -- letter goes below
+    # that axes' "Time (s)" label, not just below the axes box itself.
+    if "Locomotion_1" in group_letters:
+        _place_group_letter(fig, axes[1], group_letters["Locomotion_1"])
+    if "Decision_1" in group_letters:
+        _place_group_letter(fig, axes[3], group_letters["Decision_1"])
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     fig.savefig(output_path, dpi=DPI)
     plt.close(fig)
@@ -100,16 +149,33 @@ def build_terrain_latencies(csv_path: str, output_path: str) -> None:
     plt.close(fig)
 
 
-def build_neu_est(csv_path: str, output_path: str, panels: list[str], group_titles: dict) -> None:
+def build_neu_est(csv_path: str, output_path: str, panels: list[str], group_titles: dict,
+                   group_letters: dict[str, str] | None = None) -> None:
     """NEU_EST_UNIG_real.png / NEU_EST_MUL_real.png -- multi-column raster, see
     extract/extract_neu_est_real.py. `group_titles` maps a panel name to the group title placed
-    above it (only set on the first panel of each group)."""
+    above it (only set on the first panel of each group). `group_letters` (optional): same keys as
+    `group_titles`, maps to a single letter ("a", "b", ...) drawn centered below that group's row
+    -- restores the a)/b)/c)/d) annotations `results.tex` cites by letter (e.g.
+    `\\ref{fig:NEU_EST_UNIG}b`), which earlier regenerations of this builder dropped entirely (see
+    R02-01-05 §0ter). `panels` must list each group's members consecutively and in the same
+    left-to-right, top-to-bottom order the letters are meant to read in -- this function does not
+    reorder anything itself, callers are responsible for passing panels in the correct order."""
     df = pd.read_csv(csv_path)
     n = len(panels)
     ncols = 2
     nrows = (n + 1) // 2
+    group_letters = group_letters or {}
     fig, axes = plt.subplots(nrows, ncols, figsize=(6 * ncols, 2.6 * nrows))
     axes = axes.flatten() if n > 1 else [axes]
+    # Row index (0-based) of each group's *last* member, used to place its letter just below that
+    # row once every panel in the group has been laid out.
+    group_last_row: dict[str, int] = {}
+    last_group = None
+    for i, p in enumerate(panels):
+        if p in group_titles:
+            last_group = p
+        if last_group is not None:
+            group_last_row[last_group] = i // ncols
     for ax, p in zip(axes, panels):
         sub = df[df.panel == p]
         neurons = list(sub["neuron"].unique())
@@ -127,7 +193,13 @@ def build_neu_est(csv_path: str, output_path: str, panels: list[str], group_titl
                         ha="center", fontsize=10)
     for ax in axes[n:]:
         ax.axis("off")
-    fig.tight_layout()
+    bottom_margin = 0.06 if group_letters else 0.0
+    fig.tight_layout(rect=(0, bottom_margin, 1, 1))
+    for group_panel, letter in group_letters.items():
+        row = group_last_row[group_panel]
+        # That row's left-column axes -- its "Time (s)" label sits at the same height as the
+        # right column's, so either works as the reference.
+        _place_group_letter(fig, axes[row * ncols], letter)
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     fig.savefig(output_path, dpi=DPI)
     plt.close(fig)
