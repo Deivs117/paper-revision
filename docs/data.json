@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-30T00:19:01+00:00",
-  "progressLastCommit": "2026-08-29T19:15:16-05:00",
+  "generatedAt": "2026-08-30T00:28:09+00:00",
+  "progressLastCommit": "2026-08-29T19:19:01-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -113,7 +113,7 @@
       "id": "R3-05",
       "reviewer": "3",
       "requirement": "Inspection task performance metrics (tracking accuracy, coverage rate, autonomous re-planning)",
-      "target": "results.tex — nueva subsección Reactive Inspection Task en Simulation Results, insertar justo antes de \\subsection{Physical Implementation Results} (línea 471 al 2026-08-29, reverificar antes de parchear). Plan de escritura completo (tabla agregada, figura, pseudo-texto listo para \\revblue{}, checklist de ejecución) en intake/pending/R3-05-inspection_writing_plan.md; diagnóstico técnico original en intake/pending/R3-05_inspection_handoff.md. Métricas: SR=85 % (17/20), d\\_final=1.076±0.038 m, ratio N\\_lidar/N\\_mode\\_X≈2.3×. Las 4 limitaciones (§8 del handoff) van consolidadas en \\label{ssec:Limitations}, no repetidas inline, por el pedido de R2 de consolidar limitaciones.",
+      "target": "results.tex — nueva subsección Reactive Inspection Task en Simulation Results, insertar justo antes de \\subsection{Physical Implementation Results} (línea 471 al 2026-08-29, reverificar antes de parchear). Plan de escritura completo (tabla agregada, figura, pseudo-texto listo para \\revblue{}, checklist de ejecución) en intake/pending/R3-05-inspection_writing_plan.md; diagnóstico técnico original en intake/pending/R3-05_inspection_handoff.md. Métricas: SR=85 % (17/20), d\\_final=1.076±0.038 m, ratio N\\_lidar/N\\_mode\\_X≈2.3×. Las 4 limitaciones (§8 del handoff) van consolidadas en \\label{ssec:Limitations}, no repetidas inline, por el pedido de R2 de consolidar limitaciones. Edición post-sync del autor (2026-08-29, vía Overleaf, sync: pull from Overleaf 5d5f5e2): quitó \"(Experiment E)\" de las dos apariciones en la subsección (título de párrafo y el que abre \"Regarding the Reactive Inspection Task\") — ninguna otra suite del paper usa numeración tipo \"Experiment A/B/C/D\", así que queda más consistente sin ella. Solo wording, sin cambio de métricas/tabla/figura; validate_tex.sh/check_roundtrip.sh/compile_pdf.sh reverificados tras el pull.",
       "dataSource": "experiments/R3-05-inspection/",
       "category": "Métricas",
       "owner": [
