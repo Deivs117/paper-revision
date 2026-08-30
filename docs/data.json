@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-30T03:03:55+00:00",
-  "progressLastCommit": "2026-08-29T21:50:34-05:00",
+  "generatedAt": "2026-08-30T03:06:35+00:00",
+  "progressLastCommit": "2026-08-29T22:03:55-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -210,7 +210,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "—"
     },
     {
@@ -275,7 +275,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "—"
     },
     {
@@ -288,7 +288,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "—"
     },
     {
@@ -301,7 +301,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "—"
     },
     {
@@ -314,7 +314,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "—"
     },
     {
@@ -470,7 +470,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-18-neu-est-real-panel-letters.tex"
     },
     {
@@ -483,7 +483,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-19-table-figure-layout-cleanup.tex"
     }
   ]
