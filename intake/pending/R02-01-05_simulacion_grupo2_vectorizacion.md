@@ -1,10 +1,19 @@
 # R02-01-05 — Simulación N-01, Grupo 2: rasters neuronales (F-01) + IMU doble eje (F-04) + walk sequence (F-08) — PENDIENTE
 
-**Estado: 🔲 Sin empezar.** Ninguno de los builders necesarios existe todavía (`experiments/_plotting/builders/`
-solo tiene `classifier_suite.py`, `ecdf_phase_space.py`, `energy_transition.py`, `imu_terrain_real.py`,
-`macro_robustness.py`, `real_plot_suite.py` — no hay `neural_raster.py` ni `imu_dual_axis.py`). Es el bloque
-grande de simulación que sigue sin tocar; requiere vectorización previa (WebPlotDigitizer o extracción de
-píxel), no CSV crudo.
+**Estado (actualizado 2026-08-29, revisión frame-by-frame): ⚠ Parcialmente promovido, bloqueado por letras de
+panel faltantes.** `N-07` (`fig_stability_phases.png`) y la mitad de `N-08` (`GRAPH_IMU.png`/`GRAPH_IMU2.png`)
+ya están **promovidos a `assets/`** tras verificación visual — coinciden exactamente con el original (N-07:
+paneles A–F, valores TR; N-08 parcial: doble eje, notación $\sigma_{az}$, línea de umbral 3.7, títulos por
+terreno). **Bloqueado:** `N-06` completo (`NEU_EST_UNIB/UNIG/MUL`) y la otra mitad de `N-08`
+(`NEU_IMU.png`/`NEU_IMU2.png`) — el builder `neural_raster.py` regenera correctamente el contenido de cada
+subplot pero **omite por completo las letras de panel `a)`/`b)`/`c)`/`d)`** que el original dibuja como texto
+dentro de la imagen. Ver §0ter abajo para el detalle completo por figura — es más grave de lo que anticipaba
+§0bis: no es solo `NEU_EST_UNIG`/`NEU_EST_MUL` (ya identificadas ahí), sino que **`NEU_IMU2` tiene la misma
+restricción y §0bis no la había detectado** (`\ref{fig:NEU_IMU2}a`/`b`, `results.tex:223/225`).
+
+**No promover `N-06`/`NEU_IMU2` ni tocar `results.tex` hasta que el autor decida** cómo resolver las letras
+faltantes (§0ter tiene el detalle de qué builder necesita el fix y si hay además un reordenamiento de contenido,
+no solo letras ausentes, en el caso de `NEU_EST_MUL`).
 
 **Origen:** `intake/pending/R02-01_metric_and_figure_audit.md` §3 (F-01, F-04, F-08) + `intake/pending/R02-01_data_traceability_and_plotting_plan.md`
 §2 (D-1, D-8, D-11, F-Data-03/04/05) + §3.4 Grupo 2 (ambos eliminados tras atomizarse, ver
@@ -16,6 +25,65 @@ Las tres comparten la misma causa técnica (sin CSV crudo recuperable, D-1 ya de
 método) y el mismo método de recuperación (vectorización), agrupadas en 2 de los 4 grupos de calibración
 compartida de Informe 2 (Grupo A y Grupo C — los Grupos B y D ya se cerraron, ver
 `intake/processed/R02-01-02_fisico_regeneracion_N02-N05.md`).
+
+## 0bis. Confirmación de alcance (autor, 2026-08-29) + restricción nueva de numeración de paneles
+
+El autor confirmó que "vectorizar y arreglar todas las imágenes NEU_\* y rasterogramas similares" **es
+exactamente el alcance ya descrito en este documento** (§1 y §5: `NEU_EST_UNIB/UNIG/MUL` rama CSV real,
+`NEU_IMU/NEU_IMU2` rama vectorizada, más `GRAPH_IMU/GRAPH_IMU2`/`RES_IMU/RES_IMU2.0` del Grupo C en §4) — no
+agrega figuras nuevas al bloque.
+
+**Restricción nueva, bloqueante para `neural_raster.py`:** en la auditoría del 2026-08-29 el autor señaló que
+`NEU_EST_UNIG.png` y `NEU_EST_MUL.png` "perdieron los índices" al pensar en su regeneración — aclarado: se
+refiere a la **numeración de sub-panel (a/b/c/d) que `results.tex` cita por letra**, no a ticks de eje ni a
+columnas del CSV. `results.tex` ya depende de una lectura fija de panel por letra:
+
+- `\ref{fig:NEU_EST_UNIG}` (sensory network) y `\ref{fig:NEU_EST_UNIG}b` (locomotor decision network) — línea 36/45.
+- `\ref{fig:NEU_EST_MUL}a` (basal ganglia, línea 144), `b` (evasive sensory, línea 142), `c` (locomotion control,
+  línea 142/144), `d` (terrain-instability units $X_1$/$X_2$, línea 150).
+
+`neural_raster.py` debe **preservar exactamente ese orden y esas letras de panel** para `NEU_EST_UNIG`/
+`NEU_EST_MUL` al regenerar desde CSV real. Si el nuevo builder reordena o renombra paneles por cualquier razón
+de diseño, es obligatorio actualizar las referencias `\ref{fig:NEU_EST_MUL}a-d` / `\ref{fig:NEU_EST_UNIG}b` en
+`results.tex` en el mismo commit (misma disciplina que la tabla de referencias cruzadas de
+`R02-01-04` §4) — nunca dejar que la letra en la figura y la letra citada en el texto diverjan. Verificar esto
+como paso explícito antes de promover estas dos figuras.
+
+## 0ter. Verificación del 2026-08-29 — letras de panel ausentes en el output regenerado
+
+Se comparó cada imagen de `experiments/N-01-simulation-figure-regeneration/output/` contra su versión actual en
+`assets/`, panel por panel (visualmente, no solo por nombre de archivo), tal como pedía §0bis. Resultado:
+
+| Figura | Letras en `assets/` (actual) | Letras en el output regenerado | Contenido por letra | Veredicto |
+|---|---|---|---|---|
+| `NEU_EST_UNIB.png` | a) Locomotion Module, b) March Decision Module | **ninguna** | mismo contenido, mismo orden | No bloqueada por `\ref` (`results.tex` la cita sin letra) — **promovible igual, pero pierde las letras visualmente** |
+| `NEU_EST_UNIG.png` | a) sensory (LiDAR/Input/Response/Auxiliar), b) Locomotion Module, c) March Decision Module | **ninguna** | mismo agrupamiento por módulo, mismo orden (a=sensorial, b=Locomotion, c=Decision) | **Bloqueada** — `\ref{fig:NEU_EST_UNIG}b` (línea 36/45) no tiene letra que apuntar |
+| `NEU_EST_MUL.png` | a) Basal Ganglia, b) LiDAR Net, c) Locomotion, d) March Decision (grilla 2×2) | **ninguna** | **orden cambiado**: Basal Ganglia, luego Locomotion, luego LiDAR Net, luego Gait Decision (columna única) — b/c intercambiados respecto al original | **Bloqueada, más grave que las otras dos** — no es solo falta de letras, el contenido que "b" y "c" señalarían en texto (línea 142/144/150) quedaría cruzado si alguien agrega letras a/b/c/d en el orden de lectura actual del nuevo layout |
+| `NEU_IMU.png` | a) Locomotion Module, b) March Decision Module | **ninguna** | mismo contenido, mismo orden | No bloqueada por `\ref` — **mismo caso que `NEU_EST_UNIB`** |
+| `NEU_IMU2.png` | a) Locomotion Module, b) March Decision Module | **ninguna** | mismo contenido, mismo orden (a=Locomotion, b=Decision, coincide) | **Bloqueada — hallazgo nuevo, §0bis no la había listado**: `\ref{fig:NEU_IMU2}a` (línea 223) y `\ref{fig:NEU_IMU2}b` (línea 225) sí dependen de la letra |
+| `GRAPH_IMU.png` / `GRAPH_IMU2.png` | sin letras en el original | sin letras (no aplica) | — | Sin restricción — **promovidas** (verificación de contenido: doble eje, notación $\sigma_{az}$, línea de umbral 3.7, título por terreno, todo correcto) |
+| `fig_stability_phases.png` | A–F (no citadas por letra en `results.tex`) | A–F preservadas, coinciden panel por panel | — | Sin restricción de `\ref`, letras además sí se preservaron — **promovida** |
+
+**Causa técnica probable:** las 4 figuras afectadas (`NEU_EST_UNIB/UNIG/MUL`, `NEU_IMU`, `NEU_IMU2`) salen todas
+del mismo builder nuevo `neural_raster.py` (§5) — el defecto de letras ausentes es del builder, no de una figura
+puntual. `NEU_EST_MUL` además sufre un reordenamiento real del layout (2×2 → columna única), no solo la letra.
+
+**Qué se promovió ya (2026-08-29):** `fig_stability_phases.png`, `GRAPH_IMU.png`, `GRAPH_IMU2.png` — ver
+`PROGRESS.md` (`N-07` → `applied`, `N-08` con nota de promoción parcial). **Qué queda bloqueado, sin tocar
+`results.tex` ni promover:** `NEU_EST_UNIB/UNIG/MUL` (`N-06` completo) y `NEU_IMU/NEU_IMU2` (mitad de `N-08`).
+
+**Decisión pendiente del autor** — opciones, sin asumir ninguna:
+1. Arreglar `neural_raster.py` para que vuelva a dibujar las letras `a)/b)/c)/(d)` en el mismo orden de lectura
+   que el layout actual de `assets/` (para `NEU_EST_UNIB`/`NEU_IMU`/`NEU_IMU2`, el contenido por módulo ya
+   coincide en ese orden — sería solo re-agregar el texto). Para `NEU_EST_MUL`, además hay que decidir si se
+   revierte el layout a la grilla 2×2 original (más simple, preserva letras/orden sin tocar `results.tex`) o si
+   se acepta el nuevo layout en columna y se actualiza `\ref{fig:NEU_EST_MUL}a-d` en `results.tex` para que
+   apunte a los módulos correctos en su nuevo orden.
+2. Promover igual `NEU_EST_UNIB`/`NEU_IMU` (no bloqueadas por `\ref`, solo pierden la anotación visual de letra)
+   y dejar bloqueadas únicamente `NEU_EST_UNIG`/`NEU_EST_MUL`/`NEU_IMU2` — parcializa aún más `N-06`/`N-08` pero
+   avanza lo que sí es seguro.
+3. Dejar las 4 figuras de `neural_raster.py` sin promover hasta corregir el builder de una vez, evitando una
+   promoción fragmentada de `N-06`.
 
 ## 1. F-01 (instancias de simulación) — "March Decision Module"/"Auxiliar" mal traducidos
 
