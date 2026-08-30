@@ -338,43 +338,34 @@ and Omnidirectional ($X$)--- were executed sequentially in a
 single continuous simulation run and recorded with full
 foot-contact and CoM telemetry ($N_{\mathrm{total}} = 979$ samples
 across the complete sequence).
-Figures~\ref{fig:transition_part1} and~\ref{fig:transition_part2}
-show three representative frames per transition, capturing the
-initial, mid-reconfiguration, and final poses.
-
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=\textwidth]{fig_transition_phases_v9_part1.png}
-    \caption{%
-        %
-        Mode transitions (Part~1 of~2).
-        Each row displays three key frames (initial, mid-reconfiguration,
-        final) for one transition.
-        Top: Quadrupedal Walking ($C$) $\to$ Differential Rolling ($H$).
-        Middle: Differential Rolling ($H$) $\to$ Omnidirectional ($X$).
-        Bottom: Omnidirectional ($X$) $\to$ Quadrupedal Walking ($C$).
-        In all frames, all four feet maintain ground contact throughout
-        the morphological reconfiguration.%
-        %
-    }
-    \label{fig:transition_part1}
-\end{figure}
+\revblue{Figure~\ref{fig:transition_phases} shows the three undirected mode pairs
+($C \leftrightarrow H$, $H \leftrightarrow X$, $X \leftrightarrow C$)
+side by side, each with a double-headed arrow denoting that the
+transition is reversible: the two directions between a given pair of
+modes (e.g. $C \to H$ and $H \to C$) converge to statistically
+indistinguishable support-polygon geometries and Tipover Risk values,
+so each pair is shown once rather than as two separate directed rows.}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\textwidth]{fig_transition_phases_v9_part2.png}
-    \caption{%
-        %
-        Mode transitions (Part~2 of~2).
-        Top: Quadrupedal Walking ($C$) $\to$ Omnidirectional ($X$).
-        Middle: Omnidirectional ($X$) $\to$ Differential Rolling ($H$).
-        Bottom: Differential Rolling ($H$) $\to$ Quadrupedal Walking ($C$).
-        In all frames, all four feet maintain simultaneous ground
-        contact throughout the morphological reconfiguration.%
-        %
-    }
-    \label{fig:transition_part2}
+    \includegraphics[width=\textwidth]{fig_transition_phases_v10.png}
+    \caption{\revblue{%
+        Static stability across reversible locomotion mode transitions,
+        one row per undirected mode pair. For each pair, the two columns
+        show the settled support-polygon geometry in each of the two
+        modes; the double-headed arrow denotes that the transition is
+        equally stable in both directions. $TR$ and $SM$ are reported as
+        a min--max range across all instances of that mode observed
+        across the original six directed transitions (e.g. mode $C$'s
+        geometry recurs as the onset of $C\to H$, the final pose of
+        $X\to C$, the onset of $C\to X$, and the final pose of
+        $H\to C$) rather than as a single value per direction, since all
+        four readings of a given mode agree closely --- itself the
+        empirical evidence that both transition directions are equally
+        stable. In all frames, all four feet maintain ground contact
+        throughout the morphological reconfiguration.%
+    }}
+    \label{fig:transition_phases}
 \end{figure}
 
 %

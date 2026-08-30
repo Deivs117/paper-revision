@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-30T02:17:18+00:00",
-  "progressLastCommit": "2026-08-29T21:03:23-05:00",
+  "generatedAt": "2026-08-30T02:26:00+00:00",
+  "progressLastCommit": "2026-08-29T21:17:18-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -307,14 +307,14 @@
     {
       "id": "N-09",
       "reviewer": "—",
-      "requirement": "Fusionar fig_transition_phases_v9_part1.png/_part2.png (results.tex \"Mode-transition stability\", \\label{fig:transition_part1}/\\label{fig:transition_part2}) en una sola figura de 3 filas (una por pareja de modos $C\\leftrightarrow H$/$H\\leftrightarrow X$/$X\\leftrightarrow C$, doble flecha ⇄ en vez de flecha simple por sentido) en lugar de las 6 filas dirigidas actuales; se elimina la columna del snapshot medio ($t_0+1$s) en cada fila, quedando Onset/Final; TR/SM por snapshot se reportan como rango (mín–máx) fusionando los datos de ambos sentidos originales de cada pareja. Plan completo en intake/pending/N-09_fusion_transition_phases_reversible.md. No ejecutado todavía — pendiente localizar si hay pipeline/CSV trazable detrás de estas 6 corridas o si aplica vectorización (D-1).",
-      "target": "results.tex (bloque figure* único reemplazando ambos actuales, párrafo de apertura \"Mode-transition stability\" ~línea 372-381)",
-      "dataSource": "experiments/N-01-simulation-figure-regeneration/ (a confirmar)",
+      "requirement": "Fusionó fig_transition_phases_v9_part1.png/_part2.png (6 filas de transición dirigida) en fig_transition_phases_v10.png (3 filas, una por pareja no dirigida $C\\leftrightarrow H$/$H\\leftrightarrow X$/$X\\leftrightarrow C$, columna media eliminada). Sin pipeline/CSV — el run de $N_{\\mathrm{total}}=979$ muestras no está archivado en experiments/simulation/ (confirmado por búsqueda de texto completo), mismo caso que N-07. Vectorizado directo del PNG publicado: 3 geometrías de polígono (una por modo, no por transición) pixel-extraídas de paneles A1/A3/B3, calibración por 9 marcas de eje (1146.25 px/m); TR/SM leídos como texto plano de los 12 paneles relevantes, reportados como rango min-máx por modo (4 lecturas por modo, todas cercanas entre sí — evidencia empírica de que ambos sentidos son igual de estables); arista crítica y flecha SM recalculadas analíticamente desde los vértices extraídos y verificadas contra el SM de texto publicado (C 0.1353 vs 0.135, H 0.1058 vs 0.105, X 0.2084 vs 0.208). Layout final (2 rondas de feedback del autor): cuadros de modo apilados a la izquierda con flecha vertical bidireccional (no flecha horizontal entre paneles, que solapaba los datos); leyenda completa restaurada al pie (sin \"Swing Foot\", no aplica — todos los paneles son estados de 4 patas asentadas); etiqueta SM fija centrada arriba del eje X en cada panel; tipografía serif obligatoria 10/11/12pt vía style.py. Builder nuevo experiments/_plotting/builders/transition_phases.py, documentado en experiments/_plotting/vectorized/README.md (sin CSV separado, dato embebido en el script — justificado ahí). Promovido a assets/ (nombre nuevo). results.tex actualizado: un solo \\label{fig:transition_phases} reemplazando fig:transition_part1/fig:transition_part2, párrafo de apertura reescrito, todo en \\revblue{}. Hallazgo nuevo, fuera de alcance: el párrafo siguiente de results.tex afirma $SM=0.050$m/$TR=0.000$ constante sobre los 979 muestras crudas que no existen archivadas — inconsistente con los 12 valores de texto leídos (0.003–0.079 TR, nunca 0.000). No corregido sin confirmación del autor, ver detalle en intake/pending/N-09_fusion_transition_phases_reversible.md.",
+      "target": "results.tex (nuevo \\label{fig:transition_phases}, párrafo de apertura \"Mode-transition stability\" ~línea 335-364)",
+      "dataSource": "experiments/N-01-simulation-figure-regeneration/",
       "category": "Métricas",
       "owner": [
         "Deivi"
       ],
-      "status": "pending",
+      "status": "applied",
       "patchFile": "—"
     },
     {
