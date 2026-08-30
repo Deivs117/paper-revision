@@ -39,6 +39,9 @@ monolithic or moving it elsewhere.
 
 ## Hard rules
 
+- Any interaction with GitHub (PRs, issues, branches, CI status, comparing commits/branches across
+  `paper-revision`, the Overleaf clone, or `PETER_SIMULATION`) goes through the `gh` CLI — never raw `git`
+  remote plumbing or ad-hoc API calls for anything `gh` already covers. See the parent `../CLAUDE.md`.
 - Never edit `source/main_monolithic.tex` by hand. It is generated: written by `scripts/pull_from_overleaf.sh`
   (from Overleaf) or `scripts/reassemble.py` (from `sections/`).
 - Never edit `sections/*.tex` filenames or `manifest.json` order outside `scripts/split_sections.py` — it fully
