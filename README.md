@@ -493,6 +493,20 @@ This repo's round stripped 265 wrappers on 2026-08-25 (`C-02`) — see `OUTLINE.
 
 ---
 
+### 11.1 No Raw Implementation/Simulation Identifiers in Reader-Facing Prose
+
+**The rule:** prose written into `sections/*.tex` — for any `N-xx`/`R2-xx`/`R3-xx`/`C-xx` row, from any origin (an `intake/` write-up, a direct patch) — never names a raw file, variable, topic, node, or column identifier from `PETER_SIMULATION` or any experiment script as if it were itself the finding. Describe what the identifier represents functionally instead. This applies regardless of whether the identifier is wrapped in `\texttt{}` — wrapping it as "code" doesn't exempt it, since the reader still isn't told what it means without opening the sibling repo.
+
+- Bad: *"a purpose-built obstacle field (`obstaculos.world`)"* — `obstaculos.world` is a Gazebo world filename in `PETER_SIMULATION`, meaningless to a reader of the manuscript.
+- Bad: *"each `robot_cmd`-detected mode segment"* — `robot_cmd` is a raw CSV column name from a hardware log; describing it doesn't require naming it.
+- Good: *"a purpose-built obstacle field"* / *"each mode segment detected via the robot's structural-command signal"* — same information, no leaked implementation detail.
+
+This is distinct from citing a genuine tool/hardware name (Gazebo, ROS 2, ESP32-S3, PlatformIO, SolidWorks) — those identify real, externally meaningful products and stay as-is. The line is: would a reader unfamiliar with this project's internal codebase understand the term? If not, it's an implementation detail and needs describing, not naming.
+
+**Origin:** found twice in the same review pass (`R3-05`'s `obstaculos.world`, then `R2-04`'s `robot_cmd`) — author asked for both removed and the pattern documented so it isn't reintroduced by a future `intake/` write-up. See `intake/pending/R3-05-inspection_writing_plan.md` §7bis for the audit that found these two and confirmed no others exist as of 2026-08-29 (checked file extensions, known ROS node/topic/package names, and every `\texttt{}` occurrence in `sections/*.tex`). Re-run that same grep sweep whenever a new `intake/` doc full of code-level detail (like a handoff document) gets turned into manuscript prose — it's exactly that transcription step where these leak in.
+
+---
+
 ### 12. `docs/` — GitHub Pages Traceability Dashboard
 
 A read-only, publicly viewable dashboard (`docs/index.html`) showing every `PROGRESS.md` row — category, owner, reviewer, status — with client-side filtering and summary metrics. Published via GitHub Pages (repo Settings → Pages → source: `main` branch, `/docs` folder — see [GitHub's publishing-source guide](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)).

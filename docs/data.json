@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-30T00:06:00+00:00",
-  "progressLastCommit": "2026-08-29T18:30:37-05:00",
+  "generatedAt": "2026-08-30T00:15:16+00:00",
+  "progressLastCommit": "2026-08-29T19:06:00-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -433,6 +433,19 @@
       ],
       "status": "synced-to-overleaf",
       "patchFile": "patches/c-16-r3-06-bib-verification-fixes.tex"
+    },
+    {
+      "id": "C-17",
+      "reviewer": "—",
+      "requirement": "New rule found during R3-05 write-up (author-requested): reader-facing prose in sections/.tex must never name a raw implementation/simulation identifier (a PETER_SIMULATION file/variable/topic/column name) as if it were itself the finding — describe what it represents functionally instead, regardless of \\texttt{} wrapping. Documented as README.md §11.1. Two instances found and fixed: R3-05's own (obstaculos.world) (already removed as part of that patch) and R2-04's \\texttt{robot\\_cmd} (2 occurrences, tab:mode_steady_state_energy paragraph/caption) — reworded to \"the robot's structural-command signal\" / \"structural-command-detected mode segment\", no \\texttt{}, same meaning. Repo-wide grep (file extensions, known ROS node/topic/package names, every \\texttt{} in sections/.tex) confirmed no other instances as of 2026-08-29 — full audit trail in intake/pending/R3-05-inspection_writing_plan.md §7bis. Legitimate tool/hardware names (Gazebo, ROS 2, ESP32-S3, PlatformIO, SolidWorks) are explicitly exempt and untouched.",
+      "target": "results.tex (tab:mode_steady_state_energy paragraph + caption)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-17-no-raw-sim-identifiers-in-prose.tex"
     }
   ]
 }

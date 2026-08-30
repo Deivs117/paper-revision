@@ -232,18 +232,17 @@ conocidos del handoff (`familia_`, `peter_robot`, `test_manager`, `inspection_re
 `red_neuronal`, `SUITE_`, `/neuron_activity`, `/peter_mode`, `rosbag`, `PETER_SIMULATION`), y todo
 uso de `\texttt{}` (la envoltura típica para identificadores de código en el resto del documento).
 
-**Resultado — un hallazgo pendiente de decisión:**
+**Resultado — un hallazgo, resuelto (2026-08-29):**
 
-| Ubicación | Texto | Categoría |
-|---|---|---|
-| `sections/results.tex`, párrafo de "long-term average energy consumption" (Table~`tab:mode_steady_state_energy`), 2 apariciones | `\texttt{robot\_cmd}` | Nombre de columna interna del CSV de registro real (`imu_ina.csv`, ver `experiments/R2-04-mode-energy/scripts/build_mode_energy.py`) — misma categoría que `obstaculos.world`: un identificador de instrumentación/implementación, no una descripción funcional para el lector. |
+| Ubicación | Texto | Categoría | Estado |
+|---|---|---|---|
+| `sections/results.tex`, párrafo y caption de "long-term average energy consumption" (`tab:mode_steady_state_energy`), 2 apariciones | `\texttt{robot\_cmd}` | Nombre de columna interna del CSV de registro real (`imu_ina.csv`, ver `experiments/R2-04-mode-energy/scripts/build_mode_energy.py`) — misma categoría que `obstaculos.world`: un identificador de instrumentación/implementación, no una descripción funcional para el lector. | ✅ Reemplazado por "the robot's structural-command signal" / "structural-command-detected mode segment" — sin `\texttt{}`, sin nombrar la columna cruda. |
 
-Este hallazgo es de la fila `R2-04` (energía por modo), no de `R3-05` — **no se tocó**, a la espera
-de que el autor decida si aplica el mismo criterio (describir la fuente del dato sin nombrar la
-columna cruda, p.ej. "the steady-state command signal used to detect mode segments" en vez de
-`robot_cmd`) o si se deja, dado que ya está dentro de `\texttt{}` (marcado explícitamente como
-identificador técnico, a diferencia de `obstaculos.world` que aparecía sin envoltura de código
-diferenciándolo de la prosa).
+Este hallazgo era de la fila `R2-04` (energía por modo), no de `R3-05` — el autor confirmó aplicar
+el mismo criterio. **La regla general quedó documentada en `README.md` §11.1** ("No Raw
+Implementation/Simulation Identifiers in Reader-Facing Prose"), junto al criterio para
+diferenciar esto de nombres de herramienta/hardware legítimos (Gazebo, ESP32-S3, etc.), que sí se
+mantienen.
 
 **Sin más hallazgos:** ninguna otra extensión de archivo, nombre de nodo ROS, ni identificador
 `snake_case` de la lista anterior aparece en `sections/*.tex`. Las menciones a "Gazebo" (simulador,

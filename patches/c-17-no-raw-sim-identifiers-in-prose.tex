@@ -1,0 +1,25 @@
+% Patch record for C-17 -- No raw implementation/simulation identifiers in reader-facing prose.
+% Rule documented at README.md §11.1. Two instances fixed:
+%   1. R3-05's "(obstaculos.world)" -- removed directly in patches/r3-05-reactive-inspection-task.tex,
+%      not repeated here.
+%   2. R2-04's \texttt{robot\_cmd} (2 occurrences, tab:mode_steady_state_energy paragraph + caption)
+%      -- this patch.
+% Before/after for the 2 occurrences this patch touches (sections/results.tex):
+
+%%% BEFORE %%%
+% ...computed from pooled intra-segment power samples with the electromechanical coupling window
+% excluded from each \texttt{robot\_cmd}-detected mode segment.}
+%
+% \caption{...computed from pooled intra-segment power samples (individual samples within each
+% \texttt{robot\_cmd}-detected mode segment, electromechanical coupling window excluded; see
+% Fig.~\ref{fig:MorphologicalEnergy}). Power derived as $|I|\times7.2\,\text{V}$ (fixed NiMH pack
+% voltage).}}
+
+%%% AFTER %%%
+% ...computed from pooled intra-segment power samples with the electromechanical coupling window
+% excluded from each mode segment detected via the robot's structural-command signal.}
+%
+% \caption{...computed from pooled intra-segment power samples (individual samples within each
+% structural-command-detected mode segment, electromechanical coupling window excluded; see
+% Fig.~\ref{fig:MorphologicalEnergy}). Power derived as $|I|\times7.2\,\text{V}$ (fixed NiMH pack
+% voltage).}}
