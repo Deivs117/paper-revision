@@ -119,3 +119,27 @@ stability_phases.py`, `imu_dual_axis.py` (reused the existing `imu_terrain_real.
 `tab:consolidated_simulation_metrics` as currently published (e.g. Obstacle Roll: 3.93±8.92
 recomputed vs. 0.55±0.02 published) — flagged in `PROGRESS.md`'s `N-01` row, not investigated or
 acted on here.
+
+**Round 3 (2026-08-29, author audit `n01_audit_notes_2026-08-29.md`, plan `R02-01-04_simulacion_N01_grid_fusion_FigABC.md`):**
+- `fig1_noise_robustness_grid.png` approved unchanged (layout final) and **promoted to `assets/`**
+  (new asset, no prior name to replace). `sections/results.tex`'s 4 separate per-scenario
+  robustness figures (`fig1_Appetitive/Aversive/Obstacle/Complex_macro.png`, each previously paired
+  as subfigure (a) with its own `fig2_*_micro` trial as subfigure (b)) were replaced by this single
+  figure; the 4 `fig2_*_micro` trial figures remain, now as standalone single-image figures instead
+  of subfigure (b). The 4 old `fig1_*_macro.png` assets were `git rm`'d. Cross-reference remap: each
+  scenario's `\label{fig:X_results}` combined-figure label is gone — Appetitive/Complex prose now
+  points at `\label{fig:noise_robustness_grid}` (their claims are robustness/noise-sweep content),
+  Aversive/Obstacle prose now points at their own `\label{fig:X_micro}` (their claims are
+  single-trial temporal-dynamics content, not noise-sweep content). No literal panel letters
+  (a)-(l) exist inside the fused grid image (the author's "gráficamente están perfectas" note meant
+  don't touch the visual at all, so none were added) — the one prose mention that used to say
+  "panel C of Figure~X" now says "the Decision Latency column, Appetitive row, of
+  Figure~\ref{fig:noise_robustness_grid}" instead.
+- `FigA_Stability_Profile.png`/`FigB_Decision_Delay.png`/`FigC_Terrain_Adaptability.png`: the 3
+  audit adjustments from `R02-01-04` §1c implemented in `ecdf_phase_space.py` (FigA: dropped a
+  redundant outer `fig.suptitle()` that was the actual cause of the "espacio perdido" title-spacing
+  bug, not a margin-tuning issue; FigB: removed the $T_{\text{response}}$ ECDF panel, now 2 panels
+  instead of 3, its 0.0s-for-all-trials result moved into `results.tex` prose instead; FigC: added
+  a Pitch RMS boundary line + zone labels, criterion resolved directly from the figure's own
+  existing caption text). All 3 re-promoted to `assets/` (`--force`, same filenames).
+- `results.tex` validated (`validate_tex.sh`/`check_roundtrip.sh` both pass) after all of the above.

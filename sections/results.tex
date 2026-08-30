@@ -58,66 +58,37 @@ The performance of the platform was evaluated under isolated sensory stimuli to 
 
 \begin{figure*}[t]
     \centering
-    \begin{subfigure}[b]{0.58\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{fig1_Appetitive_macro.png}
-        \caption{Robustness Metrics (Mean $\pm$ SD)}
-        \label{fig:appetitive_macro}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.40\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{fig2_Appetitive_micro_test_005_SUCCESS.png}
-        \caption{Temporal Dynamics (Trial 005)}
-        \label{fig:appetitive_micro}
-    \end{subfigure}
-    \caption{Performance analysis for appetitive targeting. (a) Robustness evaluation across noise levels. (b) Neural and kinematic response during a representative successful trial.}
-    \label{fig:appetitive_results}
+    \includegraphics[width=\textwidth]{fig1_noise_robustness_grid.png}
+    \caption{\revblue{Noise-robustness battery across the four single-stimulus simulation scenarios (rows: Appetitive, Aversive, Obstacle, Complex; $N=15$ trials/scenario) against three metrics (columns: Mission Time $T_{sim}$, Pitch RMS, Decision Latency), all as a function of the injected Sensory Noise Index ($\sigma \in [0,4]$). Error bars denote $\pm 1\sigma$ across trials. The Obstacle row's Decision Latency column is reconstructed by pixel-color vectorization of the previously published \texttt{fig1\_Obstacle\_macro.png} panel C (see \texttt{experiments/\_plotting/vectorized/README.md}), as no populated latency source exists for this scenario in the raw simulation logs; every other cell is computed directly from the raw trial data. This figure fuses what were four separate per-scenario robustness figures into one, replacing the four scenario-specific $T_{sim}$ axis labels (Mission/Evacuation/Evasion/Lifecycle Time) with the unified label above; the scenario-specific semantics of $T_{sim}$ are given in the prose below.}}
+    \label{fig:noise_robustness_grid}
 \end{figure*}
 
-\textbf{Appetitive Targeting (see Figure~\ref{fig:appetitive_results}):} The appetitive module shows high resilience under perceptual uncertainty across all noise levels ($\sigma \in [0, 4]$): the neural controller dampens stochastic disturbances, and gait generation operates independently of visual tracking variance (see Table~\ref{tab:consolidated_simulation_metrics} for completion-time and attitude statistics). \revblue{Decision latency itself is noise-dependent rather than constant, remaining near-instantaneous at $\sigma = 0$ ($\approx 60$~ms mean) and rising to the $1.6$--$2.0$~s range as sensory noise increases (panel C of Figure~\ref{fig:appetitive_results}).}
-
-\begin{figure*}[t]
+\begin{figure}[t]
     \centering
-    \begin{subfigure}[b]{0.58\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{fig1_Aversive_macro.png}
-        \caption{Robustness Metrics (Mean $\pm$ SD)}
-        \label{fig:aversive_macro}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.40\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{fig2_Aversive_micro_test_005_SUCCESS.png}
-        \caption{Temporal Dynamics (Trial 005)}
-        \label{fig:aversive_micro}
-    \end{subfigure}
-    \caption{Experimental results for the Aversive Escape Suite. (a) Statistical trends for threat evacuation time, pitch variance, and computational latency under different noise levels. (b) Trajectory deflection overdrive phase showing the immediate computational response of the repulsive network blocks.}
-    \label{fig:aversive_results}
-\end{figure*}
+    \includegraphics[width=0.75\textwidth]{fig2_Appetitive_micro_test_005_SUCCESS.png}
+    \caption{Neural and kinematic response during a representative successful Appetitive Targeting trial (Trial 005).}
+    \label{fig:appetitive_micro}
+\end{figure}
 
-\textbf{Aversive Escape (see Figure~\ref{fig:aversive_results}):} The defensive repulsion properties of the architecture are validated when exposed to proximal threats, with clearance-time statistics reported in Table~\ref{tab:consolidated_simulation_metrics}. The neural firing variance exhibits a swift, step-like onset upon threat detection — structural mobilization into a defensive overdrive state — and returns to baseline once the threat leaves the field of view, demonstrating the efficiency of the neural gating mechanism.
+\textbf{Appetitive Targeting (see Figure~\ref{fig:noise_robustness_grid}):} The appetitive module shows high resilience under perceptual uncertainty across all noise levels ($\sigma \in [0, 4]$): the neural controller dampens stochastic disturbances, and gait generation operates independently of visual tracking variance (see Table~\ref{tab:consolidated_simulation_metrics} for completion-time and attitude statistics). \revblue{Decision latency itself is noise-dependent rather than constant, remaining near-instantaneous at $\sigma = 0$ ($\approx 60$~ms mean) and rising to the $1.6$--$2.0$~s range as sensory noise increases (Decision Latency column, Appetitive row, of Figure~\ref{fig:noise_robustness_grid}).}
 
-\begin{figure*}[t]
+\begin{figure}[t]
     \centering
-    \begin{subfigure}[b]{0.58\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{fig1_Obstacle_macro.png}
-        \caption{Robustness Metrics (Mean $\pm$ SD)}
-        \label{fig:obstacle_macro}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.40\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{fig2_Obstacle_micro_test_005_SUCCESS.png}
-        \caption{Temporal Dynamics (Trial 005)}
-        \label{fig:obstacle_micro}
-    \end{subfigure}
-    \caption{Experimental data for the Obstacle Evasion Suite. (a) Linear trend analysis for capsule avoidance convergence time, structural oscillations, and latency. (b) Time-series synchronization showcasing the sensory-locomotor coupling triggered by LiDAR proximity boundaries.}
-    \label{fig:obstacle_results}
-\end{figure*}
+    \includegraphics[width=0.75\textwidth]{fig2_Aversive_micro_test_005_SUCCESS.png}
+    \caption{Trajectory deflection overdrive phase for a representative Aversive Escape trial (Trial 005), showing the immediate computational response of the repulsive network blocks.}
+    \label{fig:aversive_micro}
+\end{figure}
 
-\textbf{Obstacle Evasion (see Figure~\ref{fig:obstacle_results}):} Smooth capsule geometries for simulated obstacles prevent localized torque spikes during contact; convergence-time and pitch-RMS statistics are reported in Table~\ref{tab:consolidated_simulation_metrics}. The sensory-locomotor coupling is precise: neural firing variance stays at a low baseline until the robot enters the obstacle's ranging threshold, at which point the avoidance sub-circuits modulate steering weights while preserving forward momentum.
+\textbf{Aversive Escape (see Figure~\ref{fig:aversive_micro}):} The defensive repulsion properties of the architecture are validated when exposed to proximal threats, with clearance-time statistics reported in Table~\ref{tab:consolidated_simulation_metrics}. The neural firing variance exhibits a swift, step-like onset upon threat detection — structural mobilization into a defensive overdrive state — and returns to baseline once the threat leaves the field of view, demonstrating the efficiency of the neural gating mechanism.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.75\textwidth]{fig2_Obstacle_micro_test_005_SUCCESS.png}
+    \caption{Time-series synchronization for a representative Obstacle Evasion trial (Trial 005), showcasing the sensory-locomotor coupling triggered by LiDAR proximity boundaries.}
+    \label{fig:obstacle_micro}
+\end{figure}
+
+\textbf{Obstacle Evasion (see Figure~\ref{fig:obstacle_micro}):} Smooth capsule geometries for simulated obstacles prevent localized torque spikes during contact; convergence-time and pitch-RMS statistics are reported in Table~\ref{tab:consolidated_simulation_metrics}. The sensory-locomotor coupling is precise: neural firing variance stays at a low baseline until the robot enters the obstacle's ranging threshold, at which point the avoidance sub-circuits modulate steering weights while preserving forward momentum.
 
 \subsubsection{Response to Multiple Stimuli of Different Natures}
 
@@ -151,26 +122,14 @@ Ultimately, the platform reaches its goal in 92 seconds, avoiding hazardous area
 
 \subsubsection{Quantitative Validation: Multi-Modal Simulation Performance}
 
-\begin{figure*}[t]
+\begin{figure}[t]
     \centering
-    \begin{subfigure}[b]{0.58\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{fig1_Complex_macro.png}
-        \caption{Robustness Metrics}
-        \label{fig:complex_macro}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.40\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{fig2_Complex_micro_test_005_SUCCESS.png}
-        \caption{Temporal Dynamics}
-        \label{fig:complex_micro}
-    \end{subfigure}
-    \caption{Multi-stimuli navigation performance. The system demonstrates robust decision-making under conflicting sensory modalities.}
-    \label{fig:complex_results}
-\end{figure*}
+    \includegraphics[width=0.75\textwidth]{fig2_Complex_micro_test_005_SUCCESS.png}
+    \caption{Temporal dynamics for a representative Complex Navigation trial, demonstrating robust decision-making under conflicting sensory modalities.}
+    \label{fig:complex_micro}
+\end{figure}
 
-\textbf{Complex Navigation (see Figure~\ref{fig:complex_results}):} The complex navigation suite culminates the simulation validation, combining appetitive targets, aversive threats, and physical obstacles simultaneously; success rate, completion time, and attitude statistics are reported in Table~\ref{tab:consolidated_simulation_metrics} alongside the other three scenarios. Under high noise indices, the robot's local trajectory undergoes micro-corrections as it balances competing vector fields, while decision latency remains constant, indicating the network does not suffer from computational deadlocks. The neural firing variance profile shown in Fig.~\ref{fig:complex_micro} exhibits a two-stage computational increment: an initial peak ($t \approx 3$~s) for the aggressive evasion response to the aversive threat, followed by a second activation envelope ($t = 12$–$18$~s) capturing the gait switch required to navigate the narrow passage around the central obstacle; the system then enters a high-consistency tracking phase toward the target.
+\textbf{Complex Navigation (see Figure~\ref{fig:noise_robustness_grid}):} The complex navigation suite culminates the simulation validation, combining appetitive targets, aversive threats, and physical obstacles simultaneously; success rate, completion time, and attitude statistics are reported in Table~\ref{tab:consolidated_simulation_metrics} alongside the other three scenarios. Under high noise indices, the robot's local trajectory undergoes micro-corrections as it balances competing vector fields, while decision latency remains constant, indicating the network does not suffer from computational deadlocks. The neural firing variance profile shown in Fig.~\ref{fig:complex_micro} exhibits a two-stage computational increment: an initial peak ($t \approx 3$~s) for the aggressive evasion response to the aversive threat, followed by a second activation envelope ($t = 12$–$18$~s) capturing the gait switch required to navigate the narrow passage around the central obstacle; the system then enters a high-consistency tracking phase toward the target.
 
 Table~\ref{tab:consolidated_simulation_metrics} consolidates these performance metrics across all four scenarios, confirming a 100\% success rate under stochastic noise injection ($\sigma \in [0,4]$) and low variance in kinematic stability and execution time throughout.
 
@@ -258,24 +217,24 @@ For the second stability test in simulation, the neural activities of the gait-m
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{FigB_Decision_Delay.png}
-        \caption{\revblue{Empirical Cumulative Distribution Functions (ECDF) of neural response latency ($T_{\text{response}}$, Panel A) and mechanical transition time ($T_{\text{switch}}$, Panels B--C) across 15 randomised trials per test. A perfect Heaviside step response at $T_{\text{response}} = 0.0\,\text{s}$ (Panel A) confirms deterministic neural decision dispatch; the mechanical hand-off (Panels B--C) is sub-millisecond in the majority of trials but shows a long tail to $\approx 0.6\,\text{s}$ in 2/15 rugged-terrain trials (Panel B) and a five-to-six-step spread across $0.9$--$1.8\,\text{ms}$ on the inclined slope (Panel C).}}
+        \caption{\revblue{Empirical Cumulative Distribution Functions (ECDF) of mechanical transition time ($T_{\text{switch}}$) across 15 randomised trials per terrain: (A)~Rugged Terrain, (B)~Inclined Slope. The mechanical hand-off is sub-millisecond in the majority of trials but shows a long tail to $\approx 0.6\,\text{s}$ in 2/15 rugged-terrain trials (Panel A) and a five-to-six-step spread across $0.9$--$1.8\,\text{ms}$ on the inclined slope (Panel B). Neural response latency ($T_{\text{response}}$) is not plotted here, as it was exactly $0.0\,\text{s}$ for all 30 trials with no dispersion to display — see the accompanying prose for that result.}}
         \label{fig:decision_delay}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{FigC_Terrain_Adaptability.png}
-        \caption{\revblue{Kinematic phase-space scatter plot of chassis Roll RMS vs. Pitch RMS for all 30 trials. Blue squares (Rugged Terrain) and orange triangles (Inclined Slope) separate clearly along the Pitch RMS axis, with overlapping Roll RMS ranges, demonstrating that the neural controller synthesises a distinct, terrain-specialised locomotive signature for each environment.}}
+        \caption{\revblue{Kinematic phase-space scatter plot of chassis Roll RMS vs. Pitch RMS for all 30 trials. Blue squares (Rugged Terrain) and orange triangles (Inclined Slope) separate clearly along the Pitch RMS axis, with overlapping Roll RMS ranges, demonstrating that the neural controller synthesises a distinct, terrain-specialised locomotive signature for each environment. The dashed horizontal line marks the Pitch RMS midpoint ($\approx 1.98^{\circ}$) between the two terrain means, dividing the plot into the labelled Rugged Terrain and Inclined Slope zones — deliberately not drawn on the Roll RMS axis, where the overlap between terrains is itself the evidence of comparably effective lateral stabilisation (see accompanying prose).}}
         \label{fig:terrain_adaptability}
     \end{subfigure}
-    \caption{Quantitative performance profiles for the variable-topography experimental battery (15 trials each terrain type). (A)~Dynamic Stability and Tipover Risk profile aligned at the mode-switch instant. (B)~Decision Delay and Temporal Consistency via ECDF analysis of neural latency and mechanical transition time. (C)~Terrain Adaptability Phase Space mapping chassis Roll RMS against Pitch RMS. Together, these three profiles provide the quantitative evidence base for evaluating the bio-inspired controller's safety, speed, and kinematic adaptability under stochastic variable-topography conditions.}
+    \caption{Quantitative performance profiles for the variable-topography experimental battery (15 trials each terrain type). (A)~Dynamic Stability and Tipover Risk profile aligned at the mode-switch instant. (B)~Decision Delay via ECDF analysis of mechanical transition time (neural response latency is reported numerically in the text, not plotted — see Section~\ref{sssec:variable_topo_quant}). (C)~Terrain Adaptability Phase Space mapping chassis Roll RMS against Pitch RMS. Together, these three profiles provide the quantitative evidence base for evaluating the bio-inspired controller's safety, speed, and kinematic adaptability under stochastic variable-topography conditions.}
     \label{fig:variable_topo_metrics}
 \end{figure*}
 
 To quantitatively evaluate the dynamic stability and structural safety of the hybrid platform during high-transient morphological changes, the Tipover Risk ($TR$) index was tracked and unified across 15 randomised experimental runs for both rugged terrain and inclined slope, as depicted in Fig.~\ref{fig:stability_profile}. The $TR$ metric was formally derived from the McGhee--Frank Normalised Stability Margin as $TR = 1 - SM/r_{in}$, where $SM$ is the shortest horizontal distance between the Centre of Mass projection and the support polygon boundary, and $r_{in}$ is the inradius of that polygon. Values approaching $TR = 0.0$ represent maximum structural safety, while $TR = 1.0$ marks the critical overturning threshold. By aligning the temporal records around the exact neural mode-switch instant ($t = 0.0\,\text{s}$), the physical efficacy of the bio-inspired controller was made directly observable. \revblue{In both terrains, the platform maintained a consistently bounded risk profile around $\mu_{TR} \approx 0.58$--$0.60$ (rugged terrain mean $0.600$; inclined slope mean $0.593$), well below the critical overturning threshold throughout the recorded window. Rather than a monotonic escalation, the rugged-terrain trace showed an isolated transient spike reaching $TR \approx 0.77$ shortly before the mode-switch instant ($t \approx -1.3$ to $-0.5\,\text{s}$), consistent with the periodic contraction of the support polygon as individual legs were lifted during the quadrupedal gait cycle, before settling back to the $\approx 0.59$ baseline across the transition at $t = 0.0\,\text{s}$. The inclined-slope trace remained flat at $TR \approx 0.59$ across the entire window, with no escalation or drop coincident with the mode switch. Across all 30 trials, the $\pm 1\sigma$ statistical envelope never crossed the critical overturning boundary ($TR = 1.0$), providing empirical validation of the safety and repeatability of the control architecture under stochastic noise conditions.}
 
 
-To quantify the computational efficiency and temporal determinism of the proposed bio-inspired control architecture under stochastic conditions, the Empirical Cumulative Distribution Functions (ECDF) of the neural response latency ($T_{\text{response}}$) and the mechanical state-switching delay ($T_{\text{switch}}$) were analysed across 15 randomised trials for both experimental terrains, as illustrated in Fig.~\ref{fig:decision_delay}. Both ECDF distributions collapsed into a perfect Heaviside step function: the neural latency was $T_{\text{response}} = 0.0\,\text{s}$ for both terrain types, showing that the threshold-based basal ganglia selection logic filtered out the injected sensor noise and dispatched the correct locomotion command within the same simulation frame as the environmental disturbance. \revblue{The mechanical transition latency was likewise sub-millisecond in the vast majority of trials, but not fully invariant across terrain types. On rugged terrain, $T_{\text{switch}}$ fell within $0.2$--$0.7\,\text{ms}$ for 13 of 15 trials (a single discrete update cycle of the ROS~2 Control loop operating at $3.3\,\text{kHz}$), while the remaining 2 trials ($13.3\%$) exhibited a long tail out to $\approx 0.6\,\text{s}$, indicating that occasional trials require additional update cycles to complete the locomotion-matrix hot-swap under this terrain's contact conditions. On the inclined slope, $T_{\text{switch}}$ spread across $0.9$--$1.8\,\text{ms}$ in a five-to-six-step staircase rather than collapsing onto a single value, reflecting genuine trial-to-trial dispersion of a comparable order of magnitude rather than a perfectly deterministic delay. The absolute alignment of the $T_{\text{response}}$ ECDF step response across all 30 independent trials verified that neural decision dispatch itself remained structurally deterministic; the mechanical hand-off exhibits this small residual variability, including the rugged-terrain long tail, which should be read as a bounded, terrain-dependent effect rather than chattering.}
+To quantify the computational efficiency and temporal determinism of the proposed bio-inspired control architecture under stochastic conditions, the neural response latency ($T_{\text{response}}$) and the Empirical Cumulative Distribution Function (ECDF) of the mechanical state-switching delay ($T_{\text{switch}}$) were analysed across 15 randomised trials for both experimental terrains, the latter illustrated in Fig.~\ref{fig:decision_delay}. Both ECDF distributions collapsed into a perfect Heaviside step function: the neural latency was $T_{\text{response}} = 0.0\,\text{s}$ for both terrain types, showing that the threshold-based basal ganglia selection logic filtered out the injected sensor noise and dispatched the correct locomotion command within the same simulation frame as the environmental disturbance. \revblue{The mechanical transition latency was likewise sub-millisecond in the vast majority of trials, but not fully invariant across terrain types. On rugged terrain, $T_{\text{switch}}$ fell within $0.2$--$0.7\,\text{ms}$ for 13 of 15 trials (a single discrete update cycle of the ROS~2 Control loop operating at $3.3\,\text{kHz}$), while the remaining 2 trials ($13.3\%$) exhibited a long tail out to $\approx 0.6\,\text{s}$, indicating that occasional trials require additional update cycles to complete the locomotion-matrix hot-swap under this terrain's contact conditions. On the inclined slope, $T_{\text{switch}}$ spread across $0.9$--$1.8\,\text{ms}$ in a five-to-six-step staircase rather than collapsing onto a single value, reflecting genuine trial-to-trial dispersion of a comparable order of magnitude rather than a perfectly deterministic delay. Because $T_{\text{response}}$ took the identical value ($0.0\,\text{s}$) in all 30 independent trials, its distribution carries no dispersion to visualise and is reported here as a number rather than plotted as an ECDF panel: neural decision dispatch itself remained structurally deterministic across every trial, while the mechanical hand-off exhibits the small residual variability described above — including the rugged-terrain long tail — which should be read as a bounded, terrain-dependent effect rather than chattering.}
 
 To quantitatively assess the adaptive morphology and environmental specialisation of the control architecture, the steady-state kinematic behaviors of both experimental terrains were mapped onto a phase space defined by the chassis Roll RMS ($\phi_{\text{RMS}}$) and Pitch RMS ($\theta_{\text{RMS}}$) across all 30 successful trials, as shown in Fig.~\ref{fig:terrain_adaptability}. \revblue{The results revealed a clear separation in Pitch RMS between the two terrains, with partial overlap in Roll RMS. The rugged terrain converged into a low-to-moderate roll, low-pitch operational zone ($\mu_{\phi} \approx 1.59^{\circ}$, $\mu_{\theta} \approx 1.67^{\circ}$), capturing the kinematic footprint of asymmetric foot-ground interactions on uneven stones while maintaining a largely level chassis. Conversely, the inclined slope clustered in a higher-pitch region with comparable roll magnitude ($\mu_{\phi} \approx 1.47^{\circ}$, $\mu_{\theta} \approx 2.29^{\circ}$). This spatial distribution reflects the geometric adaptation triggered by the Hybrid morphological transformation: during slope ascent, the chassis aligned longitudinally with the ramp gradient (higher Pitch RMS), while the deployment of the coaxial wheel base kept the lateral support polygon wide enough that roll disturbances remained similar in magnitude to the rugged-terrain baseline rather than being further suppressed. The Pitch-RMS separation between both domains provides empirical evidence that the bio-inspired network selected a distinct, repeatable, terrain-specialised kinematic posture for each environmental condition, rather than applying a generic, environment-agnostic control law, while the Roll-RMS overlap indicates that lateral stabilisation was comparably effective across both terrains rather than being terrain-specific.}
 

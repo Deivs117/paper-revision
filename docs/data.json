@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-30T01:22:38+00:00",
-  "progressLastCommit": "2026-08-29T20:21:57-05:00",
+  "generatedAt": "2026-08-30T01:28:49+00:00",
+  "progressLastCommit": "2026-08-29T20:22:47-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -203,14 +203,14 @@
     {
       "id": "N-01",
       "reviewer": "—",
-      "requirement": "Reusable pipeline (experiments/_plotting/) that regenerates the noise-robustness figure grid (F-02 fusion), FigA/B/C (M-01–M-04 figures), and tab:consolidated_simulation_metrics from any simulation results folder. familia_a_obstaculo has 0/15 populated latency values anywhere in experiments/ (corrects Informe 2's original F-Data-01 diagnosis) — decision on record (2026-08-27) to vectorize the currently-published fig1_Obstacle_macro.png panel C as the fix (extract_fig1_obstacle_latency.py → vectorized/fig1_obstacle_latency.csv; macro_robustness.py reads it with a fallback chain: vectorized CSV → real metrics_raw.csv (for a future re-run, D-12) → \"no data\" annotation). Also fixed a pre-existing title-clipping bug in FigA_Stability_Profile.png (ecdf_phase_space.py). Output regenerated in experiments/N-01-simulation-figure-regeneration/output/ (fig1_noise_robustness_grid.png, FigA/B/C) — NOT promoted to assets/, pending author's frame-by-frame review (same review gate as N-02's physical figures before their own promotion). results.tex NOT touched — still references the original 4 fig1_*_macro.png figures. New finding, out of scope for this row: tab_consolidated_simulation_metrics.csv (recomputed from raw data by this same pipeline) does not match tab:consolidated_simulation_metrics's published $T_{sim}$/Roll numbers (e.g. Obstacle Roll: 3.93±8.92° recomputed vs. 0.55±0.02° published) — not investigated or acted on here, flagged for a future pass.",
-      "target": "results.tex (Appetitive/Aversive/Obstacle/Complex Targeting paragraphs, tab:consolidated_simulation_metrics, FigA/FigB/FigC) — not yet edited",
+      "requirement": "Reusable pipeline (experiments/_plotting/) that regenerates the noise-robustness figure grid (F-02 fusion), FigA/B/C (M-01–M-04 figures), and tab:consolidated_simulation_metrics from any simulation results folder. familia_a_obstaculo has 0/15 populated latency values anywhere in experiments/ (corrects Informe 2's original F-Data-01 diagnosis) — decision on record (2026-08-27) to vectorize the currently-published fig1_Obstacle_macro.png panel C as the fix (extract_fig1_obstacle_latency.py → vectorized/fig1_obstacle_latency.csv; macro_robustness.py reads it with a fallback chain: vectorized CSV → real metrics_raw.csv (for a future re-run, D-12) → \"no data\" annotation) — this part was already built and is unaffected by the round below. Round 2 (2026-08-29, author audit n01_audit_notes_2026-08-29.md, plan in R02-01-04_simulacion_N01_grid_fusion_FigABC.md §1c): fig1_noise_robustness_grid.png approved as-is (layout final, only the Obstacle-panel data itself is still gated on the pending simulation re-run via --simulation-root, D-12 — no action needed now). FigA_Stability_Profile.png: fixed the title-spacing bug by dropping the redundant outer fig.suptitle() (the actual cause, not a margin tuning issue) and folding context into the per-panel titles, matching the published-figure precedent's style (no outer suptitle there either). FigB_Decision_Delay.png: removed the $T_{\\text{response}}$ ECDF panel (read exactly 0.0s for all 30 trials, no dispersion to plot) — now 2 panels (A/B, $T_{\\text{switch}}$ only); results.tex's existing prose already stated the $T_{\\text{response}}=0.0$s number, only needed rewording to stop pointing at a now-removed plot, plus the figure caption. FigC_Terrain_Adaptability.png: added a horizontal Pitch RMS divider (≈1.98°, midpoint of the two terrain means) with \"Rugged Terrain zone\"/\"Inclined Slope zone\" labels, per the criterion resolved directly from the figure's own existing caption/prose (separation is in Pitch RMS, not Roll RMS — deliberately no Roll-RMS divider). All 3 promoted to assets/ (--force, same filenames) and results.tex updated (Fig B/C captions + the two body paragraphs, \\revblue{}) — validate_tex.sh/check_roundtrip.sh both pass. Rejilla fusion also done this round: fig1_noise_robustness_grid.png promoted to assets/ (new asset); results.tex's 4 separate figure blocks (each pairing a fig1__macro.png robustness subfigure with a fig2__micro trial subfigure) replaced — the single fused grid now carries all robustness/noise-sweep content under one new \\label{fig:noise_robustness_grid}, and the 4 fig2__micro trial figures remain as standalone single-image figures (no longer subfigures). Old labels fig:X_macro/fig:X_micro/fig:X_results (12 total) retired; prose \\ref{}s remapped by actual content, not just position — Appetitive/Complex paragraphs (robustness/noise-sweep claims) now point at fig:noise_robustness_grid, Aversive/Obstacle paragraphs (single-trial temporal-dynamics claims) now point at their own fig:X_micro; the one \"panel C of Figure~X\" latency mention became \"the Decision Latency column, Appetitive row, of Figure~\\ref{fig:noise_robustness_grid}\" (no literal panel letters exist in the fused image — the author's \"gráficamente están perfectas\" note ruled out adding any). The 4 old fig1_*_macro.png assets git rm'd. validate_tex.sh/check_roundtrip.sh re-verified after this edit — row is now fully applied, nothing left pending except the Obstacle-latency data itself, which auto-swaps via --simulation-root (D-12) whenever the simulation re-run lands, no code/prose change needed for that. R02-01-04_simulacion_N01_grid_fusion_FigABC.md closed, ready to move to intake/processed/. New finding, out of scope for this row: tab_consolidated_simulation_metrics.csv (recomputed from raw data by this same pipeline) does not match tab:consolidated_simulation_metrics's published $T_{sim}$/Roll numbers (e.g. Obstacle Roll: 3.93±8.92° recomputed vs. 0.55±0.02° published) — not investigated or acted on here, flagged for a future pass.",
+      "target": "results.tex (FigA/B/C captions+prose, grid fusion figure* block + 4 scenario paragraphs' cross-refs — all edited this round; tab:consolidated_simulation_metrics still not touched, see the recompute-mismatch finding above)",
       "dataSource": "experiments/N-01-simulation-figure-regeneration/",
       "category": "Métricas",
       "owner": [
         "Deivi"
       ],
-      "status": "drafted",
+      "status": "applied",
       "patchFile": "—"
     },
     {
@@ -302,6 +302,19 @@
         "Deivi"
       ],
       "status": "drafted",
+      "patchFile": "—"
+    },
+    {
+      "id": "N-09",
+      "reviewer": "—",
+      "requirement": "Fusionar fig_transition_phases_v9_part1.png/_part2.png (results.tex \"Mode-transition stability\", \\label{fig:transition_part1}/\\label{fig:transition_part2}) en una sola figura de 3 filas (una por pareja de modos $C\\leftrightarrow H$/$H\\leftrightarrow X$/$X\\leftrightarrow C$, doble flecha ⇄ en vez de flecha simple por sentido) en lugar de las 6 filas dirigidas actuales; se elimina la columna del snapshot medio ($t_0+1$s) en cada fila, quedando Onset/Final; TR/SM por snapshot se reportan como rango (mín–máx) fusionando los datos de ambos sentidos originales de cada pareja. Plan completo en intake/pending/N-09_fusion_transition_phases_reversible.md. No ejecutado todavía — pendiente localizar si hay pipeline/CSV trazable detrás de estas 6 corridas o si aplica vectorización (D-1).",
+      "target": "results.tex (bloque figure* único reemplazando ambos actuales, párrafo de apertura \"Mode-transition stability\" ~línea 372-381)",
+      "dataSource": "experiments/N-01-simulation-figure-regeneration/ (a confirmar)",
+      "category": "Métricas",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "pending",
       "patchFile": "—"
     },
     {
