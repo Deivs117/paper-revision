@@ -42,6 +42,41 @@ restatement que el Referee 2 pide cortar en la instrucción citada en el encabez
 
 ---
 
+## 0bis. Protocolo obligatorio de verificación de figuras (2026-08-29)
+
+**Regla añadida tras revisión del autor:** ningún agente (humano o automatizado — incluyendo un
+futuro "bot" que redacte descripciones/conclusiones de figuras a partir de este tipo de plan) puede
+escribir el caption o la prosa que interpreta una figura basándose solo en (a) la intención
+declarada del script que la generó, o (b) el resumen agregado de métricas. Debe **leer la imagen
+renderizada** (pixel a pixel — i.e., abrir el PNG real y observarlo, no inferir su contenido desde
+el código) y **cruzarla contra los datos numéricos subyacentes** antes de redactar cualquier
+conclusión. Si la lectura de la imagen sugiere un patrón distinto al que el texto generado
+asume, el agente debe recalcular con los datos crudos y **corregir el texto**, no reportar la
+suposición original.
+
+**Caso real que motivó esta regla:** el primer borrador de este plan (antes de esta revisión)
+describía `fig_dfinal_vs_nlidar.png` como mostrando que "$d_{final}$ se mantiene en un rango
+comparable" entre el grupo limpio y el elevado — una afirmación plausible pero no verificada
+pixel a pixel. Al leer la imagen real y calcular las estadísticas por grupo
+(`output/inspection_group_stats.csv`, generado por `write_group_stats_csv` en
+`aggregate_and_plot.py`), se encontró que **no es simétrico**: el grupo elevado
+(rutas con más eventos de evasión, 11–28) converge *más apretado* alrededor del punto de parada
+(σ=0.022 m, rango 0.046 m, n=5) que el grupo limpio (σ=0.042 m, rango 0.139 m, n=12) — es decir,
+mayor complejidad de ruta no solo no degrada la precisión final, sino que en este dataset el
+subgrupo con rutas más difíciles fue *más* consistente. Es un hallazgo más rico que la versión
+genérica ("robusto a la complejidad") y quedó incorporado en el pseudo-texto de §4 y el caption de
+§3 más abajo. **Advertencia de tamaño de muestra:** n=5 en el grupo elevado es pequeño — el texto
+debe describir esto como un patrón observado en los datos, no como una conclusión estadísticamente
+probada (evitar lenguaje tipo "demuestra" para esta comparación específica; sí es válido para el
+hallazgo de robustez general, que se apoya en los 17 trials).
+
+**Aplicación futura:** cualquier otra figura o tabla que se genere para este proyecto (no solo
+R3-05) debe pasar por este mismo paso antes de escribirse su descripción en `sections/*.tex`: abrir
+el archivo de imagen final y confirmar visualmente + numéricamente lo que dice el texto propuesto,
+no solo lo que el script pretendía mostrar.
+
+---
+
 ## 1. Infraestructura de datos — ✅ ya ejecutada (2026-08-29)
 
 - `git mv experiments/R3-05_inspection_results/ → experiments/R3-05-inspection/data/` (sin cambios
@@ -51,6 +86,8 @@ restatement que el Referee 2 pide cortar en la instrucción citada en el encabez
 - `experiments/R3-05-inspection/scripts/aggregate_and_plot.py` — genera:
   - `output/inspection_summary_stats.csv` (μ/σ/min/max de `d_final_m`, `N_lidar_events`,
     `N_mode_X_events`, `T_acquisition_s`, `sim_time_s` sobre los 17 éxitos, más SR).
+  - `output/inspection_group_stats.csv` (μ/σ/min/max/rango de `d_final_m` por grupo limpio vs
+    elevado — la fuente numérica del hallazgo de §0bis, no solo la figura).
   - `output/fig_dfinal_vs_nlidar.png` (scatter, ver §3).
 - Ejecutado y verificado: los números del CSV coinciden exactamente con la §9.6 del handoff
   (`d_final`=1.076±0.038, `N_lidar`=7.71±6.42, `N_mode_X`=3.29±2.80, `T_acquisition`=32.2±14.1,
@@ -95,15 +132,19 @@ consistencia visual. Fuente de los números: `experiments/R3-05-inspection/outpu
 Ya generada en `experiments/R3-05-inspection/output/fig_dfinal_vs_nlidar.png` (scatter de un panel,
 17 puntos, `N_lidar_events` en X vs `d_final_m` en Y, color/forma por patrón limpio
 (`N_lidar_events < 10`, círculo azul, n=12) vs elevado (`N_lidar_events ≥ 10`, triángulo naranja,
-n=5) — paleta Okabe-Ito del repo vía `experiments/_plotting/style.py`). Muestra visualmente que
-`d_final` se mantiene en un rango comparable independientemente de cuántos eventos de evasión tomó
-el recorrido — la evidencia visual directa de la robustez del criterio de parada.
+n=5) — paleta Okabe-Ito del repo vía `experiments/_plotting/style.py`).
+
+**Lectura verificada de la imagen (protocolo de §0bis — no asumida desde el código):** el grupo
+elevado converge *más apretado* alrededor del punto de parada (μ=1.065 m, σ=0.022 m, rango 0.046 m)
+que el grupo limpio (μ=1.081 m, σ=0.042 m, rango 0.139 m) — visible directamente en el PNG como los
+5 triángulos naranjas ocupando una banda vertical mucho más estrecha que los 12 círculos azules.
+Fuente numérica: `output/inspection_group_stats.csv`.
 
 ```latex
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.7\textwidth]{fig_inspection_dfinal_vs_nlidar.png}
-    \caption{\revblue{Final approach precision ($d_{final}$) versus sensory evasion-event count ($N_{lidar\_events}$) across the 17 successful Reactive Inspection Task trials, split into a clean-traversal pattern ($N_{lidar\_events} < 10$, $n=12$) and an elevated-evasion pattern ($N_{lidar\_events} \geq 10$, $n=5$). $d_{final}$ remains within a comparable range across both patterns despite the roughly $5\times$--$7\times$ spread in evasion-event count, indicating that final approach precision is robust to route complexity.}}
+    \caption{\revblue{Final approach precision ($d_{final}$) versus sensory evasion-event count ($N_{lidar\_events}$) across the 17 successful Reactive Inspection Task trials, split into a clean-traversal pattern ($N_{lidar\_events} < 10$, $n=12$, $d_{final} = 1.081 \pm 0.042$~m) and an elevated-evasion pattern ($N_{lidar\_events} \geq 10$, $n=5$, $d_{final} = 1.065 \pm 0.022$~m). Despite the roughly $5\times$--$7\times$ spread in evasion-event count, the elevated-evasion group converges at least as tightly on the stopping point as the clean group, indicating that greater route complexity does not degrade final approach precision.}}
     \label{fig:inspection_dfinal_scatter}
 \end{figure}
 ```
@@ -132,7 +173,7 @@ patch se aplicó antes).
 
 % TABLA tab:inspection_metrics va aquí (ver §2)
 
-\revblue{The 17 successful trials separate into two navigation patterns distinguished by $N_{lidar\_events}$: a clean pattern ($n=12$, $N_{lidar\_events} = 4$--$7$, close to one detection per capsule) and an elevated-evasion pattern ($n=5$, $N_{lidar\_events} = 11$--$28$, additional evasive maneuvering before finding a route toward the target). Both patterns converge to a comparable $d_{final}$ (Figure~\ref{fig:inspection_dfinal_scatter}), confirming the stopping criterion is robust to route complexity. The three timeouts are extreme cases of the elevated pattern ($N_{lidar\_events} = 18$, $27$, $33$): in all three, the target was visually detected ($T_{acquisition}$ non-null) but the appetitive channel never accumulated sufficient sustained activation to trigger $X_{17}$ before the deadline, as competing obstacle-channel activation persisted throughout. This is consistent with the architecture's known limitation --- reactive navigation without spatial memory can fail under unfavorable dynamic configurations (Section~\ref{ssec:Limitations}) --- rather than a failure of the inspection-stop mechanism itself.}
+\revblue{The 17 successful trials separate into two navigation patterns distinguished by $N_{lidar\_events}$: a clean pattern ($n=12$, $N_{lidar\_events} = 4$--$7$, close to one detection per capsule, $d_{final} = 1.081 \pm 0.042$~m) and an elevated-evasion pattern ($n=5$, $N_{lidar\_events} = 11$--$28$, additional evasive maneuvering before finding a route toward the target, $d_{final} = 1.065 \pm 0.022$~m). Despite the substantially messier routes, the elevated-evasion group converges at least as tightly on the stopping point as the clean group (Figure~\ref{fig:inspection_dfinal_scatter}) --- if anything, more tightly, though the small elevated-group sample ($n=5$) cautions against over-reading that difference. What both subgroups clearly share is that route complexity does not degrade final approach precision, confirming the stopping criterion is robust across the observed range of $N_{lidar\_events}$. The three timeouts are extreme cases of the elevated pattern ($N_{lidar\_events} = 18$, $27$, $33$): in all three, the target was visually detected ($T_{acquisition}$ non-null) but the appetitive channel never accumulated sufficient sustained activation to trigger $X_{17}$ before the deadline, as competing obstacle-channel activation persisted throughout. This is consistent with the architecture's known limitation --- reactive navigation without spatial memory can fail under unfavorable dynamic configurations (Section~\ref{ssec:Limitations}) --- rather than a failure of the inspection-stop mechanism itself.}
 
 % FIGURA fig:inspection_dfinal_scatter va aquí (ver §3)
 
@@ -176,6 +217,39 @@ iluminación):
 8. Actualizar `PROGRESS.md`: `R3-05` de `drafted` a `applied` (y `Patch file` con la ruta de arriba).
 9. `scripts/push_to_overleaf.sh` cuando corresponda (sigue el flujo normal de pull-guard/validate/push).
 10. `git mv intake/pending/R3-05_inspection_handoff.md intake/processed/` y este mismo archivo, una vez el patch llegue a `applied` o más (regla de `intake/SOURCES.md`).
+
+---
+
+## 7bis. Auditoría repo-wide de nombres de simulación/implementación en prosa (2026-08-29)
+
+**Pedido del autor:** quitar `(obstaculos.world)` de la subsección nueva (✅ hecho — ver
+`patches/r3-05-reactive-inspection-task.tex`) y reportar cualquier otra mención a nombres internos
+de simulación/implementación en **todo** el manuscrito, no solo en R3-05, para decidir qué hacer.
+
+**Búsqueda realizada:** `grep` sobre `sections/*.tex` de: extensiones de archivo (`.py`, `.yaml`,
+`.yml`, `.json`, `.csv`, `.world`, `.launch`, `.cpp`, `.ino`, `.sh`), nombres de nodos/paquetes ROS
+conocidos del handoff (`familia_`, `peter_robot`, `test_manager`, `inspection_recorder`,
+`red_neuronal`, `SUITE_`, `/neuron_activity`, `/peter_mode`, `rosbag`, `PETER_SIMULATION`), y todo
+uso de `\texttt{}` (la envoltura típica para identificadores de código en el resto del documento).
+
+**Resultado — un hallazgo pendiente de decisión:**
+
+| Ubicación | Texto | Categoría |
+|---|---|---|
+| `sections/results.tex`, párrafo de "long-term average energy consumption" (Table~`tab:mode_steady_state_energy`), 2 apariciones | `\texttt{robot\_cmd}` | Nombre de columna interna del CSV de registro real (`imu_ina.csv`, ver `experiments/R2-04-mode-energy/scripts/build_mode_energy.py`) — misma categoría que `obstaculos.world`: un identificador de instrumentación/implementación, no una descripción funcional para el lector. |
+
+Este hallazgo es de la fila `R2-04` (energía por modo), no de `R3-05` — **no se tocó**, a la espera
+de que el autor decida si aplica el mismo criterio (describir la fuente del dato sin nombrar la
+columna cruda, p.ej. "the steady-state command signal used to detect mode segments" en vez de
+`robot_cmd`) o si se deja, dado que ya está dentro de `\texttt{}` (marcado explícitamente como
+identificador técnico, a diferencia de `obstaculos.world` que aparecía sin envoltura de código
+diferenciándolo de la prosa).
+
+**Sin más hallazgos:** ninguna otra extensión de archivo, nombre de nodo ROS, ni identificador
+`snake_case` de la lista anterior aparece en `sections/*.tex`. Las menciones a "Gazebo" (simulador,
+en `introduction.tex`/`methodology.tex`/`results.tex`) y "ESP32-S3" (`methodology.tex`/`results.tex`)
+son nombres de herramienta/hardware reales, no identificadores internos de este proyecto — se
+mantienen sin cambios.
 
 ---
 

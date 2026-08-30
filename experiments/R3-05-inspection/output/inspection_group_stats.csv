@@ -1,0 +1,3 @@
+group,n,d_final_mean,d_final_sd,d_final_min,d_final_max,d_final_range
+clean (N_lidar_events < 10),12,1.0807,0.0423,0.9911,1.1302,0.1391
+elevated (N_lidar_events >= 10),5,1.0647,0.0224,1.0387,1.0844,0.0457

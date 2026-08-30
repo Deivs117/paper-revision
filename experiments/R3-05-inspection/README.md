@@ -24,16 +24,25 @@ Complex Navigation / before Physical Implementation Results). `PROGRESS.md` row 
 1. Computes mean/SD/min/max of `d_final_m`, `N_lidar_events`, `N_mode_X_events`, `T_acquisition_s`,
    `sim_time_s` over the 17 `SUCCESS` trials → `output/inspection_summary_stats.csv`.
 2. Computes SR = 17/20 = 85%.
-3. Produces `output/fig_dfinal_vs_nlidar.png`: single-panel scatter, `N_lidar_events` (x) vs
+3. Computes the same breakdown split by the "clean" vs "elevated" `N_lidar_events` pattern (see
+   point 4) → `output/inspection_group_stats.csv`. Added after a caption-writing pass revealed the
+   pooled SD alone hides an asymmetry between the two groups (see point 4) — kept as a committed,
+   traceable number instead of leaving that claim resting on eyeballing the PNG.
+4. Produces `output/fig_dfinal_vs_nlidar.png`: single-panel scatter, `N_lidar_events` (x) vs
    `d_final_m` (y), 17 points (successes only — failures have no `d_final_m`), marker color/shape
    split by the "clean" vs "elevated" `N_lidar_events` pattern described in the handoff §9.3
    (threshold: `N_lidar_events < 10` clean / `>= 10` elevated — chosen because it cleanly separates
-   the two clusters in the data: clean trials sit at 4–5, elevated trials at 11+, no trial falls
-   in between). Purpose: show that `d_final` stays flat regardless of path complexity — this is the
-   quantitative backbone of the "target tracking accuracy is robust to route variability" claim.
+   the two clusters in the data: clean trials sit at 4–7, elevated trials at 11+, no trial falls
+   in between). Purpose: show that `d_final` does not degrade with path complexity.
+   **Verified reading of the actual image + `inspection_group_stats.csv` (not assumed from the
+   generation code):** the elevated group is in fact *tighter* around the stopping point
+   (μ=1.065 m, σ=0.022 m, range 0.046 m, n=5) than the clean group (μ=1.081 m, σ=0.042 m, range
+   0.139 m, n=12) — see `intake/pending/R3-05-inspection_writing_plan.md` §0bis for the mandatory
+   verification protocol this triggered and why the pooled-SD-only framing was insufficient.
 
 No inferential statistics (t-test, etc.) — this is a descriptive/illustrative figure for an n=17
-observational dataset, not a hypothesis test.
+observational dataset (n=5 in the elevated subgroup), not a hypothesis test; the writing plan
+explicitly cautions against over-reading the tighter-elevated-group pattern given that sample size.
 
 ## Parameters / seed
 
@@ -70,4 +79,5 @@ other `experiments/*/scripts/` script).
 | File in `output/` | Promoted to (`assets/...`) | Used in |
 |---|---|---|
 | `inspection_summary_stats.csv` | — (table is typed directly into `results.tex`, not included as an image) | `sections/results.tex`, new Reactive Inspection Task subsection |
+| `inspection_group_stats.csv` | — (numbers typed into the figure caption, not included as an image) | `sections/results.tex`, `Fig.~\ref{fig:inspection_dfinal_scatter}` caption |
 | `fig_dfinal_vs_nlidar.png` | `assets/fig_inspection_dfinal_vs_nlidar.png` | `sections/results.tex`, `Fig.~\ref{fig:inspection_dfinal_scatter}` |

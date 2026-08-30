@@ -80,6 +80,28 @@ def write_stats_csv(trials: list[dict], path: str) -> None:
                         round(vals.min(), 4), round(vals.max(), 4), len(vals)])
 
 
+def write_group_stats_csv(trials: list[dict], path: str) -> None:
+    """Per-group (clean vs elevated) breakdown of d_final_m -- NOT just the pooled stats above.
+
+    Written because a plain read of the pooled d_final_m SD (0.038) undersells what the scatter
+    figure actually shows: the two groups don't just both sit near the pooled mean, the elevated
+    group is *tighter* (lower SD, narrower range) than the clean group, despite far messier paths.
+    Kept as a committed CSV so this claim is traceable to numbers, not to eyeballing the PNG.
+    """
+    successes = [t for t in trials if t["success"]]
+    groups = {
+        "clean (N_lidar_events < 10)": [t for t in successes if t["N_lidar_events"] < CLEAN_THRESHOLD],
+        "elevated (N_lidar_events >= 10)": [t for t in successes if t["N_lidar_events"] >= CLEAN_THRESHOLD],
+    }
+    with open(path, "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["group", "n", "d_final_mean", "d_final_sd", "d_final_min", "d_final_max", "d_final_range"])
+        for name, group in groups.items():
+            vals = np.array([t["d_final_m"] for t in group], dtype=float)
+            w.writerow([name, len(vals), round(vals.mean(), 4), round(vals.std(ddof=1), 4),
+                        round(vals.min(), 4), round(vals.max(), 4), round(vals.max() - vals.min(), 4)])
+
+
 def plot_scatter(trials: list[dict], path: str) -> None:
     successes = [t for t in trials if t["success"]]
     clean = [t for t in successes if t["N_lidar_events"] < CLEAN_THRESHOLD]
@@ -109,6 +131,10 @@ if __name__ == "__main__":
     stats_csv = os.path.join(OUTPUT_DIR, "inspection_summary_stats.csv")
     write_stats_csv(trials, stats_csv)
     print(f"Wrote {stats_csv}")
+
+    group_csv = os.path.join(OUTPUT_DIR, "inspection_group_stats.csv")
+    write_group_stats_csv(trials, group_csv)
+    print(f"Wrote {group_csv}")
 
     fig_path = os.path.join(OUTPUT_DIR, "fig_dfinal_vs_nlidar.png")
     plot_scatter(trials, fig_path)

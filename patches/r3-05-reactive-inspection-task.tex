@@ -1,0 +1,63 @@
+% Patch record for R3-05 -- Reactive Inspection Task (Experiment E)
+% Reviewer #3.5 (HIGH). Applied to sections/results.tex, 2026-08-29.
+% Block A: new subsubsection, inserted before '\subsection{Physical Implementation Results}'.
+% Block B: new paragraph appended to '\subsection{Limitations of the Present Work}'
+%          (\label{ssec:Limitations}), consolidating the 4 limitations instead of
+%          restating them inline in Block A, per Referee 2's request to consolidate limitations.
+% Data/figure source: experiments/R3-05-inspection/ (see its README.md for provenance --
+% PETER_SIMULATION branch 'sam' @ 6d5a2e6). Writing plan: intake/pending/R3-05-inspection_writing_plan.md.
+% Promoted asset: assets/fig_inspection_dfinal_vs_nlidar.png
+% 2026-08-29 revision: removed the internal-simulation filename '(obstaculos.world)' from
+% Block A's opening sentence, per author request to keep implementation-detail names (world
+% files, code identifiers) out of reader-facing prose -- see intake/pending/
+% R3-05-inspection_writing_plan.md for the resulting repo-wide audit of similar leaks.
+
+%%% BLOCK A %%%
+
+
+\subsubsection{Reactive Inspection Task}
+
+\revblue{To directly address the reviewer's request for inspection-oriented task indicators, a dedicated experiment (Experiment E) evaluates the platform's behavior in a purpose-built obstacle field where a visual target is not visible from the robot's initial pose and only enters the field of view after traversing three static capsule obstacles. Twenty independent trials were executed with a 90~s timeout and no artificial noise injection.}
+
+\revblue{The system does not implement deliberate path planning: it builds no map, retains no spatial memory, and does not compute a global re-route when blocked. What it implements instead is reactive re-routing driven by the basal-ganglia/Winner-Take-All (BG/WTA) arbitration network, which integrates LiDAR and camera information in real time to laterally evade each obstacle while continuing toward the target once visible. Coverage rate --- the percentage of a predefined inspection area visited --- is not reported here, as it presupposes a coverage planner and a known target area that this reactive architecture neither has nor requires (see Section~\ref{ssec:Limitations}). Instead, task-completion indicators that are both measurable with the existing instrumentation and consistent with the system's actual capabilities are used: success rate (SR), final approach precision ($d_{final}$), and time to first visual acquisition of the target ($T_{acquisition}$).}
+
+\revblue{$d_{final}$ is the Euclidean distance between the robot and the target at the instant the inspection-stop neuron activates ($X_{17} > 0.25$, sustained 2~s); $N_{lidar\_events}$ counts sensory-level obstacle-detection transitions (LiDAR channel crossing its 0.3 activation threshold); $N_{mode\_X\_events}$ counts the resulting omnidirectional-mode switches, gated by a 3~s dwell-time hysteresis; $T_{acquisition}$ is the simulation time from post-warmup to the target's bounding-box area first exceeding the visibility threshold.}
+
+\revblue{Twenty trials yielded SR $= 85\%$ (17/20), with three timeouts (trials 7, 11, 17) discussed below. Among the 17 successful trials, $d_{final} = 1.076 \pm 0.038$~m (Table~\ref{tab:inspection_metrics}), directly addressing the reviewer's request for target tracking accuracy: the BG$\rightarrow X_{17}$ loop converges to essentially the same stopping distance from the target regardless of the route taken to reach it.}
+
+\begin{table}[htbp]
+\centering
+\caption{\revblue{Reactive Inspection Task --- Aggregate Performance Metrics (Experiment E, 17/20 successful trials, obstacle field with initially non-visible target).}}
+\label{tab:inspection_metrics}
+\begin{tabularx}{\textwidth}{l >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
+\toprule
+\textbf{Metric} & \textbf{Mean $\pm$ SD} & \textbf{Min} & \textbf{Max} \\
+\midrule
+$d_{final}$ (m)              & 1.076 $\pm$ 0.038 & 0.991 & 1.130 \\
+$N_{lidar\_events}$          & 7.71 $\pm$ 6.42   & 4     & 28    \\
+$N_{mode\_X\_events}$        & 3.29 $\pm$ 2.80   & 1     & 10    \\
+$T_{acquisition}$ (s)        & 32.2 $\pm$ 14.1   & 20.7  & 70.8  \\
+$T_{task}$ (s)               & 51.6 $\pm$ 12.3   & 42.8  & 86.8  \\
+\bottomrule
+\end{tabularx}
+\\[2pt]
+{\footnotesize Success rate: 17/20 (85\%); three timeouts at 90~s (trials 7, 11, 17), analyzed below. Statistics computed over the 17 successful trials only.}
+\end{table}
+
+\revblue{The 17 successful trials separate into two navigation patterns distinguished by $N_{lidar\_events}$: a clean pattern ($n=12$, $N_{lidar\_events} = 4$--$7$, close to one detection per capsule, $d_{final} = 1.081 \pm 0.042$~m) and an elevated-evasion pattern ($n=5$, $N_{lidar\_events} = 11$--$28$, additional evasive maneuvering before finding a route toward the target, $d_{final} = 1.065 \pm 0.022$~m). Despite the substantially messier routes, the elevated-evasion group converges at least as tightly on the stopping point as the clean group (Figure~\ref{fig:inspection_dfinal_scatter}) --- if anything, more tightly, though the small elevated-group sample ($n=5$) cautions against over-reading that difference. What both subgroups clearly share is that route complexity does not degrade final approach precision, confirming the stopping criterion is robust across the observed range of $N_{lidar\_events}$. The three timeouts are extreme cases of the elevated pattern ($N_{lidar\_events} = 18$, $27$, $33$): in all three, the target was visually detected ($T_{acquisition}$ non-null) but the appetitive channel never accumulated sufficient sustained activation to trigger $X_{17}$ before the deadline, as competing obstacle-channel activation persisted throughout. This is consistent with the architecture's known limitation --- reactive navigation without spatial memory can fail under unfavorable dynamic configurations (Section~\ref{ssec:Limitations}) --- rather than a failure of the inspection-stop mechanism itself.}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.7\textwidth]{fig_inspection_dfinal_vs_nlidar.png}
+    \caption{\revblue{Final approach precision ($d_{final}$) versus sensory evasion-event count ($N_{lidar\_events}$) across the 17 successful Reactive Inspection Task trials, split into a clean-traversal pattern ($N_{lidar\_events} < 10$, $n=12$, $d_{final} = 1.081 \pm 0.042$~m) and an elevated-evasion pattern ($N_{lidar\_events} \geq 10$, $n=5$, $d_{final} = 1.065 \pm 0.022$~m). Despite the roughly $5\times$--$7\times$ spread in evasion-event count, the elevated-evasion group converges at least as tightly on the stopping point as the clean group, indicating that greater route complexity does not degrade final approach precision.}}
+    \label{fig:inspection_dfinal_scatter}
+\end{figure}
+
+\revblue{This experiment also provides quantitative evidence responding to the reviewer's request for autonomous re-planning after obstacle blockage: across the 17 successful trials, the sensory-level obstacle signal transitioned $N_{lidar\_events} = 7.71 \pm 6.42$ times on average, while the resulting behavioral mode change transitioned only $N_{mode\_X\_events} = 3.29 \pm 2.80$ times --- $\approx 2.3\times$ fewer mode changes than sensory detections, in every one of the 17 successful trials without exception. This demonstrates that the WTA arbitration converts repeated raw sensory fluctuations into a smaller number of sustained behavioral commitments, avoiding the mode-dithering a simple threshold-triggered controller would exhibit --- the mechanism underlying the reactive re-routing observed in this task.}
+
+\revblue{The target was first visually acquired, on average, $T_{acquisition} = 32.2 \pm 14.1$~s into the trial. This is a first-acquisition metric, not re-acquisition, since the target is not visible from the initial pose in this scenario (Section~\ref{ssec:Limitations}). Visual pursuit is itself conditioned on the absence of a frontal obstacle: during evasion it is suspended, resuming automatically once the obstacle clears --- the system's re-acquisition-like behavior. The robot remained in the wheeled/differential locomotion mode (H) throughout all 20 trials, so no gait-transition stability data applies to this experiment.}
+
+
+
+%%% BLOCK B %%%
+\revblue{Regarding the Reactive Inspection Task (Experiment E): the platform performs no deliberate path planning, builds no map, and does not compute a global re-route when blocked --- obstacle traversal emerges from local BG/WTA dynamics rather than global trajectory planning. Coverage rate as a formal area-inspection metric was not evaluated, as it presupposes an explicit coverage planner outside this work's scope; task-completion indicators (success rate, final approach precision, time to first visual acquisition) are reported instead. Visual target pursuit is conditioned on the absence of a frontal obstacle, suspending during evasion and resuming automatically once cleared. Finally, in the obstacle-field scenario used for this experiment the target is not visible from the initial pose, so the reported acquisition metric characterizes first acquisition rather than re-acquisition after occlusion.}
