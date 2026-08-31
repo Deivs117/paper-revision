@@ -3,7 +3,7 @@
 analyze_ablation.py — R3-01 / R3-02: analisis estadistico del ablation study
 sobre el circuito de ganglios basales (STN/GPi/GPe/STR).
 
-Lee los trial_summary.json de las 6 suites en ../data/ (12 replicas c/u,
+Lee los trial_summary.json de las 8 suites en ../data/ (12 replicas c/u,
 generadas por PETER_SIMULATION/ros2_ws/src/peter_robot/scripts/test_manager.py)
 y calcula:
 
@@ -37,13 +37,17 @@ SCENARIOS = {
         "full": "ablation_appetitive_full",
         "no_lateral_inhibition": "ablation_appetitive_no_lateral_inhibition",
         "threshold_only": "ablation_appetitive_threshold_only",
+        "no_stn_str": "ablation_appetitive_no_stn_str",
     },
     "complex": {
         "full": "ablation_complex_full",
         "no_lateral_inhibition": "ablation_complex_no_lateral_inhibition",
         "threshold_only": "ablation_complex_threshold_only",
+        "no_stn_str": "ablation_complex_no_stn_str",
     },
 }
+
+ABLATION_MODES = ("no_lateral_inhibition", "threshold_only", "no_stn_str")
 
 # Metricas continuas de trial_summary.json -> final_metrics a comparar
 METRICS = ["exp_lambda", "exp_latency", "tswitch", "roll_rms", "pitch_rms"]
@@ -105,7 +109,7 @@ def main() -> None:
                 "ci_low": "", "ci_high": "", "p_value_vs_full": "",
             })
 
-        for mode in ("no_lateral_inhibition", "threshold_only"):
+        for mode in ABLATION_MODES:
             table = [
                 [n_success["full"], n_total["full"] - n_success["full"]],
                 [n_success[mode], n_total[mode] - n_success[mode]],
@@ -139,7 +143,7 @@ def main() -> None:
                     "p_value_vs_full": "",
                 })
 
-            for mode in ("no_lateral_inhibition", "threshold_only"):
+            for mode in ABLATION_MODES:
                 full_vals = values_by_mode["full"]
                 mode_vals = values_by_mode[mode]
                 if len(full_vals) >= 1 and len(mode_vals) >= 1 and len(set(full_vals + mode_vals)) > 1:
@@ -179,18 +183,18 @@ def main() -> None:
     for scenario, data in summary["scenarios"].items():
         print(f"\n=== {scenario} ===")
         sr = data["success_rate"]
-        for mode in ("full", "no_lateral_inhibition", "threshold_only"):
+        for mode in ("full",) + ABLATION_MODES:
             r = sr[mode]
             print(f"  {mode:24s} success_rate={r['rate']*100:5.1f}% ({r['n_success']}/{r['n_total']})")
-        for mode in ("no_lateral_inhibition", "threshold_only"):
+        for mode in ABLATION_MODES:
             p = sr.get("fisher_exact_vs_full", {}).get(mode)
             print(f"    Fisher exact full vs {mode}: p={p}")
         print("  --- lambda (eficiencia de conflicto) ---")
         lam = data["metrics"]["exp_lambda"]
-        for mode in ("full", "no_lateral_inhibition", "threshold_only"):
+        for mode in ("full",) + ABLATION_MODES:
             m = lam[mode]
             print(f"    {mode:24s} mean={m['mean']:.4f}  IC95=[{m['ci95_low']:.4f}, {m['ci95_high']:.4f}]  n={m['n']}")
-        for mode in ("no_lateral_inhibition", "threshold_only"):
+        for mode in ABLATION_MODES:
             p = lam.get("mannwhitney_vs_full", {}).get(mode)
             print(f"    Mann-Whitney full vs {mode}: p={p}")
 

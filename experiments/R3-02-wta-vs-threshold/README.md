@@ -15,24 +15,32 @@ dentro del propio diseño del paper.
 ## Método
 
 Se implementó un parámetro ROS `ablation_mode` en `red_neuronal.py` (rama `Deiv` de
-`PETER_SIMULATION`) con 3 variantes:
+`PETER_SIMULATION`) con 4 variantes:
 
 - **`full`** (control): circuito STN/GPi/GPe/STR intacto, sin cambios.
 - **`no_lateral_inhibition`**: se anulan (gain `xg=0`) los términos de inhibición cruzada entre los
   3 canales (Gpe→STN, STN→Gpi); los términos del mismo canal (auto-inhibición, Gpe/StR propios) se
-  mantienen intactos.
+  mantienen intactos. Responde a "remove... inhibitory connections" del comentario del referee.
 - **`threshold_only`**: se bypasea por completo la dinámica STN/GPi/GPe/STR; el canal ganador se
   decide con umbrales de prioridad fija sobre el estímulo crudo (hostil > obstáculo > apetente,
   misma asimetría `ω_GpeR=2.0 > ω_GpeG=1.0` que ya usa el Módulo de Locomoción), y pasa su
   intensidad a Gpe con las mismas ganancias por canal que `full` (×5 obstáculo, ×0.7×0.5 apetente)
   — para que la única diferencia real entre variantes sea el mecanismo de arbitraje, no la escala
-  de salida.
+  de salida. Responde a "...over simple threshold decision logic".
+- **`no_stn_str`** (agregada 2026-08-31, 4a variante): a diferencia de `no_lateral_inhibition`
+  (que solo apaga conexiones puntuales dejando STN/STR funcionando), aquí las **capas neuronales**
+  STN y STR dejan de computar por completo (quedan en 0) — GPi/GPe reciben el estímulo crudo
+  directamente en su lugar, con las mismas ganancias por canal que STN habría aplicado, preservando
+  la estructura competitiva cruzada de GPi/GPe pero sin la dinámica recurrente propia de STN ni la
+  retroalimentación de STR. Responde específicamente a "remove **key neural layers**" del
+  comentario del referee — la pieza que `no_lateral_inhibition` (conexiones) y `threshold_only`
+  (todo el circuito reemplazado) no cubrían por separado.
 
 Cada variante se corrió en 2 escenarios (reusando nombres/parámetros ya publicados en
 `tab:consolidated_simulation_metrics` de `results.tex`):
 
-- **Appetitive Targeting** (`ablation_*_full/no_lateral_inhibition/threshold_only`, escenario
-  `single_stimulus.launch.py`, un solo estímulo azul) — control sin conflicto.
+- **Appetitive Targeting** (`ablation_appetitive_*`, escenario `single_stimulus.launch.py`, un solo
+  estímulo azul) — control sin conflicto.
 - **Complex Navigation** (`ablation_complex_*`, `multiple_stimuli.launch.py`, 3 estímulos
   rojo+verde+azul simultáneos) — el escenario de conflicto real, donde se espera que la arbitración
   importe.
@@ -43,23 +51,29 @@ por separado para el modelo `full` en `tab:consolidated_simulation_metrics` ($\s
 
 ## Parámetros / semilla
 
-Ver `config.yaml` (copia completa de `experiments_config.yaml` de `PETER_SIMULATION` en el momento
-de la corrida; solo las 6 suites `ablation_*` son relevantes aquí — el resto son las familias A/B/C
-ya publicadas). N=12 réplicas por variante×escenario = 72 corridas totales. Sin semilla determinista
-explícita (`random_perturbation: false` en las 6 suites — la variabilidad entre réplicas viene
-enteramente de la dinámica no lineal del sistema + Gazebo, no de ruido inyectado).
+Ver `config.yaml` (copia completa de `experiments_config.yaml` de `PETER_SIMULATION`, tomada
+2026-08-30 — las 2 suites `no_stn_str` se agregaron ahí un poco después, 2026-08-31, mismos
+parámetros que sus hermanas; solo las 8 suites `ablation_*` son relevantes aquí — el resto son las
+familias A/B/C ya publicadas). N=12 réplicas por variante×escenario = 96 corridas totales (72 de
+la primera pasada + 24 de `no_stn_str`). Sin semilla determinista explícita
+(`random_perturbation: false` en las 8 suites — la variabilidad entre réplicas viene enteramente de
+la dinámica no lineal del sistema + Gazebo, no de ruido inyectado).
 
 ## Data provenance
 
 - Datos generados corriendo `scripts/test_manager.py` dentro del contenedor `peter_simulation`
-  (`PETER_SIMULATION/docs/Makefile` → `run-experiments SUITE_FILTER=ablation_`).
-- **Commit exacto de `PETER_SIMULATION` pineado:** `e29d9a161e65209051e5508b7d6bff0cb20cdbcd`
-  (rama `Deiv`, 2026-08-30) — incluye el parámetro `ablation_mode`, el cableado end-to-end
-  `ablation_mode`/`nl` en los launch files, el fix de offset de índices en `test_manager.py`
-  (`Z_OFFSET`), y el fix de descubrimiento `gz-transport` (`GZ_IP`/`IGN_IP`) necesario para que
-  Gazebo funcionara de forma headless dentro de Docker.
-- Corrida: 2026-08-30 22:14 a 2026-08-31 00:09 (hora local), sin intervención manual entre
-  suites — corrido de punta a punta vía `test_manager.py`.
+  (`PETER_SIMULATION/docs/Makefile` → `run-experiments SUITE_FILTER=...`).
+- **Commit exacto de `PETER_SIMULATION` pineado:**
+  - Primera pasada (`full`/`no_lateral_inhibition`/`threshold_only`, 72 corridas):
+    `e29d9a161e65209051e5508b7d6bff0cb20cdbcd` (rama `Deiv`, 2026-08-30) — incluye el parámetro
+    `ablation_mode`, el cableado end-to-end `ablation_mode`/`nl` en los launch files, el fix de
+    offset de índices en `test_manager.py` (`Z_OFFSET`), y el fix de descubrimiento `gz-transport`
+    (`GZ_IP`/`IGN_IP`) necesario para que Gazebo funcionara de forma headless dentro de Docker.
+  - Segunda pasada (`no_stn_str`, 24 corridas): `e343cce` (rama `Deiv`, 2026-08-31) — agrega la
+    4a variante y el soporte de `SUITE_FILTER` con lista separada por comas para poder apuntar
+    exactamente a las 2 suites nuevas sin re-correr las 6 ya cerradas.
+- Corrida: primera pasada 2026-08-30 22:14 a 2026-08-31 00:09; segunda pasada (`no_stn_str`)
+  2026-08-31 00:39 a 01:39 (hora local), sin intervención manual entre suites dentro de cada pasada.
 - **No reproducible bit-a-bit** desde `config.yaml` solo — depende de la física no determinista de
   Gazebo (timing real de arranque de controladores, física del contacto, etc.); las tasas de éxito
   y las tendencias sí deberían replicarse cualitativamente en una re-corrida.
@@ -67,10 +81,13 @@ enteramente de la dinámica no lineal del sistema + Gazebo, no de ruido inyectad
 ## Cómo regenerar
 
 ```bash
-# Dentro de PETER_SIMULATION, rama Deiv, commit e29d9a1 o posterior:
+# Dentro de PETER_SIMULATION, rama Deiv, commit e343cce o posterior:
 make docker-rm && make docker-create   # contenedor limpio, evita colisiones DDS entre corridas
 make -f ros2_ws/src/peter_robot/docs/Makefile build
-make run-experiments SUITE_FILTER=ablation_   # ~2.3h, 72 corridas
+make run-experiments SUITE_FILTER=ablation_   # ~2.3h, 72 corridas (full/no_lateral_inhibition/threshold_only)
+
+# Solo la 4a variante (aislada, sin tocar las 6 anteriores):
+make run-experiments SUITE_FILTER=ablation_appetitive_no_stn_str,ablation_complex_no_stn_str
 
 # Copiar resultados crudos (bind-mount directo, no requiere export):
 cp -r PETER_SIMULATION/ros2_ws/src/peter_robot/docs/resultados/ablation_* \
@@ -81,32 +98,45 @@ cd paper-revision/experiments/R3-02-wta-vs-threshold/scripts
 python3 analyze_ablation.py   # requiere scipy — output/ablation_stats_summary.{json,csv}
 ```
 
-## Resultado (2026-08-31, primera pasada — sin gráficas/tablas de publicación todavía)
+## Resultado (2026-08-31, actualizado con la 4a variante — sin gráficas/tablas de publicación todavía)
 
 ### Tasa de éxito (`test_manager.py` verdict SUCCESS/FAILURE_TIMEOUT), Fisher exact vs. `full`
 
-| Escenario | `full` | `no_lateral_inhibition` | `threshold_only` |
-|---|---|---|---|
-| Appetitive (sin conflicto) | 100% (12/12) | 91.7% (11/12), p=1.0 | 91.7% (11/12), p=1.0 |
-| **Complex (conflicto real)** | **100% (12/12)** | **25.0% (3/12), p=0.00034** | **83.3% (10/12), p=0.478** |
+| Escenario | `full` | `no_lateral_inhibition` | `threshold_only` | `no_stn_str` |
+|---|---|---|---|---|
+| Appetitive (sin conflicto) | 100% (12/12) | 91.7% (11/12), p=1.0 | 91.7% (11/12), p=1.0 | 91.7% (11/12), p=1.0 |
+| **Complex (conflicto real)** | **100% (12/12)** | **25.0% (3/12), p=0.00034** | **83.3% (10/12), p=0.478** | **33.3% (4/12), p=0.00135** |
 
-**Lectura:** sin conflicto, las 3 variantes rinden igual (como se esperaba — la ablación no debería
-romper el caso simple). Con conflicto real, quitar la inhibición lateral colapsa la tasa de éxito
-de forma altamente significativa (p<0.001); reemplazar todo el circuito por lógica de umbral
-degrada la tasa de éxito pero no llega a significancia con n=12 en esta métrica binaria sola —
-sin embargo, ver más abajo: las métricas continuas sí muestran degradación significativa de
-`threshold_only` en el escenario de conflicto.
+**Lectura:** sin conflicto, las 4 variantes rinden igual (~92-100%, como se esperaba — ninguna
+ablación rompe el caso simple). Con conflicto real aparece un gradiente claro:
+`full` (100%) > `threshold_only` (83.3%, no significativo con n=12 en esta métrica sola) >
+`no_stn_str` (33.3%, **p=0.00135**, significativo) > `no_lateral_inhibition` (25.0%, **p=0.00034**,
+el más significativo). Las dos ablaciones que remueven mecanismo del circuito de ganglios basales
+en sí (`no_lateral_inhibition` y `no_stn_str`) degradan la tasa de éxito de forma altamente
+significativa; reemplazar todo por lógica de umbral (`threshold_only`) degrada menos en esta
+métrica binaria — pero ver más abajo: sus métricas continuas sí muestran degradación significativa.
 
 ### Métricas continuas, Mann-Whitney U vs. `full` (solo escenario Complex, el relevante para R3-02)
 
-| Métrica | `no_lateral_inhibition` vs `full` | `threshold_only` vs `full` |
-|---|---|---|
-| `exp_latency` (latencia de decisión) | p=0.341 (n.s.) | **p=0.014** (más lento) |
-| `roll_rms` | **p=0.00016** (más inestable) | **p=0.017** (más inestable) |
-| `pitch_rms` | **p=0.00006** | **p=0.0029** |
-| `exp_lambda` (eficiencia de conflicto) | ver limitación abajo | ver limitación abajo |
+| Métrica | `no_lateral_inhibition` vs `full` | `threshold_only` vs `full` | `no_stn_str` vs `full` |
+|---|---|---|---|
+| `exp_latency` (latencia de decisión) | p=0.341 (n.s.) | **p=0.014** (más lento) | p=0.840 (n.s.) |
+| `roll_rms` | **p=0.00016** (más inestable) | **p=0.017** (más inestable) | **p=0.00031** (más inestable) |
+| `pitch_rms` | **p=0.00006** | **p=0.0029** | **p=0.0043** |
+| `exp_lambda` (eficiencia de conflicto) | ver limitación abajo | ver limitación abajo | ver limitación abajo |
 
-**Limitación conocida — `exp_lambda` sale 1.0 en las 72 corridas, en las 3 variantes:**
+**Lectura de las 4 variantes juntas:** `no_lateral_inhibition` y `no_stn_str` — las dos ablaciones
+que tocan el circuito de ganglios basales en sí (conexiones y capas, respectivamente) — degradan
+significativamente tanto la tasa de éxito como la estabilidad de actitud (`roll_rms`/`pitch_rms`)
+bajo conflicto, pero no la latencia de decisión. `threshold_only` es la única que degrada la
+latencia de forma significativa (más lento en decidir), además de la estabilidad — consistente con
+que un umbral estático no anticipa/suaviza la transición como sí lo hace la dinámica continua del
+WTA. Juntas, las 3 ablaciones cubren exactamente el trío que pide el referee: conexiones
+inhibitorias removidas (`no_lateral_inhibition`), capa neuronal removida (`no_stn_str`), y
+arbitración reemplazada por lógica de umbral simple (`threshold_only`) — las 3 degradan el
+desempeño bajo conflicto respecto al circuito completo, cada una en un aspecto distinto.
+
+**Limitación conocida — `exp_lambda` sale 1.0 en las 96 corridas, en las 4 variantes:**
 `neural_recorder.py::_compute_lambda_efficiency()` solo calcula λ real cuando rojo Y azul están
 presentes *simultáneamente* en la ventana de muestreo (además, no incluye verde) — condición que
 casi nunca se cumple en la práctica dentro de una sola corrida, así que devuelve el default

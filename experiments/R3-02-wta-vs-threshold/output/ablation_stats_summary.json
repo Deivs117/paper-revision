@@ -17,9 +17,15 @@
           "n_total": 12,
           "rate": 0.9167
         },
+        "no_stn_str": {
+          "n_success": 11,
+          "n_total": 12,
+          "rate": 0.9167
+        },
         "fisher_exact_vs_full": {
           "no_lateral_inhibition": 1.0,
-          "threshold_only": 1.0
+          "threshold_only": 1.0,
+          "no_stn_str": 1.0
         }
       },
       "metrics": {
@@ -42,9 +48,16 @@
             "ci95_low": 1.0,
             "ci95_high": 1.0
           },
+          "no_stn_str": {
+            "n": 12,
+            "mean": 1.0,
+            "ci95_low": 1.0,
+            "ci95_high": 1.0
+          },
           "mannwhitney_vs_full": {
             "no_lateral_inhibition": null,
-            "threshold_only": null
+            "threshold_only": null,
+            "no_stn_str": null
           }
         },
         "exp_latency": {
@@ -66,9 +79,16 @@
             "ci95_low": 0.066394,
             "ci95_high": 1.277189
           },
+          "no_stn_str": {
+            "n": 12,
+            "mean": 0.1559,
+            "ci95_low": 0.001829,
+            "ci95_high": 0.309971
+          },
           "mannwhitney_vs_full": {
             "no_lateral_inhibition": 0.54437,
-            "threshold_only": 0.260236
+            "threshold_only": 0.260236,
+            "no_stn_str": 0.214494
           }
         },
         "tswitch": {
@@ -90,9 +110,16 @@
             "ci95_low": 0.016291,
             "ci95_high": 1.310043
           },
+          "no_stn_str": {
+            "n": 12,
+            "mean": 0.6131,
+            "ci95_low": -0.206034,
+            "ci95_high": 1.432234
+          },
           "mannwhitney_vs_full": {
             "no_lateral_inhibition": 0.580883,
-            "threshold_only": 0.250643
+            "threshold_only": 0.250643,
+            "no_stn_str": 0.064271
           }
         },
         "roll_rms": {
@@ -114,9 +141,16 @@
             "ci95_low": 0.465207,
             "ci95_high": 0.756127
           },
+          "no_stn_str": {
+            "n": 12,
+            "mean": 0.616458,
+            "ci95_low": 0.470286,
+            "ci95_high": 0.762631
+          },
           "mannwhitney_vs_full": {
             "no_lateral_inhibition": 0.885209,
-            "threshold_only": 0.525283
+            "threshold_only": 0.525283,
+            "no_stn_str": 0.563618
           }
         },
         "pitch_rms": {
@@ -138,9 +172,16 @@
             "ci95_low": 1.063545,
             "ci95_high": 1.091305
           },
+          "no_stn_str": {
+            "n": 12,
+            "mean": 1.081875,
+            "ci95_low": 1.060221,
+            "ci95_high": 1.103529
+          },
           "mannwhitney_vs_full": {
             "no_lateral_inhibition": 0.174666,
-            "threshold_only": 0.488328
+            "threshold_only": 0.488328,
+            "no_stn_str": 0.326138
           }
         }
       }
@@ -162,9 +203,15 @@
           "n_total": 12,
           "rate": 0.8333
         },
+        "no_stn_str": {
+          "n_success": 4,
+          "n_total": 12,
+          "rate": 0.3333
+        },
         "fisher_exact_vs_full": {
           "no_lateral_inhibition": 0.000337,
-          "threshold_only": 0.478261
+          "threshold_only": 0.478261,
+          "no_stn_str": 0.001346
         }
       },
       "metrics": {
@@ -187,9 +234,16 @@
             "ci95_low": 1.0,
             "ci95_high": 1.0
           },
+          "no_stn_str": {
+            "n": 12,
+            "mean": 1.0,
+            "ci95_low": 1.0,
+            "ci95_high": 1.0
+          },
           "mannwhitney_vs_full": {
             "no_lateral_inhibition": null,
-            "threshold_only": null
+            "threshold_only": null,
+            "no_stn_str": null
           }
         },
         "exp_latency": {
@@ -211,9 +265,16 @@
             "ci95_low": 0.089235,
             "ci95_high": 0.128965
           },
+          "no_stn_str": {
+            "n": 12,
+            "mean": 0.066567,
+            "ci95_low": 0.041932,
+            "ci95_high": 0.091201
+          },
           "mannwhitney_vs_full": {
             "no_lateral_inhibition": 0.340779,
-            "threshold_only": 0.014138
+            "threshold_only": 0.014138,
+            "no_stn_str": 0.83986
           }
         },
         "tswitch": {
@@ -235,9 +296,16 @@
             "ci95_low": 0.132813,
             "ci95_high": 1.293104
           },
+          "no_stn_str": {
+            "n": 12,
+            "mean": 0.300625,
+            "ci95_low": -0.061112,
+            "ci95_high": 0.662362
+          },
           "mannwhitney_vs_full": {
             "no_lateral_inhibition": 0.661463,
-            "threshold_only": 0.221796
+            "threshold_only": 0.221796,
+            "no_stn_str": 0.383671
           }
         },
         "roll_rms": {
@@ -259,9 +327,16 @@
             "ci95_low": 0.92369,
             "ci95_high": 1.066344
           },
+          "no_stn_str": {
+            "n": 12,
+            "mean": 1.1899,
+            "ci95_low": 1.064003,
+            "ci95_high": 1.315797
+          },
           "mannwhitney_vs_full": {
             "no_lateral_inhibition": 0.000156,
-            "threshold_only": 0.016575
+            "threshold_only": 0.016575,
+            "no_stn_str": 0.000308
           }
         },
         "pitch_rms": {
@@ -283,9 +358,16 @@
             "ci95_low": 1.098224,
             "ci95_high": 1.120776
           },
+          "no_stn_str": {
+            "n": 12,
+            "mean": 0.983433,
+            "ci95_low": 0.816253,
+            "ci95_high": 1.150613
+          },
           "mannwhitney_vs_full": {
             "no_lateral_inhibition": 6e-05,
-            "threshold_only": 0.002946
+            "threshold_only": 0.002946,
+            "no_stn_str": 0.004265
           }
         }
       }
