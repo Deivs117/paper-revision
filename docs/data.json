@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-30T03:06:35+00:00",
-  "progressLastCommit": "2026-08-29T22:03:55-05:00",
+  "generatedAt": "2026-08-31T02:34:17+00:00",
+  "progressLastCommit": "2026-08-29T22:06:35-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -60,27 +60,27 @@
       "id": "R3-01",
       "reviewer": "3",
       "requirement": "Ablation analysis on basal ganglia arbitration network",
-      "target": "methodology.tex §\"Basal Ganglia Module\" (~line 154, STN/GPe/GPi WTA circuit) for the ablation methodology; results.tex for the ablation results — confirmed no existing content, genuine gap",
-      "dataSource": "experiments/R3-01-basal-ganglia-ablation/",
+      "target": "New \\subsubsection{Basal Ganglia Ablation Study} in results.tex (after tab:consolidated_simulation_metrics) plus a method paragraph in methodology.tex's Basal Ganglia Module. Answered jointly with R3-02 from the same 96-trial dataset (4 ablation variants × 2 scenarios × 12 replicates): no_lateral_inhibition (inhibitory connections removed) and no_stn_str (STN/STR layers removed) each collapse Complex Navigation success rate significantly (25.0%, p<0.001; 33.3%, p=0.001, vs. 100% intact) with significant roll-RMS degradation, and neither degrades decision latency — directly answering \"ablation…on basal ganglia arbitration network\" with both a connection-level and a layer-level ablation. One figure (fig_ablation_success_rate.png, Complex Navigation only — the Appetitive no-conflict scenario showed no separation and is reported as one sentence instead of a panel/table) plus a shared stability figure with R3-02 (fig_ablation_complex_stability.png). Pixel-verified correction vs. the original handoff: pitch RMS significantly decreases for these two ablations (not increases), plausibly reflecting reduced net locomotor activity in trials that fail outright rather than improved attitude control — stated explicitly in the prose. λ and firing-variance/temporal-consistency omitted from results (documented instrumentation limitations, added to \\label{ssec:Limitations}).",
+      "dataSource": "experiments/R3-01-basal-ganglia-ablation/ (cross-references experiments/R3-02-wta-vs-threshold/, same dataset)",
       "category": "Pruebas",
       "owner": [
         "Diego"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/r3-01-02-basal-ganglia-ablation-study.tex"
     },
     {
       "id": "R3-02",
       "reviewer": "3",
       "requirement": "Comparative tests removing neural layers/inhibitory connections to justify WTA over threshold logic",
-      "target": "same as R3-01 — methodology.tex + results.tex, genuine gap, no existing content. Locomotion module already uses explicit threshold logic (20° frontal cone, Ar=28.0) — a natural in-paper contrast point",
+      "target": "Same subsection/dataset as R3-01 (not duplicated). threshold_only (WTA replaced by static fixed-priority threshold, same family as the Locomotion Module's own 20°/Ar=28.0 thresholds) is the only variant that significantly slows decision latency under conflict (109.1 ms vs. 75.9 ms, p=0.014) and degrades roll/pitch RMS (p=0.017/p=0.0029), directly justifying WTA over threshold logic on latency + stability grounds. Its success rate alone (83.3% vs. 100%, p=0.478) is explicitly flagged as non-significant at n=12 — the argument is not oversold on that metric alone, per the handoff's own caution.",
       "dataSource": "experiments/R3-02-wta-vs-threshold/",
       "category": "Pruebas",
       "owner": [
         "Diego"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/r3-01-02-basal-ganglia-ablation-study.tex"
     },
     {
       "id": "R3-03",

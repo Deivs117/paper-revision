@@ -1,0 +1,82 @@
+% PATCH: R3-01 / R3-02
+% Reviewer: 3
+% Target sections: sections/methodology.tex (method paragraph), sections/results.tex (new
+%   subsubsection "Basal Ganglia Ablation Study" + 2 figures, and one paragraph appended to
+%   \label{ssec:Limitations})
+% Requirement: R3-01 "Ablation analysis on basal ganglia arbitration network"; R3-02 "Comparative
+%   tests removing neural layers/inhibitory connections to justify WTA over threshold logic" --
+%   both answered from the same 96-trial dataset (4 ablation variants x 2 scenarios x 12
+%   replicates), reported as a single subsection since they share method, data, and figures.
+% Status: applied
+%
+% Source material: experiments/R3-02-wta-vs-threshold/ (data provenance, method, PETER_SIMULATION
+% commits e29d9a1/e343cce) and experiments/R3-01-basal-ganglia-ablation/ (cross-reference, shares
+% the same dataset -- no separate data/scripts/output there by design). Statistics computed by
+% experiments/R3-02-wta-vs-threshold/scripts/analyze_ablation.py
+% (output/ablation_stats_summary.{json,csv}). Figures generated and pixel-verified against the CSV
+% by the new experiments/R3-02-wta-vs-threshold/scripts/plot_ablation.py, promoted via
+% scripts/promote_figure.sh to assets/fig_ablation_success_rate.png and
+% assets/fig_ablation_complex_stability.png. Full planning trail:
+% intake/processed/R3-02_ablation_results_handoff.md (raw handoff),
+% intake/processed/R3-01-02_ablation_presentation_analysis.md (presentation analysis),
+% intake/processed/R3-01-02_ablation_writing_plan.md (writing plan this patch executes).
+%
+% Design decisions (see writing plan for full rationale):
+% - One subsection for both reviewer IDs, not two -- same dataset, avoids the kind of
+%   table/figure duplication R2-01 is separately correcting elsewhere in this document.
+% - Success rate reported via a single-panel figure (Complex Navigation only) rather than a table
+%   or a two-panel figure -- the Appetitive Targeting (no-conflict) scenario shows no meaningful
+%   separation between variants (all p=1.000) and is stated in one prose sentence instead.
+% - Continuous metrics (latency, roll/pitch RMS) reported in prose + one stability figure, no
+%   separate table, to avoid restating the same numbers twice.
+% - pitch_rms verified pixel-by-pixel against the raw CSV before writing any interpretation
+%   (writing plan Sec. 0bis): it does NOT degrade in the same direction as roll_rms for the two
+%   circuit-mechanism ablations (no_lateral_inhibition, no_stn_str) -- it significantly DECREASES,
+%   plausibly reflecting reduced net locomotor activity in trials that fail outright, not improved
+%   attitude control. The prose below states this explicitly rather than repeating the handoff
+%   document's less precise "roll/pitch RMS both degrade" framing.
+% - threshold_only's success rate (83.3% vs 100%, p=0.478) is explicitly flagged as
+%   non-significant at this sample size -- the R3-02 argument rests on decision latency and
+%   attitude stability, both significant, not on success rate alone.
+% - lambda (exp_lambda) and firing_variance/temporal_consistency are omitted from all
+%   tables/figures (known instrumentation limitations, documented in the Limitations paragraph
+%   below) rather than reported without context.
+
+%%% ---- 1) sections/methodology.tex -- appended after the existing WTA justification paragraph
+%%%      that ends "...intrinsic properties of the proposed design.", before
+%%%      \subsubsection{Locomotion Module} ----
+
+\revblue{To empirically ground this architectural choice, rather than relying solely on the citations above, an ablation study was conducted on the basal-ganglia circuit itself. An \texttt{ablation\_mode} parameter was introduced into the simulated implementation with four variants: the intact circuit (\emph{full}, control); \emph{no lateral inhibition}, which zeroes the cross-channel inhibitory terms in Eqs.~\eqref{eq:stn}--\eqref{eq:str} (Gpe$\rightarrow$STN, STN$\rightarrow$Gpi) while leaving same-channel dynamics untouched; \emph{no STN/STR}, which removes the STN and STR layers entirely, routing the raw stimulus directly into GPe/GPi with the same per-channel gains STN would otherwise apply; and \emph{threshold-only}, which bypasses the STN/GPi/GPe/STR dynamics altogether in favor of a static fixed-priority threshold over the raw stimulus --- the same threshold-logic family already used elsewhere in this architecture's own Locomotion Module. Each variant was evaluated across the Appetitive Targeting (no-conflict control) and Complex Navigation (three simultaneous, conflicting stimuli) scenarios ($n=12$ replicates/variant/scenario); results are reported in Section~\ref{sec:results}.}
+
+%%% ---- 2) sections/results.tex -- new \subsubsection{Basal Ganglia Ablation Study}, inserted
+%%%      after \end{table} of tab:consolidated_simulation_metrics, before
+%%%      \subsubsection{Response to Variable Topographies} ----
+
+\subsubsection{Basal Ganglia Ablation Study}
+
+\revblue{To directly address the reviewer's request for an ablation analysis of the basal-ganglia arbitration network and a quantitative comparison against simple threshold-based decision logic, the four-variant ablation described in Section~\ref{sec:methodology} was evaluated across the Appetitive Targeting (no-conflict) and Complex Navigation (three-stimulus conflict) scenarios, reusing the same scenario parameters as Table~\ref{tab:consolidated_simulation_metrics} ($n=12$ trials/variant/scenario, noise level fixed at zero to isolate the structural effect of each ablation from sensory-noise robustness, which is characterized separately, earlier in this section, for the intact circuit). This study is simulation-only; no equivalent ablation was run on the physical platform.}
+
+\revblue{Without stimulus conflict, all four variants perform statistically indistinguishably: $91.7$--$100\%$ success in the Appetitive Targeting scenario, $p=1.000$ for all three comparisons against the intact circuit --- removing an ablation target does not break the simple case, as expected when only one channel is ever active. Under real conflict (Complex Navigation, Figure~\ref{fig:ablation_success_rate}), a clear gradient emerges. The two ablations that remove basal-ganglia mechanism itself --- \emph{no lateral inhibition} (inhibitory connections) and \emph{no STN/STR} (neural layers) --- collapse the success rate to $25.0\%$ and $33.3\%$ respectively (Fisher's exact $p<0.001$ and $p=0.001$ vs.\ the intact circuit's $100\%$), directly addressing the reviewer's request to quantify the consequence of removing inhibitory connections or key neural layers (R3-01). Replacing the entire circuit with static threshold logic (\emph{threshold only}) degrades success more mildly and not significantly on this metric alone ($83.3\%$, $p=0.478$); the case against threshold logic instead rests on the continuous metrics below.}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.6\textwidth]{fig_ablation_success_rate.png}
+    \caption{\revblue{Success rate under real stimulus conflict (Complex Navigation scenario, $n=12$ trials/variant; Fisher's exact test vs. the intact circuit). The two ablations that remove basal-ganglia mechanism itself collapse success rate significantly (\emph{no lateral inhibition}: $25.0\%$, $p<0.001$; \emph{no STN/STR}: $33.3\%$, $p=0.001$); replacing the circuit with static threshold logic degrades success more mildly and not significantly at this sample size (\emph{threshold only}: $83.3\%$, $p=0.478$). Under the no-conflict Appetitive Targeting scenario (not shown), all four variants perform statistically indistinguishably ($91.7$--$100\%$, $p=1.000$ for all three comparisons).}}
+    \label{fig:ablation_success_rate}
+\end{figure}
+
+\revblue{Decision latency under conflict is unaffected by removing basal-ganglia mechanism ($81.7$~ms, 95\%~CI $[56.9, 106.4]$, for \emph{no lateral inhibition}, $p=0.34$; $66.6$~ms, 95\%~CI $[41.9, 91.2]$, for \emph{no STN/STR}, $p=0.84$; vs.\ $75.9$~ms, 95\%~CI $[59.3, 92.6]$, for \emph{full}), but is significantly slower under \emph{threshold only} ($109.1$~ms, 95\%~CI $[89.2, 129.0]$, $p=0.014$) --- consistent with a static threshold lacking the anticipatory, continuously-converging dynamics the WTA circuit provides during conflict resolution. Roll RMS increases significantly for all three ablations relative to the intact circuit ($+43.6\%$ \emph{no lateral inhibition}, $p<0.001$; $+45.9\%$ \emph{no STN/STR}, $p<0.001$; $+22.0\%$ \emph{threshold only}, $p=0.017$), indicating that attitude destabilization under conflict is a shared consequence of weakening the arbitration mechanism, regardless of which component is removed. Pitch RMS instead diverges by ablation type (Figure~\ref{fig:ablation_complex_stability}): it increases for \emph{threshold only} ($+6.4\%$, $p=0.0029$), consistent with the roll-instability trend, but decreases for \emph{no lateral inhibition} and \emph{no STN/STR} ($-11.3\%$ and $-5.7\%$, both $p<0.005$) --- plausibly a symptom of reduced net locomotor activity in the majority of trials that fail outright under these two ablations, rather than improved attitude control.}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{fig_ablation_complex_stability.png}
+    \caption{\revblue{Attitude stability under real conflict (Complex Navigation scenario, $n=12$ trials/variant) across the four basal-ganglia ablation variants. Roll RMS increases significantly for all three ablations relative to the intact circuit (\emph{no lateral inhibition}: $+43.6\%$, $p<0.001$; \emph{no STN/STR}: $+45.9\%$, $p<0.001$; \emph{threshold only}: $+22.0\%$, $p=0.017$). Pitch RMS shows a different pattern: it increases for \emph{threshold only} ($+6.4\%$, $p=0.0029$), consistent with the roll-instability trend, but decreases for \emph{no lateral inhibition} and \emph{no STN/STR} ($-11.3\%$ and $-5.7\%$, both $p<0.005$) --- plausibly reflecting reduced net locomotor activity in trials that fail outright (Figure~\ref{fig:ablation_success_rate}) rather than improved attitude control.}}
+    \label{fig:ablation_complex_stability}
+\end{figure}
+
+\revblue{Taken together, these results support the winner-take-all arbitration design on two separable grounds. First, the basal-ganglia circuit's own mechanism --- not merely the presence of \emph{some} priority rule --- is responsible for resolving genuine multi-stimulus conflict: disabling its inhibitory connections or removing its neural layers each independently collapses success rate and roll stability under conflict, with neither degrading decision latency (R3-01). Second, replacing that mechanism with the same family of static threshold logic already used elsewhere in this architecture's Locomotion Module is measurably worse specifically where the WTA circuit's continuous dynamics matter most: it is the only variant that significantly slows decision-making under conflict, in addition to degrading attitude stability (R3-02) --- though, as noted above, this comparison is supported by latency and attitude metrics rather than by success rate alone, which did not reach significance at this sample size.}
+
+%%% ---- 3) sections/results.tex -- appended to \subsection{Limitations of the Present Work}
+%%%      (\label{ssec:Limitations}), after the last existing paragraph ----
+
+\revblue{Regarding the basal-ganglia ablation study (Section~\ref{sec:results}): the conflict-efficiency metric $\lambda$ was excluded from the reported results because its current implementation only registers active conflict when two specific channels are simultaneously present within the sampling window, a condition rarely met in practice across these trials --- this is a limitation of the metric's present instrumentation, not evidence that conflict efficiency is unaffected by the ablations. Additionally, per-cycle firing-variance and temporal-consistency diagnostics, which could further characterize the \emph{threshold-only} variant's failure mode (e.g.\ oscillation near the decision boundary, as opposed to outright deadlock), were not captured for this dataset; the threshold-versus-WTA comparison therefore relies on decision latency and attitude stability rather than on these more targeted diagnostics.}
