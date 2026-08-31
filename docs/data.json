@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-31T16:16:31+00:00",
-  "progressLastCommit": "2026-08-29T22:06:35-05:00",
+  "generatedAt": "2026-08-31T16:24:01+00:00",
+  "progressLastCommit": "2026-08-31T11:16:31-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -511,6 +511,45 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-21-conclusions-bg-mechanism-dedupe.tex"
+    },
+    {
+      "id": "C-22",
+      "reviewer": "—",
+      "requirement": "Reviewer-simulation trim audit (intake/pending/reviewer_simulation_trim_audit.md), run 2026-08-31, author-requested \"simulate a reviewer looking to cut page count.\" Candidate A: three results.tex figures (fig:robot-6frames, fig:RES_IMU_real, fig:real_variable_topography_sequence) carried full-sentence subcaptions that re-narrated body prose (first two) or Table~\\ref{tab:terrain_sequence}'s own Trigger/mechanism column (third) essentially verbatim. Cut all subcaptions to short factual labels (timestamp/state only) and trimmed the three main captions to point at the body text/table instead of repeating it; no figures removed, no claims changed, all data (timestamps, unit IDs) preserved in the still-existing prose/table. Author decided to proceed with this audit's items A+B+C (not D). validate_tex.sh/check_roundtrip.sh pass; compile_pdf.sh recompiles clean (91 pages — see C-24's row for the honest page-count caveat, same as C-20/C-21).",
+      "target": "results.tex (fig:robot-6frames, fig:RES_IMU_real, fig:real_variable_topography_sequence captions/subcaptions)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sebas"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-22-results-caption-trim.tex"
+    },
+    {
+      "id": "C-23",
+      "reviewer": "—",
+      "requirement": "Same audit as C-22. Candidate B: conclusions.tex carried two overlapping closing paragraphs — \"The findings provide a highly efficient baseline...\" and a final \"In conclusion, this paper presented...\" — both restating bio-inspired architecture / embedded-hardware validation / no heavy training-computational overhead. Per the audit this is genuine within-section redundancy (same category as C-20/C-21, missed by that audit because it only checked cross-section repeats), not merely a length judgment call. Merged into one closing paragraph: kept the first paragraph's concrete claims plus the second paragraph's hardware-boundary caveat sentence, dropped the restated \"without heavy computational overhead or expensive training cycles\" clause and the redundant second \"in conclusion\" framing sentence. validate_tex.sh/check_roundtrip.sh pass; compile_pdf.sh recompiles clean.",
+      "target": "conclusions.tex (two final paragraphs merged into one)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sebas"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-23-conclusions-closing-paragraphs-merge.tex"
+    },
+    {
+      "id": "C-24",
+      "reviewer": "—",
+      "requirement": "Same audit as C-22/C-23. Candidate C: results.tex's terrain-latency discussion (3 consecutive paragraphs after fig:FourPanelLatencies) walked through Panels A–D one at a time with a formulaic repeated structure (\"Panel X... reflects...\", \"Panel Y... by contrast...\"), informative but repetitive. Merged into one tighter paragraph, keeping all four numeric latency claims (already stated once in the figure caption) and every qualitative point (deliberate stability delay on Panel B, kinematic settling on Panel C, rapid-reflex framing on Panel D) — no content dropped, only restructured for flow. validate_tex.sh/check_roundtrip.sh pass; compile_pdf.sh recompiles clean at 91 pages (unchanged from pre-C-20 baseline) — confirms the audit's own caveat that prose-only cuts in this figure/table-dominated results.tex section have limited page-count leverage; items A+B+C together (~250 words estimated) did not cross a page boundary. Candidate D (sim/physical neuron-by-neuron narration trim, ~350 words, higher risk) held per author decision — not applied this round; intake/pending/reviewer_simulation_trim_audit.md stays in pending/ pending a decision on D, not moved to processed/.",
+      "target": "results.tex (terrain-latency 3-paragraph merge after fig:FourPanelLatencies)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sebas"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-24-results-terrain-latency-merge.tex"
     }
   ]
 }

@@ -509,13 +509,13 @@ A simultaneous activation between units $X_{15}$ and $X_{16}$ (Figure~\ref{fig:N
   \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{D1.png}
-    \caption{\revblue{Initial state: the platform holds a quadrupedal stance with all three stimulus classes in view --- the appetitive target (upper field), the near obstacle, and the more distant LiDAR-detected object that the network deems too far to warrant an evasive response.}}
+    \caption{\revblue{Initial state: all three stimulus classes in view.}}
     \label{fig:frames-a}
   \end{subfigure}\hfill
   \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{D3.png}
-    \caption{\revblue{Indecisive hold: the constant \emph{Hunting Instinct} stimulus keeps unit $X_{16}$ active and uninhibited by $X_{15}$, holding the platform stationary in quadrupedal stance until the aversive threat signal reaches its dispatch threshold.}}
+    \caption{\revblue{Indecisive hold ($X_{16}$ active, uninhibited).}}
     \label{fig:frames-c}
   \end{subfigure}
 
@@ -524,16 +524,16 @@ A simultaneous activation between units $X_{15}$ and $X_{16}$ (Figure~\ref{fig:N
   \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{D5.png}
-    \caption{\revblue{Morphological transformation: following the aversive stimulus's peak activation ($\approx46$~s) and the resulting evasive gait dispatch, the platform reconfigures into differential-rolling mode.}}
+    \caption{\revblue{Evasive dispatch, $\approx46$~s.}}
     \label{fig:frames-e}
   \end{subfigure}\hfill
   \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{D6.png}
-    \caption{\revblue{Final approach: after evading the aversive threat and detecting the appetitive target ($\approx50$~s), the platform completes an orientation correction and advances to the goal, coming to rest once neuron $X_{17}$ fully inhibits locomotion ($\approx90$~s).}}
+    \caption{\revblue{Goal approach and stop, $\approx50$--$90$~s.}}
     \label{fig:frames-f}
   \end{subfigure}
-  \caption{\revblue{Four representative frames from the real-robot experiment facing visual stimuli of different nature: (a)–(d) show the temporal evolution across the trial.}}
+  \caption{\revblue{Four representative frames from the real-robot experiment facing visual stimuli of different nature: (a)–(d) show the temporal evolution across the trial, detailed in the accompanying text.}}
   \label{fig:robot-6frames}
 \end{figure}
 
@@ -601,13 +601,13 @@ In the real implementation (Figure~\ref{fig:RES_IMU_real}), images were captured
   \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{E1.png}
-    \caption{\revblue{Entering the terrain: the platform advances onto the irregular surface (height variance below 1.2~cm), a region it clears within the first $\approx13$~s in its initial locomotion mode.}}
+    \caption{\revblue{Entering the terrain, $\approx13$~s.}}
     \label{fig:frames-a2}
   \end{subfigure}\hfill
   \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{E3.png}
-    \caption{\revblue{Quadrupedal transformation: once the stagnation signal reaches its maximum sustained amplitude, the network commits to the quadrupedal gait to negotiate the roughest section of the mat.}}
+    \caption{\revblue{Quadrupedal transformation at stagnation peak.}}
     \label{fig:frames-c2}
   \end{subfigure}
 
@@ -616,17 +616,17 @@ In the real implementation (Figure~\ref{fig:RES_IMU_real}), images were captured
   \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{E5.png}
-    \caption{\revblue{Approaching the exit: the platform sustains ground clearance in quadrupedal mode across the highest-relief sections, nearing the mat's far edge.}}
+    \caption{\revblue{Sustained quadrupedal crossing.}}
     \label{fig:frames-e2}
   \end{subfigure}\hfill
   \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{E6.png}
-    \caption{\revblue{Recovery: around $t\approx86$~s, once unit $X_0$'s activity ceases (Figure~\ref{fig:NEU_IMU_real}), the platform exits the rough section and reverts to differential-rolling mode, completing the crossing.}}
+    \caption{\revblue{Recovery to rolling mode, $t\approx86$~s.}}
     \label{fig:frames-f2}
   \end{subfigure}
 
-  \caption{\revblue{Four representative frames from the real-robot experiment facing an irregular terrain: (a)–(d) show the temporal evolution across the trial.}}
+  \caption{\revblue{Four representative frames from the real-robot experiment facing an irregular terrain: (a)–(d) show the temporal evolution across the trial, detailed in the accompanying text.}}
   \label{fig:RES_IMU_real}
 \end{figure}
 
@@ -695,19 +695,19 @@ Across the compound course (double-ascent ramp $\rightarrow$ elevated plane $\ri
   \begin{subfigure}[t]{0.31\textwidth}
     \centering
     \includegraphics[width=\linewidth]{Prueba_Terreno_Parte_1.png}
-    \caption{Frame 1: Quadrupedal walking mode engaged during double-ramp ascent to ensure static stability and traction.}
+    \caption{\revblue{Frame 1 (see Table~\ref{tab:terrain_sequence}).}}
     \label{fig:real_terrain_frame1}
   \end{subfigure}\hfill
   \begin{subfigure}[t]{0.31\textwidth}
     \centering
     \includegraphics[width=\linewidth]{Prueba_Terreno_Parte_2.png}
-    \caption{Frame 2: Neural arbitration network detects the flat elevated segment and switches to differential rolling mode.}
+    \caption{\revblue{Frame 2.}}
     \label{fig:real_terrain_frame2}
   \end{subfigure}\hfill
   \begin{subfigure}[t]{0.31\textwidth}
     \centering
     \includegraphics[width=\linewidth]{Prueba_Terreno_Parte_3.png}
-    \caption{Frame 3: Energy-efficient wheeled navigation sustained across the horizontal elevated plane with wheels as primary locomotor effectors.}
+    \caption{\revblue{Frame 3.}}
     \label{fig:real_terrain_frame3}
   \end{subfigure}
 
@@ -717,23 +717,23 @@ Across the compound course (double-ascent ramp $\rightarrow$ elevated plane $\ri
   \begin{subfigure}[t]{0.31\textwidth}
     \centering
     \includegraphics[width=\linewidth]{Prueba_Terreno_Parte_4.png}
-    \caption{Frame 4: Differential rolling mode maintained throughout the controlled ramp descent; pitch disturbance remains below the quadrupedal re-engagement threshold.}
+    \caption{\revblue{Frame 4.}}
     \label{fig:real_terrain_frame4}
   \end{subfigure}\hfill
   \begin{subfigure}[t]{0.31\textwidth}
     \centering
     \includegraphics[width=\linewidth]{Prueba_Terreno_Parte_5.png}
-    \caption{Frame 5: Wheels encounter Perlin-noise rough terrain, inducing critical slippage and a stagnation condition detected by the MLP output channels.}
+    \caption{\revblue{Frame 5.}}
     \label{fig:real_terrain_frame5}
   \end{subfigure}\hfill
   \begin{subfigure}[t]{0.31\textwidth}
     \centering
     \includegraphics[width=\linewidth]{Prueba_Terreno_Parte_6.png}
-    \caption{Frame 6: Basal-ganglia network triggers reactive quadrupedal recovery, restoring the support polygon and enabling successful traversal of the rough terrain.}
+    \caption{\revblue{Frame 6.}}
     \label{fig:real_terrain_frame6}
   \end{subfigure}
 
-  \caption{Sequential 6-frame documentation of the physical platform navigating a compound variable-topography course (double-ascent ramp $\rightarrow$ horizontal elevated plane $\rightarrow$ descent ramp $\rightarrow$ Perlin-noise rough terrain), replicated across 15 continuous experimental trials. Frames (a)--(f) trace the chronological sequence of gait-mode transitions autonomously commanded by the bio-inspired basal-ganglia arbitration network, from initial quadrupedal ascent through differential rolling on structured surfaces to reactive quadrupedal recovery upon encountering high-variance stochastic terrain.}
+  \caption{\revblue{Sequential 6-frame documentation of the physical platform navigating the compound variable-topography course, replicated across 15 continuous trials; per-frame terrain segment, mode, and trigger mechanism are detailed in Table~\ref{tab:terrain_sequence}.}}
   \label{fig:real_variable_topography_sequence}
 \end{figure*}
 
@@ -894,11 +894,7 @@ possible).}
   \label{fig:FourPanelLatencies}
 \end{figure}
 
-\revblue{To evaluate repeatability and determinism under uncalibrated physical environments, a continuous multi-terrain navigation mission was executed across 15 hardware replicates. The track forced the robot from Quadrupedal to Differential Rolling Mode to climb a steep incline, then back to Quadrupedal Mode on unstructured terrain inducing wheel slippage. The resulting temporal dynamics are partitioned into a four-panel layout to preserve resolution against low statistical variance (Fig.~\ref{fig:FourPanelLatencies}).}
-
-\revblue{The basal ganglia loop's decision latency (Fig.~\ref{fig:FourPanelLatencies}, values in caption) shows a clear task-dependent split. The Quadrupedal $\rightarrow$ Differential Rolling transition (Panel~A) achieves an instantaneous step response, reflecting immediate pitch-gradient adaptation. The reverse transition (Panel~B), triggered by wheel slippage on rugged terrain, settles at a markedly longer latency; this extended window is a deliberate stability feature, filtering transient high-frequency impact noise to suppress control chattering and false-positive switches on noisy surfaces.}
-
-\revblue{The electromechanical coupling timelines reflect these commands mechanically: achieving full wheel-ground alignment (Panel~C) requires an extended settling window, capturing the kinematic cost of leg extension under slope conditions. The emergency retraction to the high-traction articulated stance (Panel~D), by contrast, is a rapid recovery reflex, minimising the wheel-spin window and securing foothold anchors quickly on unstable terrain.}
+\revblue{To evaluate repeatability and determinism under uncalibrated physical environments, a continuous multi-terrain navigation mission was executed across 15 hardware replicates. The track forced the robot from Quadrupedal to Differential Rolling Mode to climb a steep incline, then back to Quadrupedal Mode on unstructured terrain inducing wheel slippage; the resulting temporal dynamics are partitioned into a four-panel layout to preserve resolution against low statistical variance (Fig.~\ref{fig:FourPanelLatencies}). The basal ganglia loop's decision latency shows a clear task-dependent split: the Quadrupedal $\rightarrow$ Differential Rolling transition (Panel~A) achieves an instantaneous step response, reflecting immediate pitch-gradient adaptation, while the reverse transition (Panel~B), triggered by wheel slippage on rugged terrain, settles at a markedly longer latency --- a deliberate stability feature that filters transient high-frequency impact noise to suppress control chattering and false-positive switches on noisy surfaces. The electromechanical coupling timelines reflect these commands mechanically: achieving full wheel-ground alignment (Panel~C) requires an extended settling window, capturing the kinematic cost of leg extension under slope conditions, whereas the emergency retraction to the high-traction articulated stance (Panel~D) is a rapid recovery reflex, minimising the wheel-spin window and securing foothold anchors quickly on unstable terrain.}
 
 \subsection{Limitations of the Present Work}
 \label{ssec:Limitations}
