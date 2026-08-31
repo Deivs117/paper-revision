@@ -1,0 +1,294 @@
+{
+  "scenarios": {
+    "appetitive": {
+      "success_rate": {
+        "full": {
+          "n_success": 12,
+          "n_total": 12,
+          "rate": 1.0
+        },
+        "no_lateral_inhibition": {
+          "n_success": 11,
+          "n_total": 12,
+          "rate": 0.9167
+        },
+        "threshold_only": {
+          "n_success": 11,
+          "n_total": 12,
+          "rate": 0.9167
+        },
+        "fisher_exact_vs_full": {
+          "no_lateral_inhibition": 1.0,
+          "threshold_only": 1.0
+        }
+      },
+      "metrics": {
+        "exp_lambda": {
+          "full": {
+            "n": 12,
+            "mean": 1.0,
+            "ci95_low": 1.0,
+            "ci95_high": 1.0
+          },
+          "no_lateral_inhibition": {
+            "n": 12,
+            "mean": 1.0,
+            "ci95_low": 1.0,
+            "ci95_high": 1.0
+          },
+          "threshold_only": {
+            "n": 12,
+            "mean": 1.0,
+            "ci95_low": 1.0,
+            "ci95_high": 1.0
+          },
+          "mannwhitney_vs_full": {
+            "no_lateral_inhibition": null,
+            "threshold_only": null
+          }
+        },
+        "exp_latency": {
+          "full": {
+            "n": 12,
+            "mean": 0.27605,
+            "ci95_low": -0.141829,
+            "ci95_high": 0.693929
+          },
+          "no_lateral_inhibition": {
+            "n": 12,
+            "mean": 0.497075,
+            "ci95_low": -0.052625,
+            "ci95_high": 1.046775
+          },
+          "threshold_only": {
+            "n": 12,
+            "mean": 0.671792,
+            "ci95_low": 0.066394,
+            "ci95_high": 1.277189
+          },
+          "mannwhitney_vs_full": {
+            "no_lateral_inhibition": 0.54437,
+            "threshold_only": 0.260236
+          }
+        },
+        "tswitch": {
+          "full": {
+            "n": 12,
+            "mean": 0.238283,
+            "ci95_low": -0.227059,
+            "ci95_high": 0.703626
+          },
+          "no_lateral_inhibition": {
+            "n": 12,
+            "mean": 1.450433,
+            "ci95_low": 0.580291,
+            "ci95_high": 2.320575
+          },
+          "threshold_only": {
+            "n": 12,
+            "mean": 0.663167,
+            "ci95_low": 0.016291,
+            "ci95_high": 1.310043
+          },
+          "mannwhitney_vs_full": {
+            "no_lateral_inhibition": 0.580883,
+            "threshold_only": 0.250643
+          }
+        },
+        "roll_rms": {
+          "full": {
+            "n": 12,
+            "mean": 0.540275,
+            "ci95_low": 0.536247,
+            "ci95_high": 0.544303
+          },
+          "no_lateral_inhibition": {
+            "n": 12,
+            "mean": 0.540958,
+            "ci95_low": 0.537422,
+            "ci95_high": 0.544495
+          },
+          "threshold_only": {
+            "n": 12,
+            "mean": 0.610667,
+            "ci95_low": 0.465207,
+            "ci95_high": 0.756127
+          },
+          "mannwhitney_vs_full": {
+            "no_lateral_inhibition": 0.885209,
+            "threshold_only": 0.525283
+          }
+        },
+        "pitch_rms": {
+          "full": {
+            "n": 12,
+            "mean": 1.069883,
+            "ci95_low": 1.067811,
+            "ci95_high": 1.071955
+          },
+          "no_lateral_inhibition": {
+            "n": 12,
+            "mean": 1.071858,
+            "ci95_low": 1.070277,
+            "ci95_high": 1.07344
+          },
+          "threshold_only": {
+            "n": 12,
+            "mean": 1.077425,
+            "ci95_low": 1.063545,
+            "ci95_high": 1.091305
+          },
+          "mannwhitney_vs_full": {
+            "no_lateral_inhibition": 0.174666,
+            "threshold_only": 0.488328
+          }
+        }
+      }
+    },
+    "complex": {
+      "success_rate": {
+        "full": {
+          "n_success": 12,
+          "n_total": 12,
+          "rate": 1.0
+        },
+        "no_lateral_inhibition": {
+          "n_success": 3,
+          "n_total": 12,
+          "rate": 0.25
+        },
+        "threshold_only": {
+          "n_success": 10,
+          "n_total": 12,
+          "rate": 0.8333
+        },
+        "fisher_exact_vs_full": {
+          "no_lateral_inhibition": 0.000337,
+          "threshold_only": 0.478261
+        }
+      },
+      "metrics": {
+        "exp_lambda": {
+          "full": {
+            "n": 12,
+            "mean": 1.0,
+            "ci95_low": 1.0,
+            "ci95_high": 1.0
+          },
+          "no_lateral_inhibition": {
+            "n": 12,
+            "mean": 1.0,
+            "ci95_low": 1.0,
+            "ci95_high": 1.0
+          },
+          "threshold_only": {
+            "n": 12,
+            "mean": 1.0,
+            "ci95_low": 1.0,
+            "ci95_high": 1.0
+          },
+          "mannwhitney_vs_full": {
+            "no_lateral_inhibition": null,
+            "threshold_only": null
+          }
+        },
+        "exp_latency": {
+          "full": {
+            "n": 12,
+            "mean": 0.075925,
+            "ci95_low": 0.059276,
+            "ci95_high": 0.092574
+          },
+          "no_lateral_inhibition": {
+            "n": 12,
+            "mean": 0.081667,
+            "ci95_low": 0.056933,
+            "ci95_high": 0.1064
+          },
+          "threshold_only": {
+            "n": 12,
+            "mean": 0.1091,
+            "ci95_low": 0.089235,
+            "ci95_high": 0.128965
+          },
+          "mannwhitney_vs_full": {
+            "no_lateral_inhibition": 0.340779,
+            "threshold_only": 0.014138
+          }
+        },
+        "tswitch": {
+          "full": {
+            "n": 12,
+            "mean": 0.425092,
+            "ci95_low": -0.067575,
+            "ci95_high": 0.917758
+          },
+          "no_lateral_inhibition": {
+            "n": 12,
+            "mean": 0.737733,
+            "ci95_low": 0.120271,
+            "ci95_high": 1.355196
+          },
+          "threshold_only": {
+            "n": 12,
+            "mean": 0.712958,
+            "ci95_low": 0.132813,
+            "ci95_high": 1.293104
+          },
+          "mannwhitney_vs_full": {
+            "no_lateral_inhibition": 0.661463,
+            "threshold_only": 0.221796
+          }
+        },
+        "roll_rms": {
+          "full": {
+            "n": 12,
+            "mean": 0.81525,
+            "ci95_low": 0.757878,
+            "ci95_high": 0.872622
+          },
+          "no_lateral_inhibition": {
+            "n": 12,
+            "mean": 1.169783,
+            "ci95_low": 1.063223,
+            "ci95_high": 1.276344
+          },
+          "threshold_only": {
+            "n": 12,
+            "mean": 0.995017,
+            "ci95_low": 0.92369,
+            "ci95_high": 1.066344
+          },
+          "mannwhitney_vs_full": {
+            "no_lateral_inhibition": 0.000156,
+            "threshold_only": 0.016575
+          }
+        },
+        "pitch_rms": {
+          "full": {
+            "n": 12,
+            "mean": 1.04255,
+            "ci95_low": 1.019354,
+            "ci95_high": 1.065746
+          },
+          "no_lateral_inhibition": {
+            "n": 12,
+            "mean": 0.924908,
+            "ci95_low": 0.874701,
+            "ci95_high": 0.975116
+          },
+          "threshold_only": {
+            "n": 12,
+            "mean": 1.1095,
+            "ci95_low": 1.098224,
+            "ci95_high": 1.120776
+          },
+          "mannwhitney_vs_full": {
+            "no_lateral_inhibition": 6e-05,
+            "threshold_only": 0.002946
+          }
+        }
+      }
+    }
+  }
+}
