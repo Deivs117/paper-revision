@@ -1,12 +1,12 @@
-# Reviewer-simulation trim audit — A+B+C applied as C-22/C-23/C-24, D still awaiting author decision
+# Reviewer-simulation trim audit — A+B+C+D all applied (C-22/C-23/C-24/C-25)
 
-**Status:** ✅ Author decided (2026-08-31) to proceed with candidates A+B+C now; D held. Applied as
-`C-22` (caption trim, candidate A), `C-23` (conclusions.tex closing-paragraphs merge, candidate B),
-`C-24` (terrain-latency paragraph merge, candidate C) — see their `PROGRESS.md` rows and
-`patches/c-22-*`/`c-23-*`/`c-24-*`. `compile_pdf.sh` recompiled clean at 91 pages (unchanged — same
-"prose cuts don't cross a page boundary here" effect already seen in `C-20`/`C-21`). Candidate D
-(sim/physical neuron-by-neuron narration trim) remains an open decision — this doc stays in
-`intake/pending/` until D is resolved one way or the other.
+**Status:** ✅ Fully resolved (2026-08-31). A+B+C applied first as `C-22`/`C-23`/`C-24` (91 pages,
+unchanged). Candidate D (sim/physical neuron-by-neuron narration, ~350 words, the higher-risk item)
+then decided by the author as a moderate ~25–30% trim (not a full cut, not held) — applied as `C-25`.
+Every neuron ID/figure ref/timestamp preserved; only sentence structure tightened. `compile_pdf.sh`
+recompiled at **89 pages** — down from the 91-page baseline held through `C-20`–`C-24`, the first cut
+in this whole redundancy/trim campaign (2026-08-31) to actually cross a page boundary. See
+`PROGRESS.md` rows `C-22`–`C-25` and `patches/c-22-*` through `c-25-*`.
 
 **Origin:** author request (2026-08-31, in-chat) — "simulate being a paper reviewer, look for what could
 be omitted or is superfluous, report how much [page count] could be reduced by cutting it." Distinct

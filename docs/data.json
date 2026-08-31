@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-31T16:24:01+00:00",
-  "progressLastCommit": "2026-08-31T11:16:31-05:00",
+  "generatedAt": "2026-08-31T16:47:16+00:00",
+  "progressLastCommit": "2026-08-31T11:24:00-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -541,7 +541,7 @@
     {
       "id": "C-24",
       "reviewer": "—",
-      "requirement": "Same audit as C-22/C-23. Candidate C: results.tex's terrain-latency discussion (3 consecutive paragraphs after fig:FourPanelLatencies) walked through Panels A–D one at a time with a formulaic repeated structure (\"Panel X... reflects...\", \"Panel Y... by contrast...\"), informative but repetitive. Merged into one tighter paragraph, keeping all four numeric latency claims (already stated once in the figure caption) and every qualitative point (deliberate stability delay on Panel B, kinematic settling on Panel C, rapid-reflex framing on Panel D) — no content dropped, only restructured for flow. validate_tex.sh/check_roundtrip.sh pass; compile_pdf.sh recompiles clean at 91 pages (unchanged from pre-C-20 baseline) — confirms the audit's own caveat that prose-only cuts in this figure/table-dominated results.tex section have limited page-count leverage; items A+B+C together (~250 words estimated) did not cross a page boundary. Candidate D (sim/physical neuron-by-neuron narration trim, ~350 words, higher risk) held per author decision — not applied this round; intake/pending/reviewer_simulation_trim_audit.md stays in pending/ pending a decision on D, not moved to processed/.",
+      "requirement": "Same audit as C-22/C-23. Candidate C: results.tex's terrain-latency discussion (3 consecutive paragraphs after fig:FourPanelLatencies) walked through Panels A–D one at a time with a formulaic repeated structure (\"Panel X... reflects...\", \"Panel Y... by contrast...\"), informative but repetitive. Merged into one tighter paragraph, keeping all four numeric latency claims (already stated once in the figure caption) and every qualitative point (deliberate stability delay on Panel B, kinematic settling on Panel C, rapid-reflex framing on Panel D) — no content dropped, only restructured for flow. validate_tex.sh/check_roundtrip.sh pass; compile_pdf.sh recompiles clean at 91 pages (unchanged from pre-C-20 baseline) — confirms the audit's own caveat that prose-only cuts in this figure/table-dominated results.tex section have limited page-count leverage; items A+B+C together (~250 words estimated) did not cross a page boundary. Candidate D held for a separate author decision — resolved as C-25.",
       "target": "results.tex (terrain-latency 3-paragraph merge after fig:FourPanelLatencies)",
       "dataSource": "—",
       "category": "Escritura",
@@ -550,6 +550,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-24-results-terrain-latency-merge.tex"
+    },
+    {
+      "id": "C-25",
+      "reviewer": "—",
+      "requirement": "Same audit as C-22/C-23/C-24, candidate D — held at that round pending a separate author decision (higher risk: neuron-by-neuron narration is R2-01-accepted structure, not literal restatement, and demonstrates sim/hardware mechanism match). Author decided (2026-08-31) on a moderate ~25–30% trim, not a full cut: compressed results.tex's \"Single Stimulus Response\"/\"Response to Multiple Stimuli\" prose in both the simulation (lines ~36–121) and physical (lines ~469–542) subsections, tightening sentence structure and merging short adjacent paragraphs. Every neuron ID ($X_n$, $L_n$), figure reference, and numeric timestamp/value cited in the original prose is preserved verbatim — including the sim-vs-physical appetitive-approach contrast (Figure~\\ref{fig:NEU_EST_UNIB} vs. Figure~\\ref{fig:NEU_EST_UNIG_real}b, rotation-direction difference) that is this pair's one substantive comparative claim. validate_tex.sh/check_roundtrip.sh pass; compile_pdf.sh recompiles at 89 pages — down from the 91-page baseline held through C-20–C-24 — the first cut in this audit series to cross a page boundary.",
+      "target": "results.tex (Single Stimulus Response / Response to Multiple Stimuli prose, simulation + physical subsections)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sebas"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-25-sim-physical-neuron-narration-trim.tex"
     }
   ]
 }

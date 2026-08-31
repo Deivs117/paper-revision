@@ -1,0 +1,36 @@
+% C-25 -- results.tex sim/physical neuron-by-neuron narration trim (reviewer_simulation_trim_audit.md,
+% candidate D, moderate ~25-30% cut per author decision). Audit copy only -- live file is sections/results.tex.
+
+% --- Simulation: Single Stimulus Response ---
+\revblue{These simulated behaviors arise from the neuronal dynamics in Figure~\ref{fig:NEU_EST_UNIG}: with an obstacle on the robot's right side, the platform evades left, driven by the sensory ring, whose unit $L_{4}$ activity progressively decreases as the robot moves away.}
+
+\revblue{Figure~\ref{fig:NEU_EST_UNIG}b shows the locomotor decision network: the obstacle-associated GPe activation triggers unit $X_{4}$, but inhibitory neuromodulation from $X_{11}$/$X_{12}$ limits the sensory/integrative layers' influence, so the lateral command is instead driven by $L_{0}$ and $L_{3}$ (front-right quadrant). Neuron $X_{17}$ stays inactive (no approach behavior), and the locomotion-mode module activates unit $X_{14}$, enabling omnidirectional gait.}
+
+\revblue{For the appetitive scenario (target initially to the robot's right), Figure~\ref{fig:NEU_EST_UNIB} shows the locomotor decision network driving the approach: neuron $X_{6}$ generates the rightward centering movement, then $X_{13}$ drives the forward approach, and $X_{17}$ issues the stop signal near the inspection area; the locomotion-mode module activates unit $X_{16}$, enabling differential rolling mode.}
+
+% --- Simulation: Response to Multiple Stimuli of Different Natures ---
+\revblue{For this experiment, an obstacle was placed close on the robot's right side, an aversive stimulus on the left, and an appetitive stimulus farther away, toward which the platform was expected to approach. Neuronal activities of the four control structures are shown in Figure~\ref{fig:NEU_EST_MUL}, and the resulting trajectory and behaviors in Figure~\ref{fig:RES_EST_MUL}.}
+
+\revblue{At the initial moment, the evasive sensory structure (Fig.~\ref{fig:NEU_EST_MUL}b) and the obstacle-associated globus pallidus activate, signaling an evasive maneuver; in the locomotion structure (Fig.~\ref{fig:NEU_EST_MUL}c), units $L_0$, $L_1$, and $L_3$ activate, indicating the obstacle is on the right. As it is cleared, activity in both modules decreases.}
+
+\revblue{At $t=21$~s, the basal ganglia module (Fig.~\ref{fig:NEU_EST_MUL}a) shifts dominance to the closer aversive stimulus: the robot flees rightward, driven by units $X_4$/$X_5$, with the evasion direction set by $X_{11}$ outweighing $X_{12}$; as with the obstacle, the aversive globus pallidus activation then declines, marking the behavioral transition.}
+
+\revblue{At $t=27$~s the appetitive stimulus enters view, activating its globus pallidus and triggering approach: units $X_6$/$X_3$ integrate into $X_{13}$'s rightward turn, after which the robot advances straight until $X_{17}$'s stop signal.}
+
+\revblue{The platform reaches the goal in 92~s, sequentially adjusting locomotion mode via units $X_{14}$ (obstacle evasion, omnidirectional), $X_{15}$ (aversive escape, quadrupedal), and $X_{16}$ (appetitive approach, differential rolling). In Fig.~\ref{fig:NEU_EST_MUL}d, units $X_1$/$X_2$ stay inactive (no terrain instability detected, gait unchanged), while $X_0$ shows only a small-amplitude activation producing transient states around the quadrupedal selection, attributable to that gait's abrupt movements.}
+
+% --- Physical: Single Stimulus Response ---
+\revblue{The same protocol was replicated on the physical robot; Figure~\ref{fig:RESPUESTAS_EST_UNI_real} summarizes the resulting trajectories for the three stimuli --- approach (a, appetitive), evasion (b, obstacle), and escape (c, aversive) --- all consistent with the simulation results.}
+
+\revblue{In the obstacle-evasion response (Fig.~\ref{fig:NEU_EST_UNIG_real}a), input-layer neurons $X_{15}$/$X_{16}$ activate first, indicating the obstacle on the front-right side; $L_{4}$ reaches maximum activity after $\approx35$~s, and Fig.~\ref{fig:NEU_EST_UNIG_real}c shows unit $X_{14}$ engaging omnidirectional gait for the leftward evasive maneuver.}
+
+\revblue{During the 5~s locomotion-mode change (differential drive $\rightarrow$ omnidirectional), $X_{15}$/$X_{16}$ remain nearly constant (no displacement); after $\approx40$~s their activity decreases and shifts to neighboring neurons, marking successful completion of the maneuver.}
+
+\revblue{For the appetitive stimulus, the physical robot exhibits a frontal-approach behavior: at $\approx23$~s, neurons $X_5$/$X_7$ (Fig.~\ref{fig:NEU_EST_UNIG_real}b) drive a leftward orientation correction via $X_{11}$ to center the target. This differs from simulation (Fig.~\ref{fig:NEU_EST_UNIB}), where $X_{12}$'s peak activity at the trial's start reflects an immediate rightward rotation, since the appetitive stimulus was laterally positioned in simulation but directly in front of the robot in the physical trial.}
+
+% --- Physical: Response to Multiple Stimuli of Different Natures ---
+\revblue{In the physical experiment (Fig.~\ref{fig:robot-6frames}), the input layer (Fig.~\ref{fig:NEU_EST_MUL_real}b) shows simultaneous left-side activation from a LiDAR-detected object; since it is farther than the right-side obstacle, response/auxiliary-layer activity decreases progressively and the network disregards it, with unit $L_2$ only mildly activated, attenuated by $L_3$ inhibition.}
+
+\revblue{A simultaneous $X_{15}$/$X_{16}$ activation (Fig.~\ref{fig:NEU_EST_MUL_real}d), from the constant Hunting Instinct stimulus, keeps $X_{16}$ active and uninhibited by $X_{15}$ --- the no-motor-action state shown in Fig.~\ref{fig:frames-c}.}
+
+\revblue{Following the aversive globus pallidus's peak activation at $\approx46$~s, the robot exits the indecisive state into quadrupedal mode, with rightward-directionality neurons $X_8$/$X_{12}$ reaching maximum amplitude (Fig.~\ref{fig:NEU_EST_MUL_real}c); the resulting evasive maneuver reveals the appetitive stimulus after $\approx50$~s, triggering approach. A leftward correction centers the stimulus (neurons $X_7$/$X_{11}$), followed by a final rightward readjustment; the robot then holds a straight trajectory, stopping at $\approx90$~s when $X_{17}$ fully inhibits movement.}
