@@ -1,0 +1,43 @@
+% C-21 — Conclusions' basal-ganglia mechanism paragraph, redundancy pass
+% Origin: intake/pending/redundancy_closing_audit.md (R2-01-derivative redundancy audit).
+% Previously flagged as an unselected option during C-12 ("condense conclusions.tex's
+% STN/GPe/GPi paragraph vs methodology.tex") -- executed now as part of this audit.
+% File: sections/conclusions.tex
+
+% --- BEFORE ---
+% In scenarios presenting simultaneous appetitive and aversive stimuli, the robot consistently
+% prioritized the most relevant objective through the basal-ganglia-inspired arbitration module.
+% The interaction among the STR, STN, GPe, and GPi implemented a winner-take-all mechanism,
+% actively suppressing responses toward non-priority stimuli. During the tests, predominant
+% activation in the channel associated with the selected stimulus effectively inhibited
+% competing channels, reducing the probability of erratic trajectory changes. This behavior
+% yielded direction-switching latencies below 600~ms, ensuring fast and stable responses under
+% sensory conflict. The alignment between decision-neuron activity peaks and executed maneuvers
+% supports the hypothesis that a basal-ganglia-inspired architecture combined with multimodal
+% sensory processing offers clear advantages in environments where goal prioritization is
+% critical for mission success.
+
+% --- AFTER ---
+In scenarios presenting simultaneous appetitive and aversive stimuli, the basal-ganglia-inspired
+winner-take-all arbitration module (Section~\ref{sssec:Basal_Ganglia_Module}) \revblue{consistently
+prioritized the most relevant objective, its predominant channel activation inhibiting competing
+channels and reducing the probability of erratic trajectory changes; this behavior yielded
+direction-switching latencies below 600~ms.} The alignment between decision-neuron activity peaks
+and executed maneuvers supports the hypothesis that a basal-ganglia-inspired architecture combined
+with multimodal sensory processing offers clear advantages in environments where goal
+prioritization is critical for mission success.
+
+% Also added \label{sssec:Basal_Ganglia_Module} to methodology.tex's
+% \subsubsection{Basal Ganglia Module} (previously unlabeled) so the cross-reference above
+% resolves.
+
+% Rationale: the "STR/STN/GPe/GPi implemented a winner-take-all mechanism, actively suppressing
+% responses toward non-priority stimuli" sentence re-explains the same architecture already
+% described in methodology.tex's Basal Ganglia Module subsubsection ("The GPe inhibits
+% lower-intensity behaviors... the GPi complements this mechanism by suppressing competing
+% responses to ensure that only a single action is executed"). Replaced the mechanism
+% re-explanation with a cross-reference, kept the results-specific content (behavioral outcome,
+% 600ms latency figure, closing hypothesis sentence) untouched.
+% NOTE: the "600ms" figure itself is not independently re-verified by this patch -- it was
+% already flagged elsewhere (intake/pending/redundancy_closing_audit.md's C-12 discussion) as an
+% open traceability question, separate from this redundancy fix.

@@ -1,10 +1,11 @@
-# Auditoría de redundancia final — antes de compilar/enviar (2026-08-31) — PENDIENTE
+# Auditoría de redundancia final — antes de compilar/enviar (2026-08-31) — EJECUTADA
 
-**Estado: 🔲 Programada, NO ejecutar todavía.** Este es explícitamente el ÚLTIMO paso antes de la
-compilación/envío final — correrlo demasiado pronto significa tener que repetirlo cuando lleguen
-R2-02/R3-01/R3-02/R3-04/R3-05 (el equipo confirmó datos listos el domingo, integración el lunes) y el resto de
-`R02-01-05`/`R3-06`. Ejecutar solo cuando **todas** las filas de `PROGRESS.md` relevantes a esta ronda estén en
-`drafted` o mejor.
+**Estado: ✅ Ejecutada 2026-08-31, author-requested antes de que todas las filas `Pruebas` (R2-02/
+R3-01/R3-02/R3-04) hubieran aterrizado** — el autor pidió correrla de una vez en vez de esperar,
+explícitamente para bajar el conteo de páginas si era posible. Resultado: 2 hallazgos reales de
+redundancia (`C-20`, `C-21`, ambos `applied`), el resto de los puntos del método (§2–§5 abajo)
+revisados con ojos frescos y confirmados sin acción necesaria. Ver §6 (nuevo) para el resultado y
+qué queda pendiente para R2-02/R3-01/R3-02/R3-04 cuando lleguen.
 
 **Origen:** pregunta directa del autor — "hay forma de seguir auditando estas correcciones para que no sean
 contraproducentes en nuestra labor de sintetizar el paper", citando el comentario original del Revisor 2 que
@@ -79,3 +80,56 @@ la conclusión de hace varios días sin revisarla.
   este documento.
 - `scripts/validate_tex.sh`/`scripts/check_roundtrip.sh` antes de cualquier commit.
 - Mover este documento a `intake/processed/` solo cuando esas filas `C-xx` lleguen a `applied` — no antes.
+
+## 6. Resultado de la ejecución (2026-08-31)
+
+Se leyeron completas las 6 secciones (introduction/methodology/results/conclusions/preamble/closing)
+con ojos frescos, no solo el diff desde `R2-01`. Baseline de páginas para esta corrida:
+`51c07b4` (cierre de R2-01) compiló a **86 páginas**; el estado actual (post `R2-01`..`C-19`,
+antes de este audit) compiló a **91 páginas** (+5).
+
+**Hallazgos reales de redundancia (fijados):**
+
+1. **`C-20`** — results.tex, subsección Limitations: el párrafo "Regarding the Reactive Inspection
+   Task..." (añadido por `R3-05`) restablecía casi palabra por palabra 4 hechos ya establecidos en
+   los propios párrafos de resultados de esa tarea (sin path planning/mapa; coverage rate no
+   reportado + por qué; visual pursuit condicionado a ausencia de obstáculo frontal;
+   $T_{acquisition}$ es primera adquisición no re-adquisición). Condensado a mención + referencia
+   cruzada, mismo patrón que `R2-01` ya estableció.
+2. **`C-21`** — conclusions.tex, párrafo de basal ganglia: re-explicaba el mecanismo STN/GPe/GPi/STR
+   winner-take-all ya descrito en methodology.tex's Basal Ganglia Module. Este par ya se había
+   identificado durante `C-12` (ofrecido como opción, no elegida esa ronda) — ejecutado ahora.
+   Condensado a referencia cruzada + el contenido específico de resultados (latencia de 600ms,
+   hipótesis de cierre) intacto.
+
+**Puntos del método (§3) revisados, sin acción necesaria:**
+
+- **§2 / Grupo B (rasters `NEU_IMU`/`NEU_IMU2` sim vs. `_real`):** releídos con ojos frescos. Las
+  narrativas describen eventos distintos (tiempos, disparadores — sim: superar umbral $\sigma_{az}$
+  directamente; físico: señal de estancamiento sostenida) contadas con un paralelismo estructural
+  intencional (par de validación sim→real), no restatement verbatim. Se mantienen como pares
+  legítimos, sin fusionar — confirma la lectura original del backlog, revisada explícitamente en
+  vez de asumida.
+- **Tabla `R3-06` (`table:action_selection_comparison`) vs. párrafo de la línea 9:** confirmado que
+  no reintroduce contenido — la línea 9 es fact + forward pointer ("the rationale ... is given
+  below"), el párrafo CPG (línea ~32) da la razón. Estructura correcta, ya arreglada por `C-14`.
+- **Sección "warehouse" (Gazebo depot):** mencionada 3 veces (intro de resultados, caption de la
+  figura, párrafo de Limitations) pero cada mención tiene función distinta (forward-pointer,
+  caption, caveat detallado) — no hay restatement de prosa. Sin cambios.
+- **QuantReal (4 escenarios físicos) vs. Simulation Results (4 escenarios sim):** el paralelismo
+  estructural es intencional (mismo protocolo, sim vs. hardware) y ya fue condensado agresivamente
+  por `R2-01`/`C-14` (plantilla de 3 párrafos → 1 párrafo por escenario, "Quantitative metrics are
+  consolidated in..." des-duplicado 4x → 1x). No se encontró restatement adicional.
+
+**Por qué el conteo de páginas no bajó (91 páginas antes y después de `C-20`/`C-21`):** los ~140
+palabras cortadas entre ambos hallazgos no cruzan un salto de página en una sección tan dominada por
+figuras/tablas flotantes como `results.tex`. El crecimiento real de páginas desde `R2-01` (+5,
+86→91) viene abrumadoramente de **contenido nuevo genuino** (N-01/04/05/06/07/08/09, R3-05, R3-06),
+no de redundancia de prosa — `C-19` ya consolidó lo más obvio a nivel de figura (4 floats MLP → 1
+grid `figure*`). Bajar páginas de forma medible ahora requeriría decisiones editoriales más grandes
+(consolidar más figuras/tablas, o recortar contenido) que exceden el alcance de una auditoría de
+redundancia y necesitan una decisión explícita del autor sección por sección.
+
+**Pendiente para cuando lleguen R2-02/R3-01/R3-02/R3-04:** esta auditoría no repite entonces — solo
+hay que revisar que la integración de esas filas no *cree* redundancia nueva con lo que ya existe
+(mismo riesgo que este documento señaló desde el principio en la tabla de §1).

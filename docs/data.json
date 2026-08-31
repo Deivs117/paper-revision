@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-30T03:06:35+00:00",
-  "progressLastCommit": "2026-08-29T22:03:55-05:00",
+  "generatedAt": "2026-08-31T16:16:31+00:00",
+  "progressLastCommit": "2026-08-29T22:06:35-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -485,6 +485,32 @@
       ],
       "status": "synced-to-overleaf",
       "patchFile": "patches/c-19-table-figure-layout-cleanup.tex"
+    },
+    {
+      "id": "C-20",
+      "reviewer": "—",
+      "requirement": "Redundancy-closing audit (intake/pending/redundancy_closing_audit.md), run 2026-08-31, author-requested with the explicit goal of cutting page count where possible. Finding 1/2: results.tex's Limitations subsection carried a full \\revblue{} paragraph \"Regarding the Reactive Inspection Task: ...\" that restated, near-verbatim and with zero new information, four facts already established in the Reactive Inspection Task's own results paragraphs (no path planning/map/global re-route; coverage rate not reported + why; visual pursuit gated on frontal-obstacle absence; $T_{acquisition}$ is first- not re-acquisition) — a straightforward instance of exactly the \"cut repetitive descriptions\" pattern R2-01 already established for other cross-section repeats. Condensed to a one-sentence establishing-mention + cross-reference; added the previously-missing \\label{sssec:reactive_inspection} to that subsubsection so the pointer resolves. validate_tex.sh/check_roundtrip.sh pass; compile_pdf.sh recompiles clean (page count unchanged at 91 — a ~60-word paragraph cut does not by itself cross a page boundary in a figure-dominated section; see C-21 and the audit doc for the fuller picture on why prose-only cuts have limited page-count leverage here).",
+      "target": "results.tex (ssec:Limitations, Reactive Inspection Task paragraph + new label on sssec:reactive_inspection)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sebas"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-20-reactive-inspection-limitations-dedupe.tex"
+    },
+    {
+      "id": "C-21",
+      "reviewer": "—",
+      "requirement": "Same audit as C-20. Finding 2/2: conclusions.tex's basal-ganglia paragraph re-explained the STN/GPe/GPi/STR winner-take-all mechanism in terms substantively duplicating methodology.tex's Basal Ganglia Module subsubsection (\"the GPe inhibits lower-intensity behaviors... the GPi complements this mechanism by suppressing competing responses...\"). This exact pair was already flagged as a candidate during C-12 (offered as one of 4 options, not selected that round — see C-12's row) and is executed now as part of this audit. Replaced the mechanism re-explanation with a cross-reference to methodology's Basal Ganglia Module (newly labeled sssec:Basal_Ganglia_Module, previously unlabeled), keeping the results-specific content (behavioral outcome, the 600~ms latency figure, the closing hypothesis sentence) unchanged. Note: the \"600~ms\" figure itself was not independently re-verified by this patch — it remains an open traceability question (same class of issue C-15 fixed for the old \"47ms\" claim), tracked in intake/pending/redundancy_closing_audit.md, not resolved here. validate_tex.sh/check_roundtrip.sh pass; compile_pdf.sh recompiles clean (91 pages, unchanged — see C-20).",
+      "target": "conclusions.tex (basal-ganglia paragraph), methodology.tex (new label on sssec:Basal_Ganglia_Module)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sebas"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-21-conclusions-bg-mechanism-dedupe.tex"
     }
   ]
 }

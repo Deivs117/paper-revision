@@ -1,0 +1,32 @@
+% C-20 — Reactive Inspection Task Limitations paragraph, redundancy pass
+% Origin: intake/pending/redundancy_closing_audit.md (R2-01-derivative redundancy audit)
+% File: sections/results.tex
+
+% --- BEFORE (ssec:Limitations) ---
+% \revblue{Regarding the Reactive Inspection Task: the platform performs no deliberate path
+% planning, builds no map, and does not compute a global re-route when blocked --- obstacle
+% traversal emerges from local BG/WTA dynamics rather than global trajectory planning. Coverage
+% rate as a formal area-inspection metric was not evaluated, as it presupposes an explicit
+% coverage planner outside this work's scope; task-completion indicators (success rate, final
+% approach precision, time to first visual acquisition) are reported instead. Visual target
+% pursuit is conditioned on the absence of a frontal obstacle, suspending during evasion and
+% resuming automatically once cleared. Finally, in the obstacle-field scenario used for this
+% experiment the target is not visible from the initial pose, so the reported acquisition
+% metric characterizes first acquisition rather than re-acquisition after occlusion.}
+
+% --- AFTER (ssec:Limitations) ---
+\revblue{The Reactive Inspection Task's scope constraints ---absence of deliberate path planning
+or mapping, the resulting inapplicability of a formal coverage-rate metric, and the first- rather
+than re-acquisition semantics of $T_{acquisition}$--- are established alongside that experiment's
+own results in Section~\ref{sssec:reactive_inspection} above and are not restated here.}
+
+% Also added \label{sssec:reactive_inspection} right after
+% \subsubsection{Reactive Inspection Task} (previously unlabeled) so the pointer above resolves.
+
+% Rationale: all four facts in the "before" paragraph (no path planning/map/re-route; coverage
+% rate not reported + why; visual pursuit gated on frontal-obstacle absence; first- vs.
+% re-acquisition) were already stated, with the same reasoning, in the Reactive Inspection Task's
+% own results paragraphs (results.tex, "To directly address..." / "The target was first visually
+% acquired..." paragraphs). The Limitations copy added zero new information -- pure restatement.
+% Condensed to an establishing-mention + cross-reference, matching R2-01's pattern for other
+% cross-section repeats.
