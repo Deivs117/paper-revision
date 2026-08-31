@@ -72,9 +72,19 @@ el trío que pide el comentario del referee: "remove key neural layers" (`no_stn
 "inhibitory connections" (`no_lateral_inhibition`) **+** comparación contra "simple threshold
 decision logic" (`threshold_only`).
 
-**Limitación conocida:** λ (eficiencia de conflicto) sale 1.0 en las 96 corridas por una limitación
+**Limitación conocida #1:** λ (eficiencia de conflicto) sale 1.0 en las 96 corridas por una limitación
 de `neural_recorder.py::_compute_lambda_efficiency()` (solo dispara con rojo+azul simultáneos, no
 incluye verde) — no es un resultado nulo real, ver detalle en el README del experimento.
+
+**Limitación conocida #2 (deliberadamente sin arreglar hoy):** `test_manager.py::_cb_exp_metrics`
+descarta `firing_variance`/`temporal_consistency` de `/experiment/metrics` (solo lee latencia y λ) —
+ninguna corrida las tiene guardadas. Estas dos métricas serían las diagnósticas correctas para el
+modo de falla más probable de `threshold_only` (oscilación/parpadeo cerca del límite del umbral,
+distinto de "parálisis" que es lo que λ mide) — pero no están disponibles en este dataset. **Al
+redactar: no sobrevender la comparación `threshold_only` vs. `full` más allá de lo que los datos
+actuales sustentan** — su tasa de éxito (83.3% vs 100%) no fue significativa por sí sola (p=0.478);
+el argumento se apoya en latencia (p=0.014) + `roll_rms`/`pitch_rms` (p<0.02), no en la tasa de
+éxito aislada. Ver README del experimento para el plan de 2 pasos si se decide reforzar esto.
 
 ## Qué falta (a triage — no decidido aquí)
 
@@ -87,6 +97,13 @@ incluye verde) — no es un resultado nulo real, ver detalle en el README del ex
 - [ ] Decidir si vale la pena arreglar `_compute_lambda_efficiency()` (incluir verde + ventana de
       "conflicto reciente") y re-correr antes de reportar λ, o si se omite esa métrica del reporte
       final y se reporta solo tasa de éxito + latencia + roll/pitch RMS.
+- [ ] Decidir si vale la pena capturar `firing_variance`/`temporal_consistency` (arreglar
+      `test_manager.py::_cb_exp_metrics`) y re-correr Complex Navigation (48 corridas, ~2h) para
+      reforzar el argumento `threshold_only` vs `full` con la métrica diagnóstica correcta — o si
+      se deja como limitación documentada y el argumento se sostiene solo con latencia+roll/pitch
+      RMS (decisión deliberada de no arreglar esto en esta pasada, 2026-08-31).
 - [ ] Redactar la prosa (fuera de alcance de este documento — este es solo el hallazgo/handoff).
+      **Al redactar: no sobrevender `threshold_only` vs `full` con la tasa de éxito sola (p=0.478,
+      no significativo) — apoyar el argumento en latencia + estabilidad, que sí son significativas.**
 - [ ] Una vez redactado: asignar `Category=Pruebas`, `Owner`, actualizar `PROGRESS.md` R3-01/R3-02
       de `pending` a `drafted`, y `git mv` este archivo a `intake/processed/`.

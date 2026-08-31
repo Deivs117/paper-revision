@@ -145,6 +145,32 @@ tal como está instrumentada hoy, no del efecto de la ablación. Si se retoma es
 `_compute_lambda_efficiency()` para incluir el canal verde y una ventana de "conflicto reciente" en
 vez de "conflicto en este instante exacto" antes de confiar en este número.
 
+**Segunda limitación conocida — falta `firing_variance`/`temporal_consistency` en las 96 corridas:**
+`neural_recorder.py` ya calcula y publica ambas métricas en `/experiment/metrics` como
+`[latencia, firing_variance, temporal_consistency, λ]`, pero `test_manager.py::_cb_exp_metrics`
+(línea ~136-140) solo lee los índices `[0]` (latencia) y `[3]` (λ) — descarta silenciosamente
+`[1]`/`[2]`. No están en ningún `trial_summary.json`, no se pueden recuperar retroactivamente.
+
+Esto importa específicamente para el argumento `threshold_only` vs. `full`: `threshold_only` es,
+por construcción, una decisión siempre "nítida" (un `if/elif` nunca mezcla canales), así que λ
+probablemente no distinguiría su modo de falla real — que es más plausible que sea **oscilación
+cerca del límite del umbral** (parpadeo entre decisiones cuando el estímulo está justo en el borde,
+ej. `R≈0.5`, sin la histéresis que la dinámica continua del WTA aporta de forma natural) que
+"parálisis/indecisión" (lo que λ mide). `firing_variance` (oscilación de actividad en el tiempo) y
+`temporal_consistency` (estabilidad del patrón de decisión entre ciclos) sí capturarían ese
+parpadeo — pero no están disponibles en este dataset.
+
+**No arreglar esto invalida el argumento actual** (tasa de éxito + latencia + `roll_rms`/`pitch_rms`
+ya sustentan la comparación con significancia estadística donde importa) — pero si se quiere reforzar
+específicamente el caso `threshold_only`, el camino es: (1) agregar `self._firing_variance =
+msg.data[1]` / `self._temporal_consistency = msg.data[2]` a `_cb_exp_metrics`, exponerlas en el
+snapshot/`trial_summary.json`, y (2) volver a correr las 4 variantes × Complex Navigation (48
+corridas, ~2h) — no es necesario re-correr Appetitive (sin conflicto, ya sin diferencias
+significativas en ninguna métrica). **Al redactar la prosa del paper, no sobrevender la comparación
+`threshold_only` vs. `full` solo con lo que hay hoy** — la tasa de éxito (83.3% vs 100%) no llegó a
+significancia por sí sola (p=0.478); el argumento se sostiene en latencia + estabilidad, no en la
+tasa de éxito aislada.
+
 ## Archivos en `output/`
 
 | Archivo | Contenido |
