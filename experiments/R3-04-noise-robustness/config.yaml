@@ -1,0 +1,32 @@
+# Run parameters for this experiment, kept out of scripts/ so a rerun is exact and diffable.
+#
+# Estos NO son "parámetros de una corrida futura de scripts/" — este experimento no se regenera
+# desde cero con un solo comando (ver README.md § Data provenance): documentan los parámetros que
+# el equipo de simulación usó para producir lo que ya vive en data/. Sirven de referencia para
+# cualquier script en scripts/ que reprocese esos datos, y para una futura re-corrida real si se
+# decide repetir el barrido.
+
+seed: 42                    # NoiseSeed base en red_neuronal.py; offsets +1..+4 por modalidad de ruido (IMU-noise/drift/LiDAR/illum)
+
+noise_level_idx: [0, 1, 2, 3, 4]   # único índice barrido, escala IMU-drift + LiDAR-noise + illum simultáneamente (no aislados por sensor)
+replicas_per_level: 3              # trials SUCCESS retenidos por combinación (familia × noise_level_idx)
+
+control_loop_hz: 6.67        # self.timer = create_timer(0.15, run_network) -> periodo 0.15 s
+
+families:
+  - familia_a_apetitivo
+  - familia_a_aversivo
+  - familia_a_obstaculo
+  - familia_b_compleja
+  - familia_c1_terreno_rugoso
+  - familia_c2_pendiente
+
+# Niveles reales por parámetro (extraídos literalmente de initctes() en red_neuronal.py — ver
+# robustez_transferencia_tecnica.md Sección 3 para la tabla completa con unidades/implementación):
+imu_drift_levels_accel: [0.0, 0.01, 0.03, 0.06, 0.09]   # m/s^2 por paso de random-walk
+imu_drift_levels_angle: [0.0, 0.01, 0.04, 0.08, 0.12]   # deg por paso de random-walk
+lidar_noise_levels:     [0.0, 0.05, 0.10, 0.15, 0.20]   # fracción del rango medido
+illum_levels:           [0.0, 0.10, 0.20, 0.30, 0.30]   # severidad 0-1 (nota: índices 3 y 4 comparten valor)
+area_illum_levels:      [28, 24, 20, 18, 14]            # umbral de área de "stop" de aproximación (z[17])
+
+imu_white_noise_enabled: false   # self._sigma_imu_noise fijado a 0.0 en esta corrida — el array IMUNoiseLevels existe pero no se usó
