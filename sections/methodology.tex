@@ -475,17 +475,21 @@ To robustly verify the generality of the proposed method, the irregular terrain 
 
 
 \begin{figure}[t]
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=0.48\textwidth]{TERRENO_IRREGULAR.jpeg}
+    \includegraphics[width=\linewidth]{TERRENO_IRREGULAR.jpeg}
     \caption{Irregular terrain.}
     \label{fig:Terreno_irre}
-\end{figure}
-
-\begin{figure}[t]
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=0.48\textwidth]{TERRENO_INCLINADO.jpeg}
+    \includegraphics[width=\linewidth]{TERRENO_INCLINADO.jpeg}
     \caption{Tilted terrain.}
     \label{fig:Terreno_incli}
+  \end{subfigure}
+  \caption{\revblue{Physical test terrains: (a) irregular Perlin-noise terrain; (b) tilted-incline setup.}}
+  \label{fig:terrenos_fisicos}
 \end{figure}
 
 \subsection{\revblue{Low-Torque Actuation Compensation Strategies}}

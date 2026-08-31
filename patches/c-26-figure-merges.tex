@@ -1,0 +1,84 @@
+% C-26 -- figure merges (figure_merge_audit.md, items A + B-partial + C). Audit copy only --
+% live files are sections/methodology.tex and sections/results.tex.
+
+% --- A: methodology.tex, Terreno_irre + Terreno_incli ---
+\begin{figure}[t]
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{TERRENO_IRREGULAR.jpeg}
+    \caption{Irregular terrain.}
+    \label{fig:Terreno_irre}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{TERRENO_INCLINADO.jpeg}
+    \caption{Tilted terrain.}
+    \label{fig:Terreno_incli}
+  \end{subfigure}
+  \caption{\revblue{Physical test terrains: (a) irregular Perlin-noise terrain; (b) tilted-incline setup.}}
+  \label{fig:terrenos_fisicos}
+\end{figure}
+
+% --- C: results.tex, RES_IMU + RES_IMU2 (placed at RES_IMU2's original location) ---
+\begin{figure}[t]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=0.85\linewidth]{RES_IMU.png}
+    \caption{Trajectory in an unstable terrain in a simulation trial. The poses were taken every 22 seconds.}
+    \label{fig:RES_IMU}
+  \end{subfigure}
+
+  \vspace{0.6em}
+
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=0.85\linewidth]{RES_IMU2.0.png}
+    \caption{Trajectory during traversal of elevated terrain in simulation. Snapshots taken every 12~s.}
+    \label{fig:RES_IMU2}
+  \end{subfigure}
+  \caption{\revblue{Simulated-trajectory snapshot sequences for the two variable-topography scenarios.}}
+  \label{fig:res_imu_pair}
+\end{figure}
+
+% --- B (partial): results.tex, GRAPH_IMU + GRAPH_IMU2 (placed at GRAPH_IMU2's original location) ---
+\begin{figure}[t]
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{GRAPH_IMU.png}
+    \caption{Standard deviation of the acceleration in the Z axis during transport on an unstable terrain.}
+    \label{fig:GRAPH_IMU}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{GRAPH_IMU2.png}
+    \caption{Pitch angle during motion in a steeply sloping terrain.}
+    \label{fig:GRAPH_IMU2}
+  \end{subfigure}
+  \caption{\revblue{IMU signal traces motivating the mode transition in each simulated terrain scenario: (a) unstable/irregular terrain; (b) steeply sloping terrain.}}
+  \label{fig:graph_imu_pair}
+\end{figure}
+
+% --- B (partial): results.tex, GRAPH_IMU_real + GRAPH_IMU2_real (placed at GRAPH_IMU2_real's original location) ---
+\begin{figure}[t]
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{GRAPH_IMU_real.png}
+    \caption{MLP outputs and IMU state timeline on uneven terrain.}
+    \label{fig:GRAPH_IMU_real}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{GRAPH_IMU2_real.png}
+    \caption{MLP outputs and IMU state timeline on an inclined terrain.}
+    \label{fig:GRAPH_IMU2_real}
+  \end{subfigure}
+  \caption{\revblue{MLP-output and IMU-state timelines motivating the mode transition in each physical terrain scenario: (a) uneven terrain; (b) inclined terrain.}}
+  \label{fig:graph_imu_real_pair}
+\end{figure}
+
+% NOT applied: NEU_IMU/NEU_IMU2 and NEU_IMU_real/NEU_IMU2_real -- excluded, see PROGRESS.md C-26 row
+% (their captions' "a"/"b" letters are baked into the PNG itself, not LaTeX subfigure labels).

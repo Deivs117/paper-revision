@@ -627,17 +627,21 @@ To robustly verify the generality of the proposed method, the irregular terrain 
 
 
 \begin{figure}[t]
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=0.48\textwidth]{TERRENO_IRREGULAR.jpeg}
+    \includegraphics[width=\linewidth]{TERRENO_IRREGULAR.jpeg}
     \caption{Irregular terrain.}
     \label{fig:Terreno_irre}
-\end{figure}
-
-\begin{figure}[t]
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=0.48\textwidth]{TERRENO_INCLINADO.jpeg}
+    \includegraphics[width=\linewidth]{TERRENO_INCLINADO.jpeg}
     \caption{Tilted terrain.}
     \label{fig:Terreno_incli}
+  \end{subfigure}
+  \caption{\revblue{Physical test terrains: (a) irregular Perlin-noise terrain; (b) tilted-incline setup.}}
+  \label{fig:terrenos_fisicos}
 \end{figure}
 
 \subsection{\revblue{Low-Torque Actuation Compensation Strategies}}
@@ -809,12 +813,7 @@ In a second test, the transition from flat terrain to an inclined slope is defin
 
 In the first simulation experiment shown in Figure~\ref{fig:RES_IMU}, the platform transitions immediately after entering the unstable terrain, adopting an appropriate gait to maintain efficient displacement. This behavior is reflected in the neural responses (Figure~\ref{fig:NEU_IMU}), where at 16 seconds, the unit $X_{0}$ shows the highest activity due to the large variation in vertical acceleration, a direct indicator of terrain irregularities. This phenomenon is also visible in Figure~\ref{fig:GRAPH_IMU}, where the standard deviation of the robot's vertical acceleration is plotted over time. The graph highlights the instant when this value exceeds the 3.7 threshold defined in the neural dynamics.
 
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=1.0\textwidth]{RES_IMU.png}
-    \caption{Trajectory in an unstable terrain in a simulation trial. The poses were taken every 22 seconds.}
-    \label{fig:RES_IMU}
-\end{figure}
+% RES_IMU merged with RES_IMU2 below, after the second-scenario prose (see fig:res_imu_pair).
 
 \begin{figure}[t]
     \centering
@@ -823,12 +822,7 @@ In the first simulation experiment shown in Figure~\ref{fig:RES_IMU}, the platfo
     \label{fig:NEU_IMU}
 \end{figure}
 
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.7\textwidth]{GRAPH_IMU.png}
-    \caption{Standard deviation of the acceleration in the Z axis during transport on an unstable terrain.}
-    \label{fig:GRAPH_IMU}
-\end{figure}
+% GRAPH_IMU merged with GRAPH_IMU2 below, after the second-scenario prose (see fig:graph_imu_pair).
 
 For the second stability test in simulation, the neural activities of the gait-mode control structure were recorded (Figure~\ref{fig:NEU_IMU2}b). At $t=41$~seconds, neuron $X_{1}$---associated with detecting an inclination greater than five degrees---excites unit $X_{15}$, issuing the command to transform into quadrupedal mode. The transition during locomotion is illustrated in Figure~\ref{fig:RES_IMU2}, with snapshots of the platform posture taken every 12 seconds from a lateral perspective. It is important to highlight the neural responses shown in Figure~\ref{fig:NEU_IMU2}a, where the persistent activation of neuron $X_{4}$ produces sustained activity in neurons $X_{11}$ and $X_{12}$, which in turn drive neuron $X_{13}$ and ultimately generate the forward escape behavior. In Figure~\ref{fig:GRAPH_IMU2}, the data recorded by the inertial sensor are shown.
 
@@ -840,17 +834,42 @@ For the second stability test in simulation, the neural activities of the gait-m
 \end{figure}
 
 \begin{figure}[t]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
     \centering
-    \includegraphics[width=1.0\textwidth]{RES_IMU2.0.png}
+    \includegraphics[width=0.85\linewidth]{RES_IMU.png}
+    \caption{Trajectory in an unstable terrain in a simulation trial. The poses were taken every 22 seconds.}
+    \label{fig:RES_IMU}
+  \end{subfigure}
+
+  \vspace{0.6em}
+
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=0.85\linewidth]{RES_IMU2.0.png}
     \caption{Trajectory during traversal of elevated terrain in simulation. Snapshots taken every 12~s.}
     \label{fig:RES_IMU2}
+  \end{subfigure}
+  \caption{\revblue{Simulated-trajectory snapshot sequences for the two variable-topography scenarios.}}
+  \label{fig:res_imu_pair}
 \end{figure}
 
 \begin{figure}[t]
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=0.5\textwidth]{GRAPH_IMU2.png}
+    \includegraphics[width=\linewidth]{GRAPH_IMU.png}
+    \caption{Standard deviation of the acceleration in the Z axis during transport on an unstable terrain.}
+    \label{fig:GRAPH_IMU}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{GRAPH_IMU2.png}
     \caption{Pitch angle during motion in a steeply sloping terrain.}
     \label{fig:GRAPH_IMU2}
+  \end{subfigure}
+  \caption{\revblue{IMU signal traces motivating the mode transition in each simulated terrain scenario: (a) unstable/irregular terrain; (b) steeply sloping terrain.}}
+  \label{fig:graph_imu_pair}
 \end{figure}
 
 \subsubsection{Quantitative Performance in Variable Topographies}
@@ -1286,12 +1305,7 @@ In the real implementation (Figure~\ref{fig:RES_IMU_real}), images were captured
     \label{fig:NEU_IMU_real}
 \end{figure}
 
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.5\textwidth]{GRAPH_IMU_real.png}
-    \caption{MLP outputs and IMU state timeline on uneven terrain.}
-    \label{fig:GRAPH_IMU_real}
-\end{figure}
+% GRAPH_IMU_real merged with GRAPH_IMU2_real below, after the second-scenario prose (see fig:graph_imu_real_pair).
 
 A similar behavior is observed in the experiment with the physical robot (Figure~\ref{fig:RES_IMU2_real}). However, in the real robot’s gait-decision network, the inclined terrain is detected before second 46 (Figure~\ref{fig:NEU_IMU2_real}a); consequently, a transient response emerges, increasing the activity of neuron $X_{14}$, which commands the robot to climb the ramp using the differential rolling mode-this mode remains active even after clearing the slope. In Figure~\ref{fig:GRAPH_IMU2_real}, the activations of the MLP outputs and the robot’s stagnation state are shown.
 
@@ -1310,10 +1324,21 @@ A similar behavior is observed in the experiment with the physical robot (Figure
 \end{figure}
 
 \begin{figure}[t]
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=0.5\textwidth]{GRAPH_IMU2_real.png}
+    \includegraphics[width=\linewidth]{GRAPH_IMU_real.png}
+    \caption{MLP outputs and IMU state timeline on uneven terrain.}
+    \label{fig:GRAPH_IMU_real}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{GRAPH_IMU2_real.png}
     \caption{MLP outputs and IMU state timeline on an inclined terrain.}
     \label{fig:GRAPH_IMU2_real}
+  \end{subfigure}
+  \caption{\revblue{MLP-output and IMU-state timelines motivating the mode transition in each physical terrain scenario: (a) uneven terrain; (b) inclined terrain.}}
+  \label{fig:graph_imu_real_pair}
 \end{figure}
 
 To further consolidate the physical validation under complex, multi-section topographies, a dedicated testing suite of 15 continuous repetitive trials was conducted over an experimental track whose structural layout systematically combines four topographic segments: a double-ascent ramp, a horizontal elevated plane, a controlled descent ramp, and a rough terrain section characterised by stochastic, non-uniform height variations generated via Perlin noise. The sequential adaptation of the locomotion arbitration network throughout this compound course is documented in Figure~\ref{fig:real_variable_topography_sequence}, which maps the chronological gait-switching decisions enforced by the bio-inspired basal-ganglia controller across six representative frames.
