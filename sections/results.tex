@@ -639,16 +639,11 @@ In the real implementation (Figure~\ref{fig:RES_IMU_real}), images were captured
   \label{fig:RES_IMU_real}
 \end{figure}
 
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.4\textwidth]{NEU_IMU_real.png}
-    \caption{Neural activations during locomotion over irregular terrain (physical robot). (a)~Locomotion decision module; (b)~Gait mode control module.}
-    \label{fig:NEU_IMU_real}
-\end{figure}
+% NEU_IMU_real merged with NEU_IMU2_real below, after the second-scenario prose (see fig:neu_imu_real_pair).
 
 % GRAPH_IMU_real merged with GRAPH_IMU2_real below, after the second-scenario prose (see fig:graph_imu_real_pair).
 
-A similar behavior is observed in the experiment with the physical robot (Figure~\ref{fig:RES_IMU2_real}). However, in the real robot’s gait-decision network, the inclined terrain is detected before second 46 (Figure~\ref{fig:NEU_IMU2_real}a); consequently, a transient response emerges, increasing the activity of neuron $X_{14}$, which commands the robot to climb the ramp using the differential rolling mode-this mode remains active even after clearing the slope. In Figure~\ref{fig:GRAPH_IMU2_real}, the activations of the MLP outputs and the robot’s stagnation state are shown.
+\revblue{A similar behavior is observed in the experiment with the physical robot (Figure~\ref{fig:RES_IMU2_real}). However, in the real robot's gait-decision network, the inclined terrain is detected before second 46 (Figure~\ref{fig:NEU_IMU2_real}, Locomotion Module panel); consequently, a transient response emerges, increasing the activity of neuron $X_{14}$, which commands the robot to climb the ramp using the differential rolling mode-this mode remains active even after clearing the slope. In Figure~\ref{fig:GRAPH_IMU2_real}, the activations of the MLP outputs and the robot's stagnation state are shown.}
 
 \begin{figure}[t]
     \centering
@@ -658,10 +653,21 @@ A similar behavior is observed in the experiment with the physical robot (Figure
 \end{figure}
 
 \begin{figure}[t]
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=0.4\textwidth]{NEU_IMU2_real.png}
-    \caption{Neural activations during locomotion over inclined terrain (physical robot). (a)~Locomotion decision module; (b)~Gait mode control module.}
+    \includegraphics[width=\linewidth]{NEU_IMU_real.png}
+    \caption{Irregular terrain. Locomotion decision module (top group); gait mode control module (bottom group).}
+    \label{fig:NEU_IMU_real}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{NEU_IMU2_real.png}
+    \caption{Inclined terrain. Locomotion decision module (top group); gait mode control module (bottom group).}
     \label{fig:NEU_IMU2_real}
+  \end{subfigure}
+  \caption{\revblue{Neural activations during locomotion over the two physical terrain scenarios: (a) irregular terrain; (b) inclined terrain. Within each panel, the Locomotion Module group appears above the Gait Decision Module group.}}
+  \label{fig:neu_imu_real_pair}
 \end{figure}
 
 \begin{figure}[t]
