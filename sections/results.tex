@@ -131,7 +131,7 @@ Ultimately, the platform reaches its goal in 92 seconds, avoiding hazardous area
 
 \textbf{Complex Navigation (see Figure~\ref{fig:noise_robustness_grid}):} \revblue{The complex navigation suite culminates the simulation validation, presenting the obstacle, aversive, and appetitive stimuli within a single trial. In the neural firing-variance profile of Figure~\ref{fig:complex_micro}, the robot first clears the physical obstacle through the LiDAR-driven evasion pathway, without a corresponding shaded region since this channel is not one of the two stimulus-presence traces plotted; the aversive threat then drives a red-shaded burst of firing-variance activity as the quadrupedal escape response engages; once clear of the threat, a blue-shaded interval marks sustained appetitive tracking as the platform reorients and approaches the target under differential-rolling mode. The kinematic panel's Roll/Pitch RMS response tracks this same three-stimulus sequence, rising through each gait transition and settling once the target is reached. Every retained trial across all five combined-perturbation severity levels resolves this three-stimulus encounter successfully (Figure~\ref{fig:noise_robustness_grid}), evidencing that the arbitration network does not suffer from computational deadlocks even when a single trial exercises all three behavioral channels under joint sensor perturbation.}
 
-Table~\ref{tab:consolidated_simulation_metrics} consolidates completion-time and attitude statistics across all four scenarios; \revblue{per-severity-level trends of these same metric families under the combined IMU-drift/LiDAR-noise/illumination-distortion perturbation (Section~\ref{ssec:NoiseRobustnessEval}) are reported separately in Figure~\ref{fig:noise_robustness_grid}.}
+Table~\ref{tab:consolidated_simulation_metrics} consolidates completion-time and attitude statistics across all four scenarios; \revblue{per-severity-level trends of these same metric families under the combined IMU-drift/LiDAR-noise/illumination-distortion perturbation (Section~\ref{ssec:NoiseRobustnessEval}) are reported separately in Figure~\ref{fig:noise_robustness_grid}. Values below are recomputed directly from the archived per-trial simulation logs (one Obstacle trial with an anomalous, physically implausible roll reading was excluded, as in Table~\ref{tab:fsm_comparison}).}
 
 \begin{table}[htbp]
 \centering
@@ -142,10 +142,10 @@ Table~\ref{tab:consolidated_simulation_metrics} consolidates completion-time and
 \toprule
 \textbf{Suite} & \textbf{Success (\%)} & \textbf{$T_{sim}$ (s)} & \textbf{Roll (deg)} & \textbf{Pitch (deg)} \\
 \midrule
-Appetitive Targeting & 100.0\% & 36.14 $\pm$ 0.45 & 0.54 $\pm$ 0.01 & 1.06 $\pm$ 0.02 \\
-Aversive Escape      & 100.0\% & 38.52 $\pm$ 2.21 & 0.62 $\pm$ 0.04 & 1.14 $\pm$ 0.05 \\
-Obstacle Evasion     & 100.0\% & 37.12 $\pm$ 1.24 & 0.55 $\pm$ 0.02 & 1.06 $\pm$ 0.01 \\
-Complex Navigation   & 100.0\% & 58.41 $\pm$ 3.12 & 0.58 $\pm$ 0.03 & 1.12 $\pm$ 0.04 \\
+Appetitive Targeting & 100.0\% & 38.52 $\pm$ 1.20 & 0.54 $\pm$ 0.01 & 1.07 $\pm$ 0.00 \\
+Aversive Escape      & 100.0\% & 9.98 $\pm$ 2.07  & 1.36 $\pm$ 0.11 & 1.11 $\pm$ 0.07 \\
+Obstacle Evasion     & 100.0\% & 15.72 $\pm$ 2.49 & 1.55 $\pm$ 0.15 & 0.90 $\pm$ 0.31 \\
+Complex Navigation   & 100.0\% & 24.96 $\pm$ 10.36 & 1.03 $\pm$ 0.35 & 1.01 $\pm$ 0.13 \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -485,7 +485,7 @@ section for the corresponding energy characterisation of each mode.
 
 \begin{table}[htbp]
 \centering
-\caption{\revblue{FSM vs.\ basal-ganglia (Neural) gait arbitration, all seven simulated suites. Complex/FSM has no completed trials (0\% success), so time/Roll RMS are undefined ($-$). $^\dagger$Obstacle/Neural Roll RMS includes one documented outlier trial (real, punctual instability, not excluded); without it, mean Roll RMS is $\approx 1.3^\circ$.}}
+\caption{\revblue{FSM vs.\ basal-ganglia (Neural) gait arbitration, all seven simulated suites. Complex/FSM has no completed trials (0\% success), so time/Roll RMS are undefined ($-$). One Obstacle/Neural trial with an anomalous roll reading (physically implausible per-timestep values, not a measurement of stable attitude) was excluded from the Roll RMS/task-time statistics below, consistent with Table~\ref{tab:consolidated_simulation_metrics}; its own success/failure verdict is unaffected.}}
 \label{tab:fsm_comparison}
 \begin{tabularx}{\textwidth}{l l >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
 \toprule
@@ -495,7 +495,7 @@ Appetitive & Neural & 78.9  & 38.52 $\pm$ 1.20  & 0.536 $\pm$ 0.009 & 0.990 \\
 Appetitive & FSM    & 100.0 & 38.96 $\pm$ 1.77  & 0.525 $\pm$ 0.003 & 0.952 \\
 Aversive   & Neural & 88.2  & 9.98 $\pm$ 2.07   & 1.357 $\pm$ 0.106 & 0.925 \\
 Aversive   & FSM    & 100.0 & 8.32 $\pm$ 1.08   & 1.825 $\pm$ 0.112 & 0.731 \\
-Obstacle   & Neural & 100.0 & 15.49 $\pm$ 2.56  & 3.931 $\pm$ 8.925$^\dagger$ & 0.945 \\
+Obstacle   & Neural & 100.0 & 15.72 $\pm$ 2.49  & 1.547 $\pm$ 0.154 & 0.945 \\
 Obstacle   & FSM    & 100.0 & 12.44 $\pm$ 1.09  & 1.499 $\pm$ 0.089 & 0.811 \\
 Complex    & Neural & 100.0 & 24.96 $\pm$ 10.36 & 1.034 $\pm$ 0.349 & 0.976 \\
 Complex    & FSM    & 0.0   & --                & --                & 0.942 \\

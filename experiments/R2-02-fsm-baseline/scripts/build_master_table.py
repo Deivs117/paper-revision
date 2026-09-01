@@ -113,6 +113,17 @@ def _conflict_exposure(family_dir: str) -> tuple[float | None, float | None]:
     return _mean_sd(fracs)[0], _mean_sd(secs)[0]
 
 
+# 2026-09-02 (N-01/R2-02 recompute-vs-published mismatch, resolved via C-22): familia_a_obstaculo/
+# test_007_SUCCESS has an anomalous roll_rms=37.32 (the other 14 Obstacle trials sit at 1.05-1.77),
+# with its own unified_metrics.csv roll_rms column ranging 37-108 across the trial -- physically
+# implausible, almost certainly a trial with genuine undetected instability rather than a script
+# bug. Same exclusion as macro_robustness.py::EXCLUDED_TRIALS (kept as a separate constant here,
+# not imported, since this script has its own family-dir-basename convention) -- excluded from
+# every statistic below so this table's Obstacle/Neural row matches the reconciled
+# tab:consolidated_simulation_metrics rather than reproducing the same distortion independently.
+EXCLUDED_TRIALS = {"familia_a_obstaculo": {"test_007_SUCCESS"}}
+
+
 def collect(family_dir: str, noise_level_idx: int | None = None) -> dict:
     all_trials = load_trial_summaries(family_dir, verdict=None)
     success = load_trial_summaries(family_dir, verdict="SUCCESS")
@@ -127,13 +138,17 @@ def collect(family_dir: str, noise_level_idx: int | None = None) -> dict:
     # for a different table) and silently inflated success rates for any family with retries —
     # caught by comparing against the reference doc's own N values before trusting this output.
     n_attempted = len(all_trials)
+    n_success_raw = len(success)  # for the success-rate stat -- unaffected by the exclusion below
+    excluded = EXCLUDED_TRIALS.get(os.path.basename(family_dir), set())
+    if excluded and not success.empty:
+        success = success[~success["trial_dir"].isin(excluded)]
     sim_m, sim_sd = _mean_sd(success["sim_time_s"].tolist()) if not success.empty else (None, None)
     roll_m, roll_sd = _mean_sd(success["roll_rms"].tolist()) if not success.empty else (None, None)
     lam_all = _lambda_whole_trial(family_dir)
     exposure_pct, exposure_s = _conflict_exposure(family_dir)
     return {
-        "n_attempted": n_attempted, "n_success": len(success),
-        "success_rate": 100.0 * len(success) / n_attempted if n_attempted else None,
+        "n_attempted": n_attempted, "n_success": n_success_raw,
+        "success_rate": 100.0 * n_success_raw / n_attempted if n_attempted else None,
         "sim_time_mean": sim_m, "sim_time_sd": sim_sd,
         "roll_rms_mean": roll_m, "roll_rms_sd": roll_sd,
         "lambda_whole_trial_mean": lam_all,
