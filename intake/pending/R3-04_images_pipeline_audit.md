@@ -274,3 +274,30 @@ es contenido genuinamente nuevo, no una restauración de algo perdido.
 R2 en la metodología; reescribir el análisis de `fig2_Complex_micro` relatando el encuentro con los
 tres estímulos; explicar en prosa la interpretación de Fig R3; mencionar `NoiseSeed=42` en el
 texto.
+
+---
+
+## 9. Ronda 2 de auditoría — cierre (2026-09-01)
+
+Segunda pasada con `audit_tool_R304.html` (título de la herramienta actualizado a "Ronda 2 —
+cierre", `STORE_KEY` re-versionado a `v2` para no arrastrar veredictos de la Ronda 1 sobre
+contenido ya cambiado), notas exportadas a `r304_audit_notes_2026-09-01.md` (sobrescribió el mismo
+nombre de archivo — mismo día, timestamp interno 8:21:28 PM).
+
+**7 de 8 piezas ✅ aprobadas sin más cambios:** grid, las 4 `fig2_*_micro`, Fig R2, Fig R1
+(gráfico de barras). Listas para promover a `assets/` cuando el autor lo confirme (`scripts/
+promote_figure.sh`, todavía no ejecutado en esta sesión) — Tabla R2 igual.
+
+**1 pieza con ajuste (⚠), ya corregido:** Fig R3 — la leyenda vivía dentro del rango de datos
+(y∈[0,1]) y pisaba el relleno azul de "Successful retry". Fix: se reservó una franja de encabezado
+vacía por encima de los datos (`ax.set_ylim` extendido a 1.9, sin tocar los ticks 0/1 que sí
+importan) y la leyenda se ancla ahí (`loc="upper center"`, sin marco) — espacio en blanco
+garantizado sin importar en qué tramo de x caigan los datos, no una reubicación manual que podría
+volver a chocar si el par de trials cambia. Regenerado y verificado visualmente: la leyenda ya no
+solapa ni el relleno ni la línea de "Failed attempt".
+
+**Cierre de la fase de imágenes/planificación:** con este ajuste, las 8 piezas de R3-04 quedan
+aprobadas. Lo que sigue es responsabilidad de la sesión de escritura: promover a `assets/`,
+escribir/editar `sections/methodology.tex` y `sections/results.tex`, y resolver los 4 pendientes de
+prosa listados arriba (Tabla R2 en metodología, análisis de `Complex`, interpretación de Fig R3,
+mención de `NoiseSeed`).

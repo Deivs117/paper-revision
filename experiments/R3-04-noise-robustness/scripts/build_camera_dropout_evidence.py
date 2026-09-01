@@ -21,6 +21,13 @@ de un experimento de los builders reusables entre experimentos (ver README.md ra
   crudos en material orientado al lector), la misma que ya motivó quitar la nota superior de las
   figuras `fig2_*_micro` en esta misma ronda de revisión.
 - Título pegado al contenido (antes había una franja vacía entre el título y la gráfica).
+
+**Ronda 2 (2026-09-01), ajuste** (`r304_audit_notes_2026-09-01.md`, veredicto ⚠ ajustar — "leyenda
+se solapa con el ploteo"): la leyenda vivía dentro del rango de datos (y∈[0,1]), pisando el
+relleno azul. Fix: se reserva una franja de encabezado vacía por encima de los datos
+(`set_ylim` extendido a 1.9, sin tocar los ticks 0/1 que sí importan) y la leyenda se ancla ahí —
+espacio en blanco garantizado sin importar en qué tramo de x caiga, no una reubicación manual que
+podría volver a chocar si los datos cambian.
 """
 from __future__ import annotations
 
@@ -60,11 +67,14 @@ def build(data_root: str, output_path: str) -> None:
         ax.fill_between(t, 0, df["blue_present"], step="mid", color=color, alpha=0.45,
                          zorder=frac_zorder, label=f"{label} (target detected {frac:.0%} of the time)")
 
-    ax.set_ylim(-0.05, 1.15)
+    # Headroom above y=1 reserved purely for the legend, so it never overlaps the fill/lines
+    # regardless of where they fall on the x-axis (round-2 fix: the legend used to sit inside the
+    # y in [0,1] data range and occlude the blue fill).
+    ax.set_ylim(-0.05, 1.9)
     ax.set_yticks([0, 1])
     ax.set_ylabel("Target detected")
     ax.set_xlabel("Experimental Time (s)")
-    ax.legend(loc="upper right", fontsize=9)
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, 1.0), fontsize=9, frameon=False)
     ax.set_title("Camera Detection Dropout Propagating to Task Failure", fontsize=11, pad=8)
     fig.tight_layout()
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
