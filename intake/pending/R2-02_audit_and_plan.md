@@ -293,6 +293,21 @@ como número con incertidumbre.
 | `fig_sr_vs_noise_level.png` | "El texto solapa con el eje, quítalo. Pero necesito que en la descripción se explique el solapamiento en Obstacle" | Anotación en la imagen eliminada. La explicación pasa al pie de figura textual (README.md, audit tool): ambos sistemas están en 100% en los **5** niveles de ruido evaluados (no un subconjunto — verificado numéricamente), solapamiento perfecto explicado por la línea Neural punteada sobre la FSM sólida. |
 | Mode timelines (B, E) | ✅ sin notas | Sin cambios. |
 
+---
+
+## 10. Ronda 4 (2026-09-02) — corrección final de la tabla maestra
+
+`r202_audit_notes_2026-09-01.md` (⚠ ajustar): las columnas "Conflict Exposure (%)" y "Conflict
+Exposure (s/trial)" añadidas en la Ronda 3 se sacaron **de la tabla LaTeX-facing** — solo 1 de 7
+familias (Complex) tiene conflicto rojo+azul real, así que dos columnas en 0.0 para las otras 6
+son ruido visual/ineficiente en una tabla. `build_display_table()` vuelve a 4 columnas (Success
+Rate, Task Completion Time, Roll RMS, λ whole trial). Los dos números de exposición al conflicto
+(Neural ~0.2s/trial, FSM ~6.1s/trial) siguen calculados y verificados en el pipeline
+(`CONFLICT_NOTE` en `build_master_table.py`, impreso al correr el script) — quedan como dato para
+la prosa de la sesión de escritura, no como columna de tabla. `fig_sr_vs_noise_level.png` y ambos
+mode timelines: aprobados sin cambios (✅). **Las 4 piezas de R2-02 quedan aprobadas tras esta
+ronda.**
+
 ### 8.3 Estado tras esta ronda
 
 Las 7 familias (5 completas desde la Ronda 1 + C1/C2 de esta ronda) están en el pipeline

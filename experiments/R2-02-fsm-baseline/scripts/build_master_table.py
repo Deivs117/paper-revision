@@ -198,14 +198,19 @@ CONFLICT_NOTE = (
 
 
 def build_display_table(rows: list[dict], output_path: str) -> list[dict]:
-    """Reader-facing version of the master table (2026-09-02 rework, r202_audit_notes 2 rondas):
+    """Reader-facing version of the master table (2026-09-02 rework, r202_audit_notes 3 rondas):
     ronda 1 rejected the first draft outright; ronda 2 dropped the "Note" column (caveats belong
     in prose/README, not the LaTeX-facing table) and the lambda-conflict-only column, replaced by
     Conflict Exposure once the team confirmed lambda-conflict-only was invalid -- see
-    CONFLICT_NOTE. Also: dropped n_attempted/n_success (Success Rate alone is what matters here --
-    raw counts live in table_master_comparison.csv for traceability); renamed sim_time -> "Task
-    Completion Time (s)" (reader-facing, not the raw CSV column name, per README.md §11.1);
-    renamed roll_rms_mean -> "Roll RMS (deg)" (no underscore).
+    CONFLICT_NOTE. **Ronda 3:** Conflict Exposure itself dropped from the table too -- author
+    feedback was that two columns that read "0.0" for 5 of 7 families (only Complex has real
+    red+blue conflict) are visual clutter/inefficient for a LaTeX table; the two numbers (Neural
+    ~0.2s/trial, FSM ~6.1s/trial) belong in the write-up's prose instead, not as table columns --
+    see CONFLICT_NOTE, which still carries them for the writing session. Also: dropped
+    n_attempted/n_success (Success Rate alone is what matters here -- raw counts live in
+    table_master_comparison.csv for traceability); renamed sim_time -> "Task Completion Time (s)"
+    (reader-facing, not the raw CSV column name, per README.md §11.1); renamed roll_rms_mean ->
+    "Roll RMS (deg)" (no underscore).
     """
     display_rows = []
     for r in rows:
@@ -215,14 +220,11 @@ def build_display_table(rows: list[dict], output_path: str) -> list[dict]:
             "Task Completion Time (s)": _fmt(r.get("sim_time_mean"), r.get("sim_time_sd")),
             "Roll RMS (deg)": _fmt(r.get("roll_rms_mean"), r.get("roll_rms_sd"), digits=3),
             "λ (whole trial)": f"{r['lambda_whole_trial_mean']:.3f}" if r.get("lambda_whole_trial_mean") is not None else "—",
-            "Conflict Exposure (%)": f"{r['conflict_exposure_pct']:.1f}" if r.get("conflict_exposure_pct") is not None else "—",
-            "Conflict Exposure (s/trial)": f"{r['conflict_exposure_s']:.1f}" if r.get("conflict_exposure_s") is not None else "—",
         })
 
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     fieldnames = ["Family", "System", "Success Rate (%)", "Task Completion Time (s)",
-                  "Roll RMS (deg)", "λ (whole trial)", "Conflict Exposure (%)",
-                  "Conflict Exposure (s/trial)"]
+                  "Roll RMS (deg)", "λ (whole trial)"]
     with open(output_path, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()

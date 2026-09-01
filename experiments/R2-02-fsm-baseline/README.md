@@ -95,15 +95,21 @@ del denominador) vs. FSM ~6.1s/trial (4.3-4.7%) — **el fallo de la FSM es que 
 resolver ~30 veces más tiempo, no que decida peor mientras está en conflicto.** Recalculado en esta
 sesión desde `sim_time_s` exacto (no una cadencia de fila asumida) — los segundos/trial coinciden
 exactamente con la estimación propia del equipo; el % difiere levemente por la definición del
-denominador (ver `_conflict_exposure()` en `build_master_table.py`). Solo aplica a familias con
-estímulos rojo+azul simultáneos reales (Complex) — "—" en las demás es esperado, no dato faltante.
+denominador (ver `_conflict_exposure()` en `build_master_table.py`).
+
+**Ronda 3 (author feedback):** esta métrica se calcula y verifica en el pipeline (`CONFLICT_NOTE`
+en `build_master_table.py`) pero **NO va en la tabla LaTeX-facing** (`table_master_comparison_
+display.csv`) — solo 1 de 7 familias (Complex) tiene conflicto real, así que dos columnas en 0.0
+para el resto del cuadro son ruido visual/ineficiente en una tabla. Los dos números (Neural
+~0.2s/trial, FSM ~6.1s/trial) deben mencionarse en prosa en la sección de resultados, no como
+columnas de tabla.
 
 ## Output files
 
 | File in `output/` | Builder | Estado (ronda 2) | Used in |
 |---|---|---|---|
 | `table_master_comparison.csv` | `build_master_table.py` | Datos crudos (traza, no promover tal cual) | Fuente de `table_master_comparison_display.csv` |
-| `table_master_comparison_display.csv` | `build_master_table.py::build_display_table` | ✅ Ronda 3: sin columna Nota (caveats van en prosa), λ-conflict-only reemplazada por **Conflict Exposure** (ver hallazgo resuelto abajo) | Nueva subsección `results.tex` (R2-02), tabla comparativa |
+| `table_master_comparison_display.csv` | `build_master_table.py::build_display_table` | ✅ Ronda 3: sin columna Nota (caveats van en prosa); λ-conflict-only y Conflict Exposure **ambas fuera de la tabla** (ver hallazgo resuelto abajo — los 2 valores de exposición al conflicto van en prosa, no como columnas, por ser ruido visual en 6 de 7 familias) | Nueva subsección `results.tex` (R2-02), tabla comparativa |
 | `fig_sr_vs_noise_level.png` | `build_sr_vs_nl.py` | ✅ Ronda 3: quitada la anotación de texto que solapaba el eje en Obstacle (la explicación del solapamiento va en el pie de figura de la sesión de escritura — ambos sistemas están al 100% en los 5 niveles de ruido evaluados, no un subconjunto) | Nueva subsección `results.tex` (R2-02) |
 | `fig_mode_timeline_complex.png` | `build_mode_timelines.py` | ✅ Aprobado ronda 1 (nota: redacción debe explicar las fluctuaciones repentinas del modo FSM) | Nueva subsección `results.tex` (R2-02) |
 | `fig_mode_timeline_inspection.png` | `build_mode_timelines.py` | ✅ Aprobado ronda 1 (misma nota que arriba) | Ampliación de la subsección `R3-05` existente |
