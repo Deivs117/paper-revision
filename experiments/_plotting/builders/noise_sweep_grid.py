@@ -47,8 +47,10 @@ SCENARIOS = [
 ]
 
 AXIS_LABEL = "Combined Perturbation Level (index)"
-FOOTNOTE = ("Index 0–4 jointly scales IMU drift + LiDAR range noise + camera illumination "
-            "distortion (no single-sensor-isolated condition exists in this dataset).")
+FOOTNOTE = ("Index 0–4 jointly scales IMU drift + LiDAR range noise + camera illumination distortion "
+            "(no single-sensor-isolated condition exists in this dataset).\n"
+            "Each point averages only 3 trials — read point-to-point zig-zags as sampling variance, "
+            "not a mechanistic effect.")
 
 
 def collect_scenario(family_dir: str) -> dict:
@@ -87,10 +89,24 @@ def build_grid(simulation_root: str, output_path: str) -> dict:
                   "Decision Latency (ms)", "Mode-Switch Latency $T_{switch}$ (ms)"]
     all_data = {}
 
-    for row, (scenario, family_name) in enumerate(SCENARIOS):
+    # First pass: collect every scenario's data before plotting, so the Pitch RMS column can share
+    # a common ceiling across all 4 rows (tight, not the old fixed 0-4 deg) — per author feedback
+    # (r304_audit_notes_2026-09-01.md): keep magnitude comparable row-to-row (unlike per-row
+    # auto-scaling, which would hide that Complex/Aversive/Appetitive sit well below Obstacle's
+    # range) while still showing the smaller scenarios' variation, which the old fixed 0-4 ceiling
+    # flattened into near-invisible lines.
+    for scenario, family_name in SCENARIOS:
         family_dir = os.path.join(simulation_root, family_name)
-        data = collect_scenario(family_dir)
-        all_data[scenario] = data
+        all_data[scenario] = collect_scenario(family_dir)
+
+    pitch_ceiling = max(
+        (y + sd for d in all_data.values() for y, sd in zip(d["pitch"], d["pitch_sd"]) if y == y),
+        default=4.0,
+    )
+    pitch_ceiling = pitch_ceiling * 1.1  # small headroom so the topmost error bar cap isn't clipped
+
+    for row, (scenario, family_name) in enumerate(SCENARIOS):
+        data = all_data[scenario]
         color = SCENARIO_COLORS[scenario]
         x = data["noise_levels"]
 
@@ -108,18 +124,19 @@ def build_grid(simulation_root: str, output_path: str) -> dict:
                 ax.set_xticks(x)
             else:
                 ax.errorbar(x, y, yerr=sd, marker="o", color=color, capsize=3, linewidth=1.5)
+            ax.set_xticks(x)  # integer-only ticks, no matplotlib-inserted decimals
             if row == 0:
                 ax.set_title(col_titles[col])
             if row == 3:
                 ax.set_xlabel(AXIS_LABEL, fontsize=9)
             if col == 1:
-                ax.set_ylim(0, max(4.0, ax.get_ylim()[1]))
+                ax.set_ylim(0, pitch_ceiling)
         axes[row, 0].set_ylabel(scenario, fontsize=10, fontweight="bold")
 
     fig.suptitle("Multisensor Noise-Robustness Battery — 4 Scenarios x 4 Metrics\n"
                  "(simulation, R3-04 dataset, N=15 trials/scenario)", fontsize=11)
     fig.text(0.5, 0.005, FOOTNOTE, ha="center", va="bottom", fontsize=7.5, color="gray")
-    fig.tight_layout(rect=(0, 0.02, 1, 0.95))
+    fig.tight_layout(rect=(0, 0.045, 1, 0.95))
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     fig.savefig(output_path, dpi=DPI)
     plt.close(fig)

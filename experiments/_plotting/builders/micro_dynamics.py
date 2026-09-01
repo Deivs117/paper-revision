@@ -117,8 +117,12 @@ def build(simulation_root: str, output_dir: str) -> dict[str, str]:
         if np.isfinite(ax_b.get_xlim()).all():
             ax_a.set_xlim(ax_b.get_xlim())
 
-        fig.tight_layout(rect=(0, 0, 1, 0.96))
-        fig.suptitle(f"{scenario} (trial {trial_name}, noise_level_idx={NOISE_LEVEL_IDX})", fontsize=10)
+        # Author feedback (r304_audit_notes_2026-09-01.md): remove the top suptitle — it exposed
+        # raw internal test identifiers (test_NNN_SUCCESS, noise_level_idx) directly in the
+        # figure, which README.md §11.1 already forbids in reader-facing material. The panel
+        # titles alone (A./B.) carry the figure's content; scenario + representative-trial context
+        # belongs in the results.tex caption, not baked into the image.
+        fig.tight_layout()
 
         out_path = os.path.join(output_dir, f"fig2_{scenario}_micro_{trial_name}.png")
         fig.savefig(out_path, dpi=DPI)

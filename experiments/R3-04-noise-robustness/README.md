@@ -123,8 +123,18 @@ experiments/.venv_plotting/bin/python experiments/R3-04-noise-robustness/scripts
 | `fig1_noise_robustness_grid.png` | `experiments/_plotting/builders/noise_sweep_grid.py` (nuevo módulo — no toca `macro_robustness.py`) | no | reemplazaría `assets/fig1_noise_robustness_grid.png`, `\label{fig:noise_robustness_grid}` |
 | `fig_R2_terrain_stability_vs_noise.png` | `experiments/_plotting/builders/terrain_noise_sweep.py` | no | figura nueva, sin label todavía |
 | `fig_R3_camera_dropout_evidence.png` | `experiments/R3-04-noise-robustness/scripts/build_camera_dropout_evidence.py` | no | figura nueva, sin label todavía |
-| `table_R1_failure_rate.csv` | `experiments/R3-04-noise-robustness/scripts/build_tables.py` | no | tabla nueva, sin label todavía |
-| `table_R2_perturbation_params.csv` | ídem | no | tabla nueva, sin label todavía |
+| `fig_R1_failure_by_family.png` | `experiments/R3-04-noise-robustness/scripts/build_tables.py` | no | reemplaza la Tabla R1 (barras apiladas, no tabla — decisión de auditoría 2026-09-01) |
+| `table_R1_failure_rate.csv` | ídem | no | dato crudo de respaldo del gráfico anterior, no la pieza a promover |
+| `table_R2_perturbation_params.csv` | ídem | no | tabla nueva, sin label todavía (sin columna `Default` ni fila `NoiseSeed` — ver auditoría) |
+
+**Ronda de auditoría 2026-09-01** (`r304_audit_notes_2026-09-01.md`, vía `audit_tool_R304.html`):
+ajustes aplicados a las 7 figuras/1 tabla de arriba — escala Pitch RMS del grid compartida-pero-
+ajustada (no 0-4 fijo), caveat "n=3 por punto" en grid y Fig R2, ticks enteros (sin decimales) en
+grid y Fig R2, nota superior con identificadores crudos (`test_NNN_SUCCESS`, `noise_level_idx=`)
+eliminada de las 4 `fig2_*_micro`, Fig R3 rehecha (un solo panel superpuesto con leyenda, sin
+nombres técnicos de prueba), Tabla R1 reemplazada por gráfico de barras apiladas (con nombres de
+escenario legibles, no `familia_*`), Tabla R2 sin columna `Default` ni fila `NoiseSeed`. Ver
+`intake/pending/R3-04_images_pipeline_audit.md` §8 para el detalle completo.
 
 Las 4 `fig2_*_micro` usan el trial `noise_level_idx=0` (baseline sin perturbación) de cada familia
 como representativo — ver `intake/pending/R3-04_images_pipeline_audit.md` para la justificación.

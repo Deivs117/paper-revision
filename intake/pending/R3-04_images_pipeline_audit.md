@@ -245,3 +245,32 @@ Todas en `experiments/R3-04-noise-robustness/output/`, ejecutadas y verificadas 
 ahora tienen builder y salida generada. Falta: decidir con el equipo el diseño final de caption/
 prosa (fuera de alcance de esta sesión — solo diseño/planificación de imágenes, no redacción), y
 la promoción a `assets/` una vez el autor las revise.
+
+---
+
+## 8. Ronda de auditoría con `audit_tool_R304.html` — 2026-09-01
+
+El autor revisó las 7 figuras + 2 tablas con `~/Documents/Paper/audit_tool_R304.html` (herramienta
+local, mismo formato que `audit_tool_N01.html`/`audit_tool_N02.html`, no versionada) y exportó
+`intake/pending/r304_audit_notes_2026-09-01.md` con veredicto por pieza. Cambios aplicados:
+
+| Pieza | Veredicto | Cambio aplicado |
+|---|---|---|
+| `fig1_noise_robustness_grid.png` | ⚠ Ajustar | Columna Pitch RMS: escala compartida-pero-ajustada (techo = máximo real entre las 4 filas × 1.1, no el 0–4° fijo anterior) — muestra la variación en las filas "planas" sin perder comparabilidad de magnitud entre escenarios. Nota al pie añadida: cada punto promedia solo 3 trials (no se inventó una causa mecánica para los "picos" en Obstacle — investigado y descartado, ver Pregunta resuelta abajo). Ticks del eje X forzados a enteros. |
+| `fig2_*_micro` (×4) | ⚠ Ajustar | Nota superior (`fig.suptitle`) eliminada — exponía identificadores crudos (`test_001_SUCCESS`, `noise_level_idx=0`) que README.md §11.1 ya prohíbe en material orientado al lector. La nota de "reescribir el análisis de Complex" es de redacción — fuera de alcance de esta sesión, queda para quien escriba la prosa. |
+| `fig_R2_terrain_stability_vs_noise.png` | ⚠ Ajustar | Ticks enteros (sin decimales). Espaciado título-contenido corregido (el `rect` de `tight_layout` estaba distribuyendo su margen superior como espacio en blanco en vez de ceñirse a los títulos — se resolvió empaquetando primero sin `rect` y fijando los márgenes después con `subplots_adjust`, no con `rect`). Índice mantenido como entero 0–4 (no convertido a %, decisión del autor: no existe un porcentaje único que represente a los 3 sensores con unidades distintas). |
+| `fig_R3_camera_dropout_evidence.png` | ❌ Rechazado, rehecho | Un solo panel con ambas series superpuestas (antes 2 paneles apilados) + leyenda. Etiquetas humanas ("Successful retry"/"Failed attempt (timeout)") en vez de nombres de carpeta crudos. Título pegado al contenido. |
+| Tabla R1 | ❌ Rechazada, reemplazada | Gráfico de barras horizontales apiladas (`fig_R1_failure_by_family.png`) en vez de tabla — decisión del autor fue reemplazar, no generar ambas. Nombres de escenario legibles (Appetitive/Rugged Terrain/...) en vez de `familia_*` crudo — corregido proactivamente por el mismo criterio de README.md §11.1, sin que el autor lo pidiera explícitamente para esta pieza. El CSV plano se conserva en `output/` como dato crudo de respaldo, no como la pieza a promover. |
+| Tabla R2 | ⚠ Ajustar | Columna `Default` eliminada (redundante con "Values"). Fila `NoiseSeed` eliminada (una constante fija es un hecho de una línea de prosa, no un parámetro de perturbación por sensor). |
+
+**Pregunta que se resolvió sin necesitar al autor:** si `results.tex` ya mencionaba
+"Mode-Switch Latency"/`Tswitch` para las 4 familias comportamentales antes de esta ronda (el autor
+recordaba haberlo visto y preguntó si "desapareció"). Verificado por grep completo: **no** — para
+estas 4 familias en simulación, `Tswitch` nunca estuvo en el texto; sí está extensamente para las
+versiones físicas (`_Real`) y para terreno rugoso/pendiente en simulación. La 4ª columna del grid
+es contenido genuinamente nuevo, no una restauración de algo perdido.
+
+**Pendiente aún (fuera de alcance de imágenes/datos, para la sesión de escritura):** explicar Tabla
+R2 en la metodología; reescribir el análisis de `fig2_Complex_micro` relatando el encuentro con los
+tres estímulos; explicar en prosa la interpretación de Fig R3; mencionar `NoiseSeed=42` en el
+texto.

@@ -21,8 +21,10 @@ from style import TERRAIN_COLORS, DPI  # noqa: E402
 
 TERRAINS = [("Rugged Terrain", "familia_c1_terreno_rugoso"), ("Inclined Slope", "familia_c2_pendiente")]
 AXIS_LABEL = "Combined Perturbation Level (index)"
-FOOTNOTE = ("Index 0–4 jointly scales IMU drift + LiDAR range noise + camera illumination "
-            "distortion (no single-sensor-isolated condition exists in this dataset).")
+FOOTNOTE = ("Index 0–4 jointly scales IMU drift + LiDAR range noise + camera illumination distortion "
+            "(no single-sensor-isolated condition exists in this dataset).\n"
+            "Each point averages only 3 trials — read point-to-point zig-zags as sampling variance, "
+            "not a mechanistic effect.")
 
 
 def collect(family_dir: str) -> dict:
@@ -55,16 +57,24 @@ def build(simulation_root: str, output_path: str) -> dict:
         for col, (y, sd) in enumerate([(data["roll"], data["roll_sd"]), (data["pitch"], data["pitch_sd"])]):
             ax = axes[row, col]
             ax.errorbar(x, y, yerr=sd, marker="s", color=color, capsize=3, linewidth=1.5)
+            ax.set_xticks(x)  # integer-only ticks, no matplotlib-inserted decimals
             if row == 0:
                 ax.set_title(col_titles[col])
             if row == 1:
                 ax.set_xlabel(AXIS_LABEL, fontsize=9)
         axes[row, 0].set_ylabel(label, fontsize=10, fontweight="bold")
 
+    # Author feedback (r304_audit_notes_2026-09-01.md): "título muy separado del contenido" —
+    # tight_layout(rect=...) was distributing the rect's reserved top margin as blank space above
+    # the column titles instead of hugging them. Pack the axes tightly FIRST (no rect), then set
+    # the top/bottom margins directly and place suptitle/footnote relative to that fixed margin —
+    # avoids tight_layout's rect-driven padding entirely.
+    fig.tight_layout()
+    fig.subplots_adjust(top=0.86, bottom=0.16)
     fig.suptitle("Postural Stability vs. Combined Perturbation Level\n"
-                 "(Rugged Terrain + Inclined Slope, R3-04 dataset, N=15 trials/terrain)", fontsize=11)
-    fig.text(0.5, 0.005, FOOTNOTE, ha="center", va="bottom", fontsize=7.5, color="gray")
-    fig.tight_layout(rect=(0, 0.03, 1, 0.91))
+                 "(Rugged Terrain + Inclined Slope, R3-04 dataset, N=15 trials/terrain)",
+                 fontsize=11, y=0.97)
+    fig.text(0.5, 0.01, FOOTNOTE, ha="center", va="bottom", fontsize=7.5, color="gray")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     fig.savefig(output_path, dpi=DPI)
     plt.close(fig)
