@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-01T23:47:43+00:00",
-  "progressLastCommit": "2026-09-01T18:28:26-05:00",
+  "generatedAt": "2026-09-01T23:59:06+00:00",
+  "progressLastCommit": "2026-09-01T18:47:43-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -511,7 +511,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "—"
     },
     {
@@ -524,7 +524,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-22-consolidated-metrics-reconciliation.tex"
     }
   ]
