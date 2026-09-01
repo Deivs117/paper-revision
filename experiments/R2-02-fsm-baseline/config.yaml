@@ -31,10 +31,17 @@ families:
     fsm: familia_e_inspeccion_fsm
     neural: ../../R3-05-inspection/data   # MISMO dataset ya publicado por la fila R3-05 — no duplicar
 
-pending_families:   # sin datos FSM todavía — ver intake/pending/R2-02_fsm_baseline_reference.md §9
+  # Terrain families (C1/C2) landed 2026-09-02. Neural side points to R3-04-noise-robustness's
+  # data (NOT experiments/simulation/, which holds a stale/smaller duplicate of the same family —
+  # confirmed via trial count cross-check, 27/15 matching experiment_c_terrain.md §"Fuentes de
+  # datos" exactly vs. simulation/'s 15/15) and must be filtered to noise_level_idx=0 at
+  # comparison time — see experiment_c_terrain.md §2 for why (FSM ignores noise entirely; only
+  # noise_level_idx=0 is a genuinely matched condition against it).
   familia_c1_terreno_rugoso:
-    neural: ../../simulation/familia_c1_terreno_rugoso
-    fsm: null
+    fsm: familia_c_fsm/familia_c1_terreno_rugoso_fsm
+    neural: ../../R3-04-noise-robustness/data/familia_c1_terreno_rugoso
+    neural_filter: {noise_level_idx: 0}
   familia_c2_pendiente:
-    neural: ../../simulation/familia_c2_pendiente
-    fsm: null
+    fsm: familia_c_fsm/familia_c2_pendiente_fsm
+    neural: ../../R3-04-noise-robustness/data/familia_c2_pendiente
+    neural_filter: {noise_level_idx: 0}

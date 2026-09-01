@@ -48,14 +48,28 @@ def build(data_root: str, output_path: str) -> dict:
         all_data[label] = {"neural": neural_sr, "fsm": fsm_sr}
 
         nx = sorted(neural_sr)
-        ax.plot(nx, [neural_sr[n] for n in nx], marker="o", color=NEURAL_COLOR, label="Neural")
         fx = sorted(fsm_sr)
-        ax.plot(fx, [fsm_sr[n] for n in fx], marker="s", color=FSM_COLOR, label="FSM")
+        # Obstacle: both systems sit at 100% for every noise level (perfect overlap, verified
+        # numerically) -- a solid line under a solid line would hide one entirely. Dash the Neural
+        # line there so the reader can see both curves are present, not that one is missing.
+        neural_style = "--" if label == "Obstacle" else "-"
+        # FSM plotted first (solid), Neural drawn on top (dashed where they overlap) so the dashes
+        # are visible instead of being painted over by the solid line underneath.
+        ax.plot(fx, [fsm_sr[n] for n in fx], marker="s", color=FSM_COLOR, linewidth=3, label="FSM")
+        ax.plot(nx, [neural_sr[n] for n in nx], marker="o", color=NEURAL_COLOR,
+                linestyle=neural_style, label="Neural")
         ax.set_xticks(sorted(set(nx) | set(fx)))
-        ax.set_ylim(-5, 108)
+        if label == "Obstacle":
+            ax.annotate("curves fully overlap\n(both 100% at every level)", xy=(0.5, 100),
+                        xytext=(0.5, 88), fontsize=7.5, ha="center", color="0.35")
         ax.set_title(label)
         ax.set_xlabel("Noise Level (index)")
 
+    # Trimmed to the data's actual range (55-100%) instead of the full 0-100% axis -- the low end
+    # never goes below 60% (Appetitive, noise_level_idx=3), so a 0-108 axis just wasted space.
+    all_vals = [v for d in all_data.values() for sub in d.values() for v in sub.values() if v is not None]
+    lo = min(all_vals) - 8
+    axes[0].set_ylim(lo, 105)
     axes[0].set_ylabel("Success Rate (%)")
     axes[0].legend(loc="lower left", fontsize=9)
     fig.suptitle("Success Rate vs. Noise Level — Neural vs. FSM (single-stimulus families)", fontsize=11)

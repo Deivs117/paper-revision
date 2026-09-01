@@ -3,11 +3,14 @@
 **Reviewer ask:** *"Add finite state machine (FSM) gait arbitration baseline comparisons under
 identical experimental conditions."* (R2-02).
 
-**Estado de este directorio:** auditado (2026-09-01), datos verificados contra el código fuente y
-las cifras del documento de referencia. Pipeline de tablas/figuras en construcción para las 5
-familias con datos completos (A-Apetitivo, A-Aversivo, A-Obstáculo, B-Compleja, E-Inspección).
-**Faltan C1-Terreno rugoso y C2-Pendiente** (FSM aún no ejecutado por el equipo de simulación —
-ver `intake/pending/R2-02_fsm_baseline_reference.md` §9 para el instructivo de esas dos).
+**Estado de este directorio:** auditado (2026-09-01/02), datos verificados contra el código fuente
+y las cifras del documento de referencia. Pipeline de tablas/figuras completo para las **7**
+familias, incluyendo **C1-Terreno rugoso y C2-Pendiente** (FSM ejecutado y entregado 2026-09-01/02
+por el equipo de simulación, con análisis propio en
+`data/familia_c_fsm/experiment_c_terrain.md` — ver advertencia metodológica más abajo antes de
+usar esos dos números en el paper). Ronda 2 de auditoría (`r202_audit_notes_2026-09-01.md`):
+tabla maestra rehecha, gráfica SR-vs-NL ajustada — ver `intake/pending/R2-02_audit_and_plan.md`
+§8 para el detalle de ambas rondas.
 
 Todo el análisis narrativo (arquitecturas, interpretación mecanicista por familia, síntesis,
 párrafo de respuesta al referee) ya vive en
@@ -54,20 +57,26 @@ FSM (varias reutilizan datasets de otros experimentos ya existentes en este repo
     por la fila `R3-05`**. La comparación FSM de la Familia E debe presentarse como una AMPLIACIÓN
     de esa subsección existente en `results.tex`, no como contenido nuevo separado (decisión del
     autor, 2026-09-01) — evita duplicar `fig_dfinal_vs_nlidar.png`.
-  - `experiments/simulation/familia_c1_terreno_rugoso|c2_pendiente` — mismo dataset detrás de
-    `FigA/B/C_*.png` (R3-04). Sin par FSM todavía.
+  - `experiments/R3-04-noise-robustness/data/familia_c1_terreno_rugoso|c2_pendiente` — **no**
+    `experiments/simulation/` (que guarda una copia más chica/desactualizada de la misma familia,
+    15/15 trials vs. los 27/15 reales — confirmado por conteo cruzado contra
+    `experiment_c_terrain.md`). Filtrado a `noise_level_idx=0` únicamente al comparar contra FSM
+    (ver advertencia metodológica abajo).
+- **FSM C1/C2 (terreno):** entregado 2026-09-01/02 por el equipo de simulación como
+  `data/familia_c_fsm/{familia_c1_terreno_rugoso_fsm,familia_c2_pendiente_fsm}/` (25 y 21 trials).
+  El equipo incluyó su propio análisis exhaustivo en
+  `data/familia_c_fsm/experiment_c_terrain.md` — **léelo antes de citar `Tswitch`/`Tresponse`**:
+  encontraron 3 diferencias de configuración entre el código BG/WTA y el código FSM (umbral
+  `Upitch` 0.9 vs. 1.30; offset `tchange` +98s vs. +80s; fórmula `Tswitch` con/sin +1s de margen)
+  que invalidan una comparación directa de esas dos métricas "bajo condiciones idénticas" tal como
+  pide el reviewer, a menos que se re-ejecute con los parámetros igualados o se documente
+  explícitamente la limitación en el paper. `success_rate`/`sim_time`/`roll_rms` sí son
+  comparables (no dependen de esos tres parámetros) — incluidos en la tabla maestra con una nota
+  de precaución sobre el tamaño de muestra reducido del lado Neural (N=6 en C1, N=3 en C2, por
+  estar restringido a `noise_level_idx=0`).
 
-## Cómo regenerar
-
-No regenerable desde cero (requiere una corrida real de Gazebo/ROS 2 por el equipo). Para
-reprocesar lo ya entregado, una vez existan los scripts en `scripts/`:
-
-```
-cd experiments/R2-02-fsm-baseline
-python3 scripts/build_master_table.py
-python3 scripts/build_sr_vs_nl.py
-python3 scripts/build_mode_timelines.py
-```
+No regenerable desde cero (requiere una corrida real de Gazebo/ROS 2 por el equipo) — los comandos
+de "Output files" abajo solo reprocesan lo ya entregado en `data/`.
 
 ## Hallazgo abierto — λ-eficiencia en conflicto (Familia B)
 
@@ -81,6 +90,19 @@ de citar esa cifra específica en el paper.
 
 ## Output files
 
-| File in `output/` | Builder | Promoted to (`assets/...`) | Used in |
+| File in `output/` | Builder | Estado (ronda 2) | Used in |
 |---|---|---|---|
-| *(pendiente — ver scripts/ en construcción)* | — | — | Nueva subsección `results.tex` (R2-02) + ampliación de la subsección `R3-05` existente (Familia E) |
+| `table_master_comparison.csv` | `build_master_table.py` | Datos crudos (traza, no promover tal cual) | Fuente de `table_master_comparison_display.csv` |
+| `table_master_comparison_display.csv` | `build_master_table.py::build_display_table` | ✅ Rehecho ronda 2 (encabezados legibles, sin N-columnas, λ distinguida) | Nueva subsección `results.tex` (R2-02), tabla comparativa |
+| `fig_sr_vs_noise_level.png` | `build_sr_vs_nl.py` | ✅ Ajustado ronda 2 (eje recortado, overlap de Obstacle marcado) | Nueva subsección `results.tex` (R2-02) |
+| `fig_mode_timeline_complex.png` | `build_mode_timelines.py` | ✅ Aprobado ronda 1 (nota: redacción debe explicar las fluctuaciones repentinas del modo FSM) | Nueva subsección `results.tex` (R2-02) |
+| `fig_mode_timeline_inspection.png` | `build_mode_timelines.py` | ✅ Aprobado ronda 1 (misma nota que arriba) | Ampliación de la subsección `R3-05` existente |
+
+Comandos:
+
+```
+cd experiments/R2-02-fsm-baseline
+python3 scripts/build_master_table.py    # escribe la tabla cruda + la _display.csv
+python3 scripts/build_sr_vs_nl.py
+python3 scripts/build_mode_timelines.py
+```

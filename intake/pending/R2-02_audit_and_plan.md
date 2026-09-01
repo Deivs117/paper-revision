@@ -179,6 +179,77 @@ rugoso`) NO tiene este problema (34.91±3.41 recalculado vs. 35.0±3.4 publicado
 
 - Confirmar con el equipo el criterio exacto de agregación de λ-eficiencia (Pregunta 3).
 - Investigar/resolver el mismatch Neural recalculado-vs-publicado (compartido con `N-01`).
-- Ejecutar C1/C2 FSM (instructivo ya completo en `R2-02_fsm_baseline_reference.md` §9) y extender
-  este pipeline con los datos de terreno cuando lleguen (§10-11 del mismo documento).
+- ~~Ejecutar C1/C2 FSM~~ **RESUELTO 2026-09-02** — ver §8.
 - Redacción de `sections/methodology.tex`/`results.tex` (fuera de alcance — sesión de escritura).
+
+---
+
+## 8. Ronda 2 (2026-09-02) — auditoría de imágenes + llegada de Familia C (terreno)
+
+### 8.1 Correcciones de la Ronda 1, según `r202_audit_notes_2026-09-01.md`
+
+| Pieza | Veredicto | Corrección aplicada |
+|---|---|---|
+| Tabla maestra (`table_master_comparison.csv`) | ❌ Rechazar/re-hacer | Nueva `table_master_comparison_display.csv` (`build_display_table()` en `build_master_table.py`): elimina `n_attempted`/`n_success` (Success Rate ya los resume), renombra `sim_time` → "Task Completion Time (s)" y `roll_rms` → "Roll RMS (deg)" (sin guion bajo, no el nombre crudo del CSV), y distingue explícitamente las dos agregaciones de λ ("λ (whole trial)" / "λ (conflict only)") con `LAMBDA_NOTE` explicando la diferencia — antes no había ninguna aclaración de por qué existían dos números λ. El CSV crudo se conserva sin tocar como respaldo trazable, mismo criterio que R3-04's Tabla R1/R2. |
+| `fig_sr_vs_noise_level.png` | ⚠ Ajustar | Eje Y recortado al rango real de los datos (antes -5 a 108, ahora ajustado dinámicamente al mínimo real menos margen — el mínimo observado es 60%, Apetitivo `noise_level_idx=3`). Panel Obstacle: ambos sistemas están en 100% en los 5 niveles (verificado numéricamente, solapamiento perfecto) — la línea Neural ahora se dibuja punteada sobre la línea FSM (gruesa, sólida) para que ambas sean visibles, más una anotación explícita "curves fully overlap". |
+| `fig_mode_timeline_complex.png` | ✅ OK, promover | Sin cambios de código — nota para la sesión de escritura: explicar en prosa por qué el modo FSM fluctúa de forma abrupta (comportamiento esperado de una jerarquía de prioridad con temporizadores de persistencia fijos, a diferencia de la transición más suave de la inhibición lateral continua de la red). |
+| `fig_mode_timeline_inspection.png` | ✅ OK, promover | Misma nota que arriba. |
+
+Bug de infraestructura encontrado durante la Ronda 2 (no introducido por el trabajo de esta
+sesión, latente desde antes): `experiments/_plotting/loaders.py::list_trial_dirs()` no filtraba
+por `os.path.isdir()` cuando `verdict=None` — rompía al toparse con los 3 archivos `test_*.zip`
+sueltos de `familia_c1_terreno_rugoso` (mismo problema ya resuelto solo dentro de
+`R3-04-noise-robustness/scripts/build_tables.py`, nunca portado al loader compartido). Corregido
+en el loader compartido, no solo en el script que lo disparó — cualquier otro consumidor del
+loader se beneficia del fix.
+
+### 8.2 Familia C (terreno) — datos y análisis del equipo llegaron 2026-09-01/02
+
+El equipo entregó `familia_c_fsm/` (25 trials C1, 21 trials C2) **junto con su propio análisis
+exhaustivo**, `data/familia_c_fsm/experiment_c_terrain.md` — no fue necesario redactarlo desde
+cero, solo integrarlo al pipeline reproducible y verificar sus cifras.
+
+**Verificación:** conteos de verdict (SUCCESS/TIPOVER/CRASH por familia y sistema), valores crudos
+per-trial de la tabla §4 del documento, y el hallazgo de que `noise_level_idx` no tiene efecto real
+en el código FSM — todo reproducido de forma independiente contra `trial_summary.json` y coincide
+exactamente.
+
+**Hallazgo de proveniencia de datos, corregido antes de integrar:** el lado "Neural" (BG/WTA) de
+C1/C2 vive en `experiments/R3-04-noise-robustness/data/familia_c1_terreno_rugoso|c2_pendiente`
+(27/15 trials — coincide con lo que cita `experiment_c_terrain.md`), **no** en
+`experiments/simulation/familia_c1_terreno_rugoso|c2_pendiente` (15/15, una copia más chica y
+desactualizada de la misma familia que había quedado ahí desde antes de la reorganización de
+R3-04). `config.yaml` apunta ahora a la fuente correcta.
+
+**Tres diferencias metodológicas encontradas por el equipo (`experiment_c_terrain.md` §1),
+verificadas contra el código, no resueltas — decisión pendiente del autor:**
+1. `Upitch` (umbral de inclinación): 0.9 en BG/WTA vs. 1.30 en FSM.
+2. `tchange` (origen de `Tresponse`): `starttime+98s` en BG/WTA vs. `starttime+80s` en FSM.
+3. Fórmula de `Tswitch`: BG/WTA suma un margen fijo de +1s (comentado en el propio código como
+   intencional), FSM no lo suma; además `tcmd` se actualiza de forma asimétrica entre modos en el
+   código BG/WTA pero de forma consistente en el FSM — probable causa principal de la brecha de
+   ~1s observada entre ambos `Tswitch`.
+
+**Consecuencia para el pipeline:** `Tswitch`/`Tresponse` **no se incluyeron** en la tabla maestra
+para C1/C2 — no son comparables "bajo condiciones idénticas" tal como pide el reviewer sin antes
+re-ejecutar con parámetros igualados. `success_rate`, `sim_time` y `roll_rms` sí se incluyeron
+(no dependen de esos tres parámetros). Se añadió un campo `note` con la advertencia completa a
+cada fila de C1/C2 en `table_master_comparison.csv`/`_display.csv`, más una advertencia sobre el
+tamaño de muestra reducido del lado Neural (N=6 en C1, N=3 en C2 — el equipo mismo señala en su
+documento que esto es insuficiente para concluir nada firme sobre tasa de vuelco en C2, donde BG
+tuvo 0/3 TIPOVER contra 6/21 de FSM).
+
+**Decisión recomendada para la sesión de escritura** (documentada, no ejecutada aquí — ver
+`experiment_c_terrain.md` §6 para el detalle completo del equipo): o bien (a) re-ejecutar ambos
+códigos con los tres parámetros igualados antes de citar `Tswitch`/`Tresponse`, o (b) mantener los
+datos actuales y describir explícitamente las tres diferencias como limitación metodológica del
+baseline en el paper, sin presentar la brecha de latencia como una ventaja de diseño real de la
+FSM.
+
+### 8.3 Estado tras esta ronda
+
+Las 7 familias (5 completas desde la Ronda 1 + C1/C2 de esta ronda) están en el pipeline
+reproducible. Piezas para promover: `table_master_comparison_display.csv`,
+`fig_sr_vs_noise_level.png`, `fig_mode_timeline_complex.png`, `fig_mode_timeline_inspection.png`
+— todas re-generadas/ajustadas y verificadas visualmente. Pendiente: revisión conjunta con el
+autor (próxima sesión) antes de dar por cerrada esta fase de auditoría de imágenes.

@@ -21,7 +21,10 @@ import pandas as pd
 
 def list_trial_dirs(family_dir: str, verdict: str | None = "SUCCESS") -> list[str]:
     """All test_* subdirectories of a family, optionally filtered by trial_summary.json verdict."""
-    dirs = sorted(glob.glob(os.path.join(family_dir, "test_*")))
+    # isdir guard: familia_c1_terreno_rugoso has 3 stray test_*.zip files matching this glob (not
+    # trial directories) -- already excluded via this same check in R3-04's build_tables.py; ported
+    # here so every consumer of this shared loader gets the same fix, not just that one script.
+    dirs = sorted(d for d in glob.glob(os.path.join(family_dir, "test_*")) if os.path.isdir(d))
     if verdict is None:
         return dirs
     out = []
