@@ -44,6 +44,13 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from loaders import (  # noqa: E402
     find_trial_by_noise_level, load_metrics_raw, load_unified_metrics,
 )
+# 2026-09-02 audit fix (pixel-level legend/typography audit): this builder never imported style.py
+# at all -- it hardcoded its own `DPI = 300` below instead, so apply_style() (serif publication
+# typeface, applied automatically on import of style.py) never ran. The 4 fig2_*_micro outputs
+# rendered in matplotlib's default sans-serif, visibly inconsistent with every other figure in the
+# pipeline -- including their own stated design goal of mirroring
+# real_plot_suite.py::build_rms_dynamics() (which DOES import style and renders serif).
+from style import DPI  # noqa: E402
 
 NOISE_LEVEL_IDX = 0  # representative trial's noise level — see module docstring
 
@@ -58,7 +65,6 @@ SHADED_SCENARIOS = {"Appetitive", "Aversive", "Complex"}  # NOT Obstacle — gre
 FIRING_VARIANCE_COLOR = "#D55E00"  # fixed orange — matches real_plot_suite.build_rms_dynamics()
 PITCH_COLOR = "#4B0082"            # fixed purple
 ROLL_COLOR = "#B8A9D9"             # fixed lavender
-DPI = 300
 
 
 def _stimulus_presence_masks(raw: pd.DataFrame) -> dict:
@@ -98,7 +104,11 @@ def build(simulation_root: str, output_dir: str) -> dict[str, str]:
                               color="#D55E00", alpha=0.15, step="mid", label="Aversive stimulus in view")
             ax_a.fill_between(t_a, 0, 1, where=presence["blue"], transform=ax_a.get_xaxis_transform(),
                               color="#0072B2", alpha=0.15, step="mid", label="Appetitive stimulus in view")
-            ax_a.legend(fontsize=8, loc="upper left")
+            # 2026-09-02 audit fix: fixed "upper left" collided with the firing-variance curve in
+            # scenarios that spike early (e.g. Appetitive peaks at t~1s, right under the legend
+            # box) -- the legend text sat directly on top of the orange line. "best" lets
+            # matplotlib place it clear of the plotted line data instead of a hardcoded corner.
+            ax_a.legend(fontsize=8, loc="best")
         ax_a.plot(t_a, raw["firing_variance"], color=FIRING_VARIANCE_COLOR, linewidth=1.5)
         ax_a.set_ylabel("Firing Variance $Var(z)$")
         ax_a.set_title("A. Basal Ganglia Neural Response Dynamics")

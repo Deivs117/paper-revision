@@ -54,8 +54,12 @@ def build_fig4_ablation(output_path: str) -> None:
     ax.set_ylim(0.65, 0.80)  # y-axis rescaled so the real 0.024-F1 spread is legible
     ax.set_ylabel("F1-score")
     ax.set_title("Architecture ablation")
-    ax.annotate("y-axis truncated for legibility", xy=(0.02, 0.02), xycoords="axes fraction",
-                fontsize=6, color="#555555")
+    # 2026-09-02 audit fix: this annotation used to sit at the bottom-left, directly over the
+    # (50) bar (low-contrast gray text on solid red -- barely legible, flagged in the pixel-level
+    # legend/text-occlusion audit). Moved above the bars with a white background box instead.
+    ax.annotate("y-axis truncated for legibility", xy=(0.02, 0.965), xycoords="axes fraction",
+                fontsize=7, color="#555555", va="top",
+                bbox=dict(boxstyle="round,pad=0.2", fc="white", ec="none", alpha=0.85))
     fig.tight_layout()
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     fig.savefig(output_path, dpi=DPI)
@@ -79,8 +83,11 @@ def build_f03_fused_panel(fig5_csv: str, fig6_csv: str, output_path: str) -> Non
         axes[0].bar(x + (i - 1.5) * width, vals, width, label=m, color=metric_colors[m])
     axes[0].set_xticks(x); axes[0].set_xticklabels(classifiers, rotation=20, ha="right", fontsize=7)
     axes[0].set_ylabel("Score (5-fold CV mean)")
-    axes[0].set_ylim(0, 1.0)
-    axes[0].legend(fontsize=6, ncol=2)
+    axes[0].set_ylim(0, 1.15)  # headroom for the legend so it doesn't sit on top of the bars
+    # 2026-09-02 audit fix: default-placed legend ("best" via no loc arg) landed inside the
+    # Random Forest bars, indistinguishable from the bar fills it was labeling (flagged in the
+    # pixel-level legend/text-occlusion audit). Moved above the axes, outside all bars.
+    axes[0].legend(loc="upper center", bbox_to_anchor=(0.5, 1.0), ncol=4, fontsize=6.5, frameon=False)
     axes[0].set_title("(a) Classification metrics")
 
     # (b) inference latency, log scale
@@ -99,9 +106,7 @@ def build_f03_fused_panel(fig5_csv: str, fig6_csv: str, output_path: str) -> Non
     axes[2].tick_params(axis="x", rotation=20)
     axes[2].set_title("(c) Model size")
 
-    fig.suptitle("Classifier accuracy/latency/size trade-off (F-03 fused panel; (b),(c) vectorized from "
-                 "the currently-published fig5/fig6, see experiments/_plotting/vectorized/README.md)",
-                 fontsize=8)
+    fig.suptitle("Classifier accuracy/latency/size trade-off", fontsize=10)
     fig.tight_layout(rect=(0, 0, 1, 0.92))
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     fig.savefig(output_path, dpi=DPI)

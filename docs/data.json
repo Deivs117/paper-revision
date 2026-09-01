@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-01T23:11:36+00:00",
-  "progressLastCommit": "2026-09-01T18:09:37-05:00",
+  "generatedAt": "2026-09-01T23:18:28+00:00",
+  "progressLastCommit": "2026-09-01T18:11:36-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -500,6 +500,19 @@
       ],
       "status": "synced-to-overleaf",
       "patchFile": "patches/c-20-inspection-task-methodology.tex"
+    },
+    {
+      "id": "C-21",
+      "reviewer": "—",
+      "requirement": "Pixel-level audit of all 34 code-generated (matplotlib) figures in assets/ for text occlusion / illegible-or-data-confused legends, per author request (real photos, simulation photos, network diagrams, robot-architecture diagrams, and GRAPH_IMU_/NEU_ explicitly excluded — see intake/pending/C-21_figures_text_occlusion_audit.md for the exclusion method and full inventory). Asset-only fixes, no sections/*.tex text changed (no \\revblue{} needed): fig_classifier_tradeoff_fused.png (removed a suptitle literally citing a README path; moved a legend off the data bars it overlapped), fig4_architecture_ablation.png (low-contrast annotation was sitting on a data bar, moved + given a background box), 4× fig2_{Scenario}_micro_test_001_SUCCESS.png (own bug found: micro_dynamics.py never imported the shared style.py at all, rendering sans-serif instead of the publication typeface used everywhere else — fixed; also fixed a legend-on-data-peak collision in the Appetitive panel via loc=\"best\"), fig_stability_phases.png (an \"SM = X.X cm\" annotation landed on top of the CoM/incenter marker in 2 of 6 panels, hiding a digit — fixed with a background box + explicit z-order). fig1_confusion_matrix.png just needed a rebuild (assets/ had a pre-style-skill stale copy). Found, not fixed (no builder exists in the repo): fig2_roc_curve.png/fig3_training_loss.png also render sans-serif but have no generator script anywhere in experiments/ — legacy figures pre-dating the pipeline; need the raw MLP training/eval data confirmed still available before a new builder can be written. All 8 fixed figures re-promoted via scripts/promote_figure.sh --force.",
+      "target": "results.tex (asset references only, no caption/text edits)",
+      "dataSource": "—",
+      "category": "Métricas",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "—"
     }
   ]
 }
