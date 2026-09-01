@@ -99,9 +99,18 @@ experiments/.venv_plotting/bin/python experiments/_plotting/builders/micro_dynam
   --output-dir experiments/R3-04-noise-robustness/output
 ```
 
-El resto de figuras (Fig R1/R2/R3, Tabla R1/R2, ver
-`intake/pending/R3-04_audit_and_plan.md` §6) todavía no tiene builder — pendiente para la sesión de
-escritura, ver `intake/pending/R3-04_images_pipeline_audit.md`.
+Fig R1/R2/R3 y Tabla R1/R2 (ver `intake/pending/R3-04_audit_and_plan.md` §6) ya tienen builder
+también — ejecutar:
+
+```
+experiments/.venv_plotting/bin/python experiments/_plotting/builders/noise_sweep_grid.py
+experiments/.venv_plotting/bin/python experiments/_plotting/builders/terrain_noise_sweep.py
+experiments/.venv_plotting/bin/python experiments/R3-04-noise-robustness/scripts/build_camera_dropout_evidence.py
+experiments/.venv_plotting/bin/python experiments/R3-04-noise-robustness/scripts/build_tables.py
+```
+
+(las cuatro usan las rutas por defecto de este experimento, no requieren flags). Ver
+`intake/pending/R3-04_images_pipeline_audit.md` §7 para el detalle de cada una.
 
 ## Output files
 
@@ -111,9 +120,13 @@ escritura, ver `intake/pending/R3-04_images_pipeline_audit.md`.
 | `fig2_Aversive_micro_test_001_SUCCESS.png` | ídem | no | reemplazaría `assets/fig2_Aversive_micro_test_005_SUCCESS.png`, `\label{fig:aversive_micro}` |
 | `fig2_Obstacle_micro_test_001_SUCCESS.png` | ídem | no | reemplazaría `assets/fig2_Obstacle_micro_test_005_SUCCESS.png`, `\label{fig:obstacle_micro}` |
 | `fig2_Complex_micro_test_001_SUCCESS.png` | ídem | no | reemplazaría `assets/fig2_Complex_micro_test_005_SUCCESS.png`, `\label{fig:complex_micro}` |
+| `fig1_noise_robustness_grid.png` | `experiments/_plotting/builders/noise_sweep_grid.py` (nuevo módulo — no toca `macro_robustness.py`) | no | reemplazaría `assets/fig1_noise_robustness_grid.png`, `\label{fig:noise_robustness_grid}` |
+| `fig_R2_terrain_stability_vs_noise.png` | `experiments/_plotting/builders/terrain_noise_sweep.py` | no | figura nueva, sin label todavía |
+| `fig_R3_camera_dropout_evidence.png` | `experiments/R3-04-noise-robustness/scripts/build_camera_dropout_evidence.py` | no | figura nueva, sin label todavía |
+| `table_R1_failure_rate.csv` | `experiments/R3-04-noise-robustness/scripts/build_tables.py` | no | tabla nueva, sin label todavía |
+| `table_R2_perturbation_params.csv` | ídem | no | tabla nueva, sin label todavía |
 
-Las 4 usan el trial `noise_level_idx=0` (baseline sin perturbación) de cada familia como
-representativo — ver `intake/pending/R3-04_images_pipeline_audit.md` para la justificación y las
-demás figuras (Fig R1/R2/R3, Tabla R1/R2) todavía sin construir. **No promovidas a `assets/`
-todavía** — quedan en `output/` para revisión del autor antes de `scripts/promote_figure.sh`,
-mismo gate que usó N-01/N-02.
+Las 4 `fig2_*_micro` usan el trial `noise_level_idx=0` (baseline sin perturbación) de cada familia
+como representativo — ver `intake/pending/R3-04_images_pipeline_audit.md` para la justificación.
+**Nada promovido a `assets/` todavía** — todo queda en `output/` para revisión del autor antes de
+`scripts/promote_figure.sh`, mismo gate que usó N-01/N-02.

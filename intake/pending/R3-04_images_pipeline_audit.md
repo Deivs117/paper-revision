@@ -163,14 +163,19 @@ corridas puntuales también (serían experimentos nuevos, no una extensión de e
    §3.1) tampoco se toca** — no hay número ni afirmación que corregir ahí para esta ronda de R3-04.
    Sin acción pendiente sobre esta figura.
 
-2. **`fig1_noise_robustness_grid.png` (grid 4×3, eje "σ" genérico) — sin resolver todavía**, sigue
-   abierta para una sesión posterior (no bloqueaba el trabajo de esta sesión, que se concentró en
-   `fig2_*_micro` — ver punto 3).
+2. **`fig1_noise_robustness_grid.png` (grid 4×3, eje "σ" genérico) — RESUELTO: se reemplaza por
+   completo.** Nuevo módulo `noise_sweep_grid.py` (NO se editó `macro_robustness.py`, que sigue
+   siendo válido para el dataset viejo) — ver §7 abajo.
 
 3. **`fig2_*_micro` — RESUELTO: SÍ se regenera, siguiendo el mismo criterio de precisión que
    `experiments/N-02-physical-figure-regeneration` usó para las figuras reales equivalentes
    (`{Escenario}_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png`).** Implementado y ejecutado en
    esta sesión — ver §6 abajo.
+
+**Además, resuelto en la misma ronda:** Fig R2 (postural stability vs. ruido, terreno/pendiente),
+Fig R3 (evidencia de dropout de cámara) y Tablas R1/R2 (tasa de fallo, parámetros de perturbación)
+— el autor pidió construir las 5 piezas restantes ahora en vez de esperar a la sesión de escritura.
+Ver §7.
 
 4. ~~Verificación pendiente~~ **Ya verificado:** `exp_latency` **sí está poblado** en los 15/15
    trials `SUCCESS` de `data/familia_a_obstaculo/` del dataset nuevo (valores reales
@@ -219,3 +224,24 @@ Complex: ambos sombreados alternando correctamente, coincide con que este escena
 estímulo apetitivo y aversivo). **No promovidas a `assets/` ni referenciadas desde `results.tex`**
 — quedan en `output/` para revisión del autor, mismo gate que usaron N-01/N-02 antes de
 `scripts/promote_figure.sh`.
+
+---
+
+## 7. Las 5 piezas restantes — construidas esta sesión
+
+Todas en `experiments/R3-04-noise-robustness/output/`, ejecutadas y verificadas visualmente
+(imagen completa, no solo el código). Ninguna promovida a `assets/` ni referenciada desde
+`results.tex` todavía — mismo gate de revisión de autor que el resto.
+
+| Pieza | Script | Notas de la verificación visual |
+|---|---|---|
+| `fig1_noise_robustness_grid.png` (reemplazo) | `experiments/_plotting/builders/noise_sweep_grid.py` (nuevo módulo, no toca `macro_robustness.py`) | Grid 4×4 (se añadió una 4ª columna, `Tswitch`, la métrica que el equipo llamaba "Figura R1"); eje X ahora dice "Combined Perturbation Level (index)" con una nota al pie explicando qué escala (IMU drift + LiDAR + iluminación, combinados). Primer intento tuvo un bug de solapamiento de texto en la fila inferior (etiqueta de 2 líneas repetida en cada columna) — corregido a una etiqueta corta + nota única al pie de la figura completa. |
+| `fig_R2_terrain_stability_vs_noise.png` (Figura R2) | `experiments/_plotting/builders/terrain_noise_sweep.py` (nuevo) | Roll/Pitch RMS vs. nivel de ruido, terreno rugoso + pendiente. Mismo fix de etiqueta que el grid. Valores consistentes con los rangos ya auditados (roll rugoso 1.65–1.9°, pitch pendiente 2.3–5.7°). |
+| `fig_R3_camera_dropout_evidence.png` (Figura R3) | `experiments/R3-04-noise-robustness/scripts/build_camera_dropout_evidence.py` (nuevo, específico de R3-04) | Serie `blue_present` del par `familia_a_apetitivo` trial_index=7. Confirma exactamente lo que documentaba `robustez_transferencia_tecnica.md`: `blue_present_frac ≈ 0.01` en el intento fallido vs. `≈ 0.99` en el reintento exitoso. |
+| `table_R1_failure_rate.csv` (Tabla R1) | `experiments/R3-04-noise-robustness/scripts/build_tables.py` | Conteo por familia/verdict, recalculado directo de los nombres de carpeta (con los 3 `.zip` de c1 excluidos explícitamente). Coincide exactamente con la tabla manual del documento del equipo, incluyendo el caso especial de c1 (27 carpetas conservadas vs. 63 en el manifiesto). |
+| `table_R2_perturbation_params.csv` (Tabla R2) | ídem | Parámetros por sensor, valores extraídos literalmente de `config.yaml`/`initctes()` (PyYAML no está en el venv de plotting, así que se hardcodeó desde la misma fuente en vez de parsear el YAML — documentado en el script). |
+
+**Estado:** las 4 figuras/2 tablas de la sección 6 del plan original (`R3-04_audit_and_plan.md`)
+ahora tienen builder y salida generada. Falta: decidir con el equipo el diseño final de caption/
+prosa (fuera de alcance de esta sesión — solo diseño/planificación de imágenes, no redacción), y
+la promoción a `assets/` una vez el autor las revise.

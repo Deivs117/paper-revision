@@ -1,0 +1,9 @@
+Parameter,Sensor,Unit,Values,Default
+noise_level_idx,Compartido (LiDAR + deriva IMU + iluminación),índice entero 0-4,"0, 1, 2, 3, 4",0
+IMUDriftLevels_accel,IMU,m/s^2 por paso (random-walk),"0.0, 0.01, 0.03, 0.06, 0.09",índice 0 -> 0.0
+IMUDriftLevels_angle,IMU,deg por paso (random-walk),"0.0, 0.01, 0.04, 0.08, 0.12",índice 0 -> 0.0
+LidarNoiseLevels,LiDAR,fracción del rango medido,"0.0, 0.05, 0.10, 0.15, 0.20",índice 0 -> 0.0
+IllumLevels,Cámara,severidad adimensional 0-1,"0.0, 0.10, 0.20, 0.30, 0.30",índice 0 -> 0.0
+AreaIllumLevels,"Cámara (indirecto, umbral stop)",unidades de área bounding box,"28, 24, 20, 18, 14",índice 0 -> 28
+illum_direction,Cámara,"categórico {-1, +1}",-1 (oscurecida) / +1 (sobreexpuesta),-1
+NoiseSeed,Todos (RNG),entero,42 (fijo),42

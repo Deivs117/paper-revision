@@ -1,0 +1,7 @@
+Familia,SUCCESS,FAILURE_TIMEOUT,FAILURE_TIPOVER,FAILURE_CRASH,Total intentos
+familia_a_apetitivo,15,4,0,0,19
+familia_a_aversivo,15,0,0,0,15
+familia_a_obstaculo,15,0,0,0,15
+familia_b_compleja,15,3,3,0,21
+familia_c1_terreno_rugoso,15,0,8,4,27
+familia_c2_pendiente,15,0,0,0,15
