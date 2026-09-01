@@ -135,15 +135,24 @@ neuronal control circuits, (4) physical construction. Four subsections:
   confirmed set.
 - Confirmed by full read: **no mention of FSM (Finite State Machine) anywhere in this file** —
   R2-02's baseline comparison is entirely new content, not a rewrite of existing material.
+- **R3-04 closed (2026-08-31)**: new `\subsubsection{Perception-Decision Noise-Robustness
+  Evaluation}` (`ssec:NoiseRobustnessEval`), end of "Neuronal Control System", before "Physical
+  Platform Construction". Describes the combined (never isolated) IMU-drift random-walk +
+  LiDAR-range-noise + camera-illumination-distortion sweep (`noise_level_idx` 0–4, `NoiseSeed=42`)
+  and its per-sensor parameter table (`table:PerturbationParams`).
 
 ### results.tex (980 lines) — fully read this round
 Two top-level subsections: **Simulation Results** and **Physical Implementation Results**, followed
 by a **Quantitative Performance Analysis (Physical)** subsection and a **Limitations** subsection.
 
-- `\subsection{Simulation Results}` — single-stimulus response, quantitative validation (noise
-  robustness across σ∈[0,4] for Appetitive/Aversive/Obstacle/Complex suites — this likely already
-  substantially covers **R3-04**'s noise-robustness ask for simulation; verify it maps to IMU
-  drift/LiDAR noise/illumination specifically, or is generic sensor noise), multi-stimuli response,
+- `\subsection{Simulation Results}` — single-stimulus response, quantitative validation
+  (**R3-04, closed 2026-08-31**: the noise-robustness grid, `fig:noise_robustness_grid`, now
+  reports the combined per-sensor perturbation index 0–4 — IMU drift + LiDAR noise + illumination
+  distortion, jointly, never isolated — replacing the old generic "Sensory Noise Index σ" framing;
+  a new subsubsection `sssec:noise_robustness_extra` right after the consolidated-metrics table
+  adds Fig R1 (failure-by-family bar chart), Fig R2 (Rugged Terrain/Inclined Slope postural
+  stability vs. noise level), and Fig R3 (camera-dropout evidence, sensor-level event propagating
+  to a task-level timeout) — see `patches/r3-04-noise-robustness-evaluation.tex`), multi-stimuli response,
   variable-topography response (stability, ECDF decision-delay, terrain-adaptability phase space),
   and `\subsubsection{Quantitative Stability Analysis of Locomotion Mode Transitions}`
   (`\label{sssec:transition_stability}`) — this subsection's own text says *"To address the
@@ -246,3 +255,10 @@ disclosure) — these aren't split out separately since `split_sections.py` only
 - **`\revblue{}` was stripped repo-wide on 2026-08-25** (`C-02`, `patches/c-02-strip-revblue.md`) —
   every "R1-round text" reference above describes content that is now plain, uncolored baseline
   text; it was blue only in the R1 round's compiled PDF, not in the current working copy.
+- **R3-04's LiDAR-noise caveat (important if editing LiDAR-related prose anywhere):** in the code
+  that generated the R3-04 noise-robustness dataset, LiDAR noise reaches the reactive obstacle-
+  evasion pathway (locomotion-module units) but is hardcoded out of the basal-ganglia three-way
+  (obstacle/appetitive/aversive) arbitration competition's LiDAR-derived input channel. Do not
+  write "LiDAR noise robustness demonstrated at the arbitration level" anywhere without this
+  qualifier — see `sections/results.tex`'s `sssec:noise_robustness_extra` for the as-written
+  caveat and `intake/pending/R3-04_audit_and_plan.md` §4 for the full code-archaeology finding.
