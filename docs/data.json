@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-31T02:35:54+00:00",
-  "progressLastCommit": "2026-08-30T21:34:16-05:00",
+  "generatedAt": "2026-09-01T01:25:59+00:00",
+  "progressLastCommit": "2026-08-31T18:03:43-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -20,7 +20,7 @@
       "reviewer": "2",
       "requirement": "Add FSM gait arbitration baseline comparison",
       "target": "methodology.tex (baseline description, new), results.tex (comparison data, new) — confirmed no existing FSM content anywhere",
-      "dataSource": "experiments/R2-02-fsm-baseline/ (new FSM comparison data)",
+      "dataSource": "intake/pending/R2-02_fsm_baseline_reference.md (arquitecturas, resultados completos A/B/E, notas de redacción, párrafo de respuesta al referee listo para copiar, instructivos para C1/C2). Datos en PETER_SIMULATION/docs/resultados/simulation/ (Docker). Familias completadas (neural+FSM): A-Apetitivo, A-Aversivo, A-Obstáculo, B-Compleja, E-Inspección. Pendiente de ejecución: C1-Terreno Rugoso FSM, C2-Pendiente FSM (ver §9 del intake doc).",
       "category": "Pruebas",
       "owner": [
         "Diego",
@@ -99,11 +99,12 @@
       "id": "R3-04",
       "reviewer": "3",
       "requirement": "Perception-decision noise robustness experiments (IMU drift, LiDAR noise, camera illumination distortion)",
-      "target": "results.tex already has noise-robustness data across σ∈[0,4] for all 4 simulation scenarios — verify whether this is generic sensor noise or specifically framed as IMU drift/LiDAR noise/illumination, since the reviewer names specific noise sources",
-      "dataSource": "experiments/R3-04-noise-robustness/ if the existing σ-sweep isn't framed per-sensor",
+      "target": "Data/images pipeline complete, prose NOT started — ready to hand to a writing session. The simulation team delivered 6 new suites (familia_a_apetitivo/aversivo/obstaculo, familia_b_compleja, familia_c1_terreno_rugoso, familia_c2_pendiente, 112 trials) actually exercising per-sensor perturbation (IMU drift random-walk, LiDAR range noise, camera illumination distortion — resolving the \"verify whether generic or per-sensor\" question this row originally opened with: it's per-sensor, confirmed against PETER_SIMULATION source, not just the delivered data). Audited and reorganized into experiments/R3-04-noise-robustness/ (was R3-04_simulation/, non-standard layout) per the repo's _TEMPLATE convention — full audit incl. useless-field exclusions (lambda_efficiency, rmse_ct, near-empty stability_log.csv) and a code-archaeology finding (the pruebaDeTerreno illumination-disable flag the team was unsure about did not exist in the commits that generated this dataset — illumination was active throughout; a separate finding that the LiDAR→basal-ganglia G channel is hardcoded to 0 in that same code, so LiDAR noise reaches the evasion pathway but not the 3-way arbitration competition, needs team confirmation before results.tex asserts otherwise) in intake/pending/R3-04_audit_and_plan.md. Existing image-generation pipeline (experiments/_plotting/) audited for compatibility and extended: noise_sweep_grid.py (new, replaces macro_robustness.py's output for this dataset — 4x4 grid incl. new $T_{switch}$ column, per-sensor axis framing), terrain_noise_sweep.py (new — postural stability vs. noise for rugged terrain/inclined slope, a gap FigC_Terrain_Adaptability.png never covered), plus 2 experiment-specific scripts (build_camera_dropout_evidence.py, build_tables.py) in experiments/R3-04-noise-robustness/scripts/. FigA_Stability_Profile.png deliberately left untouched (author decision: old dataset's stability-log time series can't be reconstructed from the new data's near-empty stability_log.csv; no results.tex change needed for it). Full detail in intake/pending/R3-04_images_pipeline_audit.md. 8 images/tables author-reviewed via ~/Documents/Paper/audit_tool_R304.html across 2 rounds, all 8 now ✅ approved (intake/pending/r304_audit_notes_2026-09-01.md): fig1_noise_robustness_grid.png, 4× fig2_{Appetitive,Aversive,Obstacle,Complex}_micro_test_001_SUCCESS.png, fig_R2_terrain_stability_vs_noise.png, fig_R3_camera_dropout_evidence.png, fig_R1_failure_by_family.png (replaces a sparse Table R1), table_R2_perturbation_params.csv. Next steps for the writing session: (1) scripts/promote_figure.sh each of the 8 into assets/; (2) draft sections/methodology.tex (new subsection describing the drift/noise/illumination perturbation model, incl. explaining Table R2 in prose per author request) and sections/results.tex (new subsection with Fig R1/R2/R3 + Table R2, update §3.4 Limitations per the multisensor-combined-not-isolated caveat, update conclusions.tex if it claims generic noise robustness); (3) 3 more prose-only items flagged during review: rewrite fig2_Complex_micro's analysis narrating the three-stimulus encounter, write the Fig R3 interpretation prose, mention NoiseSeed=42 in text (dropped from Table R2 as a table row). No sections/*.tex edited yet — this row stays pending until that starts.",
+      "dataSource": "experiments/R3-04-noise-robustness/",
       "category": "Pruebas",
       "owner": [
-        "Diego"
+        "Diego",
+        "Deivi"
       ],
       "status": "pending",
       "patchFile": "—",
