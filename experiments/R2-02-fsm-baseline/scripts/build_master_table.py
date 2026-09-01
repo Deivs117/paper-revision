@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import csv
 import glob
-import json
 import os
 import sys
 
@@ -64,28 +63,54 @@ def _mean_sd(vals):
     return m, var ** 0.5
 
 
-def _lambda_both_aggregations(family_dir: str) -> tuple[float | None, float | None]:
-    """Returns (mean over the WHOLE trial series, mean over ONLY red&blue-simultaneous rows) of
-    lambda_efficiency, pooled across every trial in the family. Reported side by side, per the
-    audit finding that neither reproduces the reference doc's cited 0.982/0.837 exactly — see
-    intake/pending/R2-02_audit_and_plan.md Pregunta 3. Not every family has red/blue stimuli
-    (Obstacle is green-only, Inspection has neither initially) -- conflict rows will be empty
-    there, which is expected, not a bug."""
-    all_vals, conflict_vals = [], []
+def _lambda_whole_trial(family_dir: str) -> float | None:
+    """Mean of lambda_efficiency over every timestep of every trial in the family. Kept as a
+    general efficiency indicator only -- NOT the conflict-resolution argument (see CONFLICT_NOTE
+    for why a lambda-based conflict metric doesn't work, per the team's 2026-09-02 diagnosis)."""
+    all_vals = []
     for p in sorted(glob.glob(os.path.join(family_dir, "test_*", "metrics_raw.csv"))):
         with open(p) as f:
             for row in csv.DictReader(f):
                 try:
-                    le = float(row["lambda_efficiency"])
+                    all_vals.append(float(row["lambda_efficiency"]))
                 except (ValueError, KeyError):
                     continue
-                all_vals.append(le)
-                try:
-                    if float(row.get("red_present", 0)) == 1.0 and float(row.get("blue_present", 0)) == 1.0:
-                        conflict_vals.append(le)
-                except ValueError:
-                    pass
-    return _mean_sd(all_vals)[0], (_mean_sd(conflict_vals)[0] if conflict_vals else None)
+    return _mean_sd(all_vals)[0]
+
+
+def _conflict_exposure(family_dir: str) -> tuple[float | None, float | None]:
+    """Returns (mean % of trial time spent with red+blue simultaneously present, mean seconds of
+    that per trial), averaged per-trial (not pooled) so trials of different length weigh equally.
+
+    Replaces the earlier lambda-based "conflict" metric per the team's 2026-09-02 diagnosis (see
+    CONFLICT_NOTE): the cited 0.982/0.837 lambda figures in R2-02_fsm_baseline_reference.md §5.2
+    were confirmed a documentation error, not reproducible from any aggregation, and the
+    conflict-only lambda mean is itself uninformative (cmd_mag / ||neural activity|| mixes
+    incompatible scales and is small by construction, not because of worse decisions). Conflict
+    EXPOSURE -- how long each system stays in unresolved simultaneous-stimulus conflict, timed
+    from sim_time_s deltas rather than assumed row cadence -- is what the team confirmed is the
+    real, reproducible driver of the Family B outcome gap."""
+    fracs, secs = [], []
+    for p in sorted(glob.glob(os.path.join(family_dir, "test_*", "metrics_raw.csv"))):
+        with open(p) as f:
+            rows = list(csv.DictReader(f))
+        if not rows or "red_present" not in rows[0]:
+            continue
+        times = [float(r["sim_time_s"]) for r in rows]
+        total = times[-1] - times[0] if len(times) > 1 else 0.0
+        if total <= 0:
+            continue
+        conflict_t = 0.0
+        for i in range(1, len(rows)):
+            dt = times[i] - times[i - 1]
+            prev = rows[i - 1]
+            if float(prev.get("red_present", 0)) == 1.0 and float(prev.get("blue_present", 0)) == 1.0:
+                conflict_t += dt
+        fracs.append(100.0 * conflict_t / total)
+        secs.append(conflict_t)
+    if not fracs:
+        return None, None
+    return _mean_sd(fracs)[0], _mean_sd(secs)[0]
 
 
 def collect(family_dir: str, noise_level_idx: int | None = None) -> dict:
@@ -104,13 +129,15 @@ def collect(family_dir: str, noise_level_idx: int | None = None) -> dict:
     n_attempted = len(all_trials)
     sim_m, sim_sd = _mean_sd(success["sim_time_s"].tolist()) if not success.empty else (None, None)
     roll_m, roll_sd = _mean_sd(success["roll_rms"].tolist()) if not success.empty else (None, None)
-    lam_all, lam_conflict = _lambda_both_aggregations(family_dir)
+    lam_all = _lambda_whole_trial(family_dir)
+    exposure_pct, exposure_s = _conflict_exposure(family_dir)
     return {
         "n_attempted": n_attempted, "n_success": len(success),
         "success_rate": 100.0 * len(success) / n_attempted if n_attempted else None,
         "sim_time_mean": sim_m, "sim_time_sd": sim_sd,
         "roll_rms_mean": roll_m, "roll_rms_sd": roll_sd,
-        "lambda_whole_trial_mean": lam_all, "lambda_conflict_only_mean": lam_conflict,
+        "lambda_whole_trial_mean": lam_all,
+        "conflict_exposure_pct": exposure_pct, "conflict_exposure_s": exposure_s,
     }
 
 
@@ -130,7 +157,7 @@ def build(data_root: str, output_path: str) -> list[dict]:
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     fieldnames = ["Family", "System", "n_attempted", "n_success", "success_rate",
                   "sim_time_mean", "sim_time_sd", "roll_rms_mean", "roll_rms_sd",
-                  "lambda_whole_trial_mean", "lambda_conflict_only_mean", "note"]
+                  "lambda_whole_trial_mean", "conflict_exposure_pct", "conflict_exposure_s", "note"]
     with open(output_path, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
@@ -147,25 +174,38 @@ def _fmt(m, sd, digits=2):
     return f"{m:.{digits}f} ± {sd:.{digits}f}"
 
 
-LAMBDA_NOTE = (
-    "λ (whole trial) averages every timestep, including instants with no red/blue conflict "
-    "(which count as 1.0 by definition -- see neural_recorder.py::_compute_lambda_efficiency). "
-    "λ (conflict only) averages just the timesteps where both stimuli were present "
-    "simultaneously, i.e. only the moments the metric is actually meant to characterize. Neither "
-    "reproduces the reference doc's earlier-cited 0.982/0.837 exactly -- reported as two "
-    "transparent, independently-reproducible aggregations instead. See "
-    "intake/pending/R2-02_audit_and_plan.md Pregunta 3."
+CONFLICT_NOTE = (
+    "2026-09-02, resolved by the team (see intake/pending/R2-02_audit_and_plan.md Pregunta 3): "
+    "the '0.982 Neural / 0.837 FSM' lambda-efficiency figures cited in "
+    "R2-02_fsm_baseline_reference.md §5.2 were confirmed a documentation error from an earlier "
+    "session, not reproducible from metrics_raw.csv under any aggregation the team tried "
+    "(final-value, whole-trial pooled/per-trial, conflict-only pooled/per-trial). The "
+    "conflict-only lambda mean is itself not a valid metric here -- its formula "
+    "(cmd_mag / ||neural activity||) mixes incompatible scales (m/s vs. a raw activity-vector "
+    "norm) and is small by construction, not because either system makes worse decisions. "
+    "REMOVED from this table and from the paper. The reproducible, meaningful number is "
+    "conflict EXPOSURE below -- how long each system spends in genuine simultaneous-stimulus "
+    "conflict (both red_present and blue_present) before resolving it, computed here from exact "
+    "sim_time_s deltas rather than an assumed row cadence. For Family B: Neural ~0.2s/trial vs. "
+    "FSM ~6.1s/trial -- seconds/trial match the team's own estimate exactly. The % of trial time "
+    "figures (1.7% Neural / 4.7% FSM here vs. the team's quick estimate of 1.1%/4.3%) differ "
+    "slightly because of how 'total trial time' is defined (exact elapsed sim_time_s span here "
+    "vs. a row-count-based estimate there) -- both agree FSM stays unresolved roughly 3x longer "
+    "as a fraction of its own trial, and ~30x longer in absolute seconds. Only meaningful where a "
+    "family actually has simultaneous red+blue stimuli (Complex) -- '—' elsewhere is expected, "
+    "not missing data."
 )
 
 
 def build_display_table(rows: list[dict], output_path: str) -> list[dict]:
-    """Reader-facing version of the master table (2026-09-02 rework, r202_audit_notes: table
-    rejected as first drafted). Fixes applied: dropped n_attempted/n_success (Success Rate alone
-    is what matters for the comparison -- the raw counts live in table_master_comparison.csv for
-    traceability); renamed sim_time -> "Task Completion Time (s)" (a reader-facing description,
-    not the raw CSV column name, per README.md §11.1); renamed roll_rms_mean -> "Roll RMS (deg)"
-    (no underscore); the two lambda columns are now explicitly labeled "(whole trial)" /
-    "(conflict only)" with LAMBDA_NOTE explaining why both exist instead of one unexplained number.
+    """Reader-facing version of the master table (2026-09-02 rework, r202_audit_notes 2 rondas):
+    ronda 1 rejected the first draft outright; ronda 2 dropped the "Note" column (caveats belong
+    in prose/README, not the LaTeX-facing table) and the lambda-conflict-only column, replaced by
+    Conflict Exposure once the team confirmed lambda-conflict-only was invalid -- see
+    CONFLICT_NOTE. Also: dropped n_attempted/n_success (Success Rate alone is what matters here --
+    raw counts live in table_master_comparison.csv for traceability); renamed sim_time -> "Task
+    Completion Time (s)" (reader-facing, not the raw CSV column name, per README.md §11.1);
+    renamed roll_rms_mean -> "Roll RMS (deg)" (no underscore).
     """
     display_rows = []
     for r in rows:
@@ -175,13 +215,14 @@ def build_display_table(rows: list[dict], output_path: str) -> list[dict]:
             "Task Completion Time (s)": _fmt(r.get("sim_time_mean"), r.get("sim_time_sd")),
             "Roll RMS (deg)": _fmt(r.get("roll_rms_mean"), r.get("roll_rms_sd"), digits=3),
             "λ (whole trial)": f"{r['lambda_whole_trial_mean']:.3f}" if r.get("lambda_whole_trial_mean") is not None else "—",
-            "λ (conflict only)": f"{r['lambda_conflict_only_mean']:.3f}" if r.get("lambda_conflict_only_mean") is not None else "—",
-            "Note": r.get("note", ""),
+            "Conflict Exposure (%)": f"{r['conflict_exposure_pct']:.1f}" if r.get("conflict_exposure_pct") is not None else "—",
+            "Conflict Exposure (s/trial)": f"{r['conflict_exposure_s']:.1f}" if r.get("conflict_exposure_s") is not None else "—",
         })
 
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     fieldnames = ["Family", "System", "Success Rate (%)", "Task Completion Time (s)",
-                  "Roll RMS (deg)", "λ (whole trial)", "λ (conflict only)", "Note"]
+                  "Roll RMS (deg)", "λ (whole trial)", "Conflict Exposure (%)",
+                  "Conflict Exposure (s/trial)"]
     with open(output_path, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
@@ -207,5 +248,5 @@ if __name__ == "__main__":
     print(f"\nWrote {len(display_rows)} display rows -> {display_path}")
     for r in display_rows:
         print(" ", r)
-    print(f"\nLambda note (goes with the display table as a caption/footnote):\n{LAMBDA_NOTE}")
-    print(f"\nTerrain caveat (goes with the C1/C2 rows):\n{TERRAIN_CAVEAT}")
+    print(f"\nConflict exposure note (prose for the writing session, not the LaTeX table):\n{CONFLICT_NOTE}")
+    print(f"\nTerrain caveat (prose for the writing session, not the LaTeX table):\n{TERRAIN_CAVEAT}")

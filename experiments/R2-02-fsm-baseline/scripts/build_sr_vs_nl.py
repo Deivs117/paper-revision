@@ -59,9 +59,9 @@ def build(data_root: str, output_path: str) -> dict:
         ax.plot(nx, [neural_sr[n] for n in nx], marker="o", color=NEURAL_COLOR,
                 linestyle=neural_style, label="Neural")
         ax.set_xticks(sorted(set(nx) | set(fx)))
-        if label == "Obstacle":
-            ax.annotate("curves fully overlap\n(both 100% at every level)", xy=(0.5, 100),
-                        xytext=(0.5, 88), fontsize=7.5, ha="center", color="0.35")
+        # r202_audit_notes ronda 2: in-plot annotation overlapped the axis -- removed. The overlap
+        # explanation now belongs in the figure's caption/description (README.md, audit tool),
+        # not baked into the image; the dashed line is the only in-image cue left.
         ax.set_title(label)
         ax.set_xlabel("Noise Level (index)")
 

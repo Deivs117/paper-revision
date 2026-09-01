@@ -246,6 +246,53 @@ datos actuales y describir explícitamente las tres diferencias como limitación
 baseline en el paper, sin presentar la brecha de latencia como una ventaja de diseño real de la
 FSM.
 
+---
+
+## 9. Ronda 3 (2026-09-02) — cierre del hallazgo λ + correcciones mínimas
+
+### 9.1 Pregunta 3, RESUELTA definitivamente por el equipo
+
+El autor consultó directamente al desarrollador de la FSM sobre la cifra "0.982 Neural / 0.837
+FSM" citada en `R2-02_fsm_baseline_reference.md` §5.2. Diagnóstico completo del equipo:
+
+- **Ninguna agregación la reproduce** — probaron 5 métodos: valor final de `trial_summary.json`
+  (da 1.0/1.0, es una captura de estado al cierre del trial, no un promedio), pooled sobre todo el
+  trial (0.976/0.943), per-trial mean sobre todo el trial (0.965/0.934), pooled solo-conflicto
+  (0.034/0.006), per-trial mean solo-conflicto (0.029/0.009). Conclusión del equipo: **es un error
+  de documentación de una sesión anterior**, no un dato real.
+- **El promedio solo-conflicto tampoco es una métrica válida**, incluso si se reprodujera: la
+  fórmula `cmd_mag / ‖actividad neuronal‖` mezcla escalas incompatibles (velocidad lineal en m/s,
+  típicamente 0.1–0.5, contra la norma de un vector de activación con valores en decenas/cientos)
+  — el ratio es pequeño por diseño de la fórmula, no porque el sistema decida peor.
+- **Métrica de reemplazo, propuesta y verificada por el equipo:** exposición al conflicto —
+  cuánto tiempo permanece cada sistema en conflicto simultáneo real (`red_present=1` Y
+  `blue_present=1`) antes de resolverlo. Familia B: Neural ≈0.2s/trial (1.1% del tiempo del
+  trial), FSM ≈6.1s/trial (4.3%) — la FSM no toma peores decisiones durante el conflicto, sino que
+  permanece sin resolver ~30 veces más tiempo.
+
+**Verificación independiente en esta sesión:** recalculé la exposición al conflicto desde
+`sim_time_s` exacto (no una cadencia de fila asumida de 200ms) en `build_master_table.py::
+_conflict_exposure()`. Resultado: Neural 0.2s/trial (1.7% del tiempo), FSM 6.1s/trial (4.7%) —
+**los segundos/trial coinciden exactamente** con la cifra del equipo; el % difiere levemente
+(1.7 vs. 1.1, 4.7 vs. 4.3) por la definición del denominador (mi cálculo usa el span exacto de
+`sim_time_s` del trial; el del equipo probablemente asume una cadencia de fila constante) — ambas
+formas coinciden en que la FSM permanece sin resolver ~3x más como fracción de su propio trial y
+~30x más en segundos absolutos. Diferencia documentada por transparencia, no oculta.
+
+**Acción tomada:** `λ (conflict only)` eliminada de la tabla maestra; reemplazada por "Conflict
+Exposure (%)" y "Conflict Exposure (s/trial)" (`build_display_table()`). `λ (whole trial)` se
+conserva como indicador general de eficiencia (no ligado al argumento de conflicto). El texto
+"0.982/0.837" no debe citarse en el paper bajo ninguna circunstancia — confirmado como error, no
+como número con incertidumbre.
+
+### 9.2 Correcciones mínimas de `r202_audit_notes_2026-09-01.md` (ronda 3)
+
+| Pieza | Nota | Corrección |
+|---|---|---|
+| Tabla maestra | "Sin la columna Nota. Sin la columna conflict only PERO poner esos dos valores en el escrito NO en la tabla LaTeX" | Columna `Note` eliminada de `table_master_comparison_display.csv` (los caveats de terreno siguen en el CSV crudo + prosa de README/este doc, no en la tabla que va al paper). Columna `λ (conflict only)` eliminada — no reemplazada por los mismos valores en prosa (están confirmados como inválidos, ver §9.1), sino por la métrica de exposición al conflicto, que sí es válida y reproducible. |
+| `fig_sr_vs_noise_level.png` | "El texto solapa con el eje, quítalo. Pero necesito que en la descripción se explique el solapamiento en Obstacle" | Anotación en la imagen eliminada. La explicación pasa al pie de figura textual (README.md, audit tool): ambos sistemas están en 100% en los **5** niveles de ruido evaluados (no un subconjunto — verificado numéricamente), solapamiento perfecto explicado por la línea Neural punteada sobre la FSM sólida. |
+| Mode timelines (B, E) | ✅ sin notas | Sin cambios. |
+
 ### 8.3 Estado tras esta ronda
 
 Las 7 familias (5 completas desde la Ronda 1 + C1/C2 de esta ronda) están en el pipeline

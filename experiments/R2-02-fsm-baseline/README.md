@@ -78,23 +78,33 @@ FSM (varias reutilizan datasets de otros experimentos ya existentes en este repo
 No regenerable desde cero (requiere una corrida real de Gazebo/ROS 2 por el equipo) — los comandos
 de "Output files" abajo solo reprocesan lo ya entregado en `data/`.
 
-## Hallazgo abierto — λ-eficiencia en conflicto (Familia B)
+## Hallazgo RESUELTO — λ-eficiencia en conflicto (Familia B) reemplazada por "Conflict Exposure"
 
-La fórmula de λ está bien documentada en código (`neural_recorder.py::_compute_lambda_efficiency`,
-rama `fsm`): `λ=1.0` sin conflicto, `λ = |cmd_vel| / (‖actividad neuronal‖+ε)` con conflicto
-(ambos rojo Y azul presentes). **Pero la cifra citada en el documento del equipo (0.982 Neural /
-0.837 FSM) no se reprodujo exactamente** al recalcularla desde los CSV crudos — ver
-`intake/pending/R2-02_audit_and_plan.md` Pregunta 3 para el detalle de los dos intentos de
-agregación probados (ninguno calzó). Pendiente de confirmar el criterio exacto con el equipo antes
-de citar esa cifra específica en el paper.
+**2026-09-02, confirmado por el equipo:** la cifra "0.982 Neural / 0.837 FSM" citada en
+`R2-02_fsm_baseline_reference.md` §5.2 fue un **error de documentación de una sesión anterior**,
+no reproducible con ninguna agregación (valor final, pooled/per-trial de todo el trial,
+pooled/per-trial solo-conflicto). Además, el promedio λ solo-en-conflicto **no es una métrica
+válida** — su fórmula (`cmd_mag / ‖actividad neuronal‖`) mezcla escalas incompatibles (m/s contra
+la norma de un vector de activación crudo) y da valores pequeños por diseño, no porque el sistema
+decida peor. **Ambos números fueron eliminados de la tabla y del paper.**
+
+La métrica correcta, reproducible y ya verificada por el equipo es **exposición al conflicto**:
+cuánto tiempo permanece cada sistema en conflicto simultáneo real (rojo Y azul presentes) antes de
+resolverlo. Para Familia B: Neural ~0.2s/trial (1.1-1.7% del tiempo del trial, según definición
+del denominador) vs. FSM ~6.1s/trial (4.3-4.7%) — **el fallo de la FSM es que permanece sin
+resolver ~30 veces más tiempo, no que decida peor mientras está en conflicto.** Recalculado en esta
+sesión desde `sim_time_s` exacto (no una cadencia de fila asumida) — los segundos/trial coinciden
+exactamente con la estimación propia del equipo; el % difiere levemente por la definición del
+denominador (ver `_conflict_exposure()` en `build_master_table.py`). Solo aplica a familias con
+estímulos rojo+azul simultáneos reales (Complex) — "—" en las demás es esperado, no dato faltante.
 
 ## Output files
 
 | File in `output/` | Builder | Estado (ronda 2) | Used in |
 |---|---|---|---|
 | `table_master_comparison.csv` | `build_master_table.py` | Datos crudos (traza, no promover tal cual) | Fuente de `table_master_comparison_display.csv` |
-| `table_master_comparison_display.csv` | `build_master_table.py::build_display_table` | ✅ Rehecho ronda 2 (encabezados legibles, sin N-columnas, λ distinguida) | Nueva subsección `results.tex` (R2-02), tabla comparativa |
-| `fig_sr_vs_noise_level.png` | `build_sr_vs_nl.py` | ✅ Ajustado ronda 2 (eje recortado, overlap de Obstacle marcado) | Nueva subsección `results.tex` (R2-02) |
+| `table_master_comparison_display.csv` | `build_master_table.py::build_display_table` | ✅ Ronda 3: sin columna Nota (caveats van en prosa), λ-conflict-only reemplazada por **Conflict Exposure** (ver hallazgo resuelto abajo) | Nueva subsección `results.tex` (R2-02), tabla comparativa |
+| `fig_sr_vs_noise_level.png` | `build_sr_vs_nl.py` | ✅ Ronda 3: quitada la anotación de texto que solapaba el eje en Obstacle (la explicación del solapamiento va en el pie de figura de la sesión de escritura — ambos sistemas están al 100% en los 5 niveles de ruido evaluados, no un subconjunto) | Nueva subsección `results.tex` (R2-02) |
 | `fig_mode_timeline_complex.png` | `build_mode_timelines.py` | ✅ Aprobado ronda 1 (nota: redacción debe explicar las fluctuaciones repentinas del modo FSM) | Nueva subsección `results.tex` (R2-02) |
 | `fig_mode_timeline_inspection.png` | `build_mode_timelines.py` | ✅ Aprobado ronda 1 (misma nota que arriba) | Ampliación de la subsección `R3-05` existente |
 
