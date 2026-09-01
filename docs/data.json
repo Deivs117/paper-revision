@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-01T01:52:21+00:00",
-  "progressLastCommit": "2026-08-31T20:47:14-05:00",
+  "generatedAt": "2026-09-01T01:55:42+00:00",
+  "progressLastCommit": "2026-08-31T20:52:21-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -107,7 +107,7 @@
         "Diego",
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/r3-04-noise-robustness-evaluation.tex",
       "activity": "En desarrollo — pruebas de robustez a ruido en curso"
     },
