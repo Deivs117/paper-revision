@@ -43,6 +43,13 @@ D-11 (isolate each data series by its known plot color, calibrate axes from know
 All five figures originally flagged in `experiments/N-02-physical-figure-regeneration/README.md`
 §"Remaining work" are now done — see that file's updated status.
 
+## Extracted 2026-09-02 (C-21 pixel-level audit follow-up) — fig2_roc_curve, fig3_training_loss
+
+| CSV | Source PNG | Script | Validation |
+|---|---|---|---|
+| `fig2_roc_curve.csv` | `assets/fig2_roc_curve.png` | `extract_fig2_roc_curve.py` | Found during the C-21 text-occlusion audit: this figure renders sans-serif, inconsistent with the rest of the paper, and has no generator script anywhere in `experiments/` — legacy figure predating the pipeline. Author confirmed no raw prediction-probabilities data survives to regenerate it from the actual model. Vectorized by pixel color (tab:blue step curve, legend swatch at x=[500,558]/y=[699,702] blanked before extraction so it wouldn't leak into the curve — confirmed isolated, not part of the real trend at that x-range). Re-plotted (`classifier_suite.py::build_fig2_roc`) and cross-checked: trapezoidal AUC from the extracted points = 0.864, vs. the original figure's own printed "AUC = 0.866" — within 0.002, confirming the extraction. The rebuilt legend now reads the extracted value (0.864) rather than hardcoding the original's 0.866, so the figure stays internally consistent with what it actually plots. |
+| `fig3_training_loss.csv` | `assets/fig3_training_loss.png` | `extract_fig3_training_loss.py` | Same situation — sans-serif, no builder, author confirmed no raw per-epoch training log survives. Single unlabeled tab:blue curve, no legend to exclude. Re-plotted and compared — decay shape/inflection (~epoch 10-25) and start/end values (0.75 → ~0.001) match the original closely. |
+
 ## Extracted 2026-08-27 (round 3, after author audit) — NEU_EST_UNIG/MUL_real
 
 | CSV | Source PNG | Script | Validation |

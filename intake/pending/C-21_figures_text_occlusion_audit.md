@@ -81,18 +81,29 @@ Builder: `experiments/_plotting/builders/stability_phases.py`.
 
 ---
 
-## 2. Hallazgo NO corregido — sin builder reproducible en el repo
+## 2. Hallazgo RESUELTO (2026-09-02, sesión siguiente) — vectorizadas, sin builder reproducible
 
-- **`fig2_roc_curve.png`, `fig3_training_loss.png`**: también usan tipografía sans-serif
-  inconsistente con el resto del paper (mismo síntoma que la Sección 1.3), pero búsqueda
-  exhaustiva en `experiments/**/*.py` no encontró ningún script que las genere — son figuras
-  legado, anteriores a la convención `experiments/<id>-slug/`, probablemente hechas a mano o desde
-  un notebook externo no conservado en este repo. **No se puede regenerar con estilo correcto sin
-  escribir un builder nuevo desde cero** (se necesitarían los datos crudos: matriz de confusión ya
-  documentada en `classifier_suite.py::CONFUSION`, pero la curva ROC completa y la curva de
-  pérdida de entrenamiento requieren las probabilidades/historial de entrenamiento del MLP, no
-  solo el resumen). Fuera de alcance de esta sesión — requiere que el equipo confirme si esos
-  datos crudos todavía existen antes de poder escribir el builder.
+El autor confirmó que **no existe información disponible para reconstruir** `fig2_roc_curve.png`
+ni `fig3_training_loss.png` desde datos crudos (ni probabilidades de predicción del MLP, ni log
+de pérdida por época) — instruyó vectorizar ambas por extracción de píxeles, mismo método D-1/D-11
+que el resto de `experiments/_plotting/vectorized/`.
+
+- **`fig2_roc_curve.png`** → `extract_fig2_roc_curve.py` → `vectorized/fig2_roc_curve.csv`.
+  Curva azul (paso, step function) extraída por color, excluyendo la muestra de leyenda
+  (`x=[500,558], y=[699,702]`, confirmada aislada de la curva real). **Validación cruzada:** AUC
+  trapezoidal recalculada desde los puntos extraídos = 0.864, contra el "AUC = 0.866" ya impreso
+  en la figura original — diferencia de 0.002, confirma que la extracción es fiel. La leyenda
+  reconstruida ahora muestra el valor recalculado (0.864), no el original hardcodeado, para que la
+  figura sea internamente consistente con lo que realmente grafica.
+- **`fig3_training_loss.png`** → `extract_fig3_training_loss.py` →
+  `vectorized/fig3_training_loss.csv`. Curva única sin leyenda, sin necesidad de exclusión.
+  Forma de decaimiento e inflexión (~época 10-25) y valores inicio/fin (0.75 → ~0.001) coinciden
+  con el original.
+
+Ambas re-generadas con `classifier_suite.py::build_fig2_roc()` / `build_fig3_training_loss()` —
+tipografía serif de publicación, consistente con el resto de figuras. Promovidas a `assets/` vía
+`scripts/promote_figure.sh --force`. Detalle completo de calibración de píxeles en
+`experiments/_plotting/vectorized/README.md` (entrada "2026-09-02").
 
 ## 3. Nota menor, no corregida — inconsistencia de tipografía adicional
 
@@ -125,12 +136,11 @@ Aversive/Obstacle, no se repitieron por presupuesto de la auditoría).
 ## 5. Estado
 
 Cambios de **solo imagen** (`assets/*.png`) — ningún `\caption{}` ni texto de `sections/*.tex`
-fue tocado, no se requiere `\revblue{}`. 8 archivos regenerados y re-promovidos a `assets/` vía
-`scripts/promote_figure.sh --force`. Fila `C-21` en `PROGRESS.md` documenta el cambio para
-trazabilidad, estado `applied` (las imágenes ya están en `assets/`, listas para el próximo
-`push_to_overleaf.sh`).
+fue tocado, no se requiere `\revblue{}`. **10 archivos** regenerados y re-promovidos a `assets/`
+vía `scripts/promote_figure.sh --force` (8 de la ronda 1 + `fig2_roc_curve.png`/
+`fig3_training_loss.png` de la ronda 2, vectorizadas — ver Sección 2). Fila `C-21` en
+`PROGRESS.md` documenta el cambio para trazabilidad, estado `applied` (las imágenes ya están en
+`assets/`, listas para el próximo `push_to_overleaf.sh`).
 
-Pendiente de decisión del autor: (a) escribir un builder nuevo para `fig2_roc_curve.png`/
-`fig3_training_loss.png` si los datos crudos del entrenamiento MLP siguen disponibles, o aceptar
-la inconsistencia tipográfica en esas dos; (b) si incluir `FigReal_Morphological_Transition_
-Energy.png` en una futura pasada de consistencia.
+Pendiente de decisión del autor: si incluir `FigReal_Morphological_Transition_Energy.png` (misma
+inconsistencia tipográfica, no corregida — Sección 3) en una futura pasada de consistencia.
