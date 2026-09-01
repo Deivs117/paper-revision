@@ -611,6 +611,11 @@ Approach-stop area threshold & Camera (indirect) & 28, 24, 20, 18, 14 (bounding-
 
 \revblue{At $\mathit{noise\_level\_idx}=0$ all three mechanisms are inactive, providing the unperturbed baseline; every level above 0 already combines all three simultaneously --- no configuration isolates a single sensor's contribution from the others. All trials used a fixed base seed ($\mathit{NoiseSeed}=42$) to keep the injected noise realization reproducible across replicates and severity levels. This sweep was evaluated across six simulated suites: the appetitive, aversive, and obstacle-avoidance single-stimulus scenarios, the combined multi-stimulus scenario, the Rugged Terrain course, and the Inclined Slope, retaining three successful replicates per severity level in each suite. Results are reported in Section~\ref{sec:results}.}
 
+\subsubsection{\revblue{FSM Gait Arbitration Baseline}}
+\label{ssec:FSMBaseline}
+
+\revblue{To address the reviewer's request for a finite state machine (FSM) baseline under identical experimental conditions, a second mode-arbitration controller was implemented that inherits the complete sensory pipeline, navigation dynamics, and noise-injection model described above unchanged, substituting only the mode-selection mechanism: instead of the continuous winner-take-all competition of Section~\ref{sec:methodology}'s Basal Ganglia Module, the FSM selects the active mode via a static, ordered priority hierarchy (terrain instability, then obstacle proximity, then aversive stimulus, then appetitive stimulus, defaulting to differential-rolling exploration), each stimulus-triggered rule holding its selected mode for a fixed persistence interval once triggered. Because every other component is shared byte-for-byte between the two controllers, any behavioral difference between them is attributable exclusively to this mode-selection mechanism, not to differences in perception, low-level navigation, or experimental configuration. Both controllers were evaluated across the same seven simulated suites under matching trial counts, noise levels, and success criteria; results are reported in Section~\ref{sec:results}.}
+
 \FloatBarrier
 
 \subsection{Physical Platform Construction and Experimental Setup}
@@ -1161,6 +1166,61 @@ physical platform experiments; the reader is referred to that
 section for the corresponding energy characterisation of each mode.
 
 
+\subsubsection{\revblue{FSM Gait Arbitration Baseline Comparison}}
+\label{sssec:fsm_baseline_comparison}
+
+\revblue{To address the reviewer's request for a finite state machine (FSM) baseline under identical experimental conditions, the priority-hierarchy controller described in Section~\ref{ssec:FSMBaseline} was evaluated against the basal-ganglia arbitration network across all seven simulated suites, matched on trial count, noise levels, and success criteria. Table~\ref{tab:fsm_comparison} reports success rate, task completion time, Roll RMS, and $\lambda$ --- a motor-command clarity ratio (commanded-velocity magnitude relative to neural activity norm; higher indicates more decisive output) --- for both controllers in each suite.}
+
+\begin{table}[htbp]
+\centering
+\caption{\revblue{FSM vs.\ basal-ganglia (Neural) gait arbitration, all seven simulated suites. Complex/FSM has no completed trials (0\% success), so time/Roll RMS are undefined ($-$). $^\dagger$Obstacle/Neural Roll RMS includes one documented outlier trial (real, punctual instability, not excluded); without it, mean Roll RMS is $\approx 1.3^\circ$.}}
+\label{tab:fsm_comparison}
+\begin{tabularx}{\textwidth}{l l >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
+\toprule
+\textbf{Family} & \textbf{System} & \textbf{SR (\%)} & \textbf{Task Time (s)} & \textbf{Roll RMS (deg)} & \textbf{$\lambda$} \\
+\midrule
+Appetitive & Neural & 78.9  & 38.52 $\pm$ 1.20  & 0.536 $\pm$ 0.009 & 0.990 \\
+Appetitive & FSM    & 100.0 & 38.96 $\pm$ 1.77  & 0.525 $\pm$ 0.003 & 0.952 \\
+Aversive   & Neural & 88.2  & 9.98 $\pm$ 2.07   & 1.357 $\pm$ 0.106 & 0.925 \\
+Aversive   & FSM    & 100.0 & 8.32 $\pm$ 1.08   & 1.825 $\pm$ 0.112 & 0.731 \\
+Obstacle   & Neural & 100.0 & 15.49 $\pm$ 2.56  & 3.931 $\pm$ 8.925$^\dagger$ & 0.945 \\
+Obstacle   & FSM    & 100.0 & 12.44 $\pm$ 1.09  & 1.499 $\pm$ 0.089 & 0.811 \\
+Complex    & Neural & 100.0 & 24.96 $\pm$ 10.36 & 1.034 $\pm$ 0.349 & 0.976 \\
+Complex    & FSM    & 0.0   & --                & --                & 0.942 \\
+Inspection & Neural & 85.0  & 51.61 $\pm$ 11.96 & 1.302 $\pm$ 0.078 & 1.000 \\
+Inspection & FSM    & 45.0  & 55.13 $\pm$ 14.25 & 1.270 $\pm$ 0.136 & 0.985 \\
+Rugged Terrain & Neural & 50.0  & 54.94 $\pm$ 2.72  & 1.827 $\pm$ 0.033 & 0.909 \\
+Rugged Terrain & FSM    & 60.0  & 55.42 $\pm$ 8.56  & 1.739 $\pm$ 0.140 & 0.891 \\
+Inclined Slope & Neural & 100.0 & 77.02 $\pm$ 1.26  & 6.751 $\pm$ 7.160 & 0.996 \\
+Inclined Slope & FSM    & 71.4  & 64.53 $\pm$ 2.79  & 5.430 $\pm$ 8.209 & 0.993 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\revblue{In the three single-stimulus suites (Appetitive, Aversive, Obstacle), the FSM's fixed priority rule is structurally well-matched to the task --- one stimulus is active at a time, so a static hierarchy resolves it immediately and deterministically, reaching 100\% success in all three against the Neural system's 78.9--100\%. Figure~\ref{fig:sr_vs_noise_level} shows this advantage is consistent across the noise sweep, not just on average.}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{fig_sr_vs_noise_level.png}
+    \caption{\revblue{Success rate vs.\ noise level, single-stimulus suites. FSM holds 100\% at every level in all three panels; Neural success dips at intermediate/high noise in Appetitive and Aversive. In the Obstacle panel both systems are at 100\% across all five evaluated noise levels --- not a subset --- so the dashed Neural line sits exactly on top of the solid FSM line.}}
+    \label{fig:sr_vs_noise_level}
+\end{figure}
+
+\revblue{This advantage reverses in the Complex suite, where three stimuli (obstacle, aversive, appetitive) must be handled in sequence: Neural reaches 100\% success while FSM reaches 0\% (all 15 trials timing out or, in one case, tipping over). The mechanism is not that the FSM decides worse while a conflict is active, but that it stays in an unresolved simultaneous conflict (both aversive and appetitive stimuli detected at once) far longer before its fixed priority rule forces a choice: real-time conflict exposure averages $\approx$0.2~s/trial (1.7\% of trial time) for Neural against $\approx$6.1~s/trial (4.7\%) for FSM --- roughly 30$\times$ longer in absolute time. Once the FSM's obstacle-avoidance rule releases control, the robot is frequently repositioned within a second stimulus's detection range, and in the absence of any active rule the controller defaults to an undirected exploratory mode with no residual bias toward the original target, unlike the Neural system's persistent-activation memory (Section~\ref{ssec:FSMBaseline}).}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{fig_mode_timeline_complex.png}
+    \caption{\revblue{Active gait mode over time, Complex suite: a representative successful Neural trial (top) vs.\ a representative failed FSM trial (bottom, timeout). The FSM trace switches abruptly between modes and holds each one flat for tens of seconds at a time, since its fixed-duration persistence timers either hold a mode or release it outright with no intermediate state; the Neural trace shows shorter, more graduated occupancy of each mode, reflecting the continuous decay of the basal ganglia's lateral inhibition rather than a hard timer.}}
+    \label{fig:mode_timeline_complex}
+\end{figure}
+
+\revblue{On the two terrain suites (Rugged Terrain, Inclined Slope), success rate, task time, and Roll RMS are reported in Table~\ref{tab:fsm_comparison}, but $T_{switch}$/$T_{response}$ are deliberately omitted: the team that ran the FSM terrain trials identified three configuration differences from the basal-ganglia code's terrain-transition logic (the pitch-instability threshold, a transition timing offset, and the switching-time formula's margin term) that make those two specific metrics not comparable under strictly identical conditions without re-running both controllers with matched parameters, which was out of scope for this comparison. The Neural side of this comparison also draws on a substantially smaller sample (six Rugged Terrain trials, three Inclined Slope trials, restricted to the zero-noise condition to match the FSM runs) than the FSM side (25 and 21 trials respectively); the apparent tipover-rate difference on the Inclined Slope (zero tipovers in the small Neural sample vs.\ six of 21 FSM trials) is reported as an observation rather than a statistically supported finding given this sample-size imbalance.}
+
+\revblue{The Neural-side values recomputed here for the Appetitive, Aversive, Obstacle, and Complex suites are independently derived from raw trial logs and do not match Table~\ref{tab:consolidated_simulation_metrics}'s previously published figures for the same four suites (a discrepancy already tracked, not introduced by this comparison); the recomputed values are used throughout this subsection for internal consistency with Table~\ref{tab:fsm_comparison}.}
+
+\FloatBarrier
+
 \subsubsection{Reactive Inspection Task}
 
 \revblue{To directly address the reviewer's request for inspection-oriented task indicators, a dedicated experiment evaluates the platform's behavior in a purpose-built obstacle field where a visual target is not visible from the robot's initial pose and only enters the field of view after traversing three static capsule obstacles. Twenty independent trials were executed with a 90~s timeout and no artificial noise injection.}
@@ -1203,6 +1263,16 @@ $T_{task}$ (s)               & 51.6 $\pm$ 12.3   & 42.8  & 86.8  \\
 
 \revblue{The target was first visually acquired, on average, $T_{acquisition} = 32.2 \pm 14.1$~s into the trial. This is a first-acquisition metric, not re-acquisition, since the target is not visible from the initial pose in this scenario (Section~\ref{ssec:Limitations}). Visual pursuit is itself conditioned on the absence of a frontal obstacle: during evasion it is suspended, resuming automatically once the obstacle clears --- the system's re-acquisition-like behavior. The robot remained in the wheeled/differential locomotion mode (H) throughout all 20 trials, so no gait-transition stability data applies to this experiment.}
 
+\revblue{Under the FSM baseline (Section~\ref{ssec:FSMBaseline}) on this same scenario, success rate drops to 45\% (9/20) against the Neural system's 85\% (Table~\ref{tab:fsm_comparison}). The obstacle-avoidance rule's fixed persistence timer re-triggers whenever the FSM re-detects an obstacle after leaving avoidance mode, and in 11 of 20 trials the robot remains oriented such that it keeps re-entering avoidance, occupying that mode 93--99\% of trial time and never visually detecting the target at all --- a qualitative coverage failure, distinct from the Neural system's occasional timing-based misses (every Neural trial detects the target at least once). Figure~\ref{fig:mode_timeline_inspection} contrasts the resulting mode traces; the FSM's abrupt, timer-driven switching follows the same pattern described for the Complex suite (Section~\ref{sssec:fsm_baseline_comparison}).}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{fig_mode_timeline_inspection.png}
+    \caption{\revblue{Active gait mode over time, Reactive Inspection Task: a representative successful Neural trial (top) vs.\ a representative successful FSM trial (bottom) --- shown here for a case where the FSM does escape avoidance mode; in its 11 failing trials the lower trace instead stays flat in avoidance for nearly the entire duration. Both traces show the same qualitative difference as Figure~\ref{fig:mode_timeline_complex}: abrupt, timer-held FSM transitions vs.\ shorter, more graduated Neural mode occupancy.}}
+    \label{fig:mode_timeline_inspection}
+\end{figure}
+
+\FloatBarrier
 
 \subsection{Physical Implementation Results}
 

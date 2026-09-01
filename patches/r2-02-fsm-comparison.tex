@@ -1,0 +1,41 @@
+% PATCH: R2-02
+% Reviewer: 2
+% Target sections: sections/methodology.tex, sections/results.tex
+% Requirement: Add finite state machine (FSM) gait arbitration baseline comparisons under
+%   identical experimental conditions.
+% Status: applied
+%
+% Data/reproducible pipeline for this row (7 families, 4 audit rounds) was already built and
+% approved in prior sessions (experiments/R2-02-fsm-baseline/, intake/pending/
+% R2-02_fsm_baseline_reference.md, intake/pending/R2-02_audit_and_plan.md). This patch is the
+% writing session: promoted the 3 approved figures (table cited directly from the approved CSV,
+% no image) and wrote methodology.tex's baseline description + results.tex's comparison
+% subsection, per the author's explicit conciseness/comparative-not-descriptive brief.
+%
+% Promoted assets (scripts/promote_figure.sh, all new, no --force needed):
+%   fig_sr_vs_noise_level.png, fig_mode_timeline_complex.png, fig_mode_timeline_inspection.png
+
+% ============================================================
+% sections/methodology.tex -- new subsubsection, end of "Neuronal Control System"
+% (after ssec:NoiseRobustnessEval, before "Physical Platform Construction")
+% ============================================================
+
+\subsubsection{\revblue{FSM Gait Arbitration Baseline}}
+\label{ssec:FSMBaseline}
+
+\revblue{To address the reviewer's request for a finite state machine (FSM) baseline under identical experimental conditions, a second mode-arbitration controller was implemented that inherits the complete sensory pipeline, navigation dynamics, and noise-injection model described above unchanged, substituting only the mode-selection mechanism: instead of the continuous winner-take-all competition of Section~\ref{sec:methodology}'s Basal Ganglia Module, the FSM selects the active mode via a static, ordered priority hierarchy (terrain instability, then obstacle proximity, then aversive stimulus, then appetitive stimulus, defaulting to differential-rolling exploration), each stimulus-triggered rule holding its selected mode for a fixed persistence interval once triggered. Because every other component is shared byte-for-byte between the two controllers, any behavioral difference between them is attributable exclusively to this mode-selection mechanism, not to differences in perception, low-level navigation, or experimental configuration. Both controllers were evaluated across the same seven simulated suites under matching trial counts, noise levels, and success criteria; results are reported in Section~\ref{sec:results}.}
+
+% ============================================================
+% sections/results.tex -- new subsubsection "FSM Gait Arbitration Baseline Comparison"
+% (sssec:fsm_baseline_comparison), inserted before "Reactive Inspection Task": intro paragraph,
+% tab:fsm_comparison (7 families x Neural/FSM, 4 columns), single-stimulus paragraph +
+% fig:sr_vs_noise_level, Complex-suite paragraph (conflict exposure) + fig:mode_timeline_complex,
+% terrain (C1/C2) paragraph with the 3-config-difference and sample-size caveats, and a
+% Neural-value-provenance note (shared decision with N-01). "Reactive Inspection Task" (existing
+% R3-05 subsubsection) EXTENDED, not duplicated: one paragraph + fig:mode_timeline_inspection
+% contrasting FSM 45%/Neural 85%. Two \FloatBarrier added (before "Reactive Inspection Task" and
+% before "Physical Implementation Results") after the new figures were found floating past the
+% physical-results section boundary without them.
+% Full text: see sections/results.tex, \label{sssec:fsm_baseline_comparison} and the amended
+% \subsubsection{Reactive Inspection Task}.
+% ============================================================

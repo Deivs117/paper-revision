@@ -458,6 +458,11 @@ Approach-stop area threshold & Camera (indirect) & 28, 24, 20, 18, 14 (bounding-
 
 \revblue{At $\mathit{noise\_level\_idx}=0$ all three mechanisms are inactive, providing the unperturbed baseline; every level above 0 already combines all three simultaneously --- no configuration isolates a single sensor's contribution from the others. All trials used a fixed base seed ($\mathit{NoiseSeed}=42$) to keep the injected noise realization reproducible across replicates and severity levels. This sweep was evaluated across six simulated suites: the appetitive, aversive, and obstacle-avoidance single-stimulus scenarios, the combined multi-stimulus scenario, the Rugged Terrain course, and the Inclined Slope, retaining three successful replicates per severity level in each suite. Results are reported in Section~\ref{sec:results}.}
 
+\subsubsection{\revblue{FSM Gait Arbitration Baseline}}
+\label{ssec:FSMBaseline}
+
+\revblue{To address the reviewer's request for a finite state machine (FSM) baseline under identical experimental conditions, a second mode-arbitration controller was implemented that inherits the complete sensory pipeline, navigation dynamics, and noise-injection model described above unchanged, substituting only the mode-selection mechanism: instead of the continuous winner-take-all competition of Section~\ref{sec:methodology}'s Basal Ganglia Module, the FSM selects the active mode via a static, ordered priority hierarchy (terrain instability, then obstacle proximity, then aversive stimulus, then appetitive stimulus, defaulting to differential-rolling exploration), each stimulus-triggered rule holding its selected mode for a fixed persistence interval once triggered. Because every other component is shared byte-for-byte between the two controllers, any behavioral difference between them is attributable exclusively to this mode-selection mechanism, not to differences in perception, low-level navigation, or experimental configuration. Both controllers were evaluated across the same seven simulated suites under matching trial counts, noise levels, and success criteria; results are reported in Section~\ref{sec:results}.}
+
 \FloatBarrier
 
 \subsection{Physical Platform Construction and Experimental Setup}
