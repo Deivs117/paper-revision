@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-01T01:47:14+00:00",
-  "progressLastCommit": "2026-08-31T20:25:59-05:00",
+  "generatedAt": "2026-09-01T01:52:21+00:00",
+  "progressLastCommit": "2026-08-31T20:47:14-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -19,12 +19,13 @@
       "id": "R2-02",
       "reviewer": "2",
       "requirement": "Add FSM gait arbitration baseline comparison",
-      "target": "methodology.tex (baseline description, new), results.tex (comparison data, new) — confirmed no existing FSM content anywhere",
-      "dataSource": "intake/pending/R2-02_fsm_baseline_reference.md (arquitecturas, resultados completos A/B/E, notas de redacción, párrafo de respuesta al referee listo para copiar, instructivos para C1/C2). Datos en PETER_SIMULATION/docs/resultados/simulation/ (Docker). Familias completadas (neural+FSM): A-Apetitivo, A-Aversivo, A-Obstáculo, B-Compleja, E-Inspección. Pendiente de ejecución: C1-Terreno Rugoso FSM, C2-Pendiente FSM (ver §9 del intake doc).",
+      "target": "methodology.tex (baseline description, new), results.tex (new comparison subsection; Familia E's comparison extends the existing R3-05 subsection, author decision 2026-09-01, instead of a separate block — R3-05's inspection Neural data is the exact same dataset reused here, not duplicated) — confirmed no existing FSM content anywhere",
+      "dataSource": "Data/reproducible-pipeline audited and built for the 5 complete families, prose NOT started. intake/pending/R2-02_fsm_baseline_reference.md (758 líneas, ya escrito por el equipo antes de esta sesión: arquitecturas, resultados completos A/B/E con interpretación mecanicista, síntesis, párrafo de respuesta al referee, instructivos completos para C1/C2 §9-11) — verificado en esta sesión línea por línea contra el código fuente real (PETER_SIMULATION rama fsm, commit 10e8aac9) y spot-checks numéricos contra los datos crudos: arquitectura y cifras coinciden. Reorganizado experiments/R2-02_fsm_results/ → experiments/R2-02-fsm-baseline/ (convención _TEMPLATE, config.yaml mapea qué carpeta \"Neural\" corresponde a cada familia FSM — 3 de las 5 reutilizan datasets ya existentes de otros experimentos, no duplicados: experiments/simulation/ para A×3/B, experiments/R3-05-inspection/data/ para E). 3 scripts nuevos en scripts/ (tabla maestra recalculada, gráfica SR-vs-nivel-de-ruido, timelines modales Familia B/E) — ejecutados y verificados visualmente; un bug propio de conteo de intentos corregido durante la verificación (ver intake/pending/R2-02_audit_and_plan.md §6). Hallazgo crítico sin resolver, compartido con la fila N-01: el lado \"Neural\" recalculado desde trial_summary.json para A-Apetitivo/Aversivo/Obstáculo/Compleja no coincide con tab:consolidated_simulation_metrics ya publicado (misma discrepancia exacta que N-01 dejó abierta, p.ej. Obstacle Roll 3.93±8.92° recalculado vs. 0.55±0.02° publicado) — la sesión de escritura debe decidir qué números citar antes de redactar; recomendado resolver junto con el hallazgo de N-01, no por separado. Otro hallazgo abierto: la cifra \"λ-eficiencia en conflicto 0.982/0.837\" (Familia B) tiene fórmula clara en código (neural_recorder.py::_compute_lambda_efficiency) pero no se reprodujo exactamente desde los CSV crudos con ninguna de las 2 agregaciones probadas — confirmar con el equipo el criterio exacto antes de citarla. Pendiente de ejecución (sin cambios): C1-Terreno Rugoso FSM, C2-Pendiente FSM (ver §9 del intake doc — aún no lanzadas). Data source: experiments/R2-02-fsm-baseline/.",
       "category": "Pruebas",
       "owner": [
         "Diego",
-        "Sam"
+        "Sam",
+        "Deivi"
       ],
       "status": "pending",
       "patchFile": "—",
