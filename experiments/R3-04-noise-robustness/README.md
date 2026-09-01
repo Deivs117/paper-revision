@@ -90,16 +90,30 @@ produjo `data/`.
 
 ## How to regenerate
 
-No regenerable desde cero con un solo comando (ver arriba). Para reprocesar los datos ya
-entregados una vez que existan scripts en `scripts/`:
+No regenerable desde cero con un solo comando (ver arriba). Lo que ya existe se reprocesa con:
 
 ```
-cd experiments/R3-04-noise-robustness
-python3 scripts/<pendiente>.py   # agregación + figuras — no implementado todavía en esta sesión
+cd paper-revision
+experiments/.venv_plotting/bin/python experiments/_plotting/builders/micro_dynamics.py \
+  --simulation-root experiments/R3-04-noise-robustness/data \
+  --output-dir experiments/R3-04-noise-robustness/output
 ```
+
+El resto de figuras (Fig R1/R2/R3, Tabla R1/R2, ver
+`intake/pending/R3-04_audit_and_plan.md` §6) todavía no tiene builder — pendiente para la sesión de
+escritura, ver `intake/pending/R3-04_images_pipeline_audit.md`.
 
 ## Output files
 
-| File in `output/` | Promoted to (`assets/...`) | Used in |
-|---|---|---|
-| *(pendiente — no generado en esta sesión de auditoría/planificación)* | — | Fig. R1/R2/R3, Tabla R1/R2 — ver `intake/pending/R3-04_audit_and_plan.md` §6 |
+| File in `output/` | Builder | Promoted to (`assets/...`) | Used in |
+|---|---|---|---|
+| `fig2_Appetitive_micro_test_001_SUCCESS.png` | `experiments/_plotting/builders/micro_dynamics.py` | no — pendiente de revisión de autor | reemplazaría `assets/fig2_Appetitive_micro_test_005_SUCCESS.png`, `\label{fig:appetitive_micro}` |
+| `fig2_Aversive_micro_test_001_SUCCESS.png` | ídem | no | reemplazaría `assets/fig2_Aversive_micro_test_005_SUCCESS.png`, `\label{fig:aversive_micro}` |
+| `fig2_Obstacle_micro_test_001_SUCCESS.png` | ídem | no | reemplazaría `assets/fig2_Obstacle_micro_test_005_SUCCESS.png`, `\label{fig:obstacle_micro}` |
+| `fig2_Complex_micro_test_001_SUCCESS.png` | ídem | no | reemplazaría `assets/fig2_Complex_micro_test_005_SUCCESS.png`, `\label{fig:complex_micro}` |
+
+Las 4 usan el trial `noise_level_idx=0` (baseline sin perturbación) de cada familia como
+representativo — ver `intake/pending/R3-04_images_pipeline_audit.md` para la justificación y las
+demás figuras (Fig R1/R2/R3, Tabla R1/R2) todavía sin construir. **No promovidas a `assets/`
+todavía** — quedan en `output/` para revisión del autor antes de `scripts/promote_figure.sh`,
+mismo gate que usó N-01/N-02.
