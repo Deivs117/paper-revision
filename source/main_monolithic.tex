@@ -19,6 +19,7 @@
 
 \documentclass[preprint,12pt]{elsarticle}
 \usepackage{subcaption}
+\usepackage{placeins}
 \usepackage{hyperref}
 %% Use the option review to obtain double line spacing
 %% \documentclass[preprint,review,12pt]{elsarticle}
@@ -586,6 +587,30 @@ $U_{N_{1}}$ & 7.8 \\ \hline
 
 In Table~\ref{table:Locom_MLP}: $U_{N_0}$ and $U_{N_1}$ are the activation thresholds applied to MLP outputs $N_0$ (flat-terrain probability) and $N_1$ (inclined-terrain probability), respectively, used in Equations~\eqref{eq:Z0V2}--\eqref{eq:Z16V2}.
 
+\subsubsection{\revblue{Perception-Decision Noise-Robustness Evaluation}}
+\label{ssec:NoiseRobustnessEval}
+
+\revblue{To evaluate the tolerance of the whole perception-decision pipeline --- obstacle-sensory, basal-ganglia, locomotion, and gait-decision modules together --- to degraded sensing, three sensor-level perturbation mechanisms were combined into a single sweep index, $\mathit{noise\_level\_idx} \in \{0,1,2,3,4\}$, applied jointly across five discrete severity levels: IMU drift, LiDAR range noise, and camera illumination distortion. IMU drift is injected as a cumulative random-walk bias on the linear-acceleration and orientation channels ($a_x,a_y,a_z,Roll,Pitch$), with a per-step increment set by severity level (Table~\ref{table:PerturbationParams}); this random-walk drift is distinct from, and in this evaluation exercised independently of, additive IMU white noise, which the simulated sensor model also implements but which was held fixed at zero across all five levels reported here. LiDAR range noise is injected as Gaussian noise proportional to each sensor reading's measured range, already used elsewhere in this section's obstacle-sensory formulation. Camera illumination distortion, rather than a pixel-level optical degradation, perturbs the color-segmentation-based stimulus detector directly: a systematic bias on the detected stimulus's bounding-box area, a probabilistic detection dropout, and jitter on the bounding-box position, with a directional flag alternating the distortion between under- and over-exposure across trials.}
+
+\begin{table}[t]
+\centering
+\caption{\revblue{Per-sensor perturbation parameters, swept jointly (not in isolation) across $\mathit{noise\_level\_idx} \in \{0,\dots,4\}$.}}
+\begin{tabularx}{\textwidth}{|l|l|>{\raggedright\arraybackslash}X|}
+\hline
+\textbf{Parameter} & \textbf{Sensor} & \textbf{Values (levels 0--4)} \\ \hline
+IMU drift, acceleration & IMU & 0.0, 0.01, 0.03, 0.06, 0.09~m/s$^2$/step \\ \hline
+IMU drift, angle & IMU & 0.0, 0.01, 0.04, 0.08, 0.12~deg/step \\ \hline
+LiDAR range noise & LiDAR & 0.0, 0.05, 0.10, 0.15, 0.20 (fraction of range) \\ \hline
+Illumination severity & Camera & 0.0, 0.10, 0.20, 0.30, 0.30 (dimensionless) \\ \hline
+Approach-stop area threshold & Camera (indirect) & 28, 24, 20, 18, 14 (bounding-box area units) \\ \hline
+\end{tabularx}
+\label{table:PerturbationParams}
+\end{table}
+
+\revblue{At $\mathit{noise\_level\_idx}=0$ all three mechanisms are inactive, providing the unperturbed baseline; every level above 0 already combines all three simultaneously --- no configuration isolates a single sensor's contribution from the others. All trials used a fixed base seed ($\mathit{NoiseSeed}=42$) to keep the injected noise realization reproducible across replicates and severity levels. This sweep was evaluated across six simulated suites: the appetitive, aversive, and obstacle-avoidance single-stimulus scenarios, the combined multi-stimulus scenario, the Rugged Terrain course, and the Inclined Slope, retaining three successful replicates per severity level in each suite. Results are reported in Section~\ref{sec:results}.}
+
+\FloatBarrier
+
 \subsection{Physical Platform Construction and Experimental Setup}
 \label{ssec:Construction}
 
@@ -715,36 +740,36 @@ The performance of the platform was evaluated under isolated sensory stimuli to 
 \begin{figure*}[t]
     \centering
     \includegraphics[width=\textwidth]{fig1_noise_robustness_grid.png}
-    \caption{\revblue{Noise-robustness battery across the four single-stimulus simulation scenarios (rows: Appetitive, Aversive, Obstacle, Complex; $N=15$ trials/scenario) against three metrics (columns: Mission Time $T_{sim}$, Pitch RMS, Decision Latency), all as a function of the injected Sensory Noise Index ($\sigma \in [0,4]$). Error bars denote $\pm 1\sigma$ across trials. The Obstacle row's Decision Latency column is reconstructed by pixel-color vectorization of the previously published \texttt{fig1\_Obstacle\_macro.png} panel C (see \texttt{experiments/\_plotting/vectorized/README.md}), as no populated latency source exists for this scenario in the raw simulation logs; every other cell is computed directly from the raw trial data. This figure fuses what were four separate per-scenario robustness figures into one, replacing the four scenario-specific $T_{sim}$ axis labels (Mission/Evacuation/Evasion/Lifecycle Time) with the unified label above; the scenario-specific semantics of $T_{sim}$ are given in the prose below.}}
+    \caption{\revblue{Combined perception-decision noise-robustness battery (Section~\ref{ssec:NoiseRobustnessEval}, Table~\ref{table:PerturbationParams}) across the four single-stimulus/multi-stimulus simulation scenarios (rows: Appetitive, Aversive, Obstacle, Complex; three retained trials/severity level/scenario) against four metrics (columns: Mission Time $T_{sim}$, Pitch RMS, Decision Latency, $T_{switch}$), all as a function of the Combined Perturbation Level (index $0$--$4$, IMU drift + LiDAR range noise + camera illumination distortion applied jointly, never in isolation --- see Section~\ref{ssec:NoiseRobustnessEval}). Error bars denote $\pm 1\sigma$ across the three trials retained per point. The Pitch RMS column uses a per-row scale (ceiling at $1.1\times$ that row's maximum) rather than a fixed $0$--$4^\circ$ range, so that rows with little variation remain readable without losing cross-scenario magnitude comparability.}}
     \label{fig:noise_robustness_grid}
 \end{figure*}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.75\textwidth]{fig2_Appetitive_micro_test_005_SUCCESS.png}
-    \caption{Neural and kinematic response during a representative successful Appetitive Targeting trial (Trial 005).}
+    \includegraphics[width=0.75\textwidth]{fig2_Appetitive_micro_test_001_SUCCESS.png}
+    \caption{\revblue{Neural and kinematic response during a representative Appetitive Targeting trial at the unperturbed baseline (Combined Perturbation Level 0).}}
     \label{fig:appetitive_micro}
 \end{figure}
 
-\textbf{Appetitive Targeting (see Figure~\ref{fig:noise_robustness_grid}):} The appetitive module shows high resilience under perceptual uncertainty across all noise levels ($\sigma \in [0, 4]$): the neural controller dampens stochastic disturbances, and gait generation operates independently of visual tracking variance (see Table~\ref{tab:consolidated_simulation_metrics} for completion-time and attitude statistics). \revblue{Decision latency itself is noise-dependent rather than constant, remaining near-instantaneous at $\sigma = 0$ ($\approx 60$~ms mean) and rising to the $1.6$--$2.0$~s range as sensory noise increases (Decision Latency column, Appetitive row, of Figure~\ref{fig:noise_robustness_grid}).}
+\textbf{Appetitive Targeting (see Figure~\ref{fig:noise_robustness_grid}):} \revblue{The appetitive module retains task-level resilience across the full combined-perturbation sweep (Section~\ref{ssec:NoiseRobustnessEval}): every retained trial reaches the target regardless of severity level (see Figure~\ref{fig:noise_robustness_grid} for the per-level $T_{sim}$/Pitch RMS/Decision Latency/$T_{switch}$ trends). This robustness is evaluated under the combined perturbation --- IMU drift, LiDAR noise, and illumination distortion applied jointly --- not against any single sensor's contribution in isolation.}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.75\textwidth]{fig2_Aversive_micro_test_005_SUCCESS.png}
-    \caption{Trajectory deflection overdrive phase for a representative Aversive Escape trial (Trial 005), showing the immediate computational response of the repulsive network blocks.}
+    \includegraphics[width=0.75\textwidth]{fig2_Aversive_micro_test_001_SUCCESS.png}
+    \caption{\revblue{Trajectory deflection overdrive phase for a representative Aversive Escape trial at the unperturbed baseline (Combined Perturbation Level 0), showing the immediate computational response of the repulsive network blocks.}}
     \label{fig:aversive_micro}
 \end{figure}
 
-\textbf{Aversive Escape (see Figure~\ref{fig:aversive_micro}):} The defensive repulsion properties of the architecture are validated when exposed to proximal threats, with clearance-time statistics reported in Table~\ref{tab:consolidated_simulation_metrics}. The neural firing variance exhibits a swift, step-like onset upon threat detection — structural mobilization into a defensive overdrive state — and returns to baseline once the threat leaves the field of view, demonstrating the efficiency of the neural gating mechanism.
+\textbf{Aversive Escape (see Figure~\ref{fig:aversive_micro}):} \revblue{The defensive repulsion properties of the architecture were re-evaluated under the combined-perturbation sweep, with every retained trial across all five severity levels resolving the threat successfully (Figure~\ref{fig:noise_robustness_grid}).} The neural firing variance exhibits a swift, step-like onset upon threat detection — structural mobilization into a defensive overdrive state — and returns to baseline once the threat leaves the field of view, demonstrating the efficiency of the neural gating mechanism.
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.75\textwidth]{fig2_Obstacle_micro_test_005_SUCCESS.png}
-    \caption{Time-series synchronization for a representative Obstacle Evasion trial (Trial 005), showcasing the sensory-locomotor coupling triggered by LiDAR proximity boundaries.}
+    \includegraphics[width=0.75\textwidth]{fig2_Obstacle_micro_test_001_SUCCESS.png}
+    \caption{\revblue{Time-series synchronization for a representative Obstacle Evasion trial at the unperturbed baseline (Combined Perturbation Level 0), showcasing the sensory-locomotor coupling triggered by LiDAR proximity boundaries.}}
     \label{fig:obstacle_micro}
 \end{figure}
 
-\textbf{Obstacle Evasion (see Figure~\ref{fig:obstacle_micro}):} Smooth capsule geometries for simulated obstacles prevent localized torque spikes during contact; convergence-time and pitch-RMS statistics are reported in Table~\ref{tab:consolidated_simulation_metrics}. The sensory-locomotor coupling is precise: neural firing variance stays at a low baseline until the robot enters the obstacle's ranging threshold, at which point the avoidance sub-circuits modulate steering weights while preserving forward momentum.
+\textbf{Obstacle Evasion (see Figure~\ref{fig:obstacle_micro}):} Smooth capsule geometries for simulated obstacles prevent localized torque spikes during contact. \revblue{Every retained trial across all five combined-perturbation levels completed evasion successfully (Figure~\ref{fig:noise_robustness_grid}).} The sensory-locomotor coupling is precise: neural firing variance stays at a low baseline until the robot enters the obstacle's ranging threshold, at which point the avoidance sub-circuits modulate steering weights while preserving forward momentum.
 
 \subsubsection{Response to Multiple Stimuli of Different Natures}
 
@@ -780,14 +805,14 @@ Ultimately, the platform reaches its goal in 92 seconds, avoiding hazardous area
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.75\textwidth]{fig2_Complex_micro_test_005_SUCCESS.png}
-    \caption{Temporal dynamics for a representative Complex Navigation trial, demonstrating robust decision-making under conflicting sensory modalities.}
+    \includegraphics[width=0.75\textwidth]{fig2_Complex_micro_test_001_SUCCESS.png}
+    \caption{\revblue{Temporal dynamics for a representative Complex Navigation trial at the unperturbed baseline (Combined Perturbation Level 0), demonstrating decision-making under conflicting sensory modalities.}}
     \label{fig:complex_micro}
 \end{figure}
 
-\textbf{Complex Navigation (see Figure~\ref{fig:noise_robustness_grid}):} The complex navigation suite culminates the simulation validation, combining appetitive targets, aversive threats, and physical obstacles simultaneously; success rate, completion time, and attitude statistics are reported in Table~\ref{tab:consolidated_simulation_metrics} alongside the other three scenarios. Under high noise indices, the robot's local trajectory undergoes micro-corrections as it balances competing vector fields, while decision latency remains constant, indicating the network does not suffer from computational deadlocks. The neural firing variance profile shown in Fig.~\ref{fig:complex_micro} exhibits a two-stage computational increment: an initial peak ($t \approx 3$~s) for the aggressive evasion response to the aversive threat, followed by a second activation envelope ($t = 12$–$18$~s) capturing the gait switch required to navigate the narrow passage around the central obstacle; the system then enters a high-consistency tracking phase toward the target.
+\textbf{Complex Navigation (see Figure~\ref{fig:noise_robustness_grid}):} \revblue{The complex navigation suite culminates the simulation validation, presenting the obstacle, aversive, and appetitive stimuli within a single trial. In the neural firing-variance profile of Figure~\ref{fig:complex_micro}, the robot first clears the physical obstacle through the LiDAR-driven evasion pathway, without a corresponding shaded region since this channel is not one of the two stimulus-presence traces plotted; the aversive threat then drives a red-shaded burst of firing-variance activity as the quadrupedal escape response engages; once clear of the threat, a blue-shaded interval marks sustained appetitive tracking as the platform reorients and approaches the target under differential-rolling mode. The kinematic panel's Roll/Pitch RMS response tracks this same three-stimulus sequence, rising through each gait transition and settling once the target is reached. Every retained trial across all five combined-perturbation severity levels resolves this three-stimulus encounter successfully (Figure~\ref{fig:noise_robustness_grid}), evidencing that the arbitration network does not suffer from computational deadlocks even when a single trial exercises all three behavioral channels under joint sensor perturbation.}
 
-Table~\ref{tab:consolidated_simulation_metrics} consolidates these performance metrics across all four scenarios, confirming a 100\% success rate under stochastic noise injection ($\sigma \in [0,4]$) and low variance in kinematic stability and execution time throughout.
+Table~\ref{tab:consolidated_simulation_metrics} consolidates completion-time and attitude statistics across all four scenarios; \revblue{per-severity-level trends of these same metric families under the combined IMU-drift/LiDAR-noise/illumination-distortion perturbation (Section~\ref{ssec:NoiseRobustnessEval}) are reported separately in Figure~\ref{fig:noise_robustness_grid}.}
 
 \begin{table}[htbp]
 \centering
@@ -805,6 +830,42 @@ Complex Navigation   & 100.0\% & 58.41 $\pm$ 3.12 & 0.58 $\pm$ 0.03 & 1.12 $\pm$
 \bottomrule
 \end{tabularx}
 \end{table}
+
+\subsubsection{\revblue{Combined-Perturbation Robustness: Terrain Stability, Failure Modes, and Camera Dropout}}
+\label{sssec:noise_robustness_extra}
+
+\revblue{Two further scenarios --- the Rugged Terrain course and the Inclined Slope, already introduced in Section~\ref{sssec:variable_topo_quant} --- were re-evaluated under the same combined IMU-drift/LiDAR-noise/illumination-distortion sweep as the four scenarios above (Section~\ref{ssec:NoiseRobustnessEval}). This is a separate battery from the unperturbed Rugged Terrain/Inclined Slope trials analyzed in Section~\ref{sssec:variable_topo_quant} and is not directly comparable to it; the two batteries differ in perturbation condition, not just sample size.}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.9\textwidth]{fig_R1_failure_by_family.png}
+    \caption{\revblue{Trial outcome by scenario across the combined-perturbation battery (all six suites, all severity levels pooled). Each bar decomposes total attempts into successful trials retained for analysis and discarded failures by cause (timeout, tipover, crash). The Rugged Terrain suite accounts for the large majority of non-timeout failures (8 tipovers, 4 crashes out of 27 attempts), markedly more than any other suite.}}
+    \label{fig:failure_by_family}
+\end{figure}
+
+\revblue{Figure~\ref{fig:failure_by_family} shows that failure under combined perturbation is not evenly distributed across scenarios: the Aversive Escape and Obstacle Evasion suites completed every attempt without a single discarded trial, the Appetitive Targeting and Complex Navigation suites discarded a share of attempts to timeout (respectively, before three successful replicates per severity level were retained), and the Rugged Terrain suite alone accounts for 8 tipovers and 4 crashes out of 27 attempts --- the only suite where the robot's structural stability, not merely task completion time, was compromised under perturbation. This asymmetry is addressed explicitly in Section~\ref{ssec:Limitations}.}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.85\textwidth]{fig_R2_terrain_stability_vs_noise.png}
+    \caption{\revblue{Chassis Roll RMS and Pitch RMS versus Combined Perturbation Level (index $0$--$4$) for the Rugged Terrain and Inclined Slope suites, successful trials only. Roll RMS on Rugged Terrain remains within a $1.65^\circ$--$1.9^\circ$ band across all severity levels; Pitch RMS on the Inclined Slope ranges $2.3^\circ$--$5.7^\circ$ across the sweep. The perturbation index is left as an unconverted integer rather than a percentage, since no single percentage scale represents all three sensor modalities' differently-defined severity units.}}
+    \label{fig:terrain_stability_vs_noise}
+\end{figure}
+
+\revblue{Among the trials that complete successfully, Figure~\ref{fig:terrain_stability_vs_noise} shows postural stability does not visibly degrade with perturbation severity on either terrain: Roll RMS on Rugged Terrain and Pitch RMS on the Inclined Slope both stay within the bands reported in the caption across the full severity sweep, without a monotonic trend toward instability. Read together with Figure~\ref{fig:failure_by_family}, this indicates that Rugged Terrain's elevated tipover/crash count is concentrated in the trials discarded before completion rather than reflected as progressive attitude degradation in the trials that do complete --- a distinction relevant to how this suite's robustness should be characterized (Section~\ref{ssec:Limitations}).}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.75\textwidth]{fig_R3_camera_dropout_evidence.png}
+    \caption{\revblue{Appetitive-stimulus detection fraction over time for a matched pair of Appetitive Targeting attempts under camera illumination distortion: a failed attempt (timeout) and its successful retry at the same severity level. The failed attempt's detection fraction collapses to $\approx 0.01$ for the majority of the trial, while the successful retry sustains $\approx 0.99$ detection throughout.}}
+    \label{fig:camera_dropout_evidence}
+\end{figure}
+
+\revblue{Figure~\ref{fig:camera_dropout_evidence} isolates a case where a purely sensor-level event --- the illumination-distortion model's probabilistic detection dropout suppressing the appetitive-stimulus detector almost entirely for one attempt --- propagates all the way to a task-level failure: with the target undetected for nearly the whole trial, the appetitive channel never accumulates enough sustained activation to drive an approach, and the trial times out. The retry at the identical severity level, drawing a different dropout realization, sustains detection throughout and completes normally. This is precisely the pipeline-level (not sensor-level-only) evidence the combined-perturbation evaluation is designed to surface: the failure mode originates in the camera-illumination stage but only becomes visible as a robustness concern once its consequence for task completion is measured, not from the sensor-level distortion metric alone.}
+
+\revblue{Regarding the LiDAR-noise component of this evaluation specifically: the perturbation reaches the reactive obstacle-evasion pathway (the sensory-ring and locomotion-module units described in Section~\ref{sec:methodology}) in every scenario reported above, but --- in the code that generated this dataset --- does not reach the basal-ganglia arbitration competition between the obstacle, appetitive, and aversive channels, whose LiDAR-derived input channel is held at zero irrespective of sensor noise. The robustness demonstrated here for LiDAR noise should accordingly be read as established at the reactive-evasion level, not as a demonstration that the three-way arbitration competition itself tolerates LiDAR noise.}
+
+\FloatBarrier
 
 \subsubsection{Basal Ganglia Ablation Study}
 
@@ -1601,7 +1662,7 @@ constrained environment, rather than as performance guarantees
 for deployment in specific industrial buildings.%
 
 
-Beyond the hardware and simulation-environment constraints above, the neural and locomotion-control parameters were manually tuned and kept constant throughout all experiments, without applying adaptive optimization processes that could enhance performance in more diverse scenarios; system resilience was also not assessed under partial hardware failures or temporary sensory dropout conditions likely to occur in real industrial environments. The multimodal sensory integration, moreover, does not follow a formal fusion framework in the classical signal-processing sense---such as Kalman filtering, Bayesian estimation, or deep sensor fusion. Instead, cross-modal integration emerges implicitly within the bio-inspired neural network: each sensory channel feeds differentiated neural pathways that converge through Winner-Take-All competition dynamics in the basal ganglia module, effectively distributing the fusion function across the network topology. While this approach is biologically grounded, it has not been formally compared against standard fusion methods. Similarly, visual stimulus detection relies on color-based segmentation calibrated under controlled illumination, without evaluation under varying lighting conditions or occlusion. Notwithstanding these design simplifications, the system demonstrated empirical robustness to stochastic sensory perturbations: under artificially introduced noise levels ($\sigma \in [0, 4]$), mission completion times remained tightly bounded and kinematic variance was minimal across all tested conditions, \revblue{even though decision latency itself scales with noise level rather than staying invariant (see the simulation quantitative-validation results above)}---evidencing that the neural architecture effectively absorbs sensory disturbances without compromising behavioral integrity. These constraints do not invalidate the results but indicate that the next development stage should focus on validating the proposed architecture in a prototype that includes robustness and adaptability tests under real, non-controlled conditions.
+Beyond the hardware and simulation-environment constraints above, the neural and locomotion-control parameters were manually tuned and kept constant throughout all experiments, without applying adaptive optimization processes that could enhance performance in more diverse scenarios; system resilience was also not assessed under partial hardware failures or temporary sensory dropout conditions likely to occur in real industrial environments. The multimodal sensory integration, moreover, does not follow a formal fusion framework in the classical signal-processing sense---such as Kalman filtering, Bayesian estimation, or deep sensor fusion. Instead, cross-modal integration emerges implicitly within the bio-inspired neural network: each sensory channel feeds differentiated neural pathways that converge through Winner-Take-All competition dynamics in the basal ganglia module, effectively distributing the fusion function across the network topology. While this approach is biologically grounded, it has not been formally compared against standard fusion methods. Similarly, visual stimulus detection relies on color-based segmentation calibrated under controlled illumination, without evaluation under varying lighting conditions or occlusion. Notwithstanding these design simplifications, \revblue{the perception-decision noise-robustness evaluation (Section~\ref{ssec:NoiseRobustnessEval}) demonstrated empirical robustness under combined IMU-drift, LiDAR-noise, and camera-illumination-distortion perturbation, evaluated jointly rather than isolated per sensor --- no configuration in this evaluation exercises a single sensor's degradation in isolation from the other two. Within the same evaluation, additive IMU white noise (distinct from the random-walk drift that was exercised) was held at zero throughout and so was not tested here. Robustness was also not uniform across scenarios: the Rugged Terrain suite showed a markedly elevated failure rate under perturbation relative to the other five suites, with 8 tipovers and 4 crashes recorded out of 27 attempts (Section~\ref{sssec:noise_robustness_extra}), indicating that combined sensory perturbation degrades structural stability specifically on this terrain even though the trials that do complete show no corresponding trend toward instability.} These constraints do not invalidate the results but indicate that the next development stage should focus on validating the proposed architecture in a prototype that includes robustness and adaptability tests under real, non-controlled conditions.
 
 \revblue{Regarding the basal-ganglia ablation study (Section~\ref{sec:results}): the conflict-efficiency metric $\lambda$ was excluded from the reported results because its current implementation only registers active conflict when two specific channels are simultaneously present within the sampling window, a condition rarely met in practice across these trials --- this is a limitation of the metric's present instrumentation, not evidence that conflict efficiency is unaffected by the ablations. Additionally, per-cycle firing-variance and temporal-consistency diagnostics, which could further characterize the \emph{threshold-only} variant's failure mode (e.g.\ oscillation near the decision boundary, as opposed to outright deadlock), were not captured for this dataset; the threshold-versus-WTA comparison therefore relies on decision latency and attitude stability rather than on these more targeted diagnostics.}
 
@@ -1622,7 +1683,7 @@ These results are consistent with those reported by \citet{sarvestani2013computa
 
 \revblue{Section~\ref{ssec:Limitations} details the present work's limitations, spanning the physical platform's hardware envelope, the scope of experimental validation, manual parameter tuning, and the absence of a formal sensor-fusion framework; the future-work priorities they motivate are consolidated below.}
 
-\revblue{The findings provide a highly efficient baseline demonstrating that lightweight, bio-inspired neural networks ---arbitrating between locomotion modes and reactive behaviors driven by visual and inertial cues--- can manage multimodal gait transitions on embedded hardware, allowing a real robotic platform to navigate, stabilize, and make decisions robustly in environments with obstacles and adverse terrains. The ability to switch locomotion modes based on inertial stability metrics expands the robot's operational range across flat, rough, and inclined surfaces, while the integration of camera, LiDAR, and IMU into low-latency decision loops enabled dynamic goal prioritization, collision avoidance, and timely, collision-free goal approach, validated in both simulation and physical experiments. When scaled onto robust physical platforms, this low-cost computational paradigm illustrates how decentralized, bio-inspired architectures could optimize energy efficiency and behavioral reliability, serving as a stepping stone toward bridging open-loop exploratory prototypes and the rigorous stabilization required by unconstrained, real-world deployment in power-plant monitoring or automated industrial operations.}
+\revblue{The findings provide a highly efficient baseline demonstrating that lightweight, bio-inspired neural networks ---arbitrating between locomotion modes and reactive behaviors driven by visual and inertial cues--- can manage multimodal gait transitions on embedded hardware, allowing a real robotic platform to navigate, stabilize, and make decisions robustly in environments with obstacles and adverse terrains. The ability to switch locomotion modes based on inertial stability metrics expands the robot's operational range across flat, rough, and inclined surfaces, while the integration of camera, LiDAR, and IMU into low-latency decision loops enabled dynamic goal prioritization, collision avoidance, and timely, collision-free goal approach, validated in both simulation and physical experiments. The perception-decision pipeline additionally retained task-level performance under combined IMU-drift and LiDAR-noise perturbation, and, conditionally on the scenario, camera illumination distortion (Section~\ref{ssec:NoiseRobustnessEval}), evaluated jointly rather than as isolated single-sensor degradations. When scaled onto robust physical platforms, this low-cost computational paradigm illustrates how decentralized, bio-inspired architectures could optimize energy efficiency and behavioral reliability, serving as a stepping stone toward bridging open-loop exploratory prototypes and the rigorous stabilization required by unconstrained, real-world deployment in power-plant monitoring or automated industrial operations.}
 
 \revblue{The modular nature of the architecture facilitates its adaptation to different robotic platforms and sensor types, broadening its applicability across mission scenarios; the current pipeline of inertial and vision data (including stagnation detection) already allows new sensor modalities to be incorporated without modifying the system's core arbitration and sensorimotor fusion principles. Beyond mobility, the framework is extensible toward inspection-specific sensing: incorporating NDT modalities (infrared, ultrasound, hyperspectral) and fusing them over 2.5D maps will enable more reliable damage diagnostics. Future-work priorities include: long-term field validation under unconstrained, real-world outdoor conditions; migrating the arbitration logic to industrial-grade platforms with closed-loop dynamic gait replanning; integrating a formal sensor-fusion framework; exploring energy-efficient lateral-locomotion alternatives that reduce the Omnidirectional mode's parasitic-friction overhead (Section~\ref{sec:results}); and adaptive threshold learning and policy optimization to reduce manual tuning, together with safety and traceability protocols aligned with current standards ---evolving the platform from a functional prototype into a practical autonomous inspection tool.}
 

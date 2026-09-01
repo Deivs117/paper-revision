@@ -434,6 +434,30 @@ $U_{N_{1}}$ & 7.8 \\ \hline
 
 In Table~\ref{table:Locom_MLP}: $U_{N_0}$ and $U_{N_1}$ are the activation thresholds applied to MLP outputs $N_0$ (flat-terrain probability) and $N_1$ (inclined-terrain probability), respectively, used in Equations~\eqref{eq:Z0V2}--\eqref{eq:Z16V2}.
 
+\subsubsection{\revblue{Perception-Decision Noise-Robustness Evaluation}}
+\label{ssec:NoiseRobustnessEval}
+
+\revblue{To evaluate the tolerance of the whole perception-decision pipeline --- obstacle-sensory, basal-ganglia, locomotion, and gait-decision modules together --- to degraded sensing, three sensor-level perturbation mechanisms were combined into a single sweep index, $\mathit{noise\_level\_idx} \in \{0,1,2,3,4\}$, applied jointly across five discrete severity levels: IMU drift, LiDAR range noise, and camera illumination distortion. IMU drift is injected as a cumulative random-walk bias on the linear-acceleration and orientation channels ($a_x,a_y,a_z,Roll,Pitch$), with a per-step increment set by severity level (Table~\ref{table:PerturbationParams}); this random-walk drift is distinct from, and in this evaluation exercised independently of, additive IMU white noise, which the simulated sensor model also implements but which was held fixed at zero across all five levels reported here. LiDAR range noise is injected as Gaussian noise proportional to each sensor reading's measured range, already used elsewhere in this section's obstacle-sensory formulation. Camera illumination distortion, rather than a pixel-level optical degradation, perturbs the color-segmentation-based stimulus detector directly: a systematic bias on the detected stimulus's bounding-box area, a probabilistic detection dropout, and jitter on the bounding-box position, with a directional flag alternating the distortion between under- and over-exposure across trials.}
+
+\begin{table}[t]
+\centering
+\caption{\revblue{Per-sensor perturbation parameters, swept jointly (not in isolation) across $\mathit{noise\_level\_idx} \in \{0,\dots,4\}$.}}
+\begin{tabularx}{\textwidth}{|l|l|>{\raggedright\arraybackslash}X|}
+\hline
+\textbf{Parameter} & \textbf{Sensor} & \textbf{Values (levels 0--4)} \\ \hline
+IMU drift, acceleration & IMU & 0.0, 0.01, 0.03, 0.06, 0.09~m/s$^2$/step \\ \hline
+IMU drift, angle & IMU & 0.0, 0.01, 0.04, 0.08, 0.12~deg/step \\ \hline
+LiDAR range noise & LiDAR & 0.0, 0.05, 0.10, 0.15, 0.20 (fraction of range) \\ \hline
+Illumination severity & Camera & 0.0, 0.10, 0.20, 0.30, 0.30 (dimensionless) \\ \hline
+Approach-stop area threshold & Camera (indirect) & 28, 24, 20, 18, 14 (bounding-box area units) \\ \hline
+\end{tabularx}
+\label{table:PerturbationParams}
+\end{table}
+
+\revblue{At $\mathit{noise\_level\_idx}=0$ all three mechanisms are inactive, providing the unperturbed baseline; every level above 0 already combines all three simultaneously --- no configuration isolates a single sensor's contribution from the others. All trials used a fixed base seed ($\mathit{NoiseSeed}=42$) to keep the injected noise realization reproducible across replicates and severity levels. This sweep was evaluated across six simulated suites: the appetitive, aversive, and obstacle-avoidance single-stimulus scenarios, the combined multi-stimulus scenario, the Rugged Terrain course, and the Inclined Slope, retaining three successful replicates per severity level in each suite. Results are reported in Section~\ref{sec:results}.}
+
+\FloatBarrier
+
 \subsection{Physical Platform Construction and Experimental Setup}
 \label{ssec:Construction}
 
