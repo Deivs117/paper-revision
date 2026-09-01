@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-01T01:55:42+00:00",
-  "progressLastCommit": "2026-08-31T20:52:21-05:00",
+  "generatedAt": "2026-09-01T22:28:48+00:00",
+  "progressLastCommit": "2026-08-31T20:55:42-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -487,6 +487,19 @@
       ],
       "status": "synced-to-overleaf",
       "patchFile": "patches/c-19-table-figure-layout-cleanup.tex"
+    },
+    {
+      "id": "C-20",
+      "reviewer": "—",
+      "requirement": "Gap found via intake/pending/inspection_methodology_missing.md: results.tex's \"Reactive Inspection Task\" subsection (R3-05, already synced-to-overleaf) had no corresponding scenario-design description anywhere in methodology.tex — a reader reaching it had to infer the obstacle-field design, trial count, timeout, and success criterion retroactively from results prose. Added one short paragraph at the end of \\subsection{Gazebo Simulation} (after the visual-stimuli figure, before \\subsection{Neuronal Control System}): purpose-built obstacle field with an initially non-visible target (entering view after three static capsule obstacles, no raw world-file identifier named per README §11.1), $N=20$ trials, 90~s timeout, no artificial noise, and the same reactive (no map/no deliberate planning) BG/WTA behavior as the other scenarios, cross-referencing Section~\\ref{sec:results} for the actual metrics. Kept deliberately brief per the author's request — no numbers duplicated from results.tex beyond $N$/timeout, which conceptually belong to the experiment design. reassemble.py/validate_tex.sh/check_roundtrip.sh/compile_pdf.sh all pass; check_hardcoded_refs.sh clean.",
+      "target": "methodology.tex (new paragraph, end of \\subsection{Gazebo Simulation})",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-20-inspection-task-methodology.tex"
     }
   ]
 }
