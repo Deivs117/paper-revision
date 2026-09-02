@@ -3,7 +3,7 @@
 **Estado: ✅ Ejecutada 2026-08-31, author-requested antes de que todas las filas `Pruebas` (R2-02/
 R3-01/R3-02/R3-04) hubieran aterrizado** — el autor pidió correrla de una vez en vez de esperar,
 explícitamente para bajar el conteo de páginas si era posible. Resultado: 2 hallazgos reales de
-redundancia (`C-20`, `C-21`, ambos `applied`), el resto de los puntos del método (§2–§5 abajo)
+redundancia (`C-23`, `C-24`, ambos `applied`), el resto de los puntos del método (§2–§5 abajo)
 revisados con ojos frescos y confirmados sin acción necesaria. Ver §6 (nuevo) para el resultado y
 qué queda pendiente para R2-02/R3-01/R3-02/R3-04 cuando lleguen.
 
@@ -90,13 +90,13 @@ antes de este audit) compiló a **91 páginas** (+5).
 
 **Hallazgos reales de redundancia (fijados):**
 
-1. **`C-20`** — results.tex, subsección Limitations: el párrafo "Regarding the Reactive Inspection
+1. **`C-23`** — results.tex, subsección Limitations: el párrafo "Regarding the Reactive Inspection
    Task..." (añadido por `R3-05`) restablecía casi palabra por palabra 4 hechos ya establecidos en
    los propios párrafos de resultados de esa tarea (sin path planning/mapa; coverage rate no
    reportado + por qué; visual pursuit condicionado a ausencia de obstáculo frontal;
    $T_{acquisition}$ es primera adquisición no re-adquisición). Condensado a mención + referencia
    cruzada, mismo patrón que `R2-01` ya estableció.
-2. **`C-21`** — conclusions.tex, párrafo de basal ganglia: re-explicaba el mecanismo STN/GPe/GPi/STR
+2. **`C-24`** — conclusions.tex, párrafo de basal ganglia: re-explicaba el mecanismo STN/GPe/GPi/STR
    winner-take-all ya descrito en methodology.tex's Basal Ganglia Module. Este par ya se había
    identificado durante `C-12` (ofrecido como opción, no elegida esa ronda) — ejecutado ahora.
    Condensado a referencia cruzada + el contenido específico de resultados (latencia de 600ms,
@@ -121,7 +121,7 @@ antes de este audit) compiló a **91 páginas** (+5).
   por `R2-01`/`C-14` (plantilla de 3 párrafos → 1 párrafo por escenario, "Quantitative metrics are
   consolidated in..." des-duplicado 4x → 1x). No se encontró restatement adicional.
 
-**Por qué el conteo de páginas no bajó (91 páginas antes y después de `C-20`/`C-21`):** los ~140
+**Por qué el conteo de páginas no bajó (91 páginas antes y después de `C-23`/`C-24`):** los ~140
 palabras cortadas entre ambos hallazgos no cruzan un salto de página en una sección tan dominada por
 figuras/tablas flotantes como `results.tex`. El crecimiento real de páginas desde `R2-01` (+5,
 86→91) viene abrumadoramente de **contenido nuevo genuino** (N-01/04/05/06/07/08/09, R3-05, R3-06),

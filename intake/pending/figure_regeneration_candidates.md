@@ -1,7 +1,7 @@
 # Figure-regeneration candidates for further merging — for the team, not yet executed
 
 **Status:** 🔲 Reference list only, no `sections/*.tex` or `experiments/*` edits made from this doc.
-Split out from `intake/processed/figure_merge_audit.md` (`C-26`/`C-27`) — this is a wider, more
+Split out from `intake/processed/figure_merge_audit.md` (`C-29`/`C-30`) — this is a wider, more
 aggressive second pass over the same figure inventory, looking specifically for anything left after
 those two patches, including candidates that need touching `experiments/_plotting/` before a merge
 is safe.
@@ -10,17 +10,17 @@ is safe.
 list everything plausible even if some items carry real risk, so the team can triage rather than me
 silently dropping borderline candidates.
 
-## Group 1 — No image regeneration needed (pure `sections/*.tex` merges, same class as `C-26`)
+## Group 1 — No image regeneration needed (pure `sections/*.tex` merges, same class as `C-29`)
 
 These have **no baked-in letters and no internal-panel prose references** — they were simply missed
-in the `C-26` pass, not excluded for a technical reason. Lowest risk, fastest to execute.
+in the `C-29` pass, not excluded for a technical reason. Lowest risk, fastest to execute.
 
 ### 1a. `fig:robot` + `fig:pata` (methodology.tex, lines 11–22)
 
 Two consecutive 3D CAD renders — "3D design of the quadruped robotic platform" (`0.5\textwidth`,
 `angle=-7`) and "3D design of the robotic limb" (`0.4\textwidth`) — introduced back-to-back, each
 referenced once in plain prose with no letter suffix. Merge into one 2-subfigure figure, same
-mechanical pattern as `C-26`'s `Terreno_irre`/`Terreno_incli` fusion. **Only wrinkle:** `fig:robot`
+mechanical pattern as `C-29`'s `Terreno_irre`/`Terreno_incli` fusion. **Only wrinkle:** `fig:robot`
 uses `angle=-7` (rotated render) — keep that per-subfigure, it's independent of the outer subfigure
 wrapper.
 
@@ -80,12 +80,12 @@ the old letter meaning. Same procedure as `NEU_IMU`/`NEU_IMU2` below; only the s
   2. Regenerate, diff against the currently published `assets/NEU_IMU.png`/`NEU_IMU2.png` (same
      traces, just without the drawn letters).
   3. `scripts/promote_figure.sh --force` both into `assets/`.
-  4. Merge into one 2-subfigure figure in `sections/results.tex` (pattern: `patches/c-27-neu-imu-real-merge.tex`).
+  4. Merge into one 2-subfigure figure in `sections/results.tex` (pattern: `patches/c-30-neu-imu-real-merge.tex`).
   5. Reword the two sentences currently saying "Figure~\ref{fig:NEU_IMU2}a"/"...b" (they mean
      "Locomotion Module"/"Gait Decision Module" group *inside* that image — after the merge, `a`/`b`
      means "irregular"/"inclined" terrain instead). Name the panel directly instead.
   6. Normal flow: `next_id.sh C` → `validate_tex.sh`/`check_roundtrip.sh` → `compile_pdf.sh` (check
-     page count — `C-27`'s equivalent physical-pair merge moved it by 1 page, this one may or may
+     page count — `C-30`'s equivalent physical-pair merge moved it by 1 page, this one may or may
      not) → `PROGRESS.md` row → `patches/` record.
 
 ### 2b. `NEU_EST_UNIB` + `NEU_EST_UNIG` (simulation, results.tex, lines ~38–53)
@@ -115,7 +115,7 @@ rewording touches **two separate results.tex subsections** (Simulation Results' 
 Stimuli" and Physical Implementation Results' "Response to Multiple Stimuli") and, per an actual grep
 count, **7 letter-suffixed citations total** across both (sim: `fig:NEU_EST_MUL}b/c` at line 111,
 `}a` at line 113, `}d` at line 117; physical: `fig:NEU_EST_MUL_real}b` at line 507, `}d` at line 516,
-`}c` at line 551 — most of these are `C-25`'s already-tightened prose, so reword carefully to keep
+`}c` at line 551 — most of these are `C-28`'s already-tightened prose, so reword carefully to keep
 that tightening intact). **Not for a first pass** — flagging because it's a
 real, structurally distinct merge opportunity, but budget it as the largest item in this document.
 
@@ -129,7 +129,7 @@ real, structurally distinct merge opportunity, but budget it as the largest item
 
 ## Priority order, if the team wants one
 
-1. **1a, 1b, 1c** — no regeneration, same risk profile as the already-merged `C-26` pairs. Do these
+1. **1a, 1b, 1c** — no regeneration, same risk profile as the already-merged `C-29` pairs. Do these
    first regardless of appetite for the `experiments/` work below.
 2. **2a** (`NEU_IMU`/`NEU_IMU2`) — smallest regeneration job, already fully scoped.
 3. **2b** (`NEU_EST_UNIB`/`NEU_EST_UNIG`) — same mechanics as 2a, more citations to track down, but

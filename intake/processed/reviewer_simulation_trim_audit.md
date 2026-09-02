@@ -1,12 +1,12 @@
-# Reviewer-simulation trim audit — A+B+C+D all applied (C-22/C-23/C-24/C-25)
+# Reviewer-simulation trim audit — A+B+C+D all applied (C-25/C-26/C-27/C-28)
 
-**Status:** ✅ Fully resolved (2026-08-31). A+B+C applied first as `C-22`/`C-23`/`C-24` (91 pages,
+**Status:** ✅ Fully resolved (2026-08-31). A+B+C applied first as `C-25`/`C-26`/`C-27` (91 pages,
 unchanged). Candidate D (sim/physical neuron-by-neuron narration, ~350 words, the higher-risk item)
-then decided by the author as a moderate ~25–30% trim (not a full cut, not held) — applied as `C-25`.
+then decided by the author as a moderate ~25–30% trim (not a full cut, not held) — applied as `C-28`.
 Every neuron ID/figure ref/timestamp preserved; only sentence structure tightened. `compile_pdf.sh`
-recompiled at **89 pages** — down from the 91-page baseline held through `C-20`–`C-24`, the first cut
+recompiled at **89 pages** — down from the 91-page baseline held through `C-23`–`C-27`, the first cut
 in this whole redundancy/trim campaign (2026-08-31) to actually cross a page boundary. See
-`PROGRESS.md` rows `C-22`–`C-25` and `patches/c-22-*` through `c-25-*`.
+`PROGRESS.md` rows `C-25`–`C-28` and `patches/c-25-*` through `c-28-*`.
 
 **Origin:** author request (2026-08-31, in-chat) — "simulate being a paper reviewer, look for what could
 be omitted or is superfluous, report how much [page count] could be reduced by cutting it." Distinct
@@ -57,8 +57,8 @@ paper already had one.
 **Estimated savings: ~100–120 words.** Fix: merge into one closing paragraph — keep line 16's concrete
 claims (embedded-hardware validation, sim+physical, energy-aware efficiency framing) and line 20's
 hardware-boundary caveat, drop the restated "no heavy computational overhead / no expensive training"
-clause since it's already said once. This is a genuine redundancy finding (same category as `C-20`/
-`C-21`), not merely a length judgment call — worth doing regardless of whether it moves the page count.
+clause since it's already said once. This is a genuine redundancy finding (same category as `C-23`/
+`C-24`), not merely a length judgment call — worth doing regardless of whether it moves the page count.
 
 ### C. Medium confidence, low risk — terrain-latency 4-panel narrative (results.tex, lines 897–901)
 
@@ -111,7 +111,7 @@ only.
 Summing the confident/medium items (A + B + C, the ones with low-to-medium risk): **≈430–520 words**.
 Adding D (the riskier, author-judgment-call item): **≈780–870 words** total if everything here were cut.
 
-This is 5–6× larger than the ~140 words cut in `C-20`/`C-21` earlier today, which left the compiled page
+This is 5–6× larger than the ~140 words cut in `C-23`/`C-24` earlier today, which left the compiled page
 count unchanged at 91 pages (confirmed by recompile) — that cut was too small to cross a page boundary
 in a results.tex section dominated by full-width figures/tables, where prose reflows into existing
 whitespace around floats rather than pushing content onto a new page. ~800 words is a more plausible
@@ -126,4 +126,4 @@ tradeoff based on the real number rather than this estimate.
 Awaiting author decision on: (1) proceed with A+B+C as `C-xx` corrections now, (2) also include D,
 or (3) hold this audit as reference only and take no action. Once a decision is made, follow the normal
 `next_id.sh C` → edit → `validate_tex.sh`/`check_roundtrip.sh` → `compile_pdf.sh` → `PROGRESS.md` row →
-`patches/` record flow, same as `C-20`/`C-21`.
+`patches/` record flow, same as `C-23`/`C-24`.

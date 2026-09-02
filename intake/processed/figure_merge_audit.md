@@ -1,6 +1,6 @@
-# Figure-merge / structural-consolidation audit — A+B(partial)+C applied as C-26
+# Figure-merge / structural-consolidation audit — A+B(partial)+C applied as C-29
 
-**Status:** ✅ Author decided (2026-08-31) to proceed with A+B+C. Applied as `C-26`:
+**Status:** ✅ Author decided (2026-08-31) to proceed with A+B+C. Applied as `C-29`:
 - **A** (Terreno_irre/Terreno_incli) — applied as planned.
 - **B** — applied *partially*: `GRAPH_IMU`/`GRAPH_IMU2` and `GRAPH_IMU_real`/`GRAPH_IMU2_real` merged.
   `NEU_IMU`/`NEU_IMU2` and `_real` counterparts were **excluded during execution** — found their
@@ -11,17 +11,17 @@
 - **C** (RES_IMU/RES_IMU2) — applied as planned, stacked 2-row figure.
 
 `compile_pdf.sh` recompiled with **zero warnings** (no undefined refs, no float-too-large) at **89
-pages** — unchanged from the `C-25` baseline; this round's float-count reduction (14 → 9 figure
+pages** — unchanged from the `C-28` baseline; this round's float-count reduction (14 → 9 figure
 environments) did not by itself cross a page boundary. 3 of 4 merged figures visually spot-checked via
 rasterized PDF pages. D/E/F/G stay reviewed-and-declined as originally written; NEU_IMU pairs join that
-list. See `PROGRESS.md` row `C-26` and `patches/c-26-figure-merges.tex`.
+list. See `PROGRESS.md` row `C-29` and `patches/c-29-figure-merges.tex`.
 
 **Origin:** author request (2026-08-31, in-chat, follow-up to the reviewer-simulation trim audit) —
 "dami una lista de graficas que se podrian fusionar o de secciones... que se podria hacer lo mismo,"
 reading as a reviewer looking specifically at **figure count/layout** and **section structure**, not
 prose. Distinct from `intake/processed/reviewer_simulation_trim_audit.md` (prose/caption trimming,
-already fully applied as `C-22`–`C-25`) and `intake/processed/redundancy_closing_audit.md` (cross-section
-fact restatement, `C-20`/`C-21`).
+already fully applied as `C-25`–`C-28`) and `intake/processed/redundancy_closing_audit.md` (cross-section
+fact restatement, `C-23`/`C-24`).
 
 ## Method
 
@@ -142,7 +142,7 @@ impact from float-count reduction is genuinely harder to predict without a recom
 placement can absorb a removed float into existing whitespace around a page break, or it can do nothing.
 Recommend: apply A (trivial, same pattern as an already-accepted fix) first as a `C-xx`, recompile and
 measure; then decide on B/C based on the real delta, same protocol the last audit used successfully
-(`C-20`→measure→`C-25` produced the real page-count movement, not the earlier items).
+(`C-23`→measure→`C-28` produced the real page-count movement, not the earlier items).
 
 ## Next step
 
