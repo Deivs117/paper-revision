@@ -1,0 +1,11 @@
+% PATCH: C-20
+% Reviewer: —
+% Target section: sections/methodology.tex
+% Requirement: results.tex's "Reactive Inspection Task" subsection (R3-05, already
+%   synced-to-overleaf) had no corresponding scenario-design description anywhere in
+%   methodology.tex — a reader reaching the results subsection had to infer the obstacle-field
+%   design, trial count, timeout, and success criterion retroactively from results prose. See
+%   intake/processed/inspection_methodology_missing.md for the full gap analysis.
+% Status: applied
+
+\revblue{To evaluate inspection-oriented task performance, a dedicated scenario places the platform in a purpose-built obstacle field where the visual target is not visible from the initial pose, only entering the field of view after the robot traverses three static capsule obstacles. Twenty independent trials were run with a 90~s timeout and no artificial sensor noise injected. As in the other simulated scenarios, the robot's behavior in this task is purely reactive: it builds no map, retains no spatial memory, and computes no global re-route when blocked, relying instead on the same basal-ganglia/Winner-Take-All arbitration described below to laterally evade each obstacle in real time while continuing toward the target once visible. Results for this scenario are reported in Section~\ref{sec:results}.}

@@ -177,7 +177,13 @@ tasa de éxito aislada.
 |---|---|
 | `ablation_stats_summary.json` | Resultado completo: tasa de éxito + Fisher exact, medias/IC95%/Mann-Whitney por métrica, por escenario |
 | `ablation_stats_summary.csv` | Mismo contenido en formato tabular plano, para consumo directo por scripts de gráficas/tablas |
+| `fig_ablation_success_rate.png` | Figura de publicación: tasa de éxito por variante, un solo panel (Complex Navigation), generada por `scripts/plot_ablation.py` |
+| `fig_ablation_complex_stability.png` | Figura de publicación: roll/pitch RMS por variante (Complex Navigation), generada por `scripts/plot_ablation.py` |
 
-**No promovido a `assets/` todavía** — pendiente de generación de gráficas/tablas con formato de
-publicación y de la redacción de la subsección correspondiente en `methodology.tex`/`results.tex`
-(ver `intake/pending/R3-02_ablation_results_handoff.md`).
+**Promovido a `assets/`** (2026-08-31, `scripts/promote_figure.sh`): `fig_ablation_success_rate.png`
+y `fig_ablation_complex_stability.png`, referenciadas en la nueva subsección
+`\subsubsection{Basal Ganglia Ablation Study}` de `results.tex` (párrafo de método en
+`methodology.tex`) — ver `patches/r3-01-02-basal-ganglia-ablation-study.tex` y
+`intake/processed/R3-01-02_ablation_writing_plan.md`. El panel Appetitive Targeting se descartó de
+la figura de tasa de éxito (sin separación significativa entre variantes, p=1.000 en las 3
+comparaciones) y se reporta en una frase de texto en su lugar.

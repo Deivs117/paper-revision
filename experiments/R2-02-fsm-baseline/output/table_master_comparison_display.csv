@@ -1,0 +1,15 @@
+Family,System,Success Rate (%),Task Completion Time (s),Roll RMS (deg),λ (whole trial)
+Appetitive,Neural,78.9,38.52 ± 1.20,0.536 ± 0.009,0.990
+Appetitive,FSM,100.0,38.96 ± 1.77,0.525 ± 0.003,0.952
+Aversive,Neural,88.2,9.98 ± 2.07,1.357 ± 0.106,0.925
+Aversive,FSM,100.0,8.32 ± 1.08,1.825 ± 0.112,0.731
+Obstacle,Neural,100.0,15.72 ± 2.49,1.547 ± 0.154,0.945
+Obstacle,FSM,100.0,12.44 ± 1.09,1.499 ± 0.089,0.811
+Complex,Neural,100.0,24.96 ± 10.36,1.034 ± 0.349,0.976
+Complex,FSM,0.0,—,—,0.942
+Inspection,Neural,85.0,51.61 ± 11.96,1.302 ± 0.078,1.000
+Inspection,FSM,45.0,55.13 ± 14.25,1.270 ± 0.136,0.985
+Rugged Terrain (C1),Neural,50.0,54.94 ± 2.72,1.827 ± 0.033,0.909
+Rugged Terrain (C1),FSM,60.0,55.42 ± 8.56,1.739 ± 0.140,0.891
+Inclined Slope (C2),Neural,100.0,77.02 ± 1.26,6.751 ± 7.160,0.996
+Inclined Slope (C2),FSM,71.4,64.53 ± 2.79,5.430 ± 8.209,0.993

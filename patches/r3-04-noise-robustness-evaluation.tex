@@ -1,0 +1,59 @@
+% PATCH: R3-04
+% Reviewer: 3
+% Target sections: sections/methodology.tex, sections/results.tex, sections/conclusions.tex
+%   (plus sections/preamble.tex: \usepackage{placeins}, mechanical fix for float placement,
+%   not reviewer content, not wrapped in \revblue{})
+% Requirement: Design perception-decision noise robustness experiments (IMU drift, LiDAR noise,
+%   camera illumination distortion).
+% Status: applied
+%
+% Data/images pipeline for this row was completed and author-approved in a prior session
+% (experiments/R3-04-noise-robustness/, intake/pending/R3-04_audit_and_plan.md,
+% intake/pending/R3-04_images_pipeline_audit.md, intake/pending/r304_audit_notes_2026-09-01.md).
+% This patch is the writing session: promoted the 8 approved figures/tables to assets/ and wrote
+% all six prose pieces below. No new data analysis was performed; all figures/values are taken
+% from the already-audited experiment output.
+%
+% Promoted assets (scripts/promote_figure.sh):
+%   fig1_noise_robustness_grid.png       (--force, replaces the generic-sigma grid)
+%   fig2_{Appetitive,Aversive,Obstacle,Complex}_micro_test_001_SUCCESS.png (new filenames;
+%       the old test_005_SUCCESS assets from the generic-sigma dataset were git rm'd)
+%   fig_R1_failure_by_family.png / fig_R2_terrain_stability_vs_noise.png /
+%       fig_R3_camera_dropout_evidence.png (new)
+%   table_R2_perturbation_params.csv -> transcribed directly into a LaTeX table in
+%       methodology.tex (Table~\ref{table:PerturbationParams}); table_R1_failure_rate.csv was
+%       superseded by fig_R1_failure_by_family.png per the author's Round-2 audit decision.
+
+% ============================================================
+% sections/methodology.tex -- new subsubsection, end of "Neuronal Control System"
+% (before "Physical Platform Construction and Experimental Setup")
+% ============================================================
+
+\subsubsection{\revblue{Perception-Decision Noise-Robustness Evaluation}}
+\label{ssec:NoiseRobustnessEval}
+
+\revblue{To evaluate the tolerance of the whole perception-decision pipeline --- obstacle-sensory, basal-ganglia, locomotion, and gait-decision modules together --- to degraded sensing, three sensor-level perturbation mechanisms were combined into a single sweep index, $\mathit{noise\_level\_idx} \in \{0,1,2,3,4\}$, applied jointly across five discrete severity levels: IMU drift, LiDAR range noise, and camera illumination distortion. IMU drift is injected as a cumulative random-walk bias on the linear-acceleration and orientation channels ($a_x,a_y,a_z,Roll,Pitch$), with a per-step increment set by severity level (Table~\ref{table:PerturbationParams}); this random-walk drift is distinct from, and in this evaluation exercised independently of, additive IMU white noise, which the simulated sensor model also implements but which was held fixed at zero across all five levels reported here. LiDAR range noise is injected as Gaussian noise proportional to each sensor reading's measured range, already used elsewhere in this section's obstacle-sensory formulation. Camera illumination distortion, rather than a pixel-level optical degradation, perturbs the color-segmentation-based stimulus detector directly: a systematic bias on the detected stimulus's bounding-box area, a probabilistic detection dropout, and jitter on the bounding-box position, with a directional flag alternating the distortion between under- and over-exposure across trials.}
+
+[Table~\ref{table:PerturbationParams}: per-sensor perturbation parameters -- see sections/methodology.tex]
+
+\revblue{At $\mathit{noise\_level\_idx}=0$ all three mechanisms are inactive, providing the unperturbed baseline; every level above 0 already combines all three simultaneously --- no configuration isolates a single sensor's contribution from the others. All trials used a fixed base seed ($\mathit{NoiseSeed}=42$) to keep the injected noise realization reproducible across replicates and severity levels. This sweep was evaluated across six simulated suites: the appetitive, aversive, and obstacle-avoidance single-stimulus scenarios, the combined multi-stimulus scenario, the Rugged Terrain course, and the Inclined Slope, retaining three successful replicates per severity level in each suite. Results are reported in Section~\ref{sec:results}.}
+
+% ============================================================
+% sections/results.tex -- fig1 grid caption replaced (generic sigma -> combined per-sensor);
+% 4 fig2_micro captions/filenames updated; per-scenario prose updated (combined-not-isolated
+% framing); Complex Navigation analysis rewritten (three-stimulus encounter, was two-stage);
+% new subsubsection "Combined-Perturbation Robustness: Terrain Stability, Failure Modes, and
+% Camera Dropout" (Fig R1/R2/R3 + LiDAR-arbitration caveat); Limitations paragraph updated
+% (combined-not-isolated, IMU white noise not exercised, Rugged Terrain elevated failure rate).
+% Full text: see sections/results.tex, subsubsections "Quantitative Validation: Single-Stimuli
+% Simulation Performance", "Quantitative Validation: Multi-Modal Simulation Performance",
+% "Combined-Perturbation Robustness: Terrain Stability, Failure Modes, and Camera Dropout"
+% (new, \label{sssec:noise_robustness_extra}), and \label{ssec:Limitations}.
+% ============================================================
+
+% ============================================================
+% sections/conclusions.tex -- one clause added to the findings-summary paragraph, naming the
+% combined IMU-drift + LiDAR-noise (+ illumination, conditionally) robustness result explicitly,
+% replacing no prior generic "sensor noise" claim (none existed) but making the new result visible
+% at the conclusions level. Full text: see sections/conclusions.tex.
+% ============================================================

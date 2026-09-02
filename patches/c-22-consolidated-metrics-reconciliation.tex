@@ -1,0 +1,26 @@
+% PATCH: C-22
+% Reviewer: —
+% Target section: sections/results.tex
+% Requirement: reconcile tab:consolidated_simulation_metrics (published) against the recomputed
+%   values (open finding on N-01, independently reproduced on R2-02). Root cause investigated
+%   (test_007_SUCCESS in familia_a_obstaculo has a physically implausible roll reading, excluded;
+%   Aversive/Complex have no outlier but still don't match published — root cause of that part
+%   NOT confirmed, no method/script survives for the original table). Author decision 2026-09-02:
+%   keep the recomputed values, not the originally-published ones. See
+%   intake/processed/C-22_consolidated_metrics_reconciliation.md for the full investigation.
+% Status: applied
+
+% --- tab:consolidated_simulation_metrics (paragraph immediately before the table) ---
+Table~\ref{tab:consolidated_simulation_metrics} consolidates completion-time and attitude statistics across all four scenarios; \revblue{per-severity-level trends of these same metric families under the combined IMU-drift/LiDAR-noise/illumination-distortion perturbation (Section~\ref{ssec:NoiseRobustnessEval}) are reported separately in Figure~\ref{fig:noise_robustness_grid}. Values below are recomputed directly from the archived per-trial simulation logs (one Obstacle trial with an anomalous, physically implausible roll reading was excluded, as in Table~\ref{tab:fsm_comparison}).}
+
+% --- tab:consolidated_simulation_metrics rows ---
+Appetitive Targeting & 100.0\% & 38.52 $\pm$ 1.20 & 0.54 $\pm$ 0.01 & 1.07 $\pm$ 0.00 \\
+Aversive Escape      & 100.0\% & 9.98 $\pm$ 2.07  & 1.36 $\pm$ 0.11 & 1.11 $\pm$ 0.07 \\
+Obstacle Evasion     & 100.0\% & 15.72 $\pm$ 2.49 & 1.55 $\pm$ 0.15 & 0.90 $\pm$ 0.31 \\
+Complex Navigation   & 100.0\% & 24.96 $\pm$ 10.36 & 1.03 $\pm$ 0.35 & 1.01 $\pm$ 0.13 \\
+
+% --- tab:fsm_comparison caption (dropped the dagger footnote, no longer applicable) ---
+\caption{\revblue{FSM vs.\ basal-ganglia (Neural) gait arbitration, all seven simulated suites. Complex/FSM has no completed trials (0\% success), so time/Roll RMS are undefined ($-$). One Obstacle/Neural trial with an anomalous roll reading (physically implausible per-timestep values, not a measurement of stable attitude) was excluded from the Roll RMS/task-time statistics below, consistent with Table~\ref{tab:consolidated_simulation_metrics}; its own success/failure verdict is unaffected.}}
+
+% --- tab:fsm_comparison Obstacle/Neural row ---
+Obstacle   & Neural & 100.0 & 15.72 $\pm$ 2.49  & 1.547 $\pm$ 0.154 & 0.945 \\

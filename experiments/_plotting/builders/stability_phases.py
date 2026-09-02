@@ -75,8 +75,17 @@ def build(csv_path: str, output_path: str) -> None:
             sm = meta.get("meta_sm_cm")
             ax.annotate("", xy=tuple(incenter), xytext=(0, 0),
                        arrowprops=dict(arrowstyle="->", color="#d62728", lw=1.2))
+            # 2026-09-02 audit fix: the SM label sits at the midpoint of the CoM->incenter arrow,
+            # which lands right on top of the CoM (+) or incenter (+) marker whenever they're
+            # close together (e.g. panels D/F) -- a digit of the value was getting hidden behind
+            # the marker glyph. A white background box keeps the text legible regardless of what
+            # it falls on, without having to hand-tune a per-panel offset.
+            # zorder=6: above the CoM marker (5) and incenter marker (4) -- without this the "P"/"+"
+            # marker glyphs painted on top of the (lower-zorder-by-default) text/bbox when the
+            # midpoint landed on or near either marker, which is what caused the occlusion.
             ax.text(0.5 * incenter[0], 0.5 * incenter[1] + 0.02, f"SM = {sm:.1f} cm",
-                   color="#d62728", fontsize=8, ha="center")
+                   color="#d62728", fontsize=8, ha="center", zorder=6,
+                   bbox=dict(boxstyle="round,pad=0.15", fc="white", ec="none", alpha=0.85))
             ax.text(0.97, 0.95, f"TR = {tr:.3f}", transform=ax.transAxes, ha="right", va="top",
                    fontsize=9, bbox=dict(boxstyle="round", fc="#c8e6c9", ec="black"))
         else:

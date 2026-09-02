@@ -1,0 +1,47 @@
+# Run parameters for this experiment, kept out of scripts/ so a rerun is exact and diffable.
+#
+# Estos NO son parámetros de una corrida futura de scripts/ (no hay pipeline de regeneración desde
+# cero) — documentan los parámetros reales usados por el equipo de simulación para producir lo que
+# ya vive en data/, y los del lado "Neural" reutilizado desde otros experimentos ya existentes.
+
+seed: 42
+control_loop_hz: 6.67   # mismo timer 0.15s que red_neuronal.py / fsm_gait_arbitration.py
+
+fsm_priority_rules:      # extraído literalmente de fsm_gait_arbitration.py (ver README.md § Data provenance)
+  order: ["pitch>Upitch -> H (solo si ignore_imu_terrain=False)", "terrainchanger -> C",
+          "G>0 -> X (persist 6s)", "R>0.5 -> C (persist 6s)", "B>0.5 -> H (persist 4s)", "default -> H"]
+  Upitch_deg: 1
+  persist_s: {X: 6.0, C: 6.0, H: 4.0}
+
+families:
+  # slug: [carpeta FSM en data/, carpeta Neural (fuente ya existente en el repo)]
+  familia_a_apetitivo:
+    fsm: familia_a_apetitivo_fsm
+    neural: ../../simulation/familia_a_apetitivo
+  familia_a_aversivo:
+    fsm: familia_a_aversivo_fsm
+    neural: ../../simulation/familia_a_aversivo
+  familia_a_obstaculo:
+    fsm: familia_a_obstaculo_fsm
+    neural: ../../simulation/familia_a_obstaculo
+  familia_b_compleja:
+    fsm: familia_b_compleja_fsm
+    neural: ../../simulation/familia_b_compleja
+  familia_e_inspeccion:
+    fsm: familia_e_inspeccion_fsm
+    neural: ../../R3-05-inspection/data   # MISMO dataset ya publicado por la fila R3-05 — no duplicar
+
+  # Terrain families (C1/C2) landed 2026-09-02. Neural side points to R3-04-noise-robustness's
+  # data (NOT experiments/simulation/, which holds a stale/smaller duplicate of the same family —
+  # confirmed via trial count cross-check, 27/15 matching experiment_c_terrain.md §"Fuentes de
+  # datos" exactly vs. simulation/'s 15/15) and must be filtered to noise_level_idx=0 at
+  # comparison time — see experiment_c_terrain.md §2 for why (FSM ignores noise entirely; only
+  # noise_level_idx=0 is a genuinely matched condition against it).
+  familia_c1_terreno_rugoso:
+    fsm: familia_c_fsm/familia_c1_terreno_rugoso_fsm
+    neural: ../../R3-04-noise-robustness/data/familia_c1_terreno_rugoso
+    neural_filter: {noise_level_idx: 0}
+  familia_c2_pendiente:
+    fsm: familia_c_fsm/familia_c2_pendiente_fsm
+    neural: ../../R3-04-noise-robustness/data/familia_c2_pendiente
+    neural_filter: {noise_level_idx: 0}

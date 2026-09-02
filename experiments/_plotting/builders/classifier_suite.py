@@ -4,6 +4,12 @@ values already in results.tex prose, no vectorization -- Informe 2 F-Data-06), a
 1x3 panel from fig5/fig6 (vectorized this round, experiments/_plotting/vectorized/classifier_fig5.csv
 and classifier_fig6.csv -- see experiments/_plotting/extract/extract_fig5.py / extract_fig6.py for
 the exact pixel calibration used).
+
+2026-09-02 (C-21 pixel-level audit follow-up): added build_fig2_roc() and
+build_fig3_training_loss(), the last two MLP figures still on the wrong (sans-serif, no shared
+style) typography with no reproducible source -- vectorized from the published PNGs (see
+experiments/_plotting/extract/extract_fig2_roc_curve.py / extract_fig3_training_loss.py) since no
+raw prediction/training-log data survives, confirmed by the author.
 """
 from __future__ import annotations
 
@@ -54,8 +60,12 @@ def build_fig4_ablation(output_path: str) -> None:
     ax.set_ylim(0.65, 0.80)  # y-axis rescaled so the real 0.024-F1 spread is legible
     ax.set_ylabel("F1-score")
     ax.set_title("Architecture ablation")
-    ax.annotate("y-axis truncated for legibility", xy=(0.02, 0.02), xycoords="axes fraction",
-                fontsize=6, color="#555555")
+    # 2026-09-02 audit fix: this annotation used to sit at the bottom-left, directly over the
+    # (50) bar (low-contrast gray text on solid red -- barely legible, flagged in the pixel-level
+    # legend/text-occlusion audit). Moved above the bars with a white background box instead.
+    ax.annotate("y-axis truncated for legibility", xy=(0.02, 0.965), xycoords="axes fraction",
+                fontsize=7, color="#555555", va="top",
+                bbox=dict(boxstyle="round,pad=0.2", fc="white", ec="none", alpha=0.85))
     fig.tight_layout()
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     fig.savefig(output_path, dpi=DPI)
@@ -79,8 +89,11 @@ def build_f03_fused_panel(fig5_csv: str, fig6_csv: str, output_path: str) -> Non
         axes[0].bar(x + (i - 1.5) * width, vals, width, label=m, color=metric_colors[m])
     axes[0].set_xticks(x); axes[0].set_xticklabels(classifiers, rotation=20, ha="right", fontsize=7)
     axes[0].set_ylabel("Score (5-fold CV mean)")
-    axes[0].set_ylim(0, 1.0)
-    axes[0].legend(fontsize=6, ncol=2)
+    axes[0].set_ylim(0, 1.15)  # headroom for the legend so it doesn't sit on top of the bars
+    # 2026-09-02 audit fix: default-placed legend ("best" via no loc arg) landed inside the
+    # Random Forest bars, indistinguishable from the bar fills it was labeling (flagged in the
+    # pixel-level legend/text-occlusion audit). Moved above the axes, outside all bars.
+    axes[0].legend(loc="upper center", bbox_to_anchor=(0.5, 1.0), ncol=4, fontsize=6.5, frameon=False)
     axes[0].set_title("(a) Classification metrics")
 
     # (b) inference latency, log scale
@@ -99,10 +112,50 @@ def build_f03_fused_panel(fig5_csv: str, fig6_csv: str, output_path: str) -> Non
     axes[2].tick_params(axis="x", rotation=20)
     axes[2].set_title("(c) Model size")
 
-    fig.suptitle("Classifier accuracy/latency/size trade-off (F-03 fused panel; (b),(c) vectorized from "
-                 "the currently-published fig5/fig6, see experiments/_plotting/vectorized/README.md)",
-                 fontsize=8)
+    fig.suptitle("Classifier accuracy/latency/size trade-off", fontsize=10)
     fig.tight_layout(rect=(0, 0, 1, 0.92))
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    fig.savefig(output_path, dpi=DPI)
+    plt.close(fig)
+
+
+def build_fig2_roc(csv_path: str, output_path: str) -> None:
+    """Rebuilds fig2_roc_curve.png from the pixel-vectorized CSV (no raw prediction data survives
+    -- see extract_fig2_roc_curve.py). AUC printed in the legend is read off the extracted curve
+    itself (trapezoidal), not hardcoded to the published "0.866" -- the two agree to within 0.002,
+    confirming the extraction, but the code stays honest about what it's actually plotting."""
+    df = pd.read_csv(csv_path)
+    auc = float(np.trapezoid(df["tpr"], df["fpr"]))
+
+    fig, ax = plt.subplots(figsize=(4.2, 4.2))
+    ax.plot(df["fpr"], df["tpr"], color="#0072B2", lw=2.2, label=f"MLP (AUC = {auc:.3f})")
+    ax.plot([0, 1], [0, 1], "k--", lw=1, label="Chance")
+    ax.set_xlabel("False Positive Rate")
+    ax.set_ylabel("True Positive Rate")
+    ax.set_title("ROC curve — terrain classification")
+    ax.set_xlim(-0.02, 1.02)
+    ax.set_ylim(-0.02, 1.02)
+    ax.legend(loc="lower right", fontsize=9, frameon=False)
+    fig.tight_layout()
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    fig.savefig(output_path, dpi=DPI)
+    plt.close(fig)
+
+
+def build_fig3_training_loss(csv_path: str, output_path: str) -> None:
+    """Rebuilds fig3_training_loss.png from the pixel-vectorized CSV (no raw per-epoch training
+    log survives -- see extract_fig3_training_loss.py)."""
+    df = pd.read_csv(csv_path)
+    df = df[(df["epoch"] >= 0)]  # drop a few sub-zero rows from line-width bleed at the y-axis
+
+    fig, ax = plt.subplots(figsize=(5, 4))
+    ax.plot(df["epoch"], df["loss"], color="#0072B2", lw=2)
+    ax.set_xlabel("Epoch")
+    ax.set_ylabel("Training loss")
+    ax.set_title("MLP (150-80) training convergence")
+    ax.set_xlim(left=0)
+    ax.set_ylim(bottom=0)
+    fig.tight_layout()
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     fig.savefig(output_path, dpi=DPI)
     plt.close(fig)
@@ -117,4 +170,8 @@ if __name__ == "__main__":
         "experiments/_plotting/vectorized/classifier_fig6.csv",
         os.path.join(out_dir, "fig_classifier_tradeoff_fused.png"),
     )
-    print("Wrote fig1/fig4/fused-panel to", out_dir)
+    build_fig2_roc("experiments/_plotting/vectorized/fig2_roc_curve.csv",
+                    os.path.join(out_dir, "fig2_roc_curve.png"))
+    build_fig3_training_loss("experiments/_plotting/vectorized/fig3_training_loss.csv",
+                              os.path.join(out_dir, "fig3_training_loss.png"))
+    print("Wrote fig1/fig2/fig3/fig4/fused-panel to", out_dir)

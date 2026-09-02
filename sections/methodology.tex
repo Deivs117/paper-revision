@@ -58,6 +58,8 @@ In the simulation, visual stimuli captured by the camera were represented using 
   \label{fig:estimulos}
 \end{figure}
 
+\revblue{To evaluate inspection-oriented task performance, a dedicated scenario places the platform in a purpose-built obstacle field where the visual target is not visible from the initial pose, only entering the field of view after the robot traverses three static capsule obstacles. Twenty independent trials were run with a 90~s timeout and no artificial sensor noise injected. As in the other simulated scenarios, the robot's behavior in this task is purely reactive: it builds no map, retains no spatial memory, and computes no global re-route when blocked, relying instead on the same basal-ganglia/Winner-Take-All arbitration described below to laterally evade each obstacle in real time while continuing toward the target once visible. Results for this scenario are reported in Section~\ref{sec:results}.}
+
 \subsection{Neuronal Control System}
 
 Three principal behaviors were defined. When presented with an appetitive stimulus, the robot advanced using differential rolling mode, allowing for controlled approach. When encountering an aversive stimulus, it selected the quadrupedal mode, enabling rapid escape behaviors across various types of terrain. Finally, for obstacle detection, it employed the omnidirectional mode, which facilitated more precise and efficient avoidance maneuvers. 
@@ -200,6 +202,8 @@ In Table~\ref{table:Ganglia}: $\tau_{STN}$, $\tau_{Gpi}$, $\tau_{Gpe}$, and $\ta
 Each $\omega_{X\rightarrow Y}$ is the unitless synaptic weight of the projection from nucleus $X$ to nucleus $Y$.
 
 The architectural framework of the basal ganglia model adopted here is grounded in canonical arbitration circuits widely validated in computational neuroscience for multi-stimulus action selection \citep{Gurney2001a,Gurney2001b,Prescott2006Robot}. Its decentralized winner-take-all dynamics enable low-latency conflict resolution between competing sensory drives. \revblue{This is evidenced by the near-instantaneous neural decision dispatch measured across experimental trials --- a deterministic $T_{response} = 0.0$~s in simulation and $184$--$534$~ms of neural processing latency across 15 hardware replicates (Section~\ref{sec:results}) --- well within real-time constraints on resource-constrained embedded hardware,} without requiring the training cycles or inference infrastructure associated with deep reinforcement learning or model predictive control frameworks, making interpretability and low runtime overhead intrinsic properties of the proposed design.
+
+\revblue{To empirically ground this architectural choice, rather than relying solely on the citations above, an ablation study was conducted on the basal-ganglia circuit itself. An \texttt{ablation\_mode} parameter was introduced into the simulated implementation with four variants: the intact circuit (\emph{full}, control); \emph{no lateral inhibition}, which zeroes the cross-channel inhibitory terms in Eqs.~\eqref{eq:stn}--\eqref{eq:str} (Gpe$\rightarrow$STN, STN$\rightarrow$Gpi) while leaving same-channel dynamics untouched; \emph{no STN/STR}, which removes the STN and STR layers entirely, routing the raw stimulus directly into GPe/GPi with the same per-channel gains STN would otherwise apply; and \emph{threshold-only}, which bypasses the STN/GPi/GPe/STR dynamics altogether in favor of a static fixed-priority threshold over the raw stimulus --- the same threshold-logic family already used elsewhere in this architecture's own Locomotion Module. Each variant was evaluated across the Appetitive Targeting (no-conflict control) and Complex Navigation (three simultaneous, conflicting stimuli) scenarios ($n=12$ replicates/variant/scenario); results are reported in Section~\ref{sec:results}.}
 
 \subsubsection{Locomotion Module}
 
@@ -432,6 +436,35 @@ $U_{N_{1}}$ & 7.8 \\ \hline
 \end{table}
 
 In Table~\ref{table:Locom_MLP}: $U_{N_0}$ and $U_{N_1}$ are the activation thresholds applied to MLP outputs $N_0$ (flat-terrain probability) and $N_1$ (inclined-terrain probability), respectively, used in Equations~\eqref{eq:Z0V2}--\eqref{eq:Z16V2}.
+
+\subsubsection{\revblue{Perception-Decision Noise-Robustness Evaluation}}
+\label{ssec:NoiseRobustnessEval}
+
+\revblue{To evaluate the tolerance of the whole perception-decision pipeline --- obstacle-sensory, basal-ganglia, locomotion, and gait-decision modules together --- to degraded sensing, three sensor-level perturbation mechanisms were combined into a single sweep index, $\mathit{noise\_level\_idx} \in \{0,1,2,3,4\}$, applied jointly across five discrete severity levels: IMU drift, LiDAR range noise, and camera illumination distortion. IMU drift is injected as a cumulative random-walk bias on the linear-acceleration and orientation channels ($a_x,a_y,a_z,Roll,Pitch$), with a per-step increment set by severity level (Table~\ref{table:PerturbationParams}); this random-walk drift is distinct from, and in this evaluation exercised independently of, additive IMU white noise, which the simulated sensor model also implements but which was held fixed at zero across all five levels reported here. LiDAR range noise is injected as Gaussian noise proportional to each sensor reading's measured range, already used elsewhere in this section's obstacle-sensory formulation. Camera illumination distortion, rather than a pixel-level optical degradation, perturbs the color-segmentation-based stimulus detector directly: a systematic bias on the detected stimulus's bounding-box area, a probabilistic detection dropout, and jitter on the bounding-box position, with a directional flag alternating the distortion between under- and over-exposure across trials.}
+
+\begin{table}[t]
+\centering
+\caption{\revblue{Per-sensor perturbation parameters, swept jointly (not in isolation) across $\mathit{noise\_level\_idx} \in \{0,\dots,4\}$.}}
+\begin{tabularx}{\textwidth}{|l|l|>{\raggedright\arraybackslash}X|}
+\hline
+\textbf{Parameter} & \textbf{Sensor} & \textbf{Values (levels 0--4)} \\ \hline
+IMU drift, acceleration & IMU & 0.0, 0.01, 0.03, 0.06, 0.09~m/s$^2$/step \\ \hline
+IMU drift, angle & IMU & 0.0, 0.01, 0.04, 0.08, 0.12~deg/step \\ \hline
+LiDAR range noise & LiDAR & 0.0, 0.05, 0.10, 0.15, 0.20 (fraction of range) \\ \hline
+Illumination severity & Camera & 0.0, 0.10, 0.20, 0.30, 0.30 (dimensionless) \\ \hline
+Approach-stop area threshold & Camera (indirect) & 28, 24, 20, 18, 14 (bounding-box area units) \\ \hline
+\end{tabularx}
+\label{table:PerturbationParams}
+\end{table}
+
+\revblue{At $\mathit{noise\_level\_idx}=0$ all three mechanisms are inactive, providing the unperturbed baseline; every level above 0 already combines all three simultaneously --- no configuration isolates a single sensor's contribution from the others. All trials used a fixed base seed ($\mathit{NoiseSeed}=42$) to keep the injected noise realization reproducible across replicates and severity levels. This sweep was evaluated across six simulated suites: the appetitive, aversive, and obstacle-avoidance single-stimulus scenarios, the combined multi-stimulus scenario, the Rugged Terrain course, and the Inclined Slope, retaining three successful replicates per severity level in each suite. Results are reported in Section~\ref{sec:results}.}
+
+\subsubsection{\revblue{FSM Gait Arbitration Baseline}}
+\label{ssec:FSMBaseline}
+
+\revblue{To address the reviewer's request for a finite state machine (FSM) baseline under identical experimental conditions, a second mode-arbitration controller was implemented that inherits the complete sensory pipeline, navigation dynamics, and noise-injection model described above unchanged, substituting only the mode-selection mechanism: instead of the continuous winner-take-all competition of Section~\ref{sec:methodology}'s Basal Ganglia Module, the FSM selects the active mode via a static, ordered priority hierarchy (terrain instability, then obstacle proximity, then aversive stimulus, then appetitive stimulus, defaulting to differential-rolling exploration), each stimulus-triggered rule holding its selected mode for a fixed persistence interval once triggered. Because every other component is shared byte-for-byte between the two controllers, any behavioral difference between them is attributable exclusively to this mode-selection mechanism, not to differences in perception, low-level navigation, or experimental configuration. Both controllers were evaluated across the same seven simulated suites under matching trial counts, noise levels, and success criteria; results are reported in Section~\ref{sec:results}.}
+
+\FloatBarrier
 
 \subsection{Physical Platform Construction and Experimental Setup}
 \label{ssec:Construction}
