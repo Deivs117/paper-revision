@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T03:35:36+00:00",
-  "progressLastCommit": "2026-09-02T22:27:08-05:00",
+  "generatedAt": "2026-09-03T03:48:20+00:00",
+  "progressLastCommit": "2026-09-02T22:35:36-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -537,7 +537,7 @@
       "owner": [
         "Sebas"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-23-reactive-inspection-limitations-dedupe.tex"
     },
     {
@@ -550,7 +550,7 @@
       "owner": [
         "Sebas"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-24-conclusions-bg-mechanism-dedupe.tex"
     },
     {
@@ -563,7 +563,7 @@
       "owner": [
         "Sebas"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-25-results-caption-trim.tex"
     },
     {
@@ -576,7 +576,7 @@
       "owner": [
         "Sebas"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-26-conclusions-closing-paragraphs-merge.tex"
     },
     {
@@ -589,7 +589,7 @@
       "owner": [
         "Sebas"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-27-results-terrain-latency-merge.tex"
     },
     {
@@ -602,7 +602,7 @@
       "owner": [
         "Sebas"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-28-sim-physical-neuron-narration-trim.tex"
     },
     {
@@ -615,7 +615,7 @@
       "owner": [
         "Sebas"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-29-figure-merges.tex"
     },
     {
@@ -628,7 +628,7 @@
       "owner": [
         "Sebas"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-30-neu-imu-real-merge.tex"
     },
     {
@@ -641,7 +641,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-31-auc-consistency.tex"
     },
     {
@@ -654,7 +654,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-32-fsm-sr-mismatch-reconciliation.tex"
     },
     {
@@ -667,7 +667,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-33-ablation-mode-identifier.tex"
     },
     {
@@ -680,7 +680,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-34-experiment-e-caption.tex"
     },
     {
@@ -693,7 +693,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-35-femur-tibia-mecanum.tex"
     },
     {
@@ -706,7 +706,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-36-600ms-traceability.tex"
     },
     {
@@ -719,7 +719,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-37-170m-80s-traceability.tex"
     },
     {
@@ -732,7 +732,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-38-tr-zero-scope.tex"
     },
     {
@@ -745,7 +745,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-39-inspection-metrics-notation.tex"
     },
     {
@@ -758,7 +758,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-40-noise-level-idx-notation.tex"
     },
     {
@@ -771,7 +771,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-41-no-map-condense.tex"
     },
     {
@@ -784,7 +784,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-42-warehouse-local-dedupe.tex"
     },
     {
@@ -797,7 +797,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-43-mode-timeline-caption-trim.tex"
     },
     {
@@ -810,7 +810,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-44-ablation-figures-merge.tex"
     },
     {
@@ -823,7 +823,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-45-ablation-closing-trim.tex"
     },
     {
@@ -836,7 +836,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-46-sigma-z-dimensionless.tex"
     },
     {
@@ -849,7 +849,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-47-fig-abbreviation-consistency.tex"
     },
     {
@@ -862,7 +862,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-48-winner-take-all-lowercase.tex"
     },
     {
@@ -875,7 +875,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-49-hunting-instinct-naming.tex"
     },
     {
@@ -888,7 +888,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-50-british-american-spelling-sweep.tex"
     },
     {
@@ -901,7 +901,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-51-mode-this-punctuation.tex"
     },
     {
@@ -914,7 +914,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-52-closing-dev-comment.tex"
     },
     {
@@ -927,7 +927,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-55-sr-metric-homogenization.tex"
     },
     {
@@ -940,7 +940,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-54-noise-robustness-extra-merge.tex"
     },
     {
@@ -953,7 +953,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-53-neu-imu-drop-locomotion2-panel.tex"
     }
   ]
