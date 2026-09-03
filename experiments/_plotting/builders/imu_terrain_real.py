@@ -59,19 +59,34 @@ def build_graph_imu(csv_path: str, output_path: str, title_suffix: str) -> None:
     plt.close(fig)
 
 
-def build_neu_imu(csv_path: str, output_path: str, group_letters: dict[str, str] | None = None) -> None:
+def build_neu_imu(csv_path: str, output_path: str, group_letters: dict[str, str] | None = None,
+                   panels: list[str] | None = None) -> None:
     """group_letters (optional): {"Locomotion_1": "a", "Decision_1": "b"} -- draws that letter,
     matplotlib-figure-text style (see build_neu_est's docstring), centered below the
     corresponding group. Omit to reproduce the old (letter-less) behavior unchanged -- e.g. the
     already-published _real outputs in __main__ below, which this function still generates as-is
     unless a future patch decides to also add letters there (see R02-01-05 §0ter: the same
-    missing-letter defect already exists in NEU_IMU_real/NEU_IMU2_real, out of scope for this fix)."""
+    missing-letter defect already exists in NEU_IMU_real/NEU_IMU2_real, out of scope for this fix).
+
+    panels (optional): override the default 4-panel layout
+    ["Locomotion_1", "Locomotion_2", "Decision_1", "Decision_2"] -- e.g. to drop a panel that
+    carries no interpretable temporal information (C-53: NEU_IMU/NEU_IMU2's "Locomotion_2",
+    neuron X17, found to be tonically active near-constant ~0.5 the whole trial, not silent as
+    initially assumed -- verified against this same CSV before dropping it). Group boundaries
+    (which panels belong under "Locomotion Module" vs. "Gait Decision Module", and which panel's
+    axes the group title/letter anchor to) are derived from the panel list itself, not
+    hardcoded indices, so this works for any subset as long as each panel name still starts with
+    "Locomotion" or "Decision". The already-published NEU_IMU_real/NEU_IMU2_real call sites below
+    don't pass this, so their 4-panel layout is unchanged."""
     df = pd.read_csv(csv_path)
-    panels = ["Locomotion_1", "Locomotion_2", "Decision_1", "Decision_2"]
+    panels = panels or ["Locomotion_1", "Locomotion_2", "Decision_1", "Decision_2"]
     titles = {"Locomotion_1": "Locomotion 1", "Locomotion_2": "Locomotion 2",
               "Decision_1": "Decision 1", "Decision_2": "Decision 2"}
     group_letters = group_letters or {}
-    fig, axes = plt.subplots(4, 1, figsize=(8, 10))
+    locomotion_panels = [p for p in panels if p.startswith("Locomotion")]
+    decision_panels = [p for p in panels if p.startswith("Decision")]
+    fig, axes_arr = plt.subplots(len(panels), 1, figsize=(8, 2.5 * len(panels)))
+    axes = list(np.atleast_1d(axes_arr))
     for ax, p in zip(axes, panels):
         sub = df[df.panel == p]
         neurons = list(sub["neuron"].unique())
@@ -85,30 +100,37 @@ def build_neu_imu(csv_path: str, output_path: str, group_letters: dict[str, str]
         ax.set_xlabel("Time (s)")
         ax.set_ylabel("Neuron")
         ax.set_title(titles[p])
-    # Two group titles matching the original figure's layout (Locomotion Module above panels
-    # 0-1, Gait Decision Module above panels 2-3) instead of one combined suptitle. Positioned
-    # from each group's first axes' own rendered title, not a fixed fraction -- a fixed fraction
-    # (the original approach) collides with the letter below it once `bottom` reserves extra
-    # vertical space for group_letters (see R02-01-05 §0ter: this collision was found and fixed
-    # while restoring the a)/b) letters).
+    # Group axes indices derived from the actual panel list, not hardcoded -- works whether each
+    # group has 1 or 2 panels.
+    locomotion_axes = axes[:len(locomotion_panels)]
+    decision_axes = axes[len(locomotion_panels):len(locomotion_panels) + len(decision_panels)]
+    # Two group titles matching the original figure's layout (Locomotion Module above the
+    # locomotion panels, Gait Decision Module above the decision panels) instead of one combined
+    # suptitle. Positioned from each group's first axes' own rendered title, not a fixed fraction
+    # -- a fixed fraction (the original approach) collides with the letter below it once `bottom`
+    # reserves extra vertical space for group_letters (see R02-01-05 §0ter: this collision was
+    # found and fixed while restoring the a)/b) letters).
     bottom = 0.08 if group_letters else 0.0
     h_pad = 6.5 if group_letters else 3.5  # extra room for the letter *and* the next group's
-    # title to both fit in the gap between Locomotion_2's xlabel and Decision_1's title.
+    # title to both fit in the gap between the locomotion group's last xlabel and the decision
+    # group's first title.
     fig.tight_layout(rect=(0, bottom, 1, 0.94), h_pad=h_pad)
     if group_letters:
-        _place_group_title_above(fig, axes[0], "Locomotion Module")
-        _place_group_title_above(fig, axes[2], "Gait Decision Module")
+        if locomotion_axes:
+            _place_group_title_above(fig, locomotion_axes[0], "Locomotion Module")
+        if decision_axes:
+            _place_group_title_above(fig, decision_axes[0], "Gait Decision Module")
     else:
-        # Original fixed positions, kept byte-for-byte unchanged for the no-letters case (the
-        # already-published NEU_IMU_real/NEU_IMU2_real in __main__ below use this path).
+        # Original fixed positions, kept byte-for-byte unchanged for the no-letters, full-4-panel
+        # case (the already-published NEU_IMU_real/NEU_IMU2_real in __main__ below use this path).
         fig.text(0.5, 0.975, "Locomotion Module", ha="center", fontsize=11)
         fig.text(0.5, 0.475, "Gait Decision Module", ha="center", fontsize=11)
-    # axes[1]/axes[3] = each group's last axes (Locomotion_2, Decision_2) -- letter goes below
-    # that axes' "Time (s)" label, not just below the axes box itself.
-    if "Locomotion_1" in group_letters:
-        _place_group_letter(fig, axes[1], group_letters["Locomotion_1"])
-    if "Decision_1" in group_letters:
-        _place_group_letter(fig, axes[3], group_letters["Decision_1"])
+    # Letter goes below each group's *last* axes' "Time (s)" label, not just below the axes box
+    # itself.
+    if "Locomotion_1" in group_letters and locomotion_axes:
+        _place_group_letter(fig, locomotion_axes[-1], group_letters["Locomotion_1"])
+    if "Decision_1" in group_letters and decision_axes:
+        _place_group_letter(fig, decision_axes[-1], group_letters["Decision_1"])
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     fig.savefig(output_path, dpi=DPI)
     plt.close(fig)

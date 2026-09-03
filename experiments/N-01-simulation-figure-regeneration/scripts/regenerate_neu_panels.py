@@ -65,10 +65,16 @@ def main():
         group_letters={"BasalGanglia_GPi": "a", "Lidar": "b", "Locomotion_1": "c", "Decision_1": "d"},
     )
 
+    # C-53: "Locomotion_2" (neuron X17) dropped from both panels below -- verified against this
+    # same CSV that X17 is tonically active near-constant ~0.5 the whole trial (not silent), but
+    # carries no interpretable temporal variation for the reader. See
+    # redundancy_closing_audit_consolidation_2026-09-02.md, finding [FIG-X17].
     build_neu_imu(f"{VEC}/neu_imu.csv", f"{OUT}/NEU_IMU.png",
-                   group_letters={"Locomotion_1": "a", "Decision_1": "b"})
+                   group_letters={"Locomotion_1": "a", "Decision_1": "b"},
+                   panels=["Locomotion_1", "Decision_1", "Decision_2"])
     build_neu_imu(f"{VEC}/neu_imu2.csv", f"{OUT}/NEU_IMU2.png",
-                   group_letters={"Locomotion_1": "a", "Decision_1": "b"})
+                   group_letters={"Locomotion_1": "a", "Decision_1": "b"},
+                   panels=["Locomotion_1", "Decision_1", "Decision_2"])
 
     print(f"Wrote NEU_EST_UNIB/UNIG/MUL.png and NEU_IMU/NEU_IMU2.png to {OUT}")
 
