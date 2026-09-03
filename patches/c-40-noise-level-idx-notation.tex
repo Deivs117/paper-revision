@@ -1,0 +1,19 @@
+% C-40 -- methodology.tex snake_case-as-math-notation cleanup (redundancy_closing_audit_consolidation_2026-09-02.md, P-10)
+% Audit copy only -- live file is sections/methodology.tex.
+%
+% $\mathit{noise\_level\_idx}$ was a raw code-style identifier wrapped in $\mathit{...}$ rather than
+% \texttt{} -- same underlying problem as \texttt{ablation_mode} (C-33), disguised as math notation.
+% Renamed to the clean symbol $\eta \in \{0,...,4\}$, introduced explicitly as "the Combined
+% Perturbation Level" at first use (matching the term results.tex already uses elsewhere).
+% NoiseSeed=42 deliberately NOT touched -- its exclusion from the perturbation-parameters table was
+% an explicit author decision already recorded under R3-04; this patch only renames the other
+% parameter's notation style, per author confirmation.
+
+% --- methodology.tex, ~line 443 ---
+\revblue{To evaluate the tolerance of the whole perception-decision pipeline --- obstacle-sensory, basal-ganglia, locomotion, and gait-decision modules together --- to degraded sensing, three sensor-level perturbation mechanisms were combined into a single sweep index, the Combined Perturbation Level $\eta \in \{0,1,2,3,4\}$, applied jointly across five discrete severity levels: IMU drift, LiDAR range noise, and camera illumination distortion. [...]}
+
+% --- methodology.tex, table caption ~line 447 ---
+\caption{\revblue{Per-sensor perturbation parameters, swept jointly (not in isolation) across $\eta \in \{0,\dots,4\}$.}}
+
+% --- methodology.tex, ~line 460 (NoiseSeed left unchanged) ---
+\revblue{At $\eta=0$ all three mechanisms are inactive, providing the unperturbed baseline; every level above 0 already combines all three simultaneously --- no configuration isolates a single sensor's contribution from the others. All trials used a fixed base seed ($\mathit{NoiseSeed}=42$) to keep the injected noise realization reproducible across replicates and severity levels. [...]}

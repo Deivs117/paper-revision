@@ -1,0 +1,15 @@
+% C-39 -- results.tex snake_case-as-math-notation cleanup (redundancy_closing_audit_consolidation_2026-09-02.md, P-09)
+% Audit copy only -- live file is sections/results.tex.
+%
+% $N_{lidar\_events}$/$N_{mode\_X\_events}$ used code-style snake_case subscripts, unlike the
+% table's other metrics ($d_{final}$, $T_{acquisition}$, $T_{task}$), which use conventional
+% concise subscripts. Renamed to $N_{ev}^{LiDAR}$/$N_{ev}^{X}$ throughout (definition sentence,
+% table rows, discussion paragraph, scatter-plot caption -- 14 occurrences total), keeping the
+% full prose definition unchanged so the reader loses no information.
+
+% --- results.tex, definition sentence ~line 560 ---
+\revblue{$d_{final}$ is the Euclidean distance between the robot and the target at the instant the inspection-stop neuron activates ($X_{17} > 0.25$, sustained 2~s); $N_{ev}^{LiDAR}$ counts sensory-level obstacle-detection transitions (LiDAR channel crossing its 0.3 activation threshold); $N_{ev}^{X}$ counts the resulting omnidirectional-mode switches, gated by a 3~s dwell-time hysteresis; $T_{acquisition}$ is the simulation time from post-warmup to the target's bounding-box area first exceeding the visibility threshold.}
+
+% --- tab:inspection_metrics rows, ~lines 573-574 ---
+\revblue{$N_{ev}^{LiDAR}$}          & 7.71 $\pm$ 6.42   & 4     & 28    \\
+\revblue{$N_{ev}^{X}$}        & 3.29 $\pm$ 2.80   & 1     & 10    \\

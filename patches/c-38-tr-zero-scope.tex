@@ -1,0 +1,26 @@
+% C-38 -- results.tex TR=0.000/SM=0.050 scope correction (redundancy_closing_audit_consolidation_2026-09-02.md, P-08)
+% Audit copy only -- live file is sections/results.tex.
+%
+% intake/processed/N-09_fusion_transition_phases_reversible.md already documented that the raw
+% N=979-sample data backing "TR=0.000 without exception" does not exist archived anywhere in the
+% repo, and that the 12 TR/SM readings visible in fig:transition_phases's own caption (min-max
+% ranges per mode) are non-zero (TR: 0.003-0.079). Author decision: bound the TR=0.000/SM=0.050
+% claim explicitly to the instant of morphological switching (max-support pose), not the full
+% 979-sample window, which also includes established-gait locomotion where TR>0 -- the
+% interpretation N-09 had already flagged as most likely, now stated explicitly in prose instead
+% of leaving the stronger, unqualified claim standing.
+
+% --- results.tex, ~lines 453-459 ---
+Across all six pairwise transitions ---$C \to H$, $H \to X$,
+$X \to C$, $C \to X$, $X \to H$, and $H \to C$--- and all
+$N_{\mathrm{total}} = 979$ logged samples, every transition completed
+successfully, yielding a transition success rate of $6/6$ ($100\%$).
+\revblue{At the instant of morphological switching itself --- the
+moment all four feet share ground contact for maximum support --- the
+Normalised Stability Margin reached its platform-geometry maximum
+($SM = 0.050\,\text{m}$, $SM_{\mathrm{norm}} = 1.000$) and the
+Tipover Risk index reached $TR = 0.000$, without exception; this
+instantaneous reading does not describe the full $N_{\mathrm{total}} =
+979$-sample window, which also includes established-gait locomotion
+between switching events, where $TR$ takes non-zero values (see
+Figure~\ref{fig:transition_phases}'s reported per-mode ranges).}

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T00:50:56+00:00",
-  "progressLastCommit": "2026-09-02T19:49:25-05:00",
+  "generatedAt": "2026-09-03T02:24:03+00:00",
+  "progressLastCommit": "2026-09-02T19:50:56-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -682,6 +682,84 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-34-experiment-e-caption.tex"
+    },
+    {
+      "id": "C-35",
+      "reviewer": "—",
+      "requirement": "Same consolidation, P-05 + P-24. methodology.tex:25 said \"femur\" (proximal segment) for the wheel-motor mount, while preamble.tex's abstract, introduction.tex, and methodology.tex's own Physical Platform Construction subsection (47 lines below) consistently say \"tibia\" (distal — anatomically correct, since the wheel is at the distal end); confirmed 3/4 authors independently (Samuel, Sebas, Diego). Same sentence also said \"mecanum wheel\" once vs. \"omnidirectional wheel\" 14+ times elsewhere (Sebas, new finding) — normalized both terms in the same edit since they're in the same sentence. validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "methodology.tex (Platform Design, wheel-motor mount sentence)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-35-femur-tibia-mecanum.tex"
+    },
+    {
+      "id": "C-36",
+      "reviewer": "—",
+      "requirement": "Same consolidation, P-06 — confirmed by all 4 final_audit_*.md authors, already tracked as open in PROGRESS.md since C-24 (same class of issue C-15 fixed for the old \"~47ms\" claim). conclusions.tex's \"direction-switching latencies below 600~ms\" cited no traceable source in results.tex. Replaced with the already-published, traceable range from fig:FourPanelLatencies (184–534~ms). validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "conclusions.tex (basal-ganglia arbitration paragraph)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-36-600ms-traceability.tex"
+    },
+    {
+      "id": "C-37",
+      "reviewer": "—",
+      "requirement": "Same consolidation, P-07 — confirmed by 3/4 final_audit_*.md authors (Deivi, Sebas, Diego). conclusions.tex's \"1.70 m ahead\" / \"less than 80~s\" appear nowhere in results.tex or experiments/ (confirmed via grep across both before editing) — no traceable replacement value found, likely residual from an earlier draft. Author decision: generalize the claim qualitatively rather than cite an unverifiable number. validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "conclusions.tex (opening paragraph)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-37-170m-80s-traceability.tex"
+    },
+    {
+      "id": "C-38",
+      "reviewer": "—",
+      "requirement": "Same consolidation, P-08 — confirmed by Samuel and Diego, already flagged as open by N-09's own audit (intake/processed/N-09_fusion_transition_phases_reversible.md, which documented that the raw $N=979$-sample data backing \"TR=0.000 without exception\" does not exist archived anywhere in the repo, and that fig:transition_phases's own caption reports non-zero TR/SM ranges per mode). Bounded the $TR=0.000$/$SM=0.050$ claim explicitly to the instant of morphological switching itself (max-support pose), not the full 979-sample window (which also includes established-gait locomotion where $TR>0$) — the interpretation N-09 had already flagged as most likely, now stated explicitly instead of leaving the stronger unqualified claim standing. validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "results.tex (transition-phases paragraph, sssec after fig:transition_phases)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-38-tr-zero-scope.tex"
+    },
+    {
+      "id": "C-39",
+      "reviewer": "—",
+      "requirement": "Same consolidation, P-09 — confirmed by Samuel and Diego. $N_{lidar\\_events}$/$N_{mode\\_X\\_events}$ used code-style snake_case subscripts in tab:inspection_metrics, unlike the table's other metrics ($d_{final}$, $T_{acquisition}$, $T_{task}$), which use conventional concise subscripts. Renamed to $N_{ev}^{LiDAR}$/$N_{ev}^{X}$ throughout (definition sentence, table rows, discussion paragraph, scatter-plot caption — 14 occurrences), prose definitions unchanged. validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "results.tex (tab:inspection_metrics + surrounding prose/caption)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-39-inspection-metrics-notation.tex"
+    },
+    {
+      "id": "C-40",
+      "reviewer": "—",
+      "requirement": "Same consolidation, P-10 — confirmed by Deivi and Diego. $\\mathit{noise\\_level\\_idx}$ was a raw code identifier wrapped in $\\mathit{...}$ rather than \\texttt{} — same underlying problem as \\texttt{ablation_mode} (C-33), disguised as math notation. Renamed to $\\eta \\in \\{0,\\dots,4\\}$, introduced explicitly as \"the Combined Perturbation Level\" at first use (matching the term results.tex already uses elsewhere). NoiseSeed=42 deliberately not touched — its exclusion from the perturbation-parameters table was an explicit author decision already recorded under R3-04; author reconfirmed only the notation style should change, not NoiseSeed's placement. validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "methodology.tex (Noise-Robustness Evaluation subsubsection, 3 occurrences)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-40-noise-level-idx-notation.tex"
     }
   ]
 }
