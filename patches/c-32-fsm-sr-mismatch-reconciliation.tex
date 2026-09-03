@@ -1,0 +1,38 @@
+% C-32 -- results.tex SR mismatch reconciliation (redundancy_closing_audit_consolidation_2026-09-02.md, P-02)
+% Audit copy only -- live file is sections/results.tex.
+%
+% Root cause (verified against source, not guessed): experiments/R2-02-fsm-baseline/scripts/
+% build_master_table.py's collect() counted n_attempted as the raw folder count (every
+% test_NNN_<VERDICT> dir, retried failures counted as separate failed attempts) -- SR=15/19=78.9%
+% (Appetitive), 15/17=88.2% (Aversive). experiments/_plotting/builders/macro_robustness.py's
+% build_consolidated_table() (source of tab:consolidated_simulation_metrics) instead deduplicates
+% by trial_index -- a retried trial that eventually succeeds counts as one success, not one failure
+% + one success -- giving SR=15/15=100.0% for both. Not a bug: two different, both-legitimate
+% definitions of "success rate" (per-attempt vs. per-mission-eventually).
+%
+% Author decision (2026-09-02): standardize tab:fsm_comparison's Appetitive/Aversive Neural SR to
+% the mission-level (trial_index-dedup) convention, matching tab:consolidated_simulation_metrics.
+% Verified this does NOT change T_sim/Roll RMS/lambda (those already only draw from the SUCCESS
+% rows, identical under both conventions -- only the attempted-count denominator differs).
+%
+% IMPORTANT, checked before applying: fig:sr_vs_noise_level and its surrounding prose (~line 523,
+% ~line 543) independently discuss this same SR at a per-noise-level granularity using the SAME raw
+% per-attempt convention -- Appetitive dips to 60% and Aversive to 75% at their highest evaluated
+% noise levels (verified against experiments/simulation/familia_a_apetitivo|aversivo/*/
+% trial_summary.json directly). Applying the mission-level convention there too would erase that
+% finding entirely (every noise level becomes 100% once retries are deduplicated) -- confirmed by
+% direct recomputation before touching anything. Author decided NOT to homogenize: the aggregate
+% table now uses mission-level SR (mission eventually succeeded), the noise-sweep figure/prose
+% deliberately keeps per-attempt SR (how often does an individual attempt fail as noise rises) --
+% two different, both-real questions, not a residual inconsistency. Reworded both prose passages to
+% state this explicitly instead of leaving the reader to reconcile two different-looking numbers.
+
+% --- tab:fsm_comparison, Appetitive/Aversive Neural rows, ~lines 505/507 ---
+Appetitive & Neural & \revblue{100.0}  & 38.52 $\pm$ 1.20  & 0.536 $\pm$ 0.009 & 0.990 \\
+Aversive   & Neural & \revblue{100.0}  & 9.98 $\pm$ 2.07   & 1.357 $\pm$ 0.106 & 0.925 \\
+
+% --- prose after the table, ~line 523 ---
+\revblue{In the three single-stimulus suites (Appetitive, Aversive, Obstacle), the FSM's fixed priority rule is structurally well-matched to the task --- one stimulus is active at a time, so a static hierarchy resolves it immediately and deterministically. Both controllers eventually complete every mission in all three suites (100\% mission-level success in Table~\ref{tab:fsm_comparison}, i.e.\ a trial that first times out and is then retried still counts as a success once it lands). The two controllers diverge, however, in how often that retry is needed: the FSM never requires one, at any noise level, while the Neural system occasionally does as noise increases. Figure~\ref{fig:sr_vs_noise_level} makes this per-attempt view explicit --- Neural's success rate \emph{per individual attempt} (not deduplicated by retry) dips to 60\% in Appetitive and 75\% in Aversive at the highest noise levels, even though every one of those missions is ultimately completed on a later attempt.}
+
+% --- prose, ~line 543 ---
+\revblue{The Neural-side values recomputed here for the Appetitive, Aversive, Obstacle, and Complex suites are independently derived from raw trial logs and, as of this revision, match Table~\ref{tab:consolidated_simulation_metrics}'s figures for the same four suites on every reported statistic, including success rate: both tables count a suite as a success once the mission lands, regardless of any earlier timed-out attempt on the same trial. This is a deliberately different accounting from the per-attempt success rate discussed above and shown in Figure~\ref{fig:sr_vs_noise_level}, which does not deduplicate retries --- the two views answer different questions (did the mission ultimately succeed, vs.\ how often does an individual attempt fail as noise increases) and are not in conflict.}

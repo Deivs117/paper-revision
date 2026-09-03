@@ -502,9 +502,9 @@ section for the corresponding energy characterisation of each mode.
 \toprule
 \textbf{Family} & \textbf{System} & \textbf{SR (\%)} & \textbf{Task Time (s)} & \textbf{Roll RMS (deg)} & \textbf{$\lambda$} \\
 \midrule
-Appetitive & Neural & 78.9  & 38.52 $\pm$ 1.20  & 0.536 $\pm$ 0.009 & 0.990 \\
+Appetitive & Neural & \revblue{100.0}  & 38.52 $\pm$ 1.20  & 0.536 $\pm$ 0.009 & 0.990 \\
 Appetitive & FSM    & 100.0 & 38.96 $\pm$ 1.77  & 0.525 $\pm$ 0.003 & 0.952 \\
-Aversive   & Neural & 88.2  & 9.98 $\pm$ 2.07   & 1.357 $\pm$ 0.106 & 0.925 \\
+Aversive   & Neural & \revblue{100.0}  & 9.98 $\pm$ 2.07   & 1.357 $\pm$ 0.106 & 0.925 \\
 Aversive   & FSM    & 100.0 & 8.32 $\pm$ 1.08   & 1.825 $\pm$ 0.112 & 0.731 \\
 Obstacle   & Neural & 100.0 & 15.72 $\pm$ 2.49  & 1.547 $\pm$ 0.154 & 0.945 \\
 Obstacle   & FSM    & 100.0 & 12.44 $\pm$ 1.09  & 1.499 $\pm$ 0.089 & 0.811 \\
@@ -520,7 +520,7 @@ Inclined Slope & FSM    & 71.4  & 64.53 $\pm$ 2.79  & 5.430 $\pm$ 8.209 & 0.993 
 \end{tabularx}
 \end{table}
 
-\revblue{In the three single-stimulus suites (Appetitive, Aversive, Obstacle), the FSM's fixed priority rule is structurally well-matched to the task --- one stimulus is active at a time, so a static hierarchy resolves it immediately and deterministically, reaching 100\% success in all three against the Neural system's 78.9--100\%. Figure~\ref{fig:sr_vs_noise_level} shows this advantage is consistent across the noise sweep, not just on average.}
+\revblue{In the three single-stimulus suites (Appetitive, Aversive, Obstacle), the FSM's fixed priority rule is structurally well-matched to the task --- one stimulus is active at a time, so a static hierarchy resolves it immediately and deterministically. Both controllers eventually complete every mission in all three suites (100\% mission-level success in Table~\ref{tab:fsm_comparison}, i.e.\ a trial that first times out and is then retried still counts as a success once it lands). The two controllers diverge, however, in how often that retry is needed: the FSM never requires one, at any noise level, while the Neural system occasionally does as noise increases. Figure~\ref{fig:sr_vs_noise_level} makes this per-attempt view explicit --- Neural's success rate \emph{per individual attempt} (not deduplicated by retry) dips to 60\% in Appetitive and 75\% in Aversive at the highest noise levels, even though every one of those missions is ultimately completed on a later attempt.}
 
 \begin{figure}[t]
     \centering
@@ -540,7 +540,7 @@ Inclined Slope & FSM    & 71.4  & 64.53 $\pm$ 2.79  & 5.430 $\pm$ 8.209 & 0.993 
 
 \revblue{On the two terrain suites (Rugged Terrain, Inclined Slope), success rate, task time, and Roll RMS are reported in Table~\ref{tab:fsm_comparison}, but $T_{switch}$/$T_{response}$ are deliberately omitted: the team that ran the FSM terrain trials identified three configuration differences from the basal-ganglia code's terrain-transition logic (the pitch-instability threshold, a transition timing offset, and the switching-time formula's margin term) that make those two specific metrics not comparable under strictly identical conditions without re-running both controllers with matched parameters, which was out of scope for this comparison. The Neural side of this comparison also draws on a substantially smaller sample (six Rugged Terrain trials, three Inclined Slope trials, restricted to the zero-noise condition to match the FSM runs) than the FSM side (25 and 21 trials respectively); the apparent tipover-rate difference on the Inclined Slope (zero tipovers in the small Neural sample vs.\ six of 21 FSM trials) is reported as an observation rather than a statistically supported finding given this sample-size imbalance.}
 
-\revblue{The Neural-side values recomputed here for the Appetitive, Aversive, Obstacle, and Complex suites are independently derived from raw trial logs and do not match Table~\ref{tab:consolidated_simulation_metrics}'s previously published figures for the same four suites (a discrepancy already tracked, not introduced by this comparison); the recomputed values are used throughout this subsection for internal consistency with Table~\ref{tab:fsm_comparison}.}
+\revblue{The Neural-side values recomputed here for the Appetitive, Aversive, Obstacle, and Complex suites are independently derived from raw trial logs and, as of this revision, match Table~\ref{tab:consolidated_simulation_metrics}'s figures for the same four suites on every reported statistic, including success rate: both tables count a suite as a success once the mission lands, regardless of any earlier timed-out attempt on the same trial. This is a deliberately different accounting from the per-attempt success rate discussed above and shown in Figure~\ref{fig:sr_vs_noise_level}, which does not deduplicate retries --- the two views answer different questions (did the mission ultimately succeed, vs.\ how often does an individual attempt fail as noise increases) and are not in conflict.}
 
 \FloatBarrier
 

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T00:32:26+00:00",
-  "progressLastCommit": "2026-09-02T11:11:46-05:00",
+  "generatedAt": "2026-09-03T00:49:25+00:00",
+  "progressLastCommit": "2026-09-02T19:32:26-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -643,6 +643,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-31-auc-consistency.tex"
+    },
+    {
+      "id": "C-32",
+      "reviewer": "—",
+      "requirement": "Same consolidation, P-02 — the highest-confidence finding (4/4 authors independently). Root cause traced to source (not guessed): experiments/R2-02-fsm-baseline/scripts/build_master_table.py's collect() counts n_attempted as raw folder count (retried failures = separate failed attempts), giving tab:fsm_comparison's Appetitive/Aversive Neural SR of 78.9%/88.2%; experiments/_plotting/builders/macro_robustness.py's build_consolidated_table() (source of tab:consolidated_simulation_metrics) instead dedupes by trial_index (a retried-then-succeeded trial counts as one success), giving 100.0%/100.0% for the same data — not a bug, two legitimate but different SR definitions. Author decided to standardize tab:fsm_comparison to the mission-level (dedup) convention — verified this doesn't change $T_{sim}$/Roll RMS/$\\lambda$ (already SUCCESS-only, identical under both conventions). Before applying, checked whether the same fix should extend to fig:sr_vs_noise_level and its prose (~line 523/543), which discuss this same SR per noise level using the same raw/per-attempt convention (Appetitive dips to 60%, Aversive to 75%, at their highest noise levels) — recomputed directly from experiments/simulation/familia_a_apetitivo/ and familia_a_aversivo/*/trial_summary.json and confirmed that dedup-ing the noise-sweep figure too would erase that finding entirely (100% at every level). Author decided NOT to homogenize: the aggregate table now reports mission-level SR (100.0/100.0, matching tab:consolidated_simulation_metrics on every column), the noise-sweep figure/prose deliberately keeps per-attempt SR — reworded both prose passages (~line 523, ~line 543) to state explicitly that these are two different, intentionally distinct metrics rather than leaving the reader to reconcile two different-looking numbers. validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "results.tex (tab:fsm_comparison Appetitive/Aversive Neural SR cells, two prose paragraphs after the table)",
+      "dataSource": "experiments/R2-02-fsm-baseline/output/table_master_comparison_display.csv (reference, not regenerated — table cells hand-corrected per the verified recompute above)",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-32-fsm-sr-mismatch-reconciliation.tex"
     }
   ]
 }
