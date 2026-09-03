@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T02:59:52+00:00",
-  "progressLastCommit": "2026-09-02T21:34:12-05:00",
+  "generatedAt": "2026-09-03T03:05:33+00:00",
+  "progressLastCommit": "2026-09-02T21:59:52-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -838,6 +838,84 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-46-sigma-z-dimensionless.tex"
+    },
+    {
+      "id": "C-47",
+      "reviewer": "—",
+      "requirement": "Same consolidation, P-18 — Samuel's audit reported 3 occurrences of \"Fig.~\" vs. the dominant \"Figure~\" convention; Diego's independent count found 21 across methodology.tex/results.tex via grep -o 'Fig\\.~'. Direct grep at patch time found 22 (one more than Diego's count — introduced by this same session's C-36 patch in conclusions.tex, caught and normalized in the same pass). Normalized all 22 to \"Figure~\", verified none inside a quotation/proper name. validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "conclusions.tex, methodology.tex, results.tex (22 occurrences)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-47-fig-abbreviation-consistency.tex"
+    },
+    {
+      "id": "C-48",
+      "reviewer": "—",
+      "requirement": "Same consolidation, P-19 — confirmed by Deivi, Samuel, and Diego (3/4). \"Winner-Take-All\" (3 instances: methodology.tex:61, results.tex ×2) capitalized as if a proper noun, vs. 9 lowercase instances elsewhere (the dominant, literature-standard convention for this mechanism). Normalized the 3 to lowercase; WTA acronym unaffected. validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "methodology.tex, results.tex (3 occurrences)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-48-winner-take-all-lowercase.tex"
+    },
+    {
+      "id": "C-49",
+      "reviewer": "—",
+      "requirement": "Same consolidation, P-20 — confirmed by Samuel and Diego. $HI$ was introduced as \"hunting drive\" (methodology.tex:235) and \"hunting-instinct\" (methodology.tex:292, adjective form) — two names for the same parameter — while results.tex used both \"hunting instinct\" (lowercase) and \"Hunting Instinct\" (capitalized, not a literature term, no reason to capitalize an internal model name). Unified to \"hunting instinct\" (noun) / \"hunting-instinct\" (adjective), all lowercase, across both files. validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "methodology.tex, results.tex ($HI$ naming, 2 occurrences)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-49-hunting-instinct-naming.tex"
+    },
+    {
+      "id": "C-50",
+      "reviewer": "—",
+      "requirement": "Same consolidation, P-21 + P-22 — Deivi's original pass found 9 British-spelling instances; Diego's audit amplified to >25 across 18 lines and explicitly recommended a single dedicated normalization pass instead of 25+ individual C-xx rows. Ran a full regex sweep (not limited to Diego's list) and found 36 tokens total, including several categories neither author had flagged: capitalized \"Normalised Stability Margin\" (4×, missed by simple lowercase-only matching), \"characterisation\", \"stabilise\", \"visualise\", \"labelled\"→\"labeled\", \"manoeuvre\"/\"manoeuvres\"→\"maneuver\"/\"maneuvers\" (2×), and \"Centre of Mass\" (results.tex) normalized to match methodology.tex's existing lowercase \"center of mass\". Also folded in Sebas's \"bioinspired\"→\"bio-inspired\" (P-22) as the same category of normalization pass, per his own recommendation. Verified with a second broad sweep (explicit checks for modelled/travelled/grey/programme/defence/practise/licence/fibre/litre/theatre/honour/neighbour/realise/recognise/emphasise/utilise/catalogue/dialogue/mould) before closing — none found. validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "sections/*.tex (36 tokens, almost entirely results.tex)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-50-british-american-spelling-sweep.tex"
+    },
+    {
+      "id": "C-51",
+      "reviewer": "—",
+      "requirement": "Same consolidation, P-23 — new finding from Sebas. results.tex had \"...differential rolling mode-this mode remains active...\" missing punctuation between \"mode\" and \"this\" (likely a lost em-dash from editing). Fixed with a semicolon. validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "results.tex (physical variable-topography discussion)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-51-mode-this-punctuation.tex"
+    },
+    {
+      "id": "C-52",
+      "reviewer": "—",
+      "requirement": "Same consolidation, P-25 — confirmed by Samuel and Diego. closing.tex's % [CHANGE: bibliography file renamed from persbiblio to references] is a repository process artifact with no meaning to a co-author reading the .tex source without commit history — same principle as README §11.1, though technically in a comment. Removed the line. validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "closing.tex (bibliography preamble)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-52-closing-dev-comment.tex"
     }
   ]
 }

@@ -1,0 +1,32 @@
+% C-50 -- British-to-American spelling normalization sweep (redundancy_closing_audit_consolidation_2026-09-02.md, P-21 + P-22)
+% Audit copy only -- live files are sections/*.tex.
+%
+% Deivi's original pass found 9 instances; Diego's audit amplified to >25 across 18 lines and
+% recommended treating this as one dedicated normalization pass rather than 25+ individual C-xx
+% rows -- followed that recommendation here. Ran a full grep/regex sweep (not just Diego's list) to
+% catch every remaining -ise/-isation/-our/-re British form, verified manually before applying,
+% since the paper's dominant convention (40+ instances) is American English.
+%
+% Categories fixed (36 total tokens across sections/*.tex, almost entirely results.tex):
+%  - -ise/-ised/-ising -> -ize/-ized/-izing: characterise, minimise, optimise, generalise,
+%    prioritise, analyse, normalise (incl. capitalized "Normalised Stability Margin", 4x),
+%    synthesise, specialise (incl. "terrain-specialised"), randomise, stabilise, visualise,
+%    characterisation
+%  - -our -> -or: colour, favourable
+%  - -ation nouns: organisation, optimisation, generalisation, stabilisation, specialisation
+%  - other UK/US pairs found in the same sweep, not in Diego's original list: labelled -> labeled,
+%    manoeuvre/manoeuvres -> maneuver/maneuvers (2x)
+%  - hyphenation: bioinspired -> bio-inspired (Sebas, folded into this same pass per its own
+%    recommendation)
+%  - "Centre of Mass" (results.tex) -> "center of mass", matching methodology.tex's existing
+%    lowercase usage of the same term (spelling + capitalization both normalized)
+%  - behaviour/behaviours -> behavior/behaviors (3x)
+%
+% Verified no remaining British spellings via a broad regex sweep across all six sections before
+% closing this patch (grep for -ise/-isation/-our/-re/-yse family + explicit checks for modelled,
+% travelled, labelled, grey, programme, defence, practise, licence, fibre, litre, theatre, honour,
+% neighbour, realise, recognise, emphasise, utilise, catalogue, dialogue, mould, manoeuvre).
+
+% Mechanical replace, all within sections/*.tex (mostly results.tex, one instance each in
+% conclusions.tex and methodology.tex/preamble.tex where applicable) -- see PROGRESS.md row for the
+% full verification method; individual before/after diffs are in git history for this commit.

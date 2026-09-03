@@ -58,7 +58,7 @@ In the simulation, visual stimuli captured by the camera were represented using 
   \label{fig:estimulos}
 \end{figure}
 
-\revblue{To evaluate inspection-oriented task performance, a dedicated scenario places the platform in a purpose-built obstacle field where the visual target is not visible from the initial pose, only entering the field of view after the robot traverses three static capsule obstacles. Twenty independent trials were run with a 90~s timeout and no artificial sensor noise injected. As in the other simulated scenarios, the robot's behavior in this task is purely reactive: it builds no map, retains no spatial memory, and computes no global re-route when blocked, relying instead on the same basal-ganglia/Winner-Take-All arbitration described below to laterally evade each obstacle in real time while continuing toward the target once visible. Results for this scenario are reported in Section~\ref{sec:results}.}
+\revblue{To evaluate inspection-oriented task performance, a dedicated scenario places the platform in a purpose-built obstacle field where the visual target is not visible from the initial pose, only entering the field of view after the robot traverses three static capsule obstacles. Twenty independent trials were run with a 90~s timeout and no artificial sensor noise injected. As in the other simulated scenarios, the robot's behavior in this task is purely reactive: it builds no map, retains no spatial memory, and computes no global re-route when blocked, relying instead on the same basal-ganglia/winner-take-all arbitration described below to laterally evade each obstacle in real time while continuing toward the target once visible. Results for this scenario are reported in Section~\ref{sec:results}.}
 
 \subsection{Neuronal Control System}
 
@@ -150,7 +150,7 @@ In Equations~\eqref{eq:L0}–\eqref{eq:L4} the subscripts are used to enumerate 
 
 Likewise, the indices $n$ and $r$ enumerate the neurons in the input, response, and auxiliary integrating layers, so that $I_n$, $R_n$, and $A_n$ represent the activity of the $n$-th neuron in each of these layers. In Equations~\eqref{eq:ResL}–\eqref{eq:AuxL}, each neuron $R_n$ and $A_n$ receives weighted contributions from all other neurons through the synaptic weights $W^{(\mathrm{IR})}_{n,i}$, $W^{(\mathrm{RR})}_{n,j}$, and $W^{(\mathrm{RA})}_{n,j}$, where the indices $i$ and $j$ are used only as summation variables. Finally, in Equation~\eqref{eq:L4} the index $r$ runs over all units $A_n$ to accumulate their activity in neuron $L_4$, which acts as a global integrator of the obstacle-stimulus intensity.
 
-\revblue{The matrices $W^{(IR)}$, $W^{(RR)}$, and $W^{(RA)}$ denote connectivity weight matrices (binary or fixed patterns) representing fixed structural inter-neuron connectivity in the Integrating Neural Network (see Fig.~\ref{fig:IntLidar}), fixed and uniform in the same sense as the ring-to-integrator weights above.}
+\revblue{The matrices $W^{(IR)}$, $W^{(RR)}$, and $W^{(RA)}$ denote connectivity weight matrices (binary or fixed patterns) representing fixed structural inter-neuron connectivity in the Integrating Neural Network (see Figure~\ref{fig:IntLidar}), fixed and uniform in the same sense as the ring-to-integrator weights above.}
 
 The time constant $\tau_L$ (s) governs the dynamics of the directional tank neurons $L_0$--$L_4$, while $\tau_{IRA}$ (s) is the shared integration time constant of the input ($I_n$), response ($R_n$), and auxiliary ($A_n$) layers (see Table~\ref{table:LiDAR}).
 
@@ -232,7 +232,7 @@ where $\text{L}_2$ and $L_4$ denote the left/right directional quadrant neuron a
 
 The integrative layer processes the outputs of the sensory layer, producing a preferred movement direction. Finally, the decisional layer decodes these directional neural activations together with information from units $L_0$, $L_1$, $L_2$, and $L_3$ ---from the obstacle sensory module--- to generate directional commands (linear, angular, and lateral commands for quadrupedal mode) executed by the robot. It is important to emphasize that the stop signal during approach toward an appetitive stimulus originates from neuron $X_{17}$, which activates when the stimulus is sufficiently close for proper inspection. 
 
-The differential equations~\eqref{eq:Z_3}–\eqref{eq:Z_17} describing the dynamics of the locomotion decision module, as well as the corresponding hyperparameters in Table~\ref{table:Locom_NN}, are presented below. In Equation~\eqref{eq:Z_13}, $HI$ denotes an intrinsic hunting drive that provides a baseline forward/exploratory motivation, allowing the platform to keep moving and exploring even in the absence of external stimuli.
+The differential equations~\eqref{eq:Z_3}–\eqref{eq:Z_17} describing the dynamics of the locomotion decision module, as well as the corresponding hyperparameters in Table~\ref{table:Locom_NN}, are presented below. In Equation~\eqref{eq:Z_13}, $HI$ denotes an intrinsic \revblue{hunting instinct} that provides a baseline forward/exploratory motivation, allowing the platform to keep moving and exploring even in the absence of external stimuli.
 
 \begin{align}
 \tau \frac{dz_3}{dt} =& -z_3 + (Gpe_{B})_+\label{eq:Z_3}\\

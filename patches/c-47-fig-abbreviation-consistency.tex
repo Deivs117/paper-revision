@@ -1,0 +1,13 @@
+% C-47 -- "Fig." -> "Figure" consistency (redundancy_closing_audit_consolidation_2026-09-02.md, P-18)
+% Audit copy only -- live files are sections/*.tex.
+%
+% "Figure~\ref{}" is the dominant convention across the paper (19+ in methodology.tex, 61+ in
+% results.tex before this patch); "Fig.~\ref{}" appeared scattered, mostly in results.tex but also
+% once each in methodology.tex and conclusions.tex (the latter introduced by this same session's
+% own C-36 patch -- caught and normalized in the same pass). Diego's audit counted 21 occurrences;
+% direct grep at patch time found 22 (one more than Diego's count, from C-36). Normalized all 22 to
+% "Figure~\ref{}", verified none were inside a quotation or proper name before replacing.
+
+% Mechanical global replace: s/Fig\.~\\ref/Figure~\\ref/g across conclusions.tex, methodology.tex,
+% results.tex. No prose context needed beyond the replacement itself -- see PROGRESS.md row for the
+% verification method.
