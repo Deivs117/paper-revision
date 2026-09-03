@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T00:49:25+00:00",
-  "progressLastCommit": "2026-09-02T19:32:26-05:00",
+  "generatedAt": "2026-09-03T00:50:56+00:00",
+  "progressLastCommit": "2026-09-02T19:49:25-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -656,6 +656,32 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-32-fsm-sr-mismatch-reconciliation.tex"
+    },
+    {
+      "id": "C-33",
+      "reviewer": "—",
+      "requirement": "Same consolidation, P-03 — README §11.1 violation, confirmed unanimously by all 4 final_audit_.md authors, confirmed via grep -o '\\texttt{[^}]}' sections/*.tex as the only \\texttt{} occurrence in sections/. methodology.tex's Basal Ganglia ablation study paragraph named the raw code parameter \\texttt{ablation\\_mode} directly in prose — same class of issue as robot_cmd (C-17). The four variants are already named functionally right after (\\emph{full}, \\emph{no lateral inhibition}, \\emph{no STN/STR}, \\emph{threshold-only}), so the raw parameter name added nothing for the reader. Rewrote the sentence to introduce the four variants without naming the code parameter. validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "methodology.tex (Basal Ganglia ablation study paragraph, sssec:Basal_Ganglia_Module)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-33-ablation-mode-identifier.tex"
+    },
+    {
+      "id": "C-34",
+      "reviewer": "—",
+      "requirement": "Same consolidation, P-04 — README §11.1 violation, confirmed by 3/4 final_audit_*.md authors (Deivi, Samuel, Diego). \"Experiment E\" is the internal family identifier (familia_e in code, \"Familia E\" in analysis docs) for the Reactive Inspection Task; R3-05 (see that row) already removed the two occurrences in this subsection's body prose (2026-08-29, author request via Overleaf), but this third occurrence — in tab:inspection_metrics's caption — survived that cleanup. Removed (Experiment E, from the caption. validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "results.tex (tab:inspection_metrics caption)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-34-experiment-e-caption.tex"
     }
   ]
 }

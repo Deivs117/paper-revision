@@ -1,0 +1,13 @@
+% C-33 -- methodology.tex raw identifier removal (redundancy_closing_audit_consolidation_2026-09-02.md, P-03)
+% Audit copy only -- live file is sections/methodology.tex.
+%
+% README.md Section 11.1 ("No Raw Implementation/Simulation Identifiers in Reader-Facing Prose")
+% violation, confirmed unanimously by all 4 final_audit_*.md authors and confirmed via
+% `grep -o '\texttt{[^}]*}' sections/*.tex` -- was the only \texttt{} occurrence in all of
+% sections/. Same class of issue as `robot_cmd` (C-17) and `obstaculos.world`. The four ablation
+% variants are already named functionally right after (\emph{full}, \emph{no lateral inhibition},
+% \emph{no STN/STR}, \emph{threshold-only}) -- the raw code parameter name adds nothing for the
+% reader.
+
+% --- methodology.tex, ~line 206 ---
+\revblue{To empirically ground this architectural choice, rather than relying solely on the citations above, an ablation study was conducted on the basal-ganglia circuit itself, introducing four ablation variants of the simulated circuit: the intact circuit (\emph{full}, control); \emph{no lateral inhibition}, which zeroes the cross-channel inhibitory terms in Eqs.~\eqref{eq:stn}--\eqref{eq:str} (Gpe$\rightarrow$STN, STN$\rightarrow$Gpi) while leaving same-channel dynamics untouched; \emph{no STN/STR}, which removes the STN and STR layers entirely, routing the raw stimulus directly into GPe/GPi with the same per-channel gains STN would otherwise apply; and \emph{threshold-only}, which bypasses the STN/GPi/GPe/STR dynamics altogether in favor of a static fixed-priority threshold over the raw stimulus --- the same threshold-logic family already used elsewhere in this architecture's own Locomotion Module. Each variant was evaluated across the Appetitive Targeting (no-conflict control) and Complex Navigation (three simultaneous, conflicting stimuli) scenarios ($n=12$ replicates/variant/scenario); results are reported in Section~\ref{sec:results}.}
