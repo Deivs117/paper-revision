@@ -1,7 +1,7 @@
 \section{Results}
 \label{sec:results}
 
-Initially, simulations of the platform were performed in the Gazebo environment within a three-dimensional space inspired by an industrial warehouse. In this scenario, the expected behaviors of the robotic platform were evaluated under the presentation of different stimuli. Additionally, gait-switching tests on complex terrain were conducted using the three-topology map described earlier. Subsequently, the behaviors observed in simulation were validated using the physical robotic platform constructed as the digital twin counterpart. 
+\revblue{Initially, simulations of the platform were performed in the Gazebo environment.} In this scenario, the expected behaviors of the robotic platform were evaluated under the presentation of different stimuli. Additionally, gait-switching tests on complex terrain were conducted using the three-topology map described earlier. Subsequently, the behaviors observed in simulation were validated using the physical robotic platform constructed as the digital twin counterpart. 
 
 \subsection{Simulation Results}
 
@@ -188,21 +188,26 @@ Complex Navigation   & 100.0\% & 24.96 $\pm$ 10.36 & 1.03 $\pm$ 0.35 & 1.01 $\pm
 
 \revblue{Without stimulus conflict, all four variants perform statistically indistinguishably: $91.7$--$100\%$ success in the Appetitive Targeting scenario, $p=1.000$ for all three comparisons against the intact circuit --- removing an ablation target does not break the simple case, as expected when only one channel is ever active. Under real conflict (Complex Navigation, Figure~\ref{fig:ablation_success_rate}), a clear gradient emerges. The two ablations that remove basal-ganglia mechanism itself --- \emph{no lateral inhibition} (inhibitory connections) and \emph{no STN/STR} (neural layers) --- collapse the success rate to $25.0\%$ and $33.3\%$ respectively (Fisher's exact $p<0.001$ and $p=0.001$ vs.\ the intact circuit's $100\%$), directly addressing the reviewer's request to quantify the consequence of removing inhibitory connections or key neural layers (R3-01). Replacing the entire circuit with static threshold logic (\emph{threshold only}) degrades success more mildly and not significantly on this metric alone ($83.3\%$, $p=0.478$); the case against threshold logic instead rests on the continuous metrics below.}
 
-\begin{figure}[t]
+\begin{figure*}[t]
     \centering
-    \includegraphics[width=0.6\textwidth]{fig_ablation_success_rate.png}
-    \caption{\revblue{Success rate under real stimulus conflict (Complex Navigation scenario, $n=12$ trials/variant; Fisher's exact test vs. the intact circuit). The two ablations that remove basal-ganglia mechanism itself collapse success rate significantly (\emph{no lateral inhibition}: $25.0\%$, $p<0.001$; \emph{no STN/STR}: $33.3\%$, $p=0.001$); replacing the circuit with static threshold logic degrades success more mildly and not significantly at this sample size (\emph{threshold only}: $83.3\%$, $p=0.478$). Under the no-conflict Appetitive Targeting scenario (not shown), all four variants perform statistically indistinguishably ($91.7$--$100\%$, $p=1.000$ for all three comparisons).}}
-    \label{fig:ablation_success_rate}
-\end{figure}
+    \begin{subfigure}[b]{0.42\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig_ablation_success_rate.png}
+        \caption{Success rate.}
+        \label{fig:ablation_success_rate}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.55\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig_ablation_complex_stability.png}
+        \caption{Attitude stability (Roll/Pitch RMS).}
+        \label{fig:ablation_complex_stability}
+    \end{subfigure}
+    \caption{\revblue{Basal-ganglia ablation study under real stimulus conflict (Complex Navigation scenario, $n=12$ trials/variant; Fisher's exact / Mann--Whitney $p$ vs.\ the intact circuit). (a) Success rate: the two ablations that remove basal-ganglia mechanism itself collapse success rate significantly (\emph{no lateral inhibition}: $25.0\%$, $p<0.001$; \emph{no STN/STR}: $33.3\%$, $p=0.001$); replacing the circuit with static threshold logic degrades success more mildly and not significantly at this sample size (\emph{threshold only}: $83.3\%$, $p=0.478$). Under the no-conflict Appetitive Targeting scenario (not shown), all four variants perform statistically indistinguishably ($91.7$--$100\%$, $p=1.000$ for all three comparisons). (b) Attitude stability: Roll RMS increases significantly for all three ablations relative to the intact circuit (\emph{no lateral inhibition}: $+43.6\%$, $p<0.001$; \emph{no STN/STR}: $+45.9\%$, $p<0.001$; \emph{threshold only}: $+22.0\%$, $p=0.017$). Pitch RMS shows a different pattern: it increases for \emph{threshold only} ($+6.4\%$, $p=0.0029$), consistent with the roll-instability trend, but decreases for \emph{no lateral inhibition} and \emph{no STN/STR} ($-11.3\%$ and $-5.7\%$, both $p<0.005$) --- plausibly reflecting reduced net locomotor activity in trials that fail outright rather than improved attitude control.}}
+    \label{fig:ablation_combined}
+\end{figure*}
 
 \revblue{Decision latency under conflict is unaffected by removing basal-ganglia mechanism ($81.7$~ms, 95\%~CI $[56.9, 106.4]$, for \emph{no lateral inhibition}, $p=0.34$; $66.6$~ms, 95\%~CI $[41.9, 91.2]$, for \emph{no STN/STR}, $p=0.84$; vs.\ $75.9$~ms, 95\%~CI $[59.3, 92.6]$, for \emph{full}), but is significantly slower under \emph{threshold only} ($109.1$~ms, 95\%~CI $[89.2, 129.0]$, $p=0.014$) --- consistent with a static threshold lacking the anticipatory, continuously-converging dynamics the WTA circuit provides during conflict resolution. Roll RMS increases significantly for all three ablations relative to the intact circuit ($+43.6\%$ \emph{no lateral inhibition}, $p<0.001$; $+45.9\%$ \emph{no STN/STR}, $p<0.001$; $+22.0\%$ \emph{threshold only}, $p=0.017$), indicating that attitude destabilization under conflict is a shared consequence of weakening the arbitration mechanism, regardless of which component is removed. Pitch RMS instead diverges by ablation type (Figure~\ref{fig:ablation_complex_stability}): it increases for \emph{threshold only} ($+6.4\%$, $p=0.0029$), consistent with the roll-instability trend, but decreases for \emph{no lateral inhibition} and \emph{no STN/STR} ($-11.3\%$ and $-5.7\%$, both $p<0.005$) --- plausibly a symptom of reduced net locomotor activity in the majority of trials that fail outright under these two ablations, rather than improved attitude control.}
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=\textwidth]{fig_ablation_complex_stability.png}
-    \caption{\revblue{Attitude stability under real conflict (Complex Navigation scenario, $n=12$ trials/variant) across the four basal-ganglia ablation variants. Roll RMS increases significantly for all three ablations relative to the intact circuit (\emph{no lateral inhibition}: $+43.6\%$, $p<0.001$; \emph{no STN/STR}: $+45.9\%$, $p<0.001$; \emph{threshold only}: $+22.0\%$, $p=0.017$). Pitch RMS shows a different pattern: it increases for \emph{threshold only} ($+6.4\%$, $p=0.0029$), consistent with the roll-instability trend, but decreases for \emph{no lateral inhibition} and \emph{no STN/STR} ($-11.3\%$ and $-5.7\%$, both $p<0.005$) --- plausibly reflecting reduced net locomotor activity in trials that fail outright (Figure~\ref{fig:ablation_success_rate}) rather than improved attitude control.}}
-    \label{fig:ablation_complex_stability}
-\end{figure}
 
 \revblue{Taken together, these results support the winner-take-all arbitration design on two separable grounds. First, the basal-ganglia circuit's own mechanism --- not merely the presence of \emph{some} priority rule --- is responsible for resolving genuine multi-stimulus conflict: disabling its inhibitory connections or removing its neural layers each independently collapses success rate and roll stability under conflict, with neither degrading decision latency (R3-01). Second, replacing that mechanism with the same family of static threshold logic already used elsewhere in this architecture's Locomotion Module is measurably worse specifically where the WTA circuit's continuous dynamics matter most: it is the only variant that significantly slows decision-making under conflict, in addition to degrading attitude stability (R3-02) --- though, as noted above, this comparison is supported by latency and attitude metrics rather than by success rate alone, which did not reach significance at this sample size.}
 
@@ -555,7 +560,7 @@ Inclined Slope & FSM    & 71.4  & 64.53 $\pm$ 2.79  & 5.430 $\pm$ 8.209 & 0.993 
 
 \revblue{To directly address the reviewer's request for inspection-oriented task indicators, a dedicated experiment evaluates the platform's behavior in a purpose-built obstacle field where a visual target is not visible from the robot's initial pose and only enters the field of view after traversing three static capsule obstacles. Twenty independent trials were executed with a 90~s timeout and no artificial noise injection.}
 
-\revblue{The system does not implement deliberate path planning: it builds no map, retains no spatial memory, and does not compute a global re-route when blocked. What it implements instead is reactive re-routing driven by the basal-ganglia/Winner-Take-All (BG/WTA) arbitration network, which integrates LiDAR and camera information in real time to laterally evade each obstacle while continuing toward the target once visible. Coverage rate --- the percentage of a predefined inspection area visited --- is not reported here, as it presupposes a coverage planner and a known target area that this reactive architecture neither has nor requires (see Section~\ref{ssec:Limitations}). Instead, task-completion indicators that are both measurable with the existing instrumentation and consistent with the system's actual capabilities are used: success rate (SR), final approach precision ($d_{final}$), and time to first visual acquisition of the target ($T_{acquisition}$).}
+\revblue{As described in Section~\ref{sec:methodology}, the system's behavior in this task is purely reactive --- no map, no spatial memory, no deliberate re-routing when blocked. What it implements instead is reactive re-routing driven by the basal-ganglia/Winner-Take-All (BG/WTA) arbitration network, which integrates LiDAR and camera information in real time to laterally evade each obstacle while continuing toward the target once visible. Coverage rate --- the percentage of a predefined inspection area visited --- is not reported here, as it presupposes a coverage planner and a known target area that this reactive architecture neither has nor requires (see Section~\ref{ssec:Limitations}). Instead, task-completion indicators that are both measurable with the existing instrumentation and consistent with the system's actual capabilities are used: success rate (SR), final approach precision ($d_{final}$), and time to first visual acquisition of the target ($T_{acquisition}$).}
 
 \revblue{$d_{final}$ is the Euclidean distance between the robot and the target at the instant the inspection-stop neuron activates ($X_{17} > 0.25$, sustained 2~s); $N_{ev}^{LiDAR}$ counts sensory-level obstacle-detection transitions (LiDAR channel crossing its 0.3 activation threshold); $N_{ev}^{X}$ counts the resulting omnidirectional-mode switches, gated by a 3~s dwell-time hysteresis; $T_{acquisition}$ is the simulation time from post-warmup to the target's bounding-box area first exceeding the visibility threshold.}
 
@@ -598,7 +603,7 @@ $T_{task}$ (s)               & 51.6 $\pm$ 12.3   & 42.8  & 86.8  \\
 \begin{figure}[t]
     \centering
     \includegraphics[width=\textwidth]{fig_mode_timeline_inspection.png}
-    \caption{\revblue{Active gait mode over time, Reactive Inspection Task: a representative successful Neural trial (top) vs.\ a representative successful FSM trial (bottom) --- shown here for a case where the FSM does escape avoidance mode; in its 11 failing trials the lower trace instead stays flat in avoidance for nearly the entire duration. Both traces show the same qualitative difference as Figure~\ref{fig:mode_timeline_complex}: abrupt, timer-held FSM transitions vs.\ shorter, more graduated Neural mode occupancy.}}
+    \caption{\revblue{Active gait mode over time, Reactive Inspection Task: a representative successful Neural trial (top) vs.\ a representative successful FSM trial (bottom) --- shown here for a case where the FSM does escape avoidance mode; in its 11 failing trials the lower trace instead stays flat in avoidance for nearly the entire duration. Same qualitative pattern as Figure~\ref{fig:mode_timeline_complex}, reproduced here for this suite.}}
     \label{fig:mode_timeline_inspection}
 \end{figure}
 

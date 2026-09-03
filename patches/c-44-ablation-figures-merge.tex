@@ -1,0 +1,37 @@
+% C-44 -- results.tex basal-ganglia ablation figures merge (redundancy_closing_audit_consolidation_2026-09-02.md, P-14)
+% Audit copy only -- live file is sections/results.tex.
+%
+% fig_ablation_success_rate.png (single bar-chart panel) and fig_ablation_complex_stability.png
+% (already a 2-panel Roll/Pitch RMS image) both document the same n=12/variant, 4-variant, Complex
+% Navigation ablation study, from complementary angles. No baked-in panel letters on either PNG
+% (verified by opening both assets directly) -- unlike the NEU_IMU case, this merge needs no image
+% regeneration, just a LaTeX-level subfigure wrap, same pattern as fig:mlp_eval_grid (C-19).
+% Preserved both original \label{}s (as individual subfigure labels, same technique C-29 used for
+% GRAPH_IMU) so every existing \ref{fig:ablation_success_rate}/\ref{fig:ablation_complex_stability}
+% in the surrounding prose (lines ~189, ~198... now renumbered after this patch) resolves unchanged
+% -- no prose rewording needed beyond the figure blocks themselves. Confirmed by Deivi, Sebas, and
+% Diego independently (3/4). Reduces float count 2 -> 1.
+%
+% compile_pdf.sh verified clean (no undefined refs, no duplicate labels, no overfull warnings);
+% visually confirmed on the rendered PDF page that (a)/(b) render side by side as intended and that
+% \ref{fig:ablation_complex_stability} correctly resolves to "30b" in the following paragraph.
+
+% --- results.tex, replaces both original \begin{figure}...\end{figure} blocks (~lines 191-205) ---
+\begin{figure*}[t]
+    \centering
+    \begin{subfigure}[b]{0.42\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig_ablation_success_rate.png}
+        \caption{Success rate.}
+        \label{fig:ablation_success_rate}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.55\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig_ablation_complex_stability.png}
+        \caption{Attitude stability (Roll/Pitch RMS).}
+        \label{fig:ablation_complex_stability}
+    \end{subfigure}
+    \caption{\revblue{Basal-ganglia ablation study under real stimulus conflict (Complex Navigation scenario, $n=12$ trials/variant; Fisher's exact / Mann--Whitney $p$ vs.\ the intact circuit). (a) Success rate: the two ablations that remove basal-ganglia mechanism itself collapse success rate significantly (\emph{no lateral inhibition}: $25.0\%$, $p<0.001$; \emph{no STN/STR}: $33.3\%$, $p=0.001$); replacing the circuit with static threshold logic degrades success more mildly and not significantly at this sample size (\emph{threshold only}: $83.3\%$, $p=0.478$). Under the no-conflict Appetitive Targeting scenario (not shown), all four variants perform statistically indistinguishably ($91.7$--$100\%$, $p=1.000$ for all three comparisons). (b) Attitude stability: Roll RMS increases significantly for all three ablations relative to the intact circuit (\emph{no lateral inhibition}: $+43.6\%$, $p<0.001$; \emph{no STN/STR}: $+45.9\%$, $p<0.001$; \emph{threshold only}: $+22.0\%$, $p=0.017$). Pitch RMS shows a different pattern: it increases for \emph{threshold only} ($+6.4\%$, $p=0.0029$), consistent with the roll-instability trend, but decreases for \emph{no lateral inhibition} and \emph{no STN/STR} ($-11.3\%$ and $-5.7\%$, both $p<0.005$) --- plausibly reflecting reduced net locomotor activity in trials that fail outright rather than improved attitude control.}}
+    \label{fig:ablation_combined}
+\end{figure*}
