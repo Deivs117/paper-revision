@@ -679,7 +679,7 @@ Complementarily, the experiments with the physical platform reproduced the same 
 
 To complement the qualitative description of the terrain-classification module (Section~\ref{ssec:Gait_Decision_Module}), the MLP (150–80 hidden units, \revblue{LeakyReLU with negative slope $0.01$}, Adam optimizer) was evaluated on the IMU dataset ($n = 600$ samples, 135-dimensional input, binary labels: 0 = flat terrain, 1 = inclined terrain) using a stratified 80/20 train–test split and 5-fold stratified cross-validation.
 
-\revblue{As illustrated in Figure~\ref{fig:mlp_eval_grid}a}, the final model produced a confusion matrix on the held-out test set. Across the 5-fold cross-validation, the model achieved an accuracy of $0.767 \pm 0.028$, precision of $0.764 \pm 0.024$, recall of $0.779 \pm 0.048$, and an F1-score of $0.771 \pm 0.033$. On the held-out test set ($n = 120$), the model reached an accuracy of 0.800, precision of 0.747, recall of 0.918, F1-score of 0.824, and an ROC-AUC of 0.866, confirming that the network reliably discriminates between flat and inclined terrain, with a recall bias toward the inclined-terrain class that minimises the safety-critical risk of missed inclines. \revblue{The classifier's discrimination capacity is further supported by the ROC curve (Figure~\ref{fig:mlp_eval_grid}b), where the curve remains well above the chance diagonal across the operating range, yielding an AUC of 0.866.}
+\revblue{As illustrated in Figure~\ref{fig:mlp_eval_grid}a}, the final model produced a confusion matrix on the held-out test set. Across the 5-fold cross-validation, the model achieved an accuracy of $0.767 \pm 0.028$, precision of $0.764 \pm 0.024$, recall of $0.779 \pm 0.048$, and an F1-score of $0.771 \pm 0.033$. On the held-out test set ($n = 120$), the model reached an accuracy of 0.800, precision of 0.747, recall of 0.918, F1-score of 0.824, and an ROC-AUC of \revblue{0.864}, confirming that the network reliably discriminates between flat and inclined terrain, with a recall bias toward the inclined-terrain class that minimises the safety-critical risk of missed inclines. \revblue{The classifier's discrimination capacity is further supported by the ROC curve (Figure~\ref{fig:mlp_eval_grid}b), where the curve remains well above the chance diagonal across the operating range, yielding an AUC of 0.864.}
 
 \revblue{Figure~\ref{fig:mlp_eval_grid}c illustrates the training convergence behaviour}, showing the evolution of the learning loss across epochs and confirming stable optimisation of the selected configuration. To justify the choice of architecture, an ablation study compared the proposed 150–80 configuration against simpler (50, 100) and deeper (200, 100, 50) topologies. \revblue{As shown in Figure~\ref{fig:mlp_eval_grid}d}, the 150–80 configuration achieved the highest F1-score among all tested architectures ($\text{F1} = 0.771$), outperforming the shallower (50: $\text{F1} = 0.747$; 100: $\text{F1} = 0.766$) and deeper (200-100-50: $\text{F1} = 0.766$) variants. This confirms that 150–80 represents the most favourable trade-off between model capacity and generalisation for this classification task, while remaining computationally inexpensive for onboard deployment.
 
@@ -694,7 +694,7 @@ To complement the qualitative description of the terrain-classification module (
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=\linewidth]{fig2_roc_curve.png}
-        \caption{ROC curve (AUC = 0.866).}
+        \caption{ROC curve (AUC = \revblue{0.864}).}
     \end{subfigure}
 
     \vspace{0.6em}
@@ -710,7 +710,7 @@ To complement the qualitative description of the terrain-classification module (
         \includegraphics[width=\linewidth]{fig4_architecture_ablation.png}
         \caption{Architecture ablation (F1-score).}
     \end{subfigure}
-    \caption{\revblue{MLP-based terrain classifier evaluation, final configuration (150--80 hidden units). (a) Confusion matrix on the held-out test set ($n=120$). (b) ROC curve (AUC = 0.866). (c) Training-loss convergence across epochs. (d) F1-score comparison across the four tested hidden-layer architectures, motivating the 150--80 choice.}}
+    \caption{\revblue{MLP-based terrain classifier evaluation, final configuration (150--80 hidden units). (a) Confusion matrix on the held-out test set ($n=120$). (b) ROC curve (AUC = 0.864). (c) Training-loss convergence across epochs. (d) F1-score comparison across the four tested hidden-layer architectures, motivating the 150--80 choice.}}
     \label{fig:mlp_eval_grid}
 \end{figure*}
 

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-02T16:11:46+00:00",
-  "progressLastCommit": "2026-09-02T11:06:55-05:00",
+  "generatedAt": "2026-09-03T00:32:26+00:00",
+  "progressLastCommit": "2026-09-02T11:11:46-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -630,6 +630,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-30-neu-imu-real-merge.tex"
+    },
+    {
+      "id": "C-31",
+      "reviewer": "—",
+      "requirement": "Redundancy-closing consolidation (intake/pending/redundancy_closing_audit_consolidation_2026-09-02.md, P-01), cross-referencing all 4 final_audit_*.md docs (Deivi, Samuel, Sebas, Diego) — 2/4 independently confirmed (Samuel, Diego, verified assets/fig2_roc_curve.png directly). The MLP ROC-AUC figure was reconstructed by C-21/C-22 with a recalculated AUC of 0.864 printed in the asset's own legend \"for internal consistency\", but results.tex prose (1×) and both fig:mlp_eval_grid captions (2×, subcaption (b) + main caption) still said 0.866 — reader-visible inconsistency between the figure and its own caption/prose. Updated all 3 occurrences to 0.864 to match the already-published asset (no figure regeneration needed). validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "results.tex (fig:mlp_eval_grid prose + subcaption (b) + main caption)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-31-auc-consistency.tex"
     }
   ]
 }

@@ -1,0 +1,12 @@
+% C-31 -- results.tex AUC consistency fix (redundancy_closing_audit_consolidation_2026-09-02.md, P-01)
+% Audit copy only -- live file is sections/results.tex.
+
+% --- prose, ~line 682 ---
+accuracy of 0.800, precision of 0.747, recall of 0.918, F1-score of 0.824, and an ROC-AUC of \revblue{0.864}, confirming that the network reliably discriminates between flat and inclined terrain, with a recall bias toward the inclined-terrain class that minimises the safety-critical risk of missed inclines. \revblue{The classifier's discrimination capacity is further supported by the ROC curve (Figure~\ref{fig:mlp_eval_grid}b), where the curve remains well above the chance diagonal across the operating range, yielding an AUC of 0.864.}
+
+% --- fig:mlp_eval_grid, subcaption (b), ~line 697 ---
+\caption{ROC curve (AUC = \revblue{0.864}).}
+
+% --- fig:mlp_eval_grid, main caption, ~line 713 ---
+\caption{\revblue{MLP-based terrain classifier evaluation, final configuration (150--80 hidden units). (a) Confusion matrix on the held-out test set ($n=120$). (b) ROC curve (AUC = 0.864). (c) Training-loss convergence across epochs. (d) F1-score comparison across the four tested hidden-layer architectures, motivating the 150--80 choice.}}
+\label{fig:mlp_eval_grid}
