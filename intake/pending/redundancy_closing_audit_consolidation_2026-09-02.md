@@ -128,19 +128,23 @@ del plan porque comparte alcance con [P-13]/[P-14]/[P-26]. Decisiones tomadas en
 
 - **[FIG-2a] `NEU_IMU` + `NEU_IMU2`** (simulación) — los 4 auditores habían dicho "NO fusionar"
   (ver [P-26]) por las letras horneadas, pero este doc sí tiene el procedimiento completo para
-  regenerar sin letras y fusionar. **DECIDIDO: NO fusionar** — el autor confirmó, tras ver las
-  imágenes actuales, que la fusión no reduce longitud de texto de forma significativa; no vale el
-  riesgo/esfuerzo de regenerar + reescribir prosa. **[P-26] se mantiene cerrado tal cual estaba.**
-  **Pero ver [FIG-X17] abajo — se sí regeneran ambos PNGs, por una razón distinta (quitar un panel,
-  no fusionar dos figuras).**
+  regenerar sin letras y fusionar. **DECIDIDO: NO fusionar, cancelado definitivamente** (decisión
+  reconfirmada 2026-09-02) — el autor confirmó, tras ver las imágenes actuales, que la fusión no
+  reduce longitud de texto de forma significativa; no vale el riesgo/esfuerzo de regenerar +
+  reescribir prosa. **No es un "pendiente para otra ronda" — queda cerrado, no re-abrir salvo
+  petición explícita futura.** **[P-26] se mantiene cerrado tal cual estaba.**
+  **Nota:** [FIG-X17] (abajo) sí regeneró ambos PNGs, pero por una razón distinta y ya ejecutada
+  (`C-53`, quitar el panel "Locomotion 2") — no es una fusión de las dos figuras.
 - **[FIG-2b] `NEU_EST_UNIB` + `NEU_EST_UNIG`** (simulación, `results.tex:~38-53`) — **DECIDIDO:
   FIX-NOW**, regenerar sin `group_letters`, promover, fusionar en 2 subfiguras, reescribir la única
   cita con letra (línea ~45). Alinea la estructura de simulación con la del lado físico
   (`NEU_EST_UNIG_real`, ya fusionado por `C-18`).
 - **[FIG-2c] `NEU_EST_MUL` (simulación) + `NEU_EST_MUL_real` (físico)** — fusión cruzada
   sim×físico, 4 letras horneadas por imagen, 2 subsecciones de `results.tex`, 7 citas con letra a
-  reescribir (varias ya ajustadas cuidadosamente por `C-28`). **DECIDIDO: NO ejecutar esta ronda**
-  — queda para una ronda futura, siguiendo la propia recomendación del documento origen.
+  reescribir (varias ya ajustadas cuidadosamente por `C-28`). **DECIDIDO: NO ejecutar, cancelado
+  definitivamente** (decisión reconfirmada 2026-09-02) — no es un "pendiente para otra ronda", el
+  autor canceló esta fusión de forma explícita y definitiva. No re-abrir salvo petición explícita
+  futura.
 - **Grupo 3 (`Modos_Locomocion`/`V2`):** ya venía "no recomendado" en el documento origen
   (riesgo de ilegibilidad de diagramas de circuito al encogerlos). **Sin acción, no se re-abre.**
 
