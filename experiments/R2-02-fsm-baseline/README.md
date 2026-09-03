@@ -110,7 +110,8 @@ columnas de tabla.
 |---|---|---|---|
 | `table_master_comparison.csv` | `build_master_table.py` | Datos crudos (traza, no promover tal cual) | Fuente de `table_master_comparison_display.csv` |
 | `table_master_comparison_display.csv` | `build_master_table.py::build_display_table` | ✅ Ronda 3: sin columna Nota (caveats van en prosa); λ-conflict-only y Conflict Exposure **ambas fuera de la tabla** (ver hallazgo resuelto abajo — los 2 valores de exposición al conflicto van en prosa, no como columnas, por ser ruido visual en 6 de 7 familias) | Nueva subsección `results.tex` (R2-02), tabla comparativa |
-| `fig_sr_vs_noise_level.png` | `build_sr_vs_nl.py` | ✅ Ronda 3: quitada la anotación de texto que solapaba el eje en Obstacle (la explicación del solapamiento va en el pie de figura de la sesión de escritura — ambos sistemas están al 100% en los 5 niveles de ruido evaluados, no un subconjunto) | Nueva subsección `results.tex` (R2-02) |
+| `fig_sr_vs_noise_level.png` | `build_sr_vs_nl.py` | ❌ **Retirado 2026-09-02 (`C-55`)** — reemplazado por `fig_attempts_vs_noise_level.png` (ver fila abajo); `git rm`'d de `assets/`, el script se deja intacto en `scripts/` como referencia histórica pero ya no se ejecuta en el flujo normal | — |
+| `fig_attempts_vs_noise_level.png` | `build_attempts_vs_nl.py` | ✅ Nuevo 2026-09-02 (`C-55`, `redundancy_closing_audit_consolidation_2026-09-02.md` P-02 homogenización) — mismo dato subyacente que `fig_sr_vs_noise_level.png` pero reportado como "intentos necesarios por misión completada" (no como % de éxito), para que "Success Rate" signifique una sola cosa (nivel de misión) en todo el paper; el hallazgo de sensibilidad al ruido (Neural necesita más reintentos, FSM nunca) queda intacto bajo su propio nombre | Subsección `results.tex` (R2-02) |
 | `fig_mode_timeline_complex.png` | `build_mode_timelines.py` | ✅ Aprobado ronda 1 (nota: redacción debe explicar las fluctuaciones repentinas del modo FSM) | Nueva subsección `results.tex` (R2-02) |
 | `fig_mode_timeline_inspection.png` | `build_mode_timelines.py` | ✅ Aprobado ronda 1 (misma nota que arriba) | Ampliación de la subsección `R3-05` existente |
 
@@ -119,6 +120,6 @@ Comandos:
 ```
 cd experiments/R2-02-fsm-baseline
 python3 scripts/build_master_table.py    # escribe la tabla cruda + la _display.csv
-python3 scripts/build_sr_vs_nl.py
+python3 scripts/build_attempts_vs_nl.py  # reemplaza a build_sr_vs_nl.py desde C-55
 python3 scripts/build_mode_timelines.py
 ```

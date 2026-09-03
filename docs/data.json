@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T03:27:08+00:00",
-  "progressLastCommit": "2026-09-02T22:14:29-05:00",
+  "generatedAt": "2026-09-03T03:35:36+00:00",
+  "progressLastCommit": "2026-09-02T22:27:08-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -916,6 +916,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-52-closing-dev-comment.tex"
+    },
+    {
+      "id": "C-55",
+      "reviewer": "—",
+      "requirement": "Follow-up to C-32, author request 2026-09-02: the author was uncomfortable that tab:fsm_comparison (mission-level SR, 100.0\\%) and fig:sr_vs_noise_level (per-attempt SR, 60--100\\%) both called their metric \"success rate\" for the same underlying data, even though C-32's prose already explained the distinction. Resolution: renamed the per-attempt metric itself rather than just relabeling it — \"attempts needed per completed mission\" instead of \"success rate per attempt\". \"Success Rate\" now means exactly one thing (mission-level) everywhere in the paper; the real retry-sensitivity finding (Neural needs more attempts as noise increases, FSM never does) is fully preserved under its own name. New builder experiments/R2-02-fsm-baseline/scripts/build_attempts_vs_nl.py (replaces build_sr_vs_nl.py in the normal flow, old script kept as historical reference) computes raw attempts / distinct trial_index count per noise level — verified against direct recomputation from trial_summary.json before writing the script. Old asset fig_sr_vs_noise_level.png git rm'd after confirming no remaining reference. compile_pdf.sh verified clean; rendered page (66) visually confirmed, cross-references resolve to \"Figure 36\" correctly in both surrounding paragraphs. validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "results.tex (fig:attempts_vs_noise_level + 2 surrounding paragraphs)",
+      "dataSource": "experiments/R2-02-fsm-baseline/",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-55-sr-metric-homogenization.tex"
     },
     {
       "id": "C-54",

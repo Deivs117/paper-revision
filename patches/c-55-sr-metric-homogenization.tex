@@ -1,0 +1,40 @@
+% C-55 -- results.tex SR terminology homogenization (follow-up to C-32, author request 2026-09-02)
+% Audit copy only -- live file is sections/results.tex.
+%
+% Author felt uneasy about C-32's "don't homogenize" resolution: tab:fsm_comparison now reports
+% mission-level SR (100.0% for Appetitive/Aversive Neural, matching tab:consolidated_simulation_
+% metrics), while fig:sr_vs_noise_level and its prose reported a DIFFERENT number also called
+% "success rate" (60-100%, per-attempt convention) for the same underlying data. Both were
+% accurate and the prose already explained the distinction (C-32), but two different things
+% sharing the name "Success Rate" in the same paper remained an open discomfort.
+%
+% Resolution: the per-attempt/noise-sensitivity finding (Neural needs more retries as noise
+% increases, FSM never does) is real and was never in question -- only its framing as a "success
+% rate" collided with the mission-level definition used everywhere else. Renamed the metric itself
+% (not just relabeled it): "attempts needed per completed mission" instead of "success rate per
+% attempt". This makes "Success Rate" mean exactly one thing (mission-level, 100% in every case in
+% this dataset) everywhere in the paper, while the retry-sensitivity finding is preserved under a
+% name that doesn't collide with it.
+%
+% New builder: experiments/R2-02-fsm-baseline/scripts/build_attempts_vs_nl.py (replaces
+% build_sr_vs_nl.py in the normal flow; old script kept as historical reference, not deleted).
+% Computes raw_attempts / distinct_trial_index count per noise level per family -- verified against
+% direct recomputation from trial_summary.json before writing the script (Appetitive: 1.33, 1.00,
+% 1.33, 1.67, 1.00 across noise levels 0-4; Aversive: 1.00, 1.00, 1.00, 1.33, 1.33; Obstacle: flat
+% 1.00; FSM: flat 1.00 in all three families at every level). Old asset fig_sr_vs_noise_level.png
+% `git rm`'d after confirming no remaining sections/*.tex reference (grep). compile_pdf.sh verified
+% clean; rendered page (66) visually confirmed, cross-references resolve to "Figure 36" correctly
+% in both surrounding paragraphs.
+
+% --- results.tex, prose ~line 541 ---
+\revblue{In the three single-stimulus suites (Appetitive, Aversive, Obstacle), the FSM's fixed priority rule is structurally well-matched to the task --- one stimulus is active at a time, so a static hierarchy resolves it immediately and deterministically. Both controllers eventually complete every mission in all three suites (100\% mission-level success in Table~\ref{tab:fsm_comparison}, i.e.\ a trial that first times out and is then retried still counts as a success once it lands, and this is the only sense in which "success rate" is used anywhere in this paper). The two controllers diverge, however, in how often that retry is needed: the FSM never requires one, at any noise level, while the Neural system occasionally does as noise increases. Figure~\ref{fig:attempts_vs_noise_level} makes this explicit with its own metric, attempts needed per completed mission (not a success rate) --- Neural needs up to $1.67\times$ as many attempts on average in Appetitive and $1.33\times$ in Aversive at the noisiest levels tested, non-monotonically given the small per-level sample, while FSM stays at exactly one attempt throughout.}
+
+% --- results.tex, figure block ~line 543 ---
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{fig_attempts_vs_noise_level.png}
+    \caption{\revblue{Attempts needed per completed mission vs.\ noise level, single-stimulus suites (not a success-rate metric --- every mission in this dataset eventually succeeds, see Table~\ref{tab:fsm_comparison}; this counts how many attempts, including retries after a timeout, that took). FSM never needs a retry at any level in any of the three panels (flat at $1.0$). Neural needs an occasional retry at intermediate/high noise in Appetitive and Aversive, non-monotonically (each point averages only 3 trials --- read point-to-point zig-zags as sampling variance, not a mechanistic trend). In the Obstacle panel both systems sit at $1.0$ across all five evaluated noise levels --- not a subset --- so the dashed Neural line sits exactly on top of the solid FSM line.}}
+    \label{fig:attempts_vs_noise_level}
+
+% --- results.tex, prose ~line 561 ---
+\revblue{The Neural-side values recomputed here for the Appetitive, Aversive, Obstacle, and Complex suites are independently derived from raw trial logs and, as of this revision, match Table~\ref{tab:consolidated_simulation_metrics}'s figures for the same four suites on every reported statistic, including success rate: both tables count a suite as a success once the mission lands, regardless of any earlier timed-out attempt on the same trial. "Success rate" carries this one meaning everywhere in this paper; the retry-sensitivity finding discussed above and shown in Figure~\ref{fig:attempts_vs_noise_level} is reported under its own name, attempts needed per completed mission, precisely so it does not collide with that definition.}
