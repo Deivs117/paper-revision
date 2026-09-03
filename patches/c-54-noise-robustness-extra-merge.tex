@@ -1,0 +1,43 @@
+% C-54 -- results.tex noise_robustness_extra 3-figure merge (redundancy_closing_audit_consolidation_2026-09-02.md, P-16-bis / figure_regeneration_candidates.md context)
+% Audit copy only -- live file is sections/results.tex.
+%
+% Author decision (2026-09-02): explicitly requested, "sí o sí" -- fuse fig_R1_failure_by_family,
+% fig_R2_terrain_stability_vs_noise, and fig_R3_camera_dropout_evidence into one float to reduce
+% space, reversing the earlier "not selected this round" status. No baked-in panel letters on any
+% of the 3 PNGs (verified by opening each asset directly), so this needed no image regeneration --
+% pure LaTeX subfigure wrap, same pattern as fig:variable_topo_metrics (3 subfigures at
+% 0.32\textwidth each, already an accepted precedent in this document for comparably dense plots).
+% Preserved all 3 original \label{}s as individual subfigure labels so every existing
+% \ref{fig:failure_by_family}/\ref{fig:terrain_stability_vs_noise}/\ref{fig:camera_dropout_evidence}
+% in the 3 following discussion paragraphs resolves unchanged -- no prose rewording needed beyond
+% the figure blocks themselves. Reduces float count 3 -> 1.
+%
+% compile_pdf.sh verified clean (no undefined/duplicate refs); visually confirmed on the rendered
+% PDF page (48) that (a)/(b)/(c) render correctly side by side with a combined caption.
+
+% --- results.tex, replaces all three original \begin{figure}...\end{figure} blocks (~lines 155-177) ---
+\begin{figure*}[t]
+    \centering
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig_R1_failure_by_family.png}
+        \caption{Trial outcome by scenario.}
+        \label{fig:failure_by_family}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig_R2_terrain_stability_vs_noise.png}
+        \caption{Postural stability vs.\ perturbation level.}
+        \label{fig:terrain_stability_vs_noise}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig_R3_camera_dropout_evidence.png}
+        \caption{Camera-dropout evidence.}
+        \label{fig:camera_dropout_evidence}
+    \end{subfigure}
+    \caption{\revblue{Combined-perturbation robustness battery. (a) Trial outcome by scenario across all six suites, all severity levels pooled; each bar decomposes total attempts into successful trials retained for analysis and discarded failures by cause (timeout, tipover, crash) --- the Rugged Terrain suite accounts for the large majority of non-timeout failures (8 tipovers, 4 crashes out of 27 attempts), markedly more than any other suite. (b) Chassis Roll RMS and Pitch RMS versus Combined Perturbation Level (index $0$--$4$) for the Rugged Terrain and Inclined Slope suites, successful trials only; Roll RMS on Rugged Terrain remains within a $1.65^\circ$--$1.9^\circ$ band across all severity levels, Pitch RMS on the Inclined Slope ranges $2.3^\circ$--$5.7^\circ$ across the sweep (the perturbation index is left as an unconverted integer rather than a percentage, since no single percentage scale represents all three sensor modalities' differently-defined severity units). (c) Appetitive-stimulus detection fraction over time for a matched pair of Appetitive Targeting attempts under camera illumination distortion: a failed attempt (timeout) and its successful retry at the same severity level --- the failed attempt's detection fraction collapses to $\approx 0.01$ for the majority of the trial, while the successful retry sustains $\approx 0.99$ detection throughout.}}
+    \label{fig:noise_robustness_extra_combined}
+\end{figure*}

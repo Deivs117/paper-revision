@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T03:14:29+00:00",
-  "progressLastCommit": "2026-09-02T22:05:33-05:00",
+  "generatedAt": "2026-09-03T03:27:08+00:00",
+  "progressLastCommit": "2026-09-02T22:14:29-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -916,6 +916,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-52-closing-dev-comment.tex"
+    },
+    {
+      "id": "C-54",
+      "reviewer": "—",
+      "requirement": "Same consolidation, sssec:noise_robustness_extra 3-figure merge — originally left \"not selected\" in the consolidation plan (Sebas flagged it as the weakest candidate, covering fairly distinct topics), reversed by explicit author request 2026-09-02 (\"sí o sí hazlo\") to reduce space. Merged fig_R1_failure_by_family, fig_R2_terrain_stability_vs_noise, fig_R3_camera_dropout_evidence into one figure* with 3 subfigures at 0.32\\textwidth, same pattern as the already-accepted fig:variable_topo_metrics precedent. No baked-in letters on any of the 3 PNGs (verified directly) — pure LaTeX wrap, no image regeneration. Preserved all 3 original \\label{}s as per-subfigure labels so the 3 following discussion paragraphs' \\ref{}s resolve unchanged. compile_pdf.sh verified clean, visually confirmed on the rendered page (48) that (a)/(b)/(c) render correctly with a combined caption. Reduces float count 3→1. validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "results.tex (sssec:noise_robustness_extra, 3→1 figure merge)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-54-noise-robustness-extra-merge.tex"
     },
     {
       "id": "C-53",

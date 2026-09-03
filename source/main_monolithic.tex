@@ -844,30 +844,37 @@ Complex Navigation   & 100.0\% & 24.96 $\pm$ 10.36 & 1.03 $\pm$ 0.35 & 1.01 $\pm
 
 \revblue{Two further scenarios --- the Rugged Terrain course and the Inclined Slope, already introduced in Section~\ref{sssec:variable_topo_quant} --- were re-evaluated under the same combined IMU-drift/LiDAR-noise/illumination-distortion sweep as the four scenarios above (Section~\ref{ssec:NoiseRobustnessEval}). This is a separate battery from the unperturbed Rugged Terrain/Inclined Slope trials analyzed in Section~\ref{sssec:variable_topo_quant} and is not directly comparable to it; the two batteries differ in perturbation condition, not just sample size.}
 
-\begin{figure}[t]
+\begin{figure*}[t]
     \centering
-    \includegraphics[width=0.9\textwidth]{fig_R1_failure_by_family.png}
-    \caption{\revblue{Trial outcome by scenario across the combined-perturbation battery (all six suites, all severity levels pooled). Each bar decomposes total attempts into successful trials retained for analysis and discarded failures by cause (timeout, tipover, crash). The Rugged Terrain suite accounts for the large majority of non-timeout failures (8 tipovers, 4 crashes out of 27 attempts), markedly more than any other suite.}}
-    \label{fig:failure_by_family}
-\end{figure}
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig_R1_failure_by_family.png}
+        \caption{Trial outcome by scenario.}
+        \label{fig:failure_by_family}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig_R2_terrain_stability_vs_noise.png}
+        \caption{Postural stability vs.\ perturbation level.}
+        \label{fig:terrain_stability_vs_noise}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig_R3_camera_dropout_evidence.png}
+        \caption{Camera-dropout evidence.}
+        \label{fig:camera_dropout_evidence}
+    \end{subfigure}
+    \caption{\revblue{Combined-perturbation robustness battery. (a) Trial outcome by scenario across all six suites, all severity levels pooled; each bar decomposes total attempts into successful trials retained for analysis and discarded failures by cause (timeout, tipover, crash) --- the Rugged Terrain suite accounts for the large majority of non-timeout failures (8 tipovers, 4 crashes out of 27 attempts), markedly more than any other suite. (b) Chassis Roll RMS and Pitch RMS versus Combined Perturbation Level (index $0$--$4$) for the Rugged Terrain and Inclined Slope suites, successful trials only; Roll RMS on Rugged Terrain remains within a $1.65^\circ$--$1.9^\circ$ band across all severity levels, Pitch RMS on the Inclined Slope ranges $2.3^\circ$--$5.7^\circ$ across the sweep (the perturbation index is left as an unconverted integer rather than a percentage, since no single percentage scale represents all three sensor modalities' differently-defined severity units). (c) Appetitive-stimulus detection fraction over time for a matched pair of Appetitive Targeting attempts under camera illumination distortion: a failed attempt (timeout) and its successful retry at the same severity level --- the failed attempt's detection fraction collapses to $\approx 0.01$ for the majority of the trial, while the successful retry sustains $\approx 0.99$ detection throughout.}}
+    \label{fig:noise_robustness_extra_combined}
+\end{figure*}
 
 \revblue{Figure~\ref{fig:failure_by_family} shows that failure under combined perturbation is not evenly distributed across scenarios: the Aversive Escape and Obstacle Evasion suites completed every attempt without a single discarded trial, the Appetitive Targeting and Complex Navigation suites discarded a share of attempts to timeout (respectively, before three successful replicates per severity level were retained), and the Rugged Terrain suite alone accounts for 8 tipovers and 4 crashes out of 27 attempts --- the only suite where the robot's structural stability, not merely task completion time, was compromised under perturbation. This asymmetry is addressed explicitly in Section~\ref{ssec:Limitations}.}
 
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.85\textwidth]{fig_R2_terrain_stability_vs_noise.png}
-    \caption{\revblue{Chassis Roll RMS and Pitch RMS versus Combined Perturbation Level (index $0$--$4$) for the Rugged Terrain and Inclined Slope suites, successful trials only. Roll RMS on Rugged Terrain remains within a $1.65^\circ$--$1.9^\circ$ band across all severity levels; Pitch RMS on the Inclined Slope ranges $2.3^\circ$--$5.7^\circ$ across the sweep. The perturbation index is left as an unconverted integer rather than a percentage, since no single percentage scale represents all three sensor modalities' differently-defined severity units.}}
-    \label{fig:terrain_stability_vs_noise}
-\end{figure}
-
 \revblue{Among the trials that complete successfully, Figure~\ref{fig:terrain_stability_vs_noise} shows postural stability does not visibly degrade with perturbation severity on either terrain: Roll RMS on Rugged Terrain and Pitch RMS on the Inclined Slope both stay within the bands reported in the caption across the full severity sweep, without a monotonic trend toward instability. Read together with Figure~\ref{fig:failure_by_family}, this indicates that Rugged Terrain's elevated tipover/crash count is concentrated in the trials discarded before completion rather than reflected as progressive attitude degradation in the trials that do complete --- a distinction relevant to how this suite's robustness should be characterized (Section~\ref{ssec:Limitations}).}
 
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.75\textwidth]{fig_R3_camera_dropout_evidence.png}
-    \caption{\revblue{Appetitive-stimulus detection fraction over time for a matched pair of Appetitive Targeting attempts under camera illumination distortion: a failed attempt (timeout) and its successful retry at the same severity level. The failed attempt's detection fraction collapses to $\approx 0.01$ for the majority of the trial, while the successful retry sustains $\approx 0.99$ detection throughout.}}
-    \label{fig:camera_dropout_evidence}
-\end{figure}
+\revblue{Figure~\ref{fig:camera_dropout_evidence} isolates a case where a purely sensor-level event --- the illumination-distortion model's probabilistic detection dropout suppressing the appetitive-stimulus detector almost entirely for one attempt --- propagates all the way to a task-level failure: with the target undetected for nearly the whole trial, the appetitive channel never accumulates enough sustained activation to drive an approach, and the trial times out. The retry at the identical severity level, drawing a different dropout realization, sustains detection throughout and completes normally. This is precisely the pipeline-level (not sensor-level-only) evidence the combined-perturbation evaluation is designed to surface: the failure mode originates in the camera-illumination stage but only becomes visible as a robustness concern once its consequence for task completion is measured, not from the sensor-level distortion metric alone.}
 
 \revblue{Figure~\ref{fig:camera_dropout_evidence} isolates a case where a purely sensor-level event --- the illumination-distortion model's probabilistic detection dropout suppressing the appetitive-stimulus detector almost entirely for one attempt --- propagates all the way to a task-level failure: with the target undetected for nearly the whole trial, the appetitive channel never accumulates enough sustained activation to drive an approach, and the trial times out. The retry at the identical severity level, drawing a different dropout realization, sustains detection throughout and completes normally. This is precisely the pipeline-level (not sensor-level-only) evidence the combined-perturbation evaluation is designed to surface: the failure mode originates in the camera-illumination stage but only becomes visible as a robustness concern once its consequence for task completion is measured, not from the sensor-level distortion metric alone.}
 
