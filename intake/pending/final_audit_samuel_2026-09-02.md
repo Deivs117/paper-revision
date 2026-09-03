@@ -1,4 +1,8 @@
-# Auditoría final — Deivi (sesión Claude Code) — 2026-09-02
+# Auditoría final — Samuel (sesión Claude Code) — 2026-09-02
+
+> Nota: este archivo se generó y commiteó originalmente como `final_audit_deivi_2026-09-02.md`
+> (título interno también decía "Deivi") por error de nombre en la sesión de Samuel
+> (usuario git `sammcar`, commit `92bfa00`). Renombrado a su autoría real el 2026-09-02.
 
 Ejecutada según `redundancy_closing_audit.md` §2/§3 (4 categorías, pasada completa,
 sin editar `sections/*.tex`). Se leyeron las 6 secciones de principio a fin:
