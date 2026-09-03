@@ -103,6 +103,74 @@ evidencia dura, no solo hipótesis. Decisiones tomadas con el autor (Deivi):
 
 ---
 
+## Anexo — `figure_regeneration_candidates.md` (2026-08-31, handoff de figuras no cubierto por los 4 audits)
+
+Documento aparte, no escrito por ninguno de los 4 auditores — lista de candidatos de fusión de
+figuras que el autor había dejado como *handoff* para el equipo. Se decide aquí junto con el resto
+del plan porque comparte alcance con [P-13]/[P-14]/[P-26]. Decisiones tomadas en sesión
+(2026-09-02, tercera pasada):
+
+### Grupo 1 — sin regenerar imágenes (fusión pura en `sections/*.tex`)
+
+- **[FIG-1a] `fig:robot` + `fig:pata`** (`methodology.tex:11-22`) — dos renders CAD consecutivos,
+  cada uno citado una sola vez, sin letras internas. **DECIDIDO: FIX-NOW**, fusionar en 2
+  subfiguras (mismo patrón que `C-29`).
+- **[FIG-1b] `fig:appetitive_micro`+`fig:aversive_micro`+`fig:obstacle_micro`+`fig:complex_micro`**
+  (`results.tex:~66-125`) — el propio doc lo marcaba "coin-flip" (precedente
+  `fig:noise_robustness_grid` a favor de fusionar; cada figura pegada a su propio párrafo de
+  escenario, en contra). **DECIDIDO: NO fusionar** — se mantienen las 4 figuras separadas, cada
+  una junto a su párrafo.
+- **[FIG-1c] `fig:MLP` + `fig:DATOSMLP`** (`methodology.tex:~360-390`) — requiere mover
+  `table:DIR_BINARY` (hoy físicamente entre ambas figuras) antes o después del par. **DECIDIDO:
+  FIX-NOW**, fusionar y reordenar la tabla.
+
+### Grupo 2 — requiere regenerar imagen (letras horneadas en el PNG)
+
+- **[FIG-2a] `NEU_IMU` + `NEU_IMU2`** (simulación) — los 4 auditores habían dicho "NO fusionar"
+  (ver [P-26]) por las letras horneadas, pero este doc sí tiene el procedimiento completo para
+  regenerar sin letras y fusionar. **DECIDIDO: NO fusionar** — el autor confirmó, tras ver las
+  imágenes actuales, que la fusión no reduce longitud de texto de forma significativa; no vale el
+  riesgo/esfuerzo de regenerar + reescribir prosa. **[P-26] se mantiene cerrado tal cual estaba.**
+  **Pero ver [FIG-X17] abajo — se sí regeneran ambos PNGs, por una razón distinta (quitar un panel,
+  no fusionar dos figuras).**
+- **[FIG-2b] `NEU_EST_UNIB` + `NEU_EST_UNIG`** (simulación, `results.tex:~38-53`) — **DECIDIDO:
+  FIX-NOW**, regenerar sin `group_letters`, promover, fusionar en 2 subfiguras, reescribir la única
+  cita con letra (línea ~45). Alinea la estructura de simulación con la del lado físico
+  (`NEU_EST_UNIG_real`, ya fusionado por `C-18`).
+- **[FIG-2c] `NEU_EST_MUL` (simulación) + `NEU_EST_MUL_real` (físico)** — fusión cruzada
+  sim×físico, 4 letras horneadas por imagen, 2 subsecciones de `results.tex`, 7 citas con letra a
+  reescribir (varias ya ajustadas cuidadosamente por `C-28`). **DECIDIDO: NO ejecutar esta ronda**
+  — queda para una ronda futura, siguiendo la propia recomendación del documento origen.
+- **Grupo 3 (`Modos_Locomocion`/`V2`):** ya venía "no recomendado" en el documento origen
+  (riesgo de ilegibilidad de diagramas de circuito al encogerlos). **Sin acción, no se re-abre.**
+
+### [FIG-X17] Hallazgo nuevo (fuera de los 4 audits y de `figure_regeneration_candidates.md`): panel "Locomotion 2" (neurona X17) de `NEU_IMU`/`NEU_IMU2` — verificado contra datos, actividad tónica constante sin variación temporal útil
+
+- **Origen:** observación directa del autor al revisar las imágenes enviadas para decidir [FIG-2a].
+- **Verificación:** confirmado contra `experiments/_plotting/vectorized/neu_imu.csv` y
+  `neu_imu2.csv` — el panel "Locomotion_2" contiene únicamente la neurona `X17` en ambos archivos,
+  con `activation_normalized` en el rango 0.502–1.0 (media 0.503, solo 3 valores distintos
+  observados en 731 muestras). **Corrección a la premisa inicial:** X17 no está inactiva — está
+  activa de forma tónica y casi constante todo el trial. Confirmado que no hay ninguna cita a
+  `X17`/"Locomotion 2" en `results.tex` (`grep` sin resultados) — quitar el panel no requiere
+  reescribir prosa.
+- **Decisión:** quitar el panel "Locomotion 2" (X17) de ambas imágenes `NEU_IMU.png` y
+  `NEU_IMU2.png`, ya que no aporta variación temporal interpretable para el lector (aunque
+  técnicamente hay actividad, no es un error de datos ni algo a "corregir" en el sentido de las
+  otras categorías — es una simplificación visual deliberada).
+- **Cómo ejecutarlo (para la sesión de redacción):** `experiments/_plotting/builders/
+  imu_terrain_real.py::build_neu_imu()` tiene la lista de paneles hardcodeada (`panels =
+  ["Locomotion_1", "Locomotion_2", "Decision_1", "Decision_2"]`, línea ~70) — añadir un parámetro
+  opcional `panels` (default a la lista actual, para no romper `NEU_IMU_real`/`NEU_IMU2_real`, que
+  no deben tocarse) y pasar `["Locomotion_1", "Decision_1", "Decision_2"]` en las 2 llamadas de
+  `regenerate_neu_panels.py` para `NEU_IMU`/`NEU_IMU2` únicamente. Regenerar, verificar visualmente,
+  `scripts/promote_figure.sh --force` ambos PNGs. La estructura de "Locomotion Module" (grupo con
+  letra "a") pasaría a tener un solo panel en vez de dos — revisar que `_place_group_title_above`/
+  `_place_group_letter` sigan posicionándose bien con 3 paneles en vez de 4 (probable ajuste menor
+  de `figsize`/`h_pad`).
+
+---
+
 ## TIER P0 — Crítico (antes de cualquier otra cosa)
 
 ### [P-01] AUC 0.866 (prosa + 2 captions) vs. 0.864 (leyenda del propio asset)
@@ -474,3 +542,8 @@ evidencia dura, no solo hipótesis. Decisiones tomadas con el autor (Deivi):
 6. Los 4 `final_audit_*.md` (más este documento de consolidación) se mueven a `intake/processed/`
    solo cuando **todas** las filas `C-xx` resultantes lleguen a `applied` — no antes (§5 paso 5 del
    audit doc madre).
+7. `intake/pending/figure_regeneration_candidates.md` queda con las decisiones del Anexo arriba
+   (FIG-1a/1c/2b ejecutar; FIG-1b/2a/2c/Grupo 3 no ejecutar esta ronda) — se mueve a
+   `intake/processed/` junto con los demás solo cuando FIG-1a/1c/2b lleguen a `applied` (FIG-2c y
+   FIG-1b quedan como candidatos abiertos para una ronda futura, no bloquean el movimiento del
+   archivo si se documenta esa exclusión en su fila `C-xx`).
