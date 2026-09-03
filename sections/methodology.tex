@@ -107,7 +107,7 @@ A Gaussian activation function was implemented in the sensory ring, where $\thet
 \begin{equation}\label{eq:ring}
 \frac{d Z_j}{d t} = \frac{1}{\tau_Z} \left( -Z_j + \exp\left( -\frac{(\theta_j - \theta_{\text{Obstacle}})^2}{2\sigma_{Z}^2} \right) \right)
 \end{equation}
-where $\tau_Z$ (s) is the integration time constant of the ring neurons, and $\sigma_Z$ (deg) is the Gaussian tuning width controlling the angular selectivity of each unit (see Table~\ref{table:LiDAR}).
+where $\tau_Z$ (s) is the integration time constant of the ring neurons, and \revblue{$\sigma_Z$ is a dimensionless tuning-width parameter controlling the angular selectivity of each unit} (see Table~\ref{table:LiDAR}).
 
 \begin{table}[t]
 \centering
@@ -130,7 +130,7 @@ $W_{A\rightarrow L_4}$ & 1.0 \\ \hline
 \end{table}
 
 In Table~\ref{table:LiDAR}, the time constants are: $\tau_{Z}$ (s) governs the ring neurons (Equations~\eqref{eq:L0}–\eqref{eq:L4}), $\tau_{L}$ (s) governs the directional integrator neurons ($L_0$–$L_4$); and $\tau_{IRA}$ (s) is the shared time constant of the input ($I_n$), response ($R_n$), and auxiliary ($A_n$) layers.
-The synaptic parameters are: $\sigma_{Z}$ (deg) is the Gaussian tuning width $\omega_{Z\rightarrow L}$ and $\omega_{L\rightarrow L}$ are the unitless weights from the sensory ring to the integrator neurons and within the integrator, respectively. These weights are fixed uniform values derived from the basal-ganglia inspired architecture \citep{sarvestani2013computational}.
+\revblue{The synaptic parameters are: $\sigma_{Z}$ is the dimensionless Gaussian tuning-width parameter; $\omega_{Z\rightarrow L}$ and $\omega_{L\rightarrow L}$ are the unitless weights from the sensory ring to the integrator neurons and within the integrator, respectively.} These weights are fixed uniform values derived from the basal-ganglia inspired architecture \citep{sarvestani2013computational}.
 The inter-layer synaptic weight matrices $W_{Z\rightarrow I}$, $W_{I\rightarrow R}$, $W_{R\rightarrow A}$, and $W_{A\rightarrow L_4}$ connect the ring, input, response, auxiliary, and accumulator layers.
 
 The activations of the sensory ring are processed by three integrator layers: input, response, and auxiliary (Figure~\ref{fig:IntLidar}). Cross-connections between the input and response layers encode the direction of the evasive movement, while the backward excitatory projections between the response and auxiliary layers define the intensity of the obstacle-related stimulus. These layers determine the predominance of the evasive action ---information that is stored in the accumulator neuron $L_4$. In the following equations, the subscript $(\cdot)_+$ denotes a rectifying operator (positive-part function): for any scalar $x$, $(x)_+ = \max(x,0)$. This ensures that only nonnegative inputs contribute to the layer dynamics, preventing negative net drive from decreasing the activity through this term. The dynamics of this system are described by differential equations (Equations~\eqref{eq:L0}–\eqref{eq:L4}) shown below. 

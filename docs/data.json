@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T02:34:12+00:00",
-  "progressLastCommit": "2026-09-02T21:24:03-05:00",
+  "generatedAt": "2026-09-03T02:59:52+00:00",
+  "progressLastCommit": "2026-09-02T21:34:12-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -812,6 +812,32 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-44-ablation-figures-merge.tex"
+    },
+    {
+      "id": "C-45",
+      "reviewer": "—",
+      "requirement": "Same consolidation, P-16 — confirmed by Samuel and Diego. The ablation-study closing paragraph (\"Taken together...\") restated the SR-collapse (R3-01) and latency/stability-degradation (R3-02) findings, with numbers, already established in full in the two immediately preceding paragraphs. Trimmed to the one distinction not already stated — the two separable grounds argument (mechanism-level vs. static-threshold comparison) — dropping the restated percentages/p-values. validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "results.tex (ablation-study closing paragraph)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-45-ablation-closing-trim.tex"
+    },
+    {
+      "id": "C-46",
+      "reviewer": "—",
+      "requirement": "Same consolidation, P-17 — new finding from Sebas ($\\sigma_Z=0.06$ labeled \"(deg)\" physically implausible for a 16-neuron ring spaced 22.5° apart). Verified against PETER_SIMULATION production code (ros2_ws/src/peter_robot/src/red_neuronal.py:174,283): the actual activation is a cosine-similarity kernel between unit vectors, not a literal angular difference — $\\sigma_Z=0.06$ is dimensionless, not degrees. Before applying, found and flagged to the author a larger question: the paper's own Eq.~\\eqref{eq:ring} is written as a classic Gaussian over $(\\theta_j-\\theta_{\\mathrm{Obstacle}})^2$ (which would be dimensionally consistent with degrees) — the code does not literally implement that published equation; the cosine-based formula is a related, circularly-correct approximation (exact for small angle differences, additionally handles the 0/360° wraparound the literal formula would get wrong). Author decision: minimal fix only — correct the unit-mislabeling in prose, treat the published equation as an accepted conceptual description, leave Eq.~\\eqref{eq:ring} itself untouched. The equation-vs-code fidelity question remains open for a future round if the author later wants Eq.~\\eqref{eq:ring} rewritten to match the circular/cosine formulation exactly. Also tightened a run-on sentence at the second occurrence while editing it (trivial, no meaning change). validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "methodology.tex (LiDAR ring module, 2 prose occurrences of $\\sigma_Z$)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-46-sigma-z-dimensionless.tex"
     }
   ]
 }

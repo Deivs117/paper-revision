@@ -1,0 +1,29 @@
+% C-46 -- methodology.tex sigma_Z unit correction (redundancy_closing_audit_consolidation_2026-09-02.md, P-17)
+% Audit copy only -- live file is sections/methodology.tex.
+%
+% Sebas flagged sigma_Z=0.06 labeled "(deg)" as physically implausible for a 16-neuron ring
+% spaced 22.5 deg apart (near-impulse tuning curve). Verified against PETER_SIMULATION's production
+% code (ros2_ws/src/peter_robot/src/red_neuronal.py:174,283): the actual activation function is
+% exp((dot(theta,omega)-1)/(2*sigma**2)) -- a cosine-similarity kernel between unit vectors, not a
+% literal angular difference -- so sigma=0.06 is dimensionless, not degrees.
+%
+% IMPORTANT, checked before applying: the paper's own Eq.~\eqref{eq:ring} is written as a classic
+% Gaussian over (theta_j - theta_Obstacle)^2, which *would* be dimensionally consistent with sigma_Z
+% in degrees -- so the code does not literally implement the published equation (the cosine-based
+% formula is a related, circularly-correct approximation, exact for small angle differences, that
+% additionally handles the 0/360-degree wraparound the literal squared-difference formula would get
+% wrong). Flagged this larger equation-vs-code question to the author explicitly before touching
+% anything. Author decision: minimal fix only -- correct the unit-mislabeling (this patch), treat
+% the published equation as an accepted conceptual/idealized description rather than literal
+% pseudocode, and leave Eq.~\eqref{eq:ring} itself untouched. The equation-vs-code fidelity question
+% is NOT resolved by this patch and should be revisited in a future round if the author wants Eq.
+% \eqref{eq:ring} rewritten to match the circular/cosine formulation exactly.
+%
+% Also tightened a run-on sentence at the second occurrence while editing it (missing punctuation
+% between the sigma_Z clause and the omega weights clause) -- trivial, no meaning change.
+
+% --- methodology.tex, ~line 110 ---
+where $\tau_Z$ (s) is the integration time constant of the ring neurons, and \revblue{$\sigma_Z$ is a dimensionless tuning-width parameter controlling the angular selectivity of each unit} (see Table~\ref{table:LiDAR}).
+
+% --- methodology.tex, ~line 133 ---
+\revblue{The synaptic parameters are: $\sigma_{Z}$ is the dimensionless Gaussian tuning-width parameter; $\omega_{Z\rightarrow L}$ and $\omega_{L\rightarrow L}$ are the unitless weights from the sensory ring to the integrator neurons and within the integrator, respectively.} These weights are fixed uniform values derived from the basal-ganglia inspired architecture \citep{sarvestani2013computational}.
