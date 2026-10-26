@@ -21,11 +21,15 @@ fi
 # broke in practice — two contributors each ran this script against their own local, not-yet-
 # synced PROGRESS.md and independently computed the same "next" ID before either side pushed
 # (2026-08-29 coherence audit: C-09/C-10/C-11 each collided this way). Catching it here surfaces
-# the problem immediately instead of letting a second collision compound a first one.
-DUPES="$(grep -oE '^\| [A-Za-z0-9-]+ \|' "$REPO_ROOT/PROGRESS.md" | sed -E 's/^\| //; s/ \|$//' | sort | uniq -d)"
-if [ -n "$DUPES" ]; then
-  echo "error: PROGRESS.md already has duplicate IDs -- resolve before allocating a new one:" >&2
-  echo "$DUPES" >&2
+# the problem immediately instead of letting a second collision compound a first one. This is the
+# same check scripts/check_duplicate_ids.sh runs (also wired into the pre-commit hook and CI) —
+# delegate to it instead of duplicating the grep here, and remind the caller to pull first, since
+# a stale local PROGRESS.md is the actual root cause, not something this check alone can fix.
+if ! "$SCRIPT_DIR/check_duplicate_ids.sh" >/dev/null; then
+  "$SCRIPT_DIR/check_duplicate_ids.sh" >&2 || true
+  echo "error: resolve the duplicate above before allocating a new ID. If it wasn't there a" >&2
+  echo "moment ago, run 'git pull origin main' first -- this is almost always a stale local" >&2
+  echo "PROGRESS.md racing another contributor's already-pushed row." >&2
   exit 1
 fi
 

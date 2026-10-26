@@ -38,6 +38,26 @@ repo root).** `intake/` is the only place raw analysis gets computed, documented
 task families, split it per `intake/SOURCES.md`'s "Atomic task blocks" convention instead of leaving it
 monolithic or moving it elsewhere.
 
+## Multi-writer workflow (round 2 onward, read before acting as/for a collaborator)
+
+From round 2, 3 additional GitHub collaborators (`sebas2868`, `sammcar`, `DiegoACaro`, all `write`
+access) work directly in this repo, typically by directing an AI agent. Full detail: README.md
+§13. The rules that matter most for an agent:
+
+- If you are acting on behalf of one of the 3 collaborators (not the repo owner `Deivs117`): work
+  on a **branch**, open a **pull request** into `main`, and never run `scripts/push_to_overleaf.sh`
+  or `scripts/pull_from_overleaf.sh` — those require the Overleaf git token, which only exists on
+  the repo owner's machine. A row you land stops at `PROGRESS.md` status `applied`, never
+  `synced-to-overleaf`.
+- `git pull origin main` before `scripts/next_id.sh` or starting any new row — a stale local
+  `PROGRESS.md` is what caused the one real ID collision so far (`C-09`/`C-10`/`C-11`).
+- Branch protection on `main` requires the `CI` GitHub Actions check (`.github/workflows/ci.yml`)
+  to pass and at least one approving review before merge — don't rely on local hooks alone to
+  catch a problem; the PR won't merge if CI is red regardless.
+- `scripts/check_duplicate_ids.sh` and `scripts/check_monolith_fresh.sh` (README §10.5) are
+  blocking, not advisory, unlike `check_hardcoded_refs.sh`/`check_target_conflicts.sh` — treat a
+  failure from either as something to fix, not note and continue.
+
 ## Hard rules
 
 - Any interaction with GitHub (PRs, issues, branches, CI status, comparing commits/branches across

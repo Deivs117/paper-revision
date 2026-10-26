@@ -12,7 +12,10 @@
 #    sections/ keeps the monolith in sync automatically, removing a manual step from the daily
 #    loop as a side benefit.
 # 2. PROGRESS.md changed: regenerates docs/data.json (the GitHub Pages traceability dashboard's
-#    data file) and stages it, so the published dashboard never drifts from what was committed.
+#    data file) and stages it, so the published dashboard never drifts from what was committed;
+#    also blocks the commit on a duplicate ID (scripts/check_duplicate_ids.sh) -- the local half
+#    of the C-09/C-10/C-11 fix, with .github/workflows/ci.yml as the half that catches it even if
+#    this hook was skipped (--no-verify, or never installed via scripts/install_hooks.sh).
 
 set -euo pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
@@ -41,7 +44,11 @@ if grep -qE '^(sections|source)/' <<< "$CHANGED"; then
 fi
 
 if grep -qE '^PROGRESS\.md$' <<< "$CHANGED"; then
-  echo "pre-commit: PROGRESS.md changed -- regenerating docs/data.json"
+  echo "pre-commit: PROGRESS.md changed -- checking for duplicate IDs and regenerating docs/data.json"
+  if ! scripts/check_duplicate_ids.sh; then
+    echo "pre-commit: duplicate ID in PROGRESS.md -- commit aborted (use --no-verify to override)." >&2
+    exit 1
+  fi
   if ! scripts/build_dashboard.py; then
     echo "pre-commit: build_dashboard.py failed -- commit aborted (use --no-verify to override)." >&2
     exit 1

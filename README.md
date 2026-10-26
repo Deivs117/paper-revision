@@ -97,10 +97,13 @@ paper-revision/
 │   ├── check_hardcoded_refs.sh  # advisory: hardcoded "Section N" refs (§10.1)
 │   ├── next_id.sh                # next available N-xx/C-xx ID (§10.3)
 │   ├── check_target_conflicts.sh # advisory: other rows targeting the same section (§10.4)
+│   ├── check_duplicate_ids.sh    # blocking: duplicate PROGRESS.md IDs (§10.5, §13.2)
+│   ├── check_monolith_fresh.sh   # blocking: sections/ <-> source/ drift, CI-only (§10.5, §13.2)
 │   ├── install_hooks.sh          # one-time: installs the pre-commit hook (§10.2)
 │   ├── hooks/pre-commit          # template copied into .git/hooks/ by install_hooks.sh
 │   ├── strip_revblue.py          # start-of-round: unwrap last round's \revblue{} (§11)
 │   └── build_dashboard.py        # PROGRESS.md -> docs/data.json (§12)
+├── .github/workflows/ci.yml      # required PR check, from round 2 onward (§13.2)
 ├── docs/                        # GitHub Pages traceability dashboard (§12)
 │   ├── index.html
 │   ├── styles.css
@@ -499,7 +502,14 @@ Bypass deliberately with `git commit --no-verify` (e.g. a deliberate WIP commit)
 
 #### 10.4 `scripts/check_target_conflicts.sh` — same-section advisory
 
-`scripts/check_target_conflicts.sh <slug>` greps `PROGRESS.md` for rows mentioning `<slug>.tex` that aren't yet `synced-to-overleaf`, and prints them. Run before starting work on a section to see whether another in-flight item already claims the same file. This is deliberately coarse (it matches anywhere in the row, including the `Requirement` prose column, not just `Target section(s)` — so it can over-report) rather than a real lock: with one primary writer, the practical fix for an actual overlap is just to finish and commit one item before starting the other, not build file-level locking into a git-based pipeline.
+`scripts/check_target_conflicts.sh <slug>` greps `PROGRESS.md` for rows mentioning `<slug>.tex` that aren't yet `synced-to-overleaf`, and prints them. Run before starting work on a section to see whether another in-flight item already claims the same file. This is deliberately coarse (it matches anywhere in the row, including the `Requirement` prose column, not just `Target section(s)` — so it can over-report) rather than a real lock: the practical fix for an actual overlap is just to finish and commit one item before starting the other (or split the file-level work explicitly between the two rows), not build file-level locking into a git-based pipeline. With 4 contributors now working in parallel branches (§13), running this before claiming a row matters more than it used to — it's still advisory, not a lock, so it doesn't replace actually checking with whoever else is working.
+
+#### 10.5 `scripts/check_duplicate_ids.sh` + `scripts/check_monolith_fresh.sh` — blocking, not advisory
+
+Unlike §10.1/§10.4 above, these two **do** fail (exit 1) and are wired to actually block a commit/merge — introduced alongside the round-2 multi-writer workflow (§13) specifically because the failure modes they catch (a duplicate `PROGRESS.md` ID, a `sections/`↔`source/main_monolithic.tex` drift) were previously only caught by a human noticing, or not at all until push time.
+
+* **`check_duplicate_ids.sh`** — scans `PROGRESS.md` for any ID (first table column) appearing more than once, prints it, exits 1. This is the direct fix for the `C-09`/`C-10`/`C-11` collision (§10.3's note on `next_id.sh`): two contributors independently computed the same "next" ID from their own not-yet-synced local `PROGRESS.md`, and the subsequent `git merge` produced no textual conflict (the two row insertions landed at different points in the file), so nothing caught it until someone read the table by eye. Run from three places: inside `next_id.sh` itself (refuses to allocate on top of an existing collision), the pre-commit hook (§10.2, blocks a local commit), and CI (§13, blocks a PR merge even if the local hook was skipped or bypassed).
+* **`check_monolith_fresh.sh`** — regenerates `source/main_monolithic.tex` from the currently-committed `sections/*.tex` via `reassemble.py` and diffs it against the committed monolith; exits 1 on any diff. This is **not** the same check as `check_roundtrip.sh` (§5.7): that one verifies `split_sections.py`→`reassemble.py` is internally idempotent (self-consistency of the two scripts), while this one verifies the committed monolith actually reflects the committed `sections/` — exactly the thing the pre-commit hook's step 1 normally guarantees (§10.2), and exactly what silently breaks if that hook was skipped. Only run in CI (§13) — locally the hook already keeps this invariant true by construction, so there's nothing for a local run of this script to usefully catch.
 
 ---
 
@@ -571,6 +581,33 @@ docs/
 #### 12.4 Design conventions
 
 No emojis anywhere in the UI. Category and status each get a small fixed color set (not reused between the two dimensions, so a color always means one thing); owners render as plain text chips, not colored, since a second color-coded dimension would compete with category for attention. Every status badge pairs its color with a text label — never color alone. Light/dark mode both follow the visitor's OS/browser preference (`prefers-color-scheme`), no manual toggle. The whole page is dependency-free vanilla HTML/CSS/JS — no build step, no framework, so it stays as low-maintenance as the rest of this repo's tooling.
+
+---
+
+### 13. Multi-Writer Workflow (4 contributors, from round 2 onward)
+
+Round 1 was built around a single primary writer (§2: "the repo owner, not just an AI agent") committing directly, with co-authors confined to the Overleaf web UI. Starting round 2 (`R2b-xx`/`R3b-xx`, §6.1), **3 additional contributors — `sebas2868`, `sammcar`, `DiegoACaro` (GitHub `write` access) — work directly in this repo**, each typically directing an AI agent to draft patches rather than hand-writing LaTeX. This section is the actual role split, kept deliberately small and enforced by tooling rather than relying on everyone remembering it (an unenforced convention is exactly how `C-09`/`C-10`/`C-11`, §10.3/§10.5, happened the first time with only 2 people).
+
+#### 13.1 Roles
+
+* **The 3 collaborators** (and whatever agent they're directing): pull `main`, do normal patch work (§5/§6/§7 — identify target section(s), edit `sections/*.tex`, wrap new/changed text in `\revblue{...}` (§11), record a `patches/<id>-<slug>.tex`, add/update a `PROGRESS.md` row), push to **a branch**, open a pull request into `main`. They never run `scripts/push_to_overleaf.sh` — that script requires the cached Overleaf git token (`olp_...`), which stays local to the repo owner's machine (§3) and is never distributed to other clones. A `PROGRESS.md` row they land stops at `applied` — never `synced-to-overleaf`, since that status is specifically about the Overleaf mirror, which only the repo owner touches.
+* **The repo owner (`Deivs117`, GitHub `admin`)**: reviews each PR, merges (or sends it back for changes — a normal PR review-request cycle, nothing repo-specific), and periodically runs `scripts/pull_from_overleaf.sh` → `scripts/push_to_overleaf.sh` (§5) to cycle the accumulated `applied` work out to Overleaf, bumping those rows to `synced-to-overleaf` in the same pass. This is the same daily-loop role the owner already had — the only change is that "pending work to sync" now accumulates from merged PRs instead of only the owner's own commits.
+
+#### 13.2 What's enforced, not just documented
+
+A documentation-only version of this section would read fine and still fail the first time someone forgets a step under deadline pressure — the actual goal, given 4 people now writing a lot of new content, is that the invariants below hold **even if nobody reads this section**:
+
+* **Branch protection on `main`** (`gh api repos/Deivs117/paper-revision/branches/main/protection`, configured 2026-10-26): requires a pull request (no direct push to `main` for non-admins — the 3 collaborators above), requires the `CI` workflow's `validate` check to pass before merging, requires at least 1 approving review. `enforce_admins` is deliberately **off**, so the repo owner can still push directly for a fast solo fix — but the intended path, including for the owner, is the same PR-and-merge cycle.
+* **`.github/workflows/ci.yml`** — runs on every push and pull request touching `main`: `check_duplicate_ids.sh`, `check_monolith_fresh.sh`, `check_roundtrip.sh`, `validate_tex.sh` (all blocking), plus `check_hardcoded_refs.sh` (advisory, printed but never fails the job). This is what makes the pre-commit hook's guarantees (§10.2) hold even for a contributor who never ran `scripts/install_hooks.sh`, or who committed with `--no-verify` — the PR simply can't merge until CI is green, independent of what happened on their machine. Deliberately **does not** run `scripts/compile_pdf.sh` — provisioning a full LaTeX toolchain on every PR is slow and this repo's checks are meant to stay fast (§5.6 already flags `compile_pdf.sh` as the one script allowed to depend on heavy external tooling); run it locally before opening a PR for that extra confidence.
+* **`scripts/check_duplicate_ids.sh`** (§10.5) is the direct fix for the one multi-writer failure that already happened once (`C-09`/`C-10`/`C-11`) — now checked in three independent places (allocation time, local commit, CI) instead of one.
+
+#### 13.3 One-time setup for a new (human) collaborator
+
+1. Clone the repo, `scripts/install_hooks.sh` (§10.2) — local fast feedback; CI (§13.2) is the backstop if this is skipped.
+2. **Never** clone or touch the Overleaf mirror (`../6a23870b4fcac02449561a35`) — that stays the repo owner's alone, same as always (§2/§3).
+3. Before starting a row: `git pull origin main` (a stale local `PROGRESS.md` is the actual root cause behind every ID collision so far), then `scripts/next_id.sh <N|C>` if it's an `intake/`-originated row, or confirm the target `R2b-xx`/`R3b-xx` row (§6.1) isn't already claimed (`scripts/check_target_conflicts.sh <slug>`, §10.4).
+4. Work on a branch, not `main` directly (branch protection, §13.2, blocks a direct push anyway).
+5. Open a PR. CI must go green; the repo owner reviews and merges.
 
 ---
 

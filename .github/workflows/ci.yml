@@ -1,0 +1,43 @@
+name: CI
+
+# Runs on every push and pull request touching the parts of the repo the pipeline cares about.
+# This is the enforcement backstop for the pre-commit hook (scripts/hooks/pre-commit,
+# scripts/install_hooks.sh): the hook only works if a contributor installed it and didn't bypass
+# it with --no-verify. With 4+ people pushing branches to this repo now (see CLAUDE.md
+# "Multi-writer workflow"), a check that only runs locally is not a guarantee. This workflow is
+# the actual guarantee -- it's wired as a required status check on main (branch protection), so a
+# PR cannot merge while any of these fail, no matter who skipped what locally.
+#
+# Deliberately stdlib/bash-only, same philosophy as the scripts it runs (README.md §5/§10) -- no
+# LaTeX toolchain here, so this stays fast (seconds, not minutes). A real compile check
+# (scripts/compile_pdf.sh) is NOT run in CI: it needs a full LaTeX distribution, which is slow to
+# provision on every PR and out of step with this repo's "lightweight checks only" design for
+# anything other than compile_pdf.sh itself. Run scripts/compile_pdf.sh locally before pushing if
+# you want that extra confidence (it's part of the documented daily loop).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: No duplicate PROGRESS.md IDs
+        run: bash scripts/check_duplicate_ids.sh
+
+      - name: sections/ and source/main_monolithic.tex are in sync
+        run: bash scripts/check_monolith_fresh.sh
+
+      - name: split/reassemble self-consistency (round-trip)
+        run: bash scripts/check_roundtrip.sh
+
+      - name: LaTeX structural validation (braces/environments)
+        run: bash scripts/validate_tex.sh
+
+      - name: Hardcoded "Section N" references (advisory, never fails the job)
+        run: bash scripts/check_hardcoded_refs.sh || true
