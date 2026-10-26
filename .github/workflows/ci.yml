@@ -27,6 +27,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # scripts/reassemble.py (used by check_monolith_fresh.sh/check_roundtrip.sh) passes
+      # newline="" to Path.read_text(), a parameter only added in Python 3.13 -- ubuntu-latest's
+      # preinstalled python3 is older, so pin one that has it instead of relying on the runner
+      # image's default.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
       - name: No duplicate PROGRESS.md IDs
         run: bash scripts/check_duplicate_ids.sh
 
