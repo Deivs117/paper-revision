@@ -5,8 +5,8 @@
 
 ### 1. Core Challenge & Technical Requirements
 
-* **Journal & Deadline:** Major revision for *Robotics and Autonomous Systems* (Manuscript `ROBOT-D-26-00122R1`). Resubmission deadline: **August 31, 2026**.
-* **Reviewer Requirements Breakdown:**
+* **Journal & Deadline:** *Robotics and Autonomous Systems*, manuscript `ROBOT-D-26-00122R2`. Currently in **minor revision**, round 2 (decision received 2026-10-26). Resubmission deadline: **November 4, 2026**. (Round 1 — major revision on the original submission — closed; see §6's frozen `R2-xx`/`R3-xx` table for that history.)
+* **Round-1 reviewer requirements (closed, for history — see §6):**
 
 **Reviewer 2 (Streamlining & Minor Additions):**
 * Heavily condense repetitive text, remove duplicate neural raster plots/identical stability curves between simulation and hardware tests, merge metric definitions, and shorten the symbolic warehouse simulation section.
@@ -21,6 +21,12 @@
 * Design perception-decision noise robustness experiments (IMU drift, LiDAR noise, camera illumination distortion).
 * Add inspection task performance metrics (target tracking accuracy, coverage rate, autonomous re-planning).
 * Revise the literature review with horizontal comparative tables contrasting Basal Ganglia, CPG, and RL-based action selection algorithms.
+
+* **Round-2 reviewer requirements (current, open — see §6.1 for the fixed `R2b-xx`/`R3b-xx` list and `PROGRESS.md` for live status):**
+
+**Reviewer 2 (minor clarifications on R1's new content):** sample-size caveat on the ablation study; noise-robustness isolation caveat surfaced in main text; FSM-timing-fairness caveat duplicated into a figure caption; a consolidated hardware-parameter subsection; trial count N in every figure caption; graphical abstract/Highlights refresh.
+
+**Reviewer 3 (figure/caption self-containedness, consistency):** condense remaining redundant prose; ablation figure captions need variant explanations + N; noise-robustness figure caption needs the isolation caveat; unify sim-vs-real plot styling and label each as such; power-consumption/inspection-task captions need battery spec + sampling rule.
 
 ---
 
@@ -130,7 +136,7 @@ Root-level file, maintained by hand (occasionally with agent help), **not regene
 Format:
 
 ```markdown
-# Outline — ROBOT-D-26-00122R1
+# Outline — ROBOT-D-26-00122R2
 
 ## Abstract (1 line)
 <one-sentence summary of the paper's contribution>
@@ -314,9 +320,10 @@ All shared paths (`OVERLEAF_DIR`, `OVERLEAF_MAIN_FILE`, `MIRROR_FILE`, `ASSETS_D
 
 ### 6. `PROGRESS.md` — Unified Change Tracking
 
-A markdown table at the repo root, one row per change — of **any** origin. Three ID namespaces share this one table and one pipeline:
+A markdown table at the repo root, one row per change — of **any** origin. Four ID namespaces share this one table and one pipeline:
 
-* `R2-xx` / `R3-xx` — reviewer-mandated items, fixed list below (do not renumber).
+* `R2-xx` / `R3-xx` — **round-1** reviewer-mandated items (decision on the original submission, closed, fully `synced-to-overleaf` as of the `ROBOT-D-26-00122R2` resubmission). Fixed list below (do not renumber).
+* `R2b-xx` / `R3b-xx` — **round-2** reviewer-mandated items (decision on `ROBOT-D-26-00122R2`, received 2026-10-26, minor revision, deadline 2026-11-04). A **separate, later** reviewer pass from the same two reviewers — the `b` suffix exists specifically so this round's IDs are never confused with the closed round-1 ones above when read out of chronological context. Fixed list in §6.1 (do not renumber).
 * `N-xx` — new content, from an `intake/` doc describing something to write about (e.g. a teammate's implementation). Numbered sequentially as they're created, never reused.
 * `C-xx` — standalone corrections/edits that don't map to a reviewer item. Same numbering rule.
 
@@ -338,6 +345,26 @@ The `R2-xx`/`R3-xx` IDs are fixed at the outset and never renumbered (they're re
 | R3-06 | 3 | Literature review comparative tables: Basal Ganglia vs CPG vs RL-based action selection |
 
 **This table is not live — it's the frozen list these IDs are locked to.** For current `Target section(s)`, `Data source`, `Category`, `Owner`, `Status`, and `Patch file`, always read `PROGRESS.md` at the repo root — that's the single live tracker (and what `docs/`'s dashboard renders, §12). Don't duplicate its columns back into this table; that's exactly the kind of two-copies-drift this system is designed to avoid.
+
+#### 6.1 Round 2 — `R2b-xx` / `R3b-xx` (current, open)
+
+**Do not confuse these with the round-1 `R2-xx`/`R3-xx` table above — same two reviewers, a later and separate decision letter, fixed list for this round, same "do not renumber" rule:**
+
+| ID | Reviewer | Requirement (short) |
+|---|---|---|
+| R2b-01 | 2 | Add explicit sample-size (n=12) limitation statement in the ablation results paragraph (main text, not just noted in passing) |
+| R2b-02 | 2 | Note in the main-text results section (not only Limitations) that the noise-robustness test injects IMU drift + LiDAR noise + camera illumination distortion jointly, never isolated per-sensor, and that IMU drift (not IMU white noise) is what's tested |
+| R2b-03 | 2 | Duplicate the FSM-vs-basal-ganglia timing-metric fairness caveat (already in main-text prose) into the FSM comparison plots' figure caption |
+| R2b-04 | 2 | Add a concise hardware-parameter subsection: robot total mass, servo model, actuator specs, onboard computing platform, battery parameters |
+| R2b-05 | 2 | Every experimental figure's caption must show trial count N directly, not only in main-text prose |
+| R2b-06 | 2 | Revise the graphical abstract and Highlights to reflect R2's new contributions (ablation study, FSM baseline comparison, inspection-task experiments) |
+| R3b-01 | 3 | Condense redundant descriptions / repeated metric definitions in the main text; point at consolidated tables instead of restating parameters |
+| R3b-02 | 3 | Ablation-study figure captions: add brief explanations of the four circuit variants plus sample size |
+| R3b-03 | 3 | Noise-robustness figure caption: add a short note that the combined-perturbation test cannot separate individual sensor contributions |
+| R3b-04 | 3 | Unify font/legend style between simulation and real-robot plots; mark clearly in each caption whether it's simulation or physical-trial data |
+| R3b-05 | 3 | Power-consumption table and inspection-task-results captions: add battery specification and the statistical sampling rule used |
+
+**This table is not live either — same discipline as §6's: read `PROGRESS.md` for current status.**
 
 The full `PROGRESS.md` row schema: `ID | Reviewer | Requirement (short) | Target section(s) | Data source | Category | Owner | Status | Patch file`. Status values (exactly these strings, lowercase): `pending` → `drafted` → `applied` → `synced-to-overleaf`. `applied` means committed locally but **not yet pushed to Overleaf**.
 

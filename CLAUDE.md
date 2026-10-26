@@ -4,8 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-Revision-tracking + AI-patching layer for manuscript `ROBOT-D-26-00122R1` (*Robotics and Autonomous Systems*),
-deadline **August 31, 2026**. The manuscript is edited by non-technical co-authors on Overleaf. **All real work
+Revision-tracking + AI-patching layer for manuscript `ROBOT-D-26-00122R2` (*Robotics and Autonomous Systems*),
+currently in round-2 minor revision, deadline **November 4, 2026** (round 1 closed — see README.md §1/§6).
+The manuscript is edited by non-technical co-authors on Overleaf. **All real work
 happens in this repo** — text patching, asset management, compilation. The sibling Overleaf repo clone is
 sync-only. Full spec: **README.md — read it before implementing any script here**, it is the source of truth for
 file formats, script behavior, and naming.

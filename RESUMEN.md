@@ -8,9 +8,12 @@
 
 ## ¿Qué es esto?
 
-Este repositorio (`paper-revision`) existe para gestionar la revisión mayor del manuscrito
-**ROBOT-D-26-00122R1** para la revista *Robotics and Autonomous Systems*, con fecha límite de
-reenvío el **31 de agosto de 2026**.
+Este repositorio (`paper-revision`) existe para gestionar la revisión del manuscrito
+**ROBOT-D-26-00122R2** para la revista *Robotics and Autonomous Systems*. Actualmente está en la
+**ronda 2** (revisión menor, decisión recibida el 2026-10-26), con fecha límite de reenvío el
+**4 de noviembre de 2026**. La ronda 1 (revisión mayor sobre el envío original) ya se cerró y
+sincronizó por completo — ver README.md §6 para ese historial y §6.1 para los ítems abiertos de
+esta ronda (`R2b-xx`/`R3b-xx`).
 
 El manuscrito completo vive como un solo archivo `.tex` en Overleaf, donde los coautores editan
 desde el navegador. Este repo agrega, por encima de eso, control de versiones con git y un flujo

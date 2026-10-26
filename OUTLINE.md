@@ -1,4 +1,4 @@
-# Outline — ROBOT-D-26-00122R1
+# Outline — ROBOT-D-26-00122R2
 
 ## Abstract (1 line)
 A shape-shifting quadruped robot (quadrupedal / differential-drive / omnidirectional modes) uses a
@@ -18,12 +18,63 @@ write-ups, corrections, everything — must be wrapped in `\revblue{...}`.** A p
 changes zero meaning can skip it if truly trivial (e.g. a typo fix), but default to wrapping;
 under-marking is the risky direction, since it hides real changes from reviewers.
 
-**Current state (as of 2026-08-25, this round's start):** `scripts/strip_revblue.py --apply` was run
-once — 265 wrappers from the R1 round were stripped repo-wide (`patches/c-02-strip-revblue.md`,
-`PROGRESS.md` row `C-02`). **Zero `\revblue{}` remain in `sections/*.tex` right now** — every
-occurrence you add going forward is this round's own new content. Re-run
-`scripts/strip_revblue.py --apply` at the start of the *next* round after this one is submitted,
-not before.
+**Current state (as of 2026-10-26, round 2's start):** `scripts/strip_revblue.py --apply` has now
+been run twice — 265 wrappers from the round-1 round stripped on 2026-08-25 (`C-02`), then 161
+wrappers from round 1's own resubmission content (everything written to close `R2-xx`/`R3-xx`/
+`N-xx`/`C-xx` through the `ROBOT-D-26-00122R2` submission) stripped on 2026-10-26 (`C-56`, see
+`patches/c-56-strip-revblue.md`). **Zero `\revblue{}` remain in `sections/*.tex` right now** —
+every occurrence you add going forward is round 2's own new content, addressing the `R2b-xx`/
+`R3b-xx` items (README.md §6.1). Re-run `scripts/strip_revblue.py --apply` at the start of the
+*next* round after this one is submitted, not before.
+
+## Round 2 — open items (`R2b-xx`/`R3b-xx`, see README.md §6.1 and `PROGRESS.md`)
+
+All `pending` as of 2026-10-26. Tentative target sections, from a first grep pass (not yet confirmed
+by reading each target file in full):
+
+- **R2b-01** (n=12 sample-size caveat, main text) / **R3b-02** (same ablation figure's caption needs
+  circuit-variant explanations + N) — both target the ablation study: prose at `methodology.tex`
+  (~line 206, describes the 4 variants) and `results.tex` (~line 194 prose, ~line 213 figure caption,
+  `fig:ablation_complex_stability`-type). R3b-02's caption already states $n=12$ and *some* per-
+  variant detail (see the full caption text) — verify what's still missing vs. the reviewer's ask
+  (brief explanation of each of the 4 variants specifically in the caption) before treating as a
+  from-scratch rewrite.
+- **R2b-02** (noise-isolation caveat in main text) / **R3b-03** (same caveat in the figure caption) —
+  `results.tex`'s `sssec:noise_robustness_extra` (already has a caveat in `ssec:Limitations` per the
+  R3-04/round-1 work — these two new items ask for it surfaced earlier: main text for R2b-02, the
+  actual figure caption for R3b-03). Note the **LiDAR-noise arbitration-channel caveat** already
+  documented below ("Known cross-references") is a *different*, more specific caveat — don't conflate
+  the two when writing this.
+- **R2b-03** (FSM timing-fairness caveat into the comparison table's caption) — `results.tex`, the
+  existing fairness-caveat prose is at the paragraph starting "On the two terrain suites..." (~line
+  559); the target caption is `tab:fsm_comparison`'s own caption (~line 517, currently does not carry
+  this caveat — only the Complex-suite 0%-success note).
+- **R2b-04** (hardware-parameter subsection) — `methodology.tex`, `\subsection{Physical Platform
+  Construction...}` (`ssec:Construction`, ~line 472). Params already stated but scattered across this
+  subsection's prose (N20 motor RPM, MG996R torque, ESP32-S3 implied but not named as the onboard
+  compute platform — verify; MPU-6050/HMC5883L/C270, 7.2V/3300mAh battery) — **total robot mass is
+  not obviously present, verify** — likely the main actual gap. Likely a new consolidated
+  subsubsection or table pulling these together, not all-new facts.
+- **R2b-05** (N in every figure caption) — cross-section, every figure in `results.tex` (by far the
+  bulk) and any in `methodology.tex`. Mechanical, high figure count — plan for an exhaustive caption
+  sweep, not a per-figure `PROGRESS.md` row.
+- **R2b-06** (graphical abstract + Highlights) — `assets/GRAPHICAL_ABSTRACT.pdf` (binary, not text —
+  regeneration happens outside this repo's text-patch flow, image replacement only) and the
+  `highlights` environment in `sections/preamble.tex` (~line 93-100). Highlights is a `sections/*.tex`
+  edit like any other; the graphical abstract is an `assets/` binary replacement via the normal
+  asset-update path (no `experiments/` generation step applies — it's a hand-made figure, not derived
+  from experiment data).
+- **R3b-01** (condense redundant descriptions, consolidated tables) — likely spans
+  `methodology.tex`/`results.tex` again, similar in kind to round 1's `R2-01` — needs its own
+  cross-section read before scoping, don't assume it's fully closed by round 1's `R2-01` pass.
+- **R3b-04** (unify sim/real plot styling, label each) — cross-section, every figure in `results.tex`
+  (both `\subsection{Simulation Results}` and `\subsection{Physical Implementation Results}`) —
+  overlaps with `R2b-05` as another exhaustive figure/caption sweep; consider scoping and doing both
+  together file-by-file rather than as two independent full passes.
+- **R3b-05** (battery spec + sampling rule in power-consumption/inspection-task captions) — overlaps
+  with `R2b-04`'s battery parameters and the inspection-task results subsection in `results.tex`
+  (Reactive Inspection Task, `sssec:reactive_inspection`) and the energy-consumption figure
+  (`FigReal_Morphological_Transition_Energy.png`'s caption).
 
 ## Sections
 
