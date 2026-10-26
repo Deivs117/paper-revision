@@ -1,0 +1,6 @@
+# Requires Deivs117's (the repo owner's) approval on every PR into main -- see README.md §13.
+# This is the enforcement mechanism for "nothing lands without the owner's review": GitHub
+# personal repos (unlike organization repos) can't restrict WHO is allowed to click merge, so
+# this is done instead by requiring the one mandatory approval (branch protection on main) to
+# come specifically from a code owner, not from any collaborator with write access.
+* @Deivs117
