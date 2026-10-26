@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-26T15:51:06+00:00",
-  "progressLastCommit": "2026-10-26T10:42:46-05:00",
+  "generatedAt": "2026-10-26T16:18:14+00:00",
+  "progressLastCommit": "2026-10-26T10:51:06-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -977,7 +977,7 @@
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
-        "Deivi"
+        "Sam"
       ],
       "status": "pending",
       "patchFile": "—"
@@ -990,7 +990,7 @@
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
-        "Deivi"
+        "Diego"
       ],
       "status": "pending",
       "patchFile": "—"
@@ -1003,7 +1003,7 @@
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
-        "Deivi"
+        "Diego"
       ],
       "status": "pending",
       "patchFile": "—"
@@ -1016,7 +1016,7 @@
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
-        "Deivi"
+        "Sebas"
       ],
       "status": "pending",
       "patchFile": "—"
@@ -1042,7 +1042,7 @@
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
-        "Deivi"
+        "Sam"
       ],
       "status": "pending",
       "patchFile": "—"
@@ -1055,7 +1055,7 @@
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
-        "Deivi"
+        "Sebas"
       ],
       "status": "pending",
       "patchFile": "—"
@@ -1081,7 +1081,7 @@
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
-        "Deivi"
+        "Diego"
       ],
       "status": "pending",
       "patchFile": "—"
@@ -1107,7 +1107,7 @@
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
-        "Deivi"
+        "Sebas"
       ],
       "status": "pending",
       "patchFile": "—"
