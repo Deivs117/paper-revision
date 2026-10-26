@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-26T15:42:46+00:00",
-  "progressLastCommit": "2026-10-26T10:40:19-05:00",
+  "generatedAt": "2026-10-26T15:51:06+00:00",
+  "progressLastCommit": "2026-10-26T10:42:46-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -966,7 +966,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-56-strip-revblue.md"
     },
     {
