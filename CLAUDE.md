@@ -54,9 +54,16 @@ access) work directly in this repo, typically by directing an AI agent. Full det
 - Branch protection on `main` requires the `CI` GitHub Actions check (`.github/workflows/ci.yml`)
   to pass and at least one approving review before merge — don't rely on local hooks alone to
   catch a problem; the PR won't merge if CI is red regardless.
-- `scripts/check_duplicate_ids.sh` and `scripts/check_monolith_fresh.sh` (README §10.5) are
-  blocking, not advisory, unlike `check_hardcoded_refs.sh`/`check_target_conflicts.sh` — treat a
-  failure from either as something to fix, not note and continue.
+- `scripts/check_duplicate_ids.sh`, `scripts/check_monolith_fresh.sh`, and
+  `scripts/check_dashboard_fresh.sh` (README §10.5) are blocking, not advisory, unlike
+  `check_hardcoded_refs.sh`/`check_target_conflicts.sh` — treat a failure from any of them as
+  something to fix, not note and continue.
+- **`scripts/install_hooks.sh` is a convenience, not a dependency.** CI (`.github/workflows/
+  ci.yml`) independently re-runs everything the pre-commit hook does, so it is always safe to
+  assume a collaborator (or their agent) never ran it, never read this file, and committed with
+  `--no-verify` — nothing broken can still reach `main`, because the PR can't merge without CI
+  green + the owner's CODEOWNERS review. Don't tell a collaborator "you must run install_hooks.sh
+  first" as if skipping it were unsafe; it only costs them faster local feedback.
 
 ## Hard rules
 

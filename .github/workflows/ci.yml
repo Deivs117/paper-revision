@@ -38,6 +38,9 @@ jobs:
       - name: No duplicate PROGRESS.md IDs
         run: bash scripts/check_duplicate_ids.sh
 
+      - name: docs/data.json matches PROGRESS.md
+        run: bash scripts/check_dashboard_fresh.sh
+
       - name: sections/ and source/main_monolithic.tex are in sync
         run: bash scripts/check_monolith_fresh.sh
 
