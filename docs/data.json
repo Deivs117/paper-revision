@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-03T03:48:20+00:00",
-  "progressLastCommit": "2026-09-02T22:35:36-05:00",
+  "generatedAt": "2026-10-26T15:40:20+00:00",
+  "progressLastCommit": "2026-09-02T22:48:19-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -955,6 +955,19 @@
       ],
       "status": "synced-to-overleaf",
       "patchFile": "patches/c-53-neu-imu-drop-locomotion2-panel.tex"
+    },
+    {
+      "id": "C-56",
+      "reviewer": "—",
+      "requirement": "Start of the new revision round: editor decision on ROBOT-D-26-00122R2 received 2026-10-26 (minor revision, deadline 2026-11-04). Ran scripts/strip_revblue.py --apply to turn the just-submitted round's 161 \\revblue{} wrappers (everything written since C-02's 2026-08-25 strip) back into plain baseline text, per the standing round-transition convention (README §11). See R2b-xx/R3b-xx rows below for this round's actual reviewer requirements — this row is pure repo housekeeping, no manuscript meaning change. validate_tex.sh/check_roundtrip.sh pass.",
+      "target": "all sections/*.tex (161 wrappers, 0 in closing.tex)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-56-strip-revblue.md"
     }
   ]
 }
