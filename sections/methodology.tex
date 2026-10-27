@@ -473,7 +473,7 @@ Based on the design presented in subsection~\ref{ssec:Platform_Design} and in Fi
 
 The ESP32-S3 Zero microcontroller was used as the \revblue{onboard control unit}, responsible for sensor acquisition and actuator control. The latter was intermediated by the PCA9685 servo controller and the mini-L298N module, which regulated the speed of the N20 DC motors. \revblue{The neural circuits themselves run on an external computer, as detailed in Section~\ref{ssec:HardwareSpec}.} 
 
-The network inputs were implemented through an MPU-6050 inertial sensor, an HMC5883L magnetometer, and a Logitech C270 camera, used for capturing sensory stimuli. Power was supplied by a 7.2 V, 3300 mAh lithium-ion battery. 
+The network inputs were implemented through an MPU-6050 inertial sensor, an HMC5883L magnetometer, and a Logitech C270 camera, used for capturing sensory stimuli. Power was supplied by a 7.2 V, 3300 mAh nickel-metal hydride (NiMH) battery. 
 
 \revblue{All structural components of the limbs and chassis were manufactured by 3D printing in polylactic acid (PLA).} Additionally, a rubber stopper was incorporated at the end of each limb, at the ground contact point, to increase traction during quadrupedal gait. The fully assembled robot is shown in Figure~\ref{fig:robot_real}. 
 
@@ -503,7 +503,7 @@ Wheel actuators & 4 N20 geared DC motors, $104$~RPM (1 per leg), driven by a min
 Onboard computing platform & ESP32-S3 Zero (dual-core, 240~MHz, 2~MB PSRAM, 4~MB flash) \\ \hline
 Off-board computing platform & Laptop, Intel Core i7-1065G7, 12~GB RAM; serial link to the robot \\ \hline
 Sensors & MPU-6050 IMU, HMC5883L magnetometer, LDROBOT STL-19P LiDAR, Logitech C270 camera \\ \hline
-Battery & Li-ion, 7.2~V, 3300~mAh \\ \hline
+Battery & NiMH, 7.2~V (nominal), 3300~mAh \\ \hline
 Voltage regulation & 8~A switching UBEC, 5~V output \\ \hline
 \end{tabularx}
 \label{table:HardwareParams}

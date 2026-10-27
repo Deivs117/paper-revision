@@ -102,7 +102,7 @@ both directly from this table, so keep them current when reassigning or picking 
 | R3b-02 | 3 | Ablation-study figure captions: brief explanation of the four circuit variants + sample size | results.tex (ablation figure caption, ~line 213) | — | Escritura | Deivi | pending | — |
 | R3b-03 | 3 | Noise-robustness figure caption: note the combined-perturbation test cannot separate individual sensor contributions | results.tex (`sssec:noise_robustness_extra` figure caption) | — | Escritura | Diego | pending | — |
 | R3b-04 | 3 | Unify font/legend style between simulation and real-robot plots; mark each caption as simulation or physical-trial data | results.tex (all figures, cross-section, overlaps R2b-05 scope) | — | Escritura | Deivi | pending | — |
-| R3b-05 | 3 | Power-consumption table and inspection-task-results captions: add battery specification + statistical sampling rule | results.tex (energy-consumption figure caption, `sssec:reactive_inspection`) | — | Escritura | Sebas | pending | — |
+| R3b-05 | 3 | Power-consumption table and inspection-task-results captions: add battery specification + statistical sampling rule | results.tex (energy-consumption figure caption, `sssec:reactive_inspection`) | — | Escritura | Sebas | applied | `patches/r3b-05-battery-spec-sampling-rule.tex` |
 
 ## Coherence-audit note (2026-08-29)
 

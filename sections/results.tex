@@ -575,7 +575,7 @@ Twenty trials yielded SR $= 85\%$ (17/20), with three timeouts (trials 7, 11, 17
 
 \begin{table}[htbp]
 \centering
-\caption{Reactive Inspection Task --- Aggregate Performance Metrics (17/20 successful trials, obstacle field with initially non-visible target).}
+\caption{Reactive Inspection Task --- Aggregate Performance Metrics (17/20 successful trials, obstacle field with initially non-visible target). \revblue{Simulation data (no physical battery). Sampling rule: 20 independent trials, 90\,s timeout, no noise injection; mean $\pm$ sample SD, min and max over the successful trials only.}}
 \label{tab:inspection_metrics}
 \begin{tabularx}{\textwidth}{l >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
 \toprule
@@ -597,7 +597,7 @@ The 17 successful trials separate into two navigation patterns distinguished by 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.7\textwidth]{fig_inspection_dfinal_vs_nlidar.png}
-    \caption{Final approach precision ($d_{final}$) versus sensory evasion-event count ($N_{ev}^{LiDAR}$) across the 17 successful Reactive Inspection Task trials, split into a clean-traversal pattern ($N_{ev}^{LiDAR} < 10$, $n=12$, $d_{final} = 1.081 \pm 0.042$~m) and an elevated-evasion pattern ($N_{ev}^{LiDAR} \geq 10$, $n=5$, $d_{final} = 1.065 \pm 0.022$~m). Despite the roughly $5\times$--$7\times$ spread in evasion-event count, the elevated-evasion group converges at least as tightly on the stopping point as the clean group, indicating that greater route complexity does not degrade final approach precision.}
+    \caption{Final approach precision ($d_{final}$) versus sensory evasion-event count ($N_{ev}^{LiDAR}$) across the 17 successful Reactive Inspection Task trials, split into a clean-traversal pattern ($N_{ev}^{LiDAR} < 10$, $n=12$, $d_{final} = 1.081 \pm 0.042$~m) and an elevated-evasion pattern ($N_{ev}^{LiDAR} \geq 10$, $n=5$, $d_{final} = 1.065 \pm 0.022$~m). Despite the roughly $5\times$--$7\times$ spread in evasion-event count, the elevated-evasion group converges at least as tightly on the stopping point as the clean group, indicating that greater route complexity does not degrade final approach precision. \revblue{Simulation data; same sampling rule as Table~\ref{tab:inspection_metrics}.}}
     \label{fig:inspection_dfinal_scatter}
 \end{figure}
 
@@ -1020,7 +1020,7 @@ Obstacle   & ${\approx}\,0.0\,\text{s}$ (instantaneous) & ${\approx}\,1100$, tra
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.5\textwidth]{FigReal_Morphological_Transition_Energy.png}
-  \caption{Morphological transition energy per direction, derived from $|I_{\text{current}}| \times 7.2\,\text{V}$ (fixed NiMH pack voltage) integrated over the pre-calibrated electromechanical coupling window (2.92\,s / 1.56\,s, matching Figure~\ref{fig:FourPanelLatencies}), across $N=16$ (Quadrupedal $\rightarrow$ Differential Rolling) and $N=19$ (Differential Rolling $\rightarrow$ Quadrupedal) individually detected structural-command transitions. Error bars: $\pm 1$ SD; the between-direction difference is not statistically significant (Welch's $t \approx 1.18$).}
+  \caption{Morphological transition energy per direction, derived from $|I_{\text{current}}| \times 7.2\,\text{V}$ \revblue{(current sampled at $\approx 5$\,Hz by the onboard INA sensor; fixed nominal voltage of the NiMH battery, Table~\ref{table:HardwareParams})} integrated over the pre-calibrated electromechanical coupling window (2.92\,s / 1.56\,s, matching Figure~\ref{fig:FourPanelLatencies}), across $N=16$ (Quadrupedal $\rightarrow$ Differential Rolling) and $N=19$ (Differential Rolling $\rightarrow$ Quadrupedal) individually detected structural-command transitions. Error bars: $\pm 1$ SD; the between-direction difference is not statistically significant (Welch's $t \approx 1.18$).}
   \label{fig:MorphologicalEnergy}
 \end{figure}
 
@@ -1031,7 +1031,8 @@ The energetic cost of physical adaptation was quantified from individually detec
 \caption{Long-term average steady-state power consumption per locomotion mode, computed from
 pooled intra-segment power samples (individual samples within each structural-command-detected mode
 segment, electromechanical coupling window excluded; see Figure~\ref{fig:MorphologicalEnergy}). Power
-derived as $|I|\times7.2\,\text{V}$ (fixed NiMH pack voltage).}
+derived as $|I|\times7.2\,\text{V}$ (fixed NiMH pack voltage).
+\revblue{Current sampled at $\approx 5$\,Hz by the onboard INA sensor; the 7.2\,V figure is the nominal voltage of the 3300\,mAh NiMH battery (Table~\ref{table:HardwareParams}). Mean and SD are taken over all individual samples pooled across the segments of each mode.}}
 \label{tab:mode_steady_state_energy}
 \begin{tabularx}{\textwidth}{l >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
 \toprule

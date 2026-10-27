@@ -155,7 +155,7 @@ neuronal control circuits, (4) physical construction. Four subsections:
 - `\subsection{Physical Platform Construction and Experimental Setup}` (`\label{ssec:Construction}`,
   line 447) — N20 wheel motors (104 RPM), MG996R leg servos (11 kg·cm), ESP32-S3 Zero MCU,
   PCA9685 + mini-L298N drivers, MPU-6050 IMU, HMC5883L magnetometer, Logitech C270 camera, 7.2V/
-  3300mAh Li-ion battery, PLA/PETG 3D-printed structure. Physical test terrains: a 20° incline +
+  3300mAh NiMH battery, PLA/PETG 3D-printed structure. Physical test terrains: a 20° incline +
   flat platform rig, and a **physically fabricated** Perlin-noise terrain (line 485, R1-round text,
   now baseline) matching the simulated one 1:1 — laser-cut MDF, $1300\times900$mm, $250\times250$ grid, reported
   stats ($\sigma_h=2.339$mm, $R_q=2.339$mm, mean slope 0.155). This is the real-world counterpart to
