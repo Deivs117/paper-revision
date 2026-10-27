@@ -52,3 +52,9 @@
 %    deploying the classifier on a resource-constrained embedded microcontroller' (the ESP32-S3 is a
 %    deployment target evaluated on-device, not where the network ran in the experiments).
 %  - 'host PC (PyTorch)' now points to ssec:HardwareSpec (same laptop as the physical experiments).
+%
+% Second follow-up (same row): make clear the network does not run on the ESP32.
+%  - conclusions.tex: 'on embedded hardware' -> real platform with circuits on an external computer;
+%    'executed on such resource-constrained platforms' -> qualified, onboard feasibility assessed only
+%    for the MLP (ref sssec:mlp_eval, label added to results.tex MLP evaluation subsubsection).
+%  - results.tex Limitations: new paragraph (external laptop; only the MLP benchmarked on ESP32-S3).
