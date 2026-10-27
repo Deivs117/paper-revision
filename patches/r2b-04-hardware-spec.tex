@@ -58,3 +58,9 @@
 %    'executed on such resource-constrained platforms' -> qualified, onboard feasibility assessed only
 %    for the MLP (ref sssec:mlp_eval, label added to results.tex MLP evaluation subsubsection).
 %  - results.tex Limitations: new paragraph (external laptop; only the MLP benchmarked on ESP32-S3).
+%
+% Third follow-up (after subagent review): table:HardwareParams now lists the LDROBOT STL-19P LiDAR
+% (author-confirmed) and states the MG996R torque at the 5 V UBEC supply (~9.4 kg.cm, datasheet-derived
+% approximation: 11 kg.cm at 6 V, ~9.4 kg.cm at 4.8 V). The reviewer subagent's flag on the ESP32-S3
+% latency units (8.81 ms, SD 2.67 us) was checked against experiments/R2-04-mlp-onboard-compute/README.md
+% and is NOT an error: SD of a deterministic loop is microsecond-scale.
