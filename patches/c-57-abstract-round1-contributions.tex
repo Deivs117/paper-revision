@@ -1,0 +1,12 @@
+% PATCH: C-57
+% Reviewer: — (correction; team-approved follow-up to R2b-06, 2026-10-28)
+% Target section: sections/preamble.tex (abstract environment, inserted before the closing
+%   "Across simulated and real-robot trials, ..." sentence)
+% Requirement: Keep the Abstract coherent with the revised Highlights and graphical abstract, which
+%   now name the ablation study, the FSM baseline and the inspection task.
+% Status: applied
+% Numbers from sections/results.tex: fig:ablation_success_rate (no lateral inhibition 25.0%,
+%   no STN/STR 33.3%, intact 100%), tab:fsm_comparison (Complex 100% vs 0%, Inspection 85% vs 45%).
+% No dashes used (author preference): the 25%/33% values are given with "respectively".
+
+\revblue{In simulation, an ablation study showed that removing the circuit's lateral inhibition or its STN/STR layers reduced success under stimulus conflict from 100\% to 25\% and 33\%, respectively. Against a priority-rule finite state machine (FSM) baseline under matched conditions, the neural arbitration succeeded in every three-stimulus conflict trial, where the FSM succeeded in none, and reached 85\% success versus 45\% in an inspection task with an initially hidden target.}

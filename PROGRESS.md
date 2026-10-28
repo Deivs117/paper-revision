@@ -103,6 +103,7 @@ both directly from this table, so keep them current when reassigning or picking 
 | R3b-03 | 3 | Noise-robustness figure caption: note the combined-perturbation test cannot separate individual sensor contributions | results.tex (`sssec:noise_robustness_extra` figure caption) | — | Escritura | Diego | pending | — |
 | R3b-04 | 3 | Unify font/legend style between simulation and real-robot plots; mark each caption as simulation or physical-trial data | results.tex (all figures, cross-section, overlaps R2b-05 scope) | — | Escritura | Deivi | pending | — |
 | R3b-05 | 3 | Power-consumption table and inspection-task-results captions: add battery specification + statistical sampling rule | results.tex (energy-consumption figure caption, `sssec:reactive_inspection`) | — | Escritura | Sebas | pending | — |
+| C-57 | — | Align the Abstract with the round-1 contributions now named in the Highlights and graphical abstract (`R2b-06`): two new `\revblue{}` sentences before the closing sentence, summarizing the simulated ablation (lateral inhibition / STN/STR removal: 100% → 25% / 33% conflict success), the FSM baseline (all vs. none of the three-stimulus conflict trials) and the hidden-target inspection task (85% vs. 45%). Not a reviewer requirement — team-approved follow-up (2026-10-28) so the Abstract does not lag the Highlights. Abstract now ~190 words. | preamble.tex (`abstract` env) | — | Escritura | Sam | applied | `patches/c-57-abstract-round1-contributions.tex` |
 
 ## Coherence-audit note (2026-08-29)
 
