@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-28T21:22:35+00:00",
-  "progressLastCommit": "2026-10-28T12:18:47-05:00",
+  "generatedAt": "2026-10-28T23:12:30+00:00",
+  "progressLastCommit": "2026-10-28T16:24:26-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1113,7 +1113,7 @@
       "patchFile": "—"
     },
     {
-      "id": "C-57",
+      "id": "C-59",
       "reviewer": "—",
       "requirement": "Align the Abstract with the round-1 contributions now named in the Highlights and graphical abstract (R2b-06): two new \\revblue{} sentences before the closing sentence, summarizing the simulated ablation (lateral inhibition / STN/STR removal: 100% → 25% / 33% conflict success), the FSM baseline (all vs. none of the three-stimulus conflict trials) and the hidden-target inspection task (85% vs. 45%). Not a reviewer requirement — team-approved follow-up (2026-10-28) so the Abstract does not lag the Highlights. Abstract now ~190 words.",
       "target": "preamble.tex (abstract env)",
