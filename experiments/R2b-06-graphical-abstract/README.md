@@ -17,9 +17,13 @@ experiments. The Highlights half of the same row is a plain `sections/preamble.t
    (all photos/diagram reused from the original abstract).
 3. **Ablation study** — success rate under three-stimulus conflict for the intact circuit and the
    three ablations (`fig:ablation_success_rate`), n = 12 per variant, Fisher's exact p vs. intact.
-4. **FSM baseline & inspection** — Neural vs. FSM success in the three-stimulus conflict suite and
-   the inspection task (`tab:fsm_comparison`), plus the inspection task's final-approach precision
-   ($d_{final}$, `tab:inspection_metrics`).
+4. **FSM baseline & inspection** — Neural vs. FSM success rate in the three-stimulus conflict suite
+   and the inspection task (`tab:fsm_comparison`).
+
+Both chart panels use a minimal graphical-abstract style: no value axis or ticks, every bar labelled
+directly with its % (plus k/n on the FSM panel), the metric stated in words at the top of the card,
+and only the zero baseline kept so a 0% bar reads as zero rather than missing. The inspection task's
+$d_{final}$ precision was dropped from the abstract (one message per panel); it stays in the text.
 
 Visual language (title, `#ffbd59` panel fill, photo set) is kept from the original so the abstract
 reads as a revision of the same figure, not a different paper. Chart colours follow the repo's

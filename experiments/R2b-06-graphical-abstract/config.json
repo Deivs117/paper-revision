@@ -17,12 +17,5 @@
     "suites": ["Three-stimulus\nconflict", "Inspection\ntask"],
     "neural_success": [[15, 15], [17, 20]],
     "fsm_success": [[0, 15], [9, 20]]
-  },
-  "inspection": {
-    "_source": "results.tex, sssec:reactive_inspection + tab:inspection_metrics",
-    "d_final_mean_m": 1.076,
-    "d_final_sd_m": 0.038,
-    "n_success": 17,
-    "n_trials": 20
   }
 }

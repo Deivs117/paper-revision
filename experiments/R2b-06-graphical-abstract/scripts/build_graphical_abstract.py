@@ -111,12 +111,20 @@ def body(fig, x, y, text, size=15, **kw):
     fig.text(x, y, text, fontsize=size, linespacing=1.05, **kw)
 
 
-def style_chart_axes(ax):
-    for side in ("top", "right"):
-        ax.spines[side].set_visible(False)
-    for side in ("left", "bottom"):
-        ax.spines[side].set_color(MUTED)
+def style_chart_axes(ax, baseline):
+    """Minimal GA chart: no value axis, no ticks — every bar carries its own % label, so only the
+    zero baseline is kept (so a 0% bar reads as zero, not as missing data)."""
+    for side in ("top", "right", "left", "bottom"):
+        ax.spines[side].set_visible(side == baseline)
+    ax.spines[baseline].set_color(MUTED)
+    ax.spines[baseline].set_linewidth(1.4)
     ax.tick_params(colors=INK, labelsize=13, length=0)
+
+
+def chart_card(fig, x, w, card_y, top, metric):
+    """White card holding a chart, with the plotted metric stated in words at its top."""
+    panel(fig, x + 0.012, card_y, w - 0.024, top - card_y, color=CARD, radius=0.008)
+    body(fig, x + w / 2, top - 0.018, metric, size=13, fontweight="bold")
 
 
 def panel_frame(fig, x, w, y0, h, title, subtitle):
@@ -167,8 +175,8 @@ def ablation(fig, cfg, x, w, y0, h):
     top = panel_frame(fig, x, w, y0, h, "Ablation study",
                       "Removing basal-ganglia mechanisms\nbreaks conflict resolution")
     card_y = y0 + 0.09
-    panel(fig, x + 0.012, card_y, w - 0.024, top - card_y, color=CARD, radius=0.008)
-    ax = fig.add_axes((x + 0.098, card_y + 0.095, w - 0.128, top - card_y - 0.13), zorder=5)
+    chart_card(fig, x, w, card_y, top, "Success rate under stimulus conflict")
+    ax = fig.add_axes((x + 0.098, card_y + 0.02, w - 0.128, top - card_y - 0.085), zorder=5)
     ypos = np.arange(len(a["variants"]))[::-1]
     colors = [ABL_KEEP] + [ABL_DROP] * (len(a["variants"]) - 1)
     ax.barh(ypos, a["success_pct"], color=colors, height=0.62)
@@ -185,43 +193,43 @@ def ablation(fig, cfg, x, w, y0, h):
                     color="white" if inside else MUTED)
     ax.set_yticks(ypos, a["variants"])
     ax.set_xlim(0, 100)
-    ax.set_xticks([0, 50, 100], ["0", "50", "100"])
-    ax.set_xlabel("Conflict-task success (%)", fontsize=13, color=INK)
-    style_chart_axes(ax)
+    ax.set_xticks([])
+    style_chart_axes(ax, baseline="left")
     body(fig, x + w / 2, card_y - 0.012,
          f"Simulation · n = {a['n_per_variant']} trials per variant\nFisher's exact p vs. intact circuit",
          size=12.5, color=MUTED)
 
 
-def baseline_and_inspection(fig, cfg, x, w, y0, h):
-    f, ins = cfg["fsm"], cfg["inspection"]
+def baseline_comparison(fig, cfg, x, w, y0, h):
+    f = cfg["fsm"]
     top = panel_frame(fig, x, w, y0, h, "FSM baseline & inspection",
                       "Neural arbitration outperforms a\npriority-rule FSM baseline")
-    card_y = y0 + 0.2
-    panel(fig, x + 0.012, card_y, w - 0.024, top - card_y, color=CARD, radius=0.008)
-    ax = fig.add_axes((x + 0.052, card_y + 0.085, w - 0.075, top - card_y - 0.165), zorder=5)
+    card_y = y0 + 0.09
+    chart_card(fig, x, w, card_y, top, "Success rate")
+    # Legend as colored words under the metric title — no separate legend box to decode.
+    cx = x + w / 2
+    fig.text(cx - 0.006, top - 0.058, "■ Basal ganglia", ha="right", va="top", fontsize=13,
+             color=NEURAL, fontweight="bold")
+    fig.text(cx + 0.006, top - 0.058, "■ FSM", ha="left", va="top", fontsize=13, color=FSM,
+             fontweight="bold")
+    ax = fig.add_axes((x + 0.03, card_y + 0.075, w - 0.06, top - card_y - 0.185), zorder=5)
     xs = np.arange(len(f["suites"]))
     bw = 0.36
-    for off, data, color, name in ((-bw / 2, f["neural_success"], NEURAL, "Basal ganglia"),
-                                   (bw / 2, f["fsm_success"], FSM, "FSM")):
+    for off, data, color in ((-bw / 2, f["neural_success"], NEURAL), (bw / 2, f["fsm_success"], FSM)):
         pct = [100 * s / n for s, n in data]
-        ax.bar(xs + off, pct, bw * 0.92, color=color, label=name)
+        ax.bar(xs + off, pct, bw * 0.92, color=color)
         for xi, (s, n), v in zip(xs + off, data, pct):
-            ax.text(xi, v + 3, f"{s}/{n}", ha="center", va="bottom", fontsize=12.5, color=INK,
+            ax.text(xi, v + 11, f"{v:.0f}%", ha="center", va="bottom", fontsize=14, color=INK,
                     fontweight="bold")
+            ax.text(xi, v + 2, f"{s}/{n}", ha="center", va="bottom", fontsize=11.5, color=MUTED)
     ax.set_xticks(xs, f["suites"])
-    ax.set_ylim(0, 112)
-    ax.set_yticks([0, 50, 100])
-    ax.set_ylabel("Success (%)", fontsize=13, color=INK)
-    style_chart_axes(ax)
-    ax.legend(loc="lower center", frameon=False, fontsize=12.5, ncol=2, bbox_to_anchor=(0.45, 1.0),
-              handlelength=1.0, columnspacing=1.0, borderaxespad=0.2)
-    body(fig, x + w / 2, card_y - 0.018,
-         "Hidden-target inspection: consistent\n"
-         f"stop at {ins['d_final_mean_m']:.2f} ± {ins['d_final_sd_m']:.2f} m from the target",
-         size=14)
-    body(fig, x + w / 2, y0 + 0.09 - 0.012, "Simulation · matched trial conditions", size=12.5,
-         color=MUTED)
+    ax.set_xlim(-0.6, len(xs) - 0.4)
+    ax.set_ylim(0, 125)
+    ax.set_yticks([])
+    style_chart_axes(ax, baseline="bottom")
+    n_txt = " / ".join(str(d[1]) for d in f["neural_success"])
+    body(fig, cx, card_y - 0.012, f"Simulation · n = {n_txt} trials per controller\nmatched trial conditions",
+         size=12.5, color=MUTED)
 
 
 # --------------------------------------------------------------------------- main
@@ -240,7 +248,7 @@ def main():
     core_idea(fig, imgs, xs[0], widths[0], y0, h)
     method(fig, imgs, xs[1], widths[1], y0, h)
     ablation(fig, cfg, xs[2], widths[2], y0, h)
-    baseline_and_inspection(fig, cfg, xs[3], widths[3], y0, h)
+    baseline_comparison(fig, cfg, xs[3], widths[3], y0, h)
 
     os.makedirs(OUT, exist_ok=True)
     for ext in ("pdf", "png"):
