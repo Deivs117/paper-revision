@@ -64,9 +64,12 @@ by reading each target file in full):
   edit like any other; the graphical abstract is an `assets/` binary replacement via the normal
   asset-update path (no `experiments/` generation step applies — it's a hand-made figure, not derived
   from experiment data).
-- **R3b-01** (condense redundant descriptions, consolidated tables) — likely spans
-  `methodology.tex`/`results.tex` again, similar in kind to round 1's `R2-01` — needs its own
-  cross-section read before scoping, don't assume it's fully closed by round 1's `R2-01` pass.
+- **R3b-01** (condense redundant descriptions, consolidated tables) — **applied 2026-10-28** after a
+  full read of `methodology.tex`/`results.tex`; see `patches/r3b-01-condense-redundant-definitions.tex`
+  for what changed and for the duplicates deliberately left to other owners (ablation caption vs.
+  prose, FSM caption, a possibly double-listed weight in `table:Locom_NN`). `ssec:Construction`'s
+  prose no longer lists components — `table:HardwareParams` is the single place for them. The
+  inspection-scenario setup lives in `ssec:Gazebo_Simulation` (new label); results points there.
 - **R3b-04** (unify sim/real plot styling, label each) — cross-section, every figure in `results.tex`
   (both `\subsection{Simulation Results}` and `\subsection{Physical Implementation Results}`) —
   overlaps with `R2b-05` as another exhaustive figure/caption sweep; consider scoping and doing both
@@ -155,7 +158,7 @@ neuronal control circuits, (4) physical construction. Four subsections:
 - `\subsection{Physical Platform Construction and Experimental Setup}` (`\label{ssec:Construction}`,
   line 447) — N20 wheel motors (104 RPM), MG996R leg servos (11 kg·cm), ESP32-S3 Zero MCU,
   PCA9685 + mini-L298N drivers, MPU-6050 IMU, HMC5883L magnetometer, Logitech C270 camera, 7.2V/
-  3300mAh Li-ion battery, PLA/PETG 3D-printed structure. Physical test terrains: a 20° incline +
+  3300mAh NiMH battery, PLA/PETG 3D-printed structure. Physical test terrains: a 20° incline +
   flat platform rig, and a **physically fabricated** Perlin-noise terrain (line 485, R1-round text,
   now baseline) matching the simulated one 1:1 — laser-cut MDF, $1300\times900$mm, $250\times250$ grid, reported
   stats ($\sigma_h=2.339$mm, $R_q=2.339$mm, mean slope 0.155). This is the real-world counterpart to
@@ -206,9 +209,9 @@ by a **Quantitative Performance Analysis (Physical)** subsection and a **Limitat
   to a task-level timeout) — see `patches/r3-04-noise-robustness-evaluation.tex`), multi-stimuli response,
   variable-topography response (stability, ECDF decision-delay, terrain-adaptability phase space),
   and `\subsubsection{Quantitative Stability Analysis of Locomotion Mode Transitions}`
-  (`\label{sssec:transition_stability}`) — this subsection's own text says *"To address the
-  reviewer's request for systematic quantitative metrics on mode-switching behaviour..."*, i.e. it
-  was already written in response to a prior review round. Relevant background for R3-01/R3-02 but
+  (`\label{sssec:transition_stability}`) — written in response to a prior review round (its
+  "To address the reviewer's request..." opener was removed by `C-57`, like every other
+  reviewer-request clause outside the ablation study). Relevant background for R3-01/R3-02 but
   is NOT a basal-ganglia ablation study — it's transition stability metrics (SM, TR indices), a
   different thing.
 - `\subsection{Physical Implementation Results}` — mirrors the simulation structure on hardware

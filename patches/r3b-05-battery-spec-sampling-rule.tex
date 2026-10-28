@@ -1,0 +1,16 @@
+% Patch record for R3b-05 -- battery specification + statistical sampling rule in captions.
+% Applied 2026-10-27 to sections/results.tex and sections/methodology.tex.
+% Author-confirmed: battery is NiMH 7.2 V nominal, 3300 mAh (R2b-04's "Li-ion" was wrong);
+% current measured by the INA sensor at ~5 Hz (imu_ina.csv), P = |I| x 7.2 V.
+% Inspection task is simulation data: no physical battery, sampling rule only.
+%
+% methodology.tex: "lithium-ion battery" -> "nickel-metal hydride (NiMH) battery";
+%   table:HardwareParams row -> "Battery & NiMH, 7.2~V (nominal), 3300~mAh".
+% results.tex fig:MorphologicalEnergy caption: + \revblue{(current sampled at ~5 Hz by the onboard INA
+%   sensor; fixed nominal voltage of the NiMH battery, Table~\ref{table:HardwareParams})}.
+% results.tex tab:mode_steady_state_energy caption: + \revblue{ sampling/pooling sentence }.
+% results.tex tab:inspection_metrics caption: + \revblue{Simulation data (no physical battery). Sampling
+%   rule: 20 independent trials, 90 s timeout, no noise injection; mean +- sample SD, min and max over the
+%   successful trials only.}
+% results.tex fig:inspection_dfinal_scatter caption: + \revblue{Simulation data; same sampling rule as table.}
+% N per caption (R2b-05, Deivi) deliberately not touched.
