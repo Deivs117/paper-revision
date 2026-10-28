@@ -82,7 +82,7 @@
 
 %% Abstract
 \begin{abstract}
-This work presents the design, simulation, and implementation of a bio-inspired quadruped robotic platform equipped with a hybrid wheel-leg locomotion system and controlled through a neural architecture modeled after basal ganglia mechanisms. The platform integrates sensory modules for environmental perception, arbitration modules for behavioral decision-making, and locomotor modules for gait generation, enabling adaptive responses to diverse stimuli and terrain conditions. Simulation and implementation demonstrate the robot's ability to switch autonomously between locomotion modes ---quadrupedal walking, differential rolling, and omnidirectional motion--- when facing obstacles, appetitive stimuli, or aversive conditions. Across simulated and real-robot trials, the controller consistently avoided critical instability and produced terrain-specific, repeatable locomotion signatures, laying the groundwork for scaling toward robust real-world infrastructure inspection and operation in complex, unstructured environments.
+This work presents the design, simulation, and implementation of a bio-inspired quadruped robotic platform equipped with a hybrid wheel-leg locomotion system and controlled through a neural architecture modeled after basal ganglia mechanisms. The platform integrates sensory modules for environmental perception, arbitration modules for behavioral decision-making, and locomotor modules for gait generation, enabling adaptive responses to diverse stimuli and terrain conditions. Simulation and implementation demonstrate the robot's ability to switch autonomously between locomotion modes ---quadrupedal walking, differential rolling, and omnidirectional motion--- when facing obstacles, appetitive stimuli, or aversive conditions. \revblue{In simulation, an ablation study showed that removing the circuit's lateral inhibition or its STN/STR layers reduced success under stimulus conflict from 100\% to 25\% and 33\%, respectively. Against a priority-rule finite state machine (FSM) baseline under matched conditions, the neural arbitration succeeded in every three-stimulus conflict trial, where the FSM succeeded in none, and reached 85\% success versus 45\% in an inspection task with an initially hidden target.} Across simulated and real-robot trials, the controller consistently avoided critical instability and produced terrain-specific, repeatable locomotion signatures, laying the groundwork for scaling toward robust real-world infrastructure inspection and operation in complex, unstructured environments.
 \end{abstract}
 
 %%Graphical abstract
@@ -92,11 +92,11 @@ This work presents the design, simulation, and implementation of a bio-inspired 
 
 %%Research highlights
 \begin{highlights}
-\item Hybrid wheel-leg quadruped enables adaptive locomotion in complex environments.
-\item Multimodal sensing (camera, LiDAR, IMU) drives context-aware gait selection.
-\item A bio-inspired neural architecture arbitrates behaviors via winner-take-all dynamics.
-\item The controller switches adaptively among rolling, quadrupedal, and omnidirectional modes in response to sensory context.
-\item Results show consistent behavior selection under changing stimuli and environmental conditions.
+\item \revblue{Hybrid wheel-leg quadruped with three gait modes, tested in simulation and hardware}
+\item \revblue{A basal-ganglia winner-take-all circuit arbitrates gaits from camera, LiDAR and IMU}
+\item \revblue{Ablating lateral inhibition or STN/STR cuts simulated conflict success to 25--33\%}
+\item \revblue{In three-stimulus conflict, neural arbitration succeeds in 100\% of trials; FSM in 0\%}
+\item \revblue{Inspection task with an initially hidden target: 85\% success vs.\ 45\% for the FSM}
 \end{highlights}
 
 %% Keywords

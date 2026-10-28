@@ -1,0 +1,17 @@
+% PATCH: R2b-01
+% Reviewer: 2
+% Target section: sections/results.tex (\subsubsection{Basal Ganglia Ablation Study}, new paragraph
+%   appended after the "Taken together, ..." closing paragraph, before
+%   \subsubsection{Response to Variable Topographies})
+% Requirement: Add an explicit statement in the ablation results paragraph discussing the limited
+%   n=12 replicates per condition, and note larger-scale repeated trials as future work.
+% Status: applied
+% Numbers: Fisher's exact boundary (12/12 vs k/12 reaches p<0.05 only for k<=7, i.e. >=5 failures)
+%   and the exact (Clopper-Pearson) 95% CI for 10/12 = [51.6, 97.9]% were computed with
+%   scipy.stats.fisher_exact / binomtest; they are consistent with the manuscript's own reported
+%   p-values (3/12 -> p=0.0003 "<0.001", 4/12 -> p=0.0013 "0.001", 10/12 -> p=0.478).
+% The reviewer's comment says "physical robots", but this ablation is simulation-only (stated in
+%   the subsection's first paragraph); the new text therefore says "simulated trials" and lists a
+%   physical-platform ablation explicitly as part of the future work.
+
+\revblue{The study's sample size supports these two conclusions to different degrees. The first, that removing basal-ganglia mechanisms breaks conflict resolution, is robust to it; the second, that static threshold logic does not match the full circuit, is not yet conclusive. Each combination of variant and scenario comprises $n=12$ simulated trials, enough to detect large effects but with limited statistical power for smaller ones. Against the intact circuit's $12/12$ successes, Fisher's exact test at this sample size reaches $p<0.05$ only when an ablated variant fails in at least five of its twelve trials. The two mechanism-removing ablations fail in eight (\emph{no STN/STR}) and nine (\emph{no lateral inhibition}) of twelve trials, well beyond that boundary, so their collapse is not an artifact of the limited sample. The \emph{threshold only} variant's $83.3\%$ success rate ($10/12$, exact 95\%~CI $[51.6, 97.9]\%$), by contrast, is statistically inconclusive rather than evidence of equivalence with the intact circuit, and its decision-latency ($p=0.014$) and Roll RMS ($p=0.017$) increases, which lie closest to the significance boundary, should be regarded as provisional until replicated. Larger-scale repeated trials are left as future work to tighten these estimates and confirm the smaller effects. These would include more replicates per condition, a wider range of conflict configurations and noise levels, and an equivalent ablation protocol on the physical platform, which the present study does not include.}
