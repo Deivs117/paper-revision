@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-28T16:56:26+00:00",
-  "progressLastCommit": "2026-10-28T11:54:16-05:00",
+  "generatedAt": "2026-10-28T23:19:06+00:00",
+  "progressLastCommit": "2026-10-28T18:12:30-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -999,14 +999,14 @@
       "id": "R2b-01",
       "reviewer": "2",
       "requirement": "Add explicit n=12 sample-size limitation statement in the ablation results paragraph (main text)",
-      "target": "results.tex (ablation results prose, ~line 194)",
+      "target": "results.tex (new closing paragraph of the Basal Ganglia Ablation Study subsubsection, after \"Taken together...\")",
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
         "Sam"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/r2b-01-ablation-sample-size.tex"
     },
     {
       "id": "R2b-02",
@@ -1064,14 +1064,14 @@
       "id": "R2b-06",
       "reviewer": "2",
       "requirement": "Revise graphical abstract and Highlights to reflect R2's new contributions (ablation study, FSM baseline, inspection-task experiments)",
-      "target": "sections/preamble.tex (highlights env), assets/GRAPHICAL_ABSTRACT.pdf (binary replacement, outside sections/)",
-      "dataSource": "—",
+      "target": "sections/preamble.tex (highlights env, all 5 rewritten, each ≤85 chars), assets/GRAPHICAL_ABSTRACT.pdf (regenerated, promoted with --force)",
+      "dataSource": "experiments/R2b-06-graphical-abstract/",
       "category": "Escritura",
       "owner": [
         "Sam"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/r2b-06-graphical-abstract-highlights.tex"
     },
     {
       "id": "R3b-01",
@@ -1137,6 +1137,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/r3b-05-battery-spec-sampling-rule.tex"
+    },
+    {
+      "id": "C-59",
+      "reviewer": "—",
+      "requirement": "Align the Abstract with the round-1 contributions now named in the Highlights and graphical abstract (R2b-06): two new \\revblue{} sentences before the closing sentence, summarizing the simulated ablation (lateral inhibition / STN/STR removal: 100% → 25% / 33% conflict success), the FSM baseline (all vs. none of the three-stimulus conflict trials) and the hidden-target inspection task (85% vs. 45%). Not a reviewer requirement — team-approved follow-up (2026-10-28) so the Abstract does not lag the Highlights. Abstract now ~190 words.",
+      "target": "preamble.tex (abstract env)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sam"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-57-abstract-round1-contributions.tex"
     }
   ]
 }

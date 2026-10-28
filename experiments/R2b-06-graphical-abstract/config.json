@@ -1,0 +1,21 @@
+{
+  "_comment": "Every number below is copied from the manuscript (sections/results.tex) — the figure must never show a value the text doesn't. Source of each block noted alongside.",
+  "original_ga_commit": "c258de1",
+  "original_ga_path": "assets/GRAPHICAL_ABSTRACT.pdf",
+  "title": "Multimodal robot with bio-inspired gait arbitration\nacross simulated and real environments",
+  "figure_size_in": [16.0, 7.2],
+  "dpi": 300,
+  "ablation": {
+    "_source": "results.tex, sssec Basal Ganglia Ablation Study + fig:ablation_success_rate; experiments/R3-02-wta-vs-threshold/output/ablation_stats_summary.csv (scenario=complex, metric=success_rate)",
+    "n_per_variant": 12,
+    "variants": ["Intact circuit", "Threshold only", "No STN/STR", "No lateral\ninhibition"],
+    "success_pct": [100.0, 83.3, 33.3, 25.0],
+    "p_vs_full": [null, "p = 0.478", "p = 0.001", "p < 0.001"]
+  },
+  "fsm": {
+    "_source": "results.tex, tab:fsm_comparison; experiments/R2-02-fsm-baseline/output/table_master_comparison.csv (n_attempted/n_success)",
+    "suites": ["Three-stimulus\nconflict", "Inspection task\n(target hidden\nby obstacles)"],
+    "neural_success": [[15, 15], [17, 20]],
+    "fsm_success": [[0, 15], [9, 20]]
+  }
+}
