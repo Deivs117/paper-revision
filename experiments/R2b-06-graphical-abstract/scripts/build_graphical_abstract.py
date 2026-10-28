@@ -178,8 +178,11 @@ def ablation(fig, cfg, x, w, y0, h):
                 ha="right" if inside else "left", fontsize=13,
                 color="white" if inside else INK, fontweight="bold")
         if p is not None:
-            ax.text(v + 2 if inside else v + 27, yp, p, va="center", ha="left", fontsize=11.5,
-                    color=MUTED)
+            # Inside a long bar the p-value sits left of the % label (white, inside the bar) so it
+            # never runs past the axes/card edge; on short bars it follows the % label outside.
+            ax.text(v - 26 if inside else v + 27, yp, p, va="center",
+                    ha="right" if inside else "left", fontsize=11.5,
+                    color="white" if inside else MUTED)
     ax.set_yticks(ypos, a["variants"])
     ax.set_xlim(0, 100)
     ax.set_xticks([0, 50, 100], ["0", "50", "100"])
