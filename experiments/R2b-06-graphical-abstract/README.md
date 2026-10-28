@@ -18,7 +18,8 @@ experiments. The Highlights half of the same row is a plain `sections/preamble.t
 3. **Ablation study** — success rate under three-stimulus conflict for the intact circuit and the
    three ablations (`fig:ablation_success_rate`), n = 12 per variant, Fisher's exact p vs. intact.
 4. **FSM baseline & inspection** — Neural vs. FSM success rate in the three-stimulus conflict suite
-   and the inspection task (`tab:fsm_comparison`).
+   and the inspection task (`tab:fsm_comparison`); the inspection bar's label states what the task
+   is (target hidden by obstacles) so the experiment is visible as its own contribution.
 
 Both chart panels use a minimal graphical-abstract style: no value axis or ticks, every bar labelled
 directly with its % (plus k/n on the FSM panel), the metric stated in words at the top of the card,

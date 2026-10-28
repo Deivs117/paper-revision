@@ -212,7 +212,7 @@ def baseline_comparison(fig, cfg, x, w, y0, h):
              color=NEURAL, fontweight="bold")
     fig.text(cx + 0.006, top - 0.058, "■ FSM", ha="left", va="top", fontsize=13, color=FSM,
              fontweight="bold")
-    ax = fig.add_axes((x + 0.03, card_y + 0.075, w - 0.06, top - card_y - 0.185), zorder=5)
+    ax = fig.add_axes((x + 0.03, card_y + 0.12, w - 0.06, top - card_y - 0.23), zorder=5)
     xs = np.arange(len(f["suites"]))
     bw = 0.36
     for off, data, color in ((-bw / 2, f["neural_success"], NEURAL), (bw / 2, f["fsm_success"], FSM)):
@@ -227,6 +227,7 @@ def baseline_comparison(fig, cfg, x, w, y0, h):
     ax.set_ylim(0, 125)
     ax.set_yticks([])
     style_chart_axes(ax, baseline="bottom")
+    ax.tick_params(axis="x", labelsize=12.5)
     n_txt = " / ".join(str(d[1]) for d in f["neural_success"])
     body(fig, cx, card_y - 0.012, f"Simulation · n = {n_txt} trials per controller\nmatched trial conditions",
          size=12.5, color=MUTED)

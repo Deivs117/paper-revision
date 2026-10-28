@@ -14,7 +14,7 @@
   },
   "fsm": {
     "_source": "results.tex, tab:fsm_comparison; experiments/R2-02-fsm-baseline/output/table_master_comparison.csv (n_attempted/n_success)",
-    "suites": ["Three-stimulus\nconflict", "Inspection\ntask"],
+    "suites": ["Three-stimulus\nconflict", "Inspection task\n(target hidden\nby obstacles)"],
     "neural_success": [[15, 15], [17, 20]],
     "fsm_success": [[0, 15], [9, 20]]
   }
