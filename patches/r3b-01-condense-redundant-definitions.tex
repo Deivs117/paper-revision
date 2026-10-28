@@ -1,0 +1,45 @@
+% Patch record for R3b-01 -- condense redundant descriptions / repeated metric definitions; point at
+% consolidated tables instead of restating parameters.
+% Applied 2026-10-28 to sections/methodology.tex and sections/results.tex, after a full read of both.
+% New/changed text wrapped in \revblue{}; pure deletions carry no marker.
+%
+% methodology.tex
+%   - LiDAR table notation: sigma_Z no longer re-defined (points at Eq. ring); fixed wrong equation
+%     reference (tau_Z cited Eqs. L0-L4, it governs Eq. ring).
+%   - Deleted the paragraph after the Integrating Network that re-defined tau_L / tau_IRA a third time.
+%   - Basal-ganglia table notation: dropped the second definition of tau_STN/Gpi/Gpe/STR (already in
+%     the where-clause after Eqs. stn-str).
+%   - Locom_NN table notation: removed "(value: 2.0)" / "(value: 10.0)" restating table values; A,
+%     sigma_M, sigma_I now point at Eq. Naka instead of being defined twice.
+%   - Gait-decision where-clause: w points at Table Locom_NN instead of a third definition.
+%   - Deleted the Locom_MLP table-notation paragraph (U_N0/U_N1 already defined after Eqs. Z0V2-Z16V2).
+%   - Physical Platform Construction: three prose paragraphs restating every part of
+%     Table HardwareParams (N20, MG996R, ESP32-S3, PCA9685, L298N, IMU, magnetometer, camera, battery,
+%     PLA, external computer) collapsed into one pointer sentence; rubber-stopper detail kept (not in
+%     the table).
+%   - ServoCompensation: "Section Construction, nominal torque 11 kg.cm" -> Table HardwareParams.
+%   - Added \label{ssec:Gazebo_Simulation} so results can point at the inspection-scenario setup.
+%
+% results.tex
+%   - sssec:noise_robustness_extra: deleted a verbatim duplicate of the camera-dropout paragraph.
+%   - Variable-topography latency paragraph: dropped the closing restatement that T_response = 0.0 s
+%     in all 30 trials and is not plotted (already stated earlier in the paragraph and in both captions).
+%   - FSM comparison: closing paragraph no longer re-explains the success-rate definition given two
+%     paragraphs earlier.
+%   - Reactive Inspection Task: scenario setup (obstacle field, 3 capsules, 20 trials, 90 s, no noise)
+%     now points at ssec:Gazebo_Simulation + table caption instead of restating it; N_ev and
+%     T_acquisition means point at Table inspection_metrics instead of repeating its values; table
+%     footnote no longer repeats the caption's "successful trials only" rule; scatter caption no longer
+%     repeats the prose's interpretation sentence.
+%   - Energy: transition-energy prose points at the figure caption for the power formula and Welch t;
+%     steady-state table caption merges two sentences that both explained the 7.2 V figure.
+%
+% Deliberately NOT touched (owned by other open round-2 rows -- flag to their owners):
+%   - Ablation study (R2b-01 Sam / R3b-02 Deivi): Roll/Pitch RMS percentages and p-values are stated
+%     in full twice, in fig:ablation_combined caption (b) and in the following prose paragraph.
+%   - Noise-isolation caveat (R2b-02 / R3b-03 Diego): repeated in several places, but the reviewer is
+%     explicitly asking for more of it, not less.
+%   - tab:fsm_comparison caption (R2b-03 Diego): repeats the anomalous-Obstacle-trial exclusion also
+%     stated before tab:consolidated_simulation_metrics.
+%   - Possible duplicate parameter in Table Locom_NN: omega_{Gpe_R -> X_4} = 2.0 and omega_GpeR = 2.0
+%     look like the same weight listed twice. Needs a code check before merging rows.

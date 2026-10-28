@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-28T23:12:30+00:00",
-  "progressLastCommit": "2026-10-28T16:24:26-05:00",
+  "generatedAt": "2026-10-28T23:19:06+00:00",
+  "progressLastCommit": "2026-10-28T18:12:30-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -970,6 +970,32 @@
       "patchFile": "patches/c-56-strip-revblue.md"
     },
     {
+      "id": "C-57",
+      "reviewer": "—",
+      "requirement": "Second-pass redundancy/tightening pass after R3b-01, run as a proposer-vs-critic agent debate (intake/pending/second_pass_simplification_debate.md, user-requested 2026-10-28): 30 proposals, 26 survived (12 as proposed, 14 with the critic's modified text), P-24 rejected (C-15's traceable latency numbers kept), 3 deferred to their owners (P-03 Sam/Deivi, P-15 Deivi, P-25 Diego) plus parts of P-01/P-07/P-10/P-14. Applied: reviewer-request clauses removed from manuscript prose outside the ablation study (P-01), conclusions restating paragraph condensed (P-02), notation/template/filler trims in methodology (P-04, P-17 two redundant Naka equations removed, P-20, P-23, P-27, P-28, P-29, P-30), results restatements condensed (P-05..P-09, P-10 filler only, P-11, P-12, P-13, P-14 prose only, P-18, P-19, P-21, P-22, P-26, P-30), intro CPG sentence (P-16). ~1,560 words cut, no number/caveat/citation lost, every figure/table keeps an in-text citation. Inconsistencies S-01..S-10 recorded in the debate doc, NOT fixed here (several need code/data checks).",
+      "target": "introduction.tex, methodology.tex, results.tex, conclusions.tex",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sebas"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-57-second-pass-simplification.tex"
+    },
+    {
+      "id": "C-58",
+      "reviewer": "—",
+      "requirement": "Text-only fixes for 5 of the inconsistencies found by the C-57 debate (intake/pending/second_pass_simplification_debate.md, S-xx): S-01 removed the \"perfect Heaviside step\" claim contradicted two sentences later; S-03 Limitations' \"not assessed under temporary sensory dropout\" now excepts the simulated camera-detection dropout; S-04 conclusions no longer present the 184--534 ms terrain-transition latency as stimulus-conflict latency (cites the ablation's full-circuit 75.9 ms for conflicts, keeps 184--534 ms correctly attributed); S-09 removed two remaining \"embedded hardware\" claims contradicting R2b-04 (methodology BG justification rewritten with the same correctly attributed numbers, C-15 traceability kept; Limitations); S-10 fig:mode_timeline_complex now cited from prose. Still open (need code/data check, see debate doc): S-02, S-05, S-06, S-07; S-08 is Diego's (R2b-03).",
+      "target": "methodology.tex, results.tex, conclusions.tex",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sebas"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-58-text-only-inconsistency-fixes.tex"
+    },
+    {
       "id": "R2b-01",
       "reviewer": "2",
       "requirement": "Add explicit n=12 sample-size limitation statement in the ablation results paragraph (main text)",
@@ -1018,8 +1044,8 @@
       "owner": [
         "Sebas"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/r2b-04-hardware-spec.tex"
     },
     {
       "id": "R2b-05",
@@ -1051,14 +1077,14 @@
       "id": "R3b-01",
       "reviewer": "3",
       "requirement": "Condense remaining redundant descriptions/repeated metric definitions; point at consolidated tables instead of restating",
-      "target": "methodology.tex, results.tex (cross-section, needs scoping read)",
+      "target": "methodology.tex (LiDAR/BG/Locom_NN/Locom_MLP table notation, ssec:Construction, ssec:ServoCompensation), results.tex (sssec:noise_robustness_extra, variable-topography latency prose, FSM closing paragraph, sssec:reactive_inspection, energy prose + table caption)",
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
         "Sebas"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/r3b-01-condense-redundant-definitions.tex"
     },
     {
       "id": "R3b-02",
@@ -1109,8 +1135,8 @@
       "owner": [
         "Sebas"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/r3b-05-battery-spec-sampling-rule.tex"
     },
     {
       "id": "C-59",
