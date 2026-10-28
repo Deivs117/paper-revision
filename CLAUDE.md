@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Revision-tracking + AI-patching layer for manuscript `ROBOT-D-26-00122R2` (*Robotics and Autonomous Systems*),
 currently in round-2 minor revision, deadline **November 4, 2026** (round 1 closed — see README.md §1/§6).
+The reviewers' **verbatim** round-2 comments are in `intake/pending/round2_decision_letter_2026-10-25.md` — read the
+matching item there before patching any `R2b-xx`/`R3b-xx` row; the one-line summaries in README §6.1/`PROGRESS.md` are not enough.
 The manuscript is edited by non-technical co-authors on Overleaf. **All real work
 happens in this repo** — text patching, asset management, compilation. The sibling Overleaf repo clone is
 sync-only. Full spec: **README.md — read it before implementing any script here**, it is the source of truth for
