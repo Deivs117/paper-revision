@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-28T16:54:08+00:00",
-  "progressLastCommit": "2026-10-27T12:48:06-05:00",
+  "generatedAt": "2026-10-28T16:54:16+00:00",
+  "progressLastCommit": "2026-10-28T11:54:08-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -968,6 +968,19 @@
       ],
       "status": "synced-to-overleaf",
       "patchFile": "patches/c-56-strip-revblue.md"
+    },
+    {
+      "id": "C-57",
+      "reviewer": "—",
+      "requirement": "Second-pass redundancy/tightening pass after R3b-01, run as a proposer-vs-critic agent debate (intake/pending/second_pass_simplification_debate.md, user-requested 2026-10-28): 30 proposals, 26 survived (12 as proposed, 14 with the critic's modified text), P-24 rejected (C-15's traceable latency numbers kept), 3 deferred to their owners (P-03 Sam/Deivi, P-15 Deivi, P-25 Diego) plus parts of P-01/P-07/P-10/P-14. Applied: reviewer-request clauses removed from manuscript prose outside the ablation study (P-01), conclusions restating paragraph condensed (P-02), notation/template/filler trims in methodology (P-04, P-17 two redundant Naka equations removed, P-20, P-23, P-27, P-28, P-29, P-30), results restatements condensed (P-05..P-09, P-10 filler only, P-11, P-12, P-13, P-14 prose only, P-18, P-19, P-21, P-22, P-26, P-30), intro CPG sentence (P-16). ~1,560 words cut, no number/caveat/citation lost, every figure/table keeps an in-text citation. Inconsistencies S-01..S-10 recorded in the debate doc, NOT fixed here (several need code/data checks).",
+      "target": "introduction.tex, methodology.tex, results.tex, conclusions.tex",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sebas"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-57-second-pass-simplification.tex"
     },
     {
       "id": "R2b-01",

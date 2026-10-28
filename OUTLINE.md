@@ -209,9 +209,9 @@ by a **Quantitative Performance Analysis (Physical)** subsection and a **Limitat
   to a task-level timeout) — see `patches/r3-04-noise-robustness-evaluation.tex`), multi-stimuli response,
   variable-topography response (stability, ECDF decision-delay, terrain-adaptability phase space),
   and `\subsubsection{Quantitative Stability Analysis of Locomotion Mode Transitions}`
-  (`\label{sssec:transition_stability}`) — this subsection's own text says *"To address the
-  reviewer's request for systematic quantitative metrics on mode-switching behaviour..."*, i.e. it
-  was already written in response to a prior review round. Relevant background for R3-01/R3-02 but
+  (`\label{sssec:transition_stability}`) — written in response to a prior review round (its
+  "To address the reviewer's request..." opener was removed by `C-57`, like every other
+  reviewer-request clause outside the ablation study). Relevant background for R3-01/R3-02 but
   is NOT a basal-ganglia ablation study — it's transition stability metrics (SM, TR indices), a
   different thing.
 - `\subsection{Physical Implementation Results}` — mirrors the simulation structure on hardware
