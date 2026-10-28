@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-27T16:56:40+00:00",
-  "progressLastCommit": "2026-10-27T11:28:36-05:00",
+  "generatedAt": "2026-10-28T16:54:08+00:00",
+  "progressLastCommit": "2026-10-27T12:48:06-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1051,14 +1051,14 @@
       "id": "R3b-01",
       "reviewer": "3",
       "requirement": "Condense remaining redundant descriptions/repeated metric definitions; point at consolidated tables instead of restating",
-      "target": "methodology.tex, results.tex (cross-section, needs scoping read)",
+      "target": "methodology.tex (LiDAR/BG/Locom_NN/Locom_MLP table notation, ssec:Construction, ssec:ServoCompensation), results.tex (sssec:noise_robustness_extra, variable-topography latency prose, FSM closing paragraph, sssec:reactive_inspection, energy prose + table caption)",
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
         "Sebas"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/r3b-01-condense-redundant-definitions.tex"
     },
     {
       "id": "R3b-02",

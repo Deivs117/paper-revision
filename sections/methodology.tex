@@ -27,6 +27,7 @@ This structure enables three degrees of freedom for each limb, maintaining the s
 The robot's body integrates the primary navigation sensor suite, consisting of a LiDAR unit, a camera, and inertial sensors, all essential for fulfilling the assigned tasks. The camera captures visual stimuli from the environment, the LiDAR provides information regarding the presence and position of obstacles, and the inertial sensors supply data on platform stability. Furthermore, the robot’s center of mass is placed at the lower central region of the chassis to ensure greater stability. In that same area, a passive wheel was added to act as an additional support point during rolling locomotion modes.  
 
 \subsection{Gazebo Simulation}
+\label{ssec:Gazebo_Simulation}
 
 Starting from the 3D model of the platform generated in SolidWorks, the design was converted into URDF format for integration into the Gazebo Harmonic simulation environment. After successfully completing the conversion process, the corresponding controllers for the limbs and wheels were developed, and the necessary libraries for sensor simulation were incorporated. 
 
@@ -129,8 +130,8 @@ $W_{A\rightarrow L_4}$ & 1.0 \\ \hline
 \label{table:LiDAR}
 \end{table}
 
-In Table~\ref{table:LiDAR}, the time constants are: $\tau_{Z}$ (s) governs the ring neurons (Equations~\eqref{eq:L0}–\eqref{eq:L4}), $\tau_{L}$ (s) governs the directional integrator neurons ($L_0$–$L_4$); and $\tau_{IRA}$ (s) is the shared time constant of the input ($I_n$), response ($R_n$), and auxiliary ($A_n$) layers.
-The synaptic parameters are: $\sigma_{Z}$ is the dimensionless Gaussian tuning-width parameter; $\omega_{Z\rightarrow L}$ and $\omega_{L\rightarrow L}$ are the unitless weights from the sensory ring to the integrator neurons and within the integrator, respectively. These weights are fixed uniform values derived from the basal-ganglia inspired architecture \citep{sarvestani2013computational}.
+In Table~\ref{table:LiDAR}, the time constants are: $\tau_{Z}$ (s) governs the ring neurons \revblue{(Equation~\eqref{eq:ring})}, $\tau_{L}$ (s) governs the directional integrator neurons ($L_0$–$L_4$); and $\tau_{IRA}$ (s) is the shared time constant of the input ($I_n$), response ($R_n$), and auxiliary ($A_n$) layers.
+The synaptic parameters are: \revblue{$\sigma_{Z}$ is the tuning width defined with Equation~\eqref{eq:ring};} $\omega_{Z\rightarrow L}$ and $\omega_{L\rightarrow L}$ are the unitless weights from the sensory ring to the integrator neurons and within the integrator, respectively. These weights are fixed uniform values derived from the basal-ganglia inspired architecture \citep{sarvestani2013computational}.
 The inter-layer synaptic weight matrices $W_{Z\rightarrow I}$, $W_{I\rightarrow R}$, $W_{R\rightarrow A}$, and $W_{A\rightarrow L_4}$ connect the ring, input, response, auxiliary, and accumulator layers.
 
 The activations of the sensory ring are processed by three integrator layers: input, response, and auxiliary (Figure~\ref{fig:IntLidar}). Cross-connections between the input and response layers encode the direction of the evasive movement, while the backward excitatory projections between the response and auxiliary layers define the intensity of the obstacle-related stimulus. These layers determine the predominance of the evasive action ---information that is stored in the accumulator neuron $L_4$. In the following equations, the subscript $(\cdot)_+$ denotes a rectifying operator (positive-part function): for any scalar $x$, $(x)_+ = \max(x,0)$. This ensures that only nonnegative inputs contribute to the layer dynamics, preventing negative net drive from decreasing the activity through this term. The dynamics of this system are described by differential equations (Equations~\eqref{eq:L0}–\eqref{eq:L4}) shown below. 
@@ -151,8 +152,6 @@ In Equations~\eqref{eq:L0}–\eqref{eq:L4} the subscripts are used to enumerate 
 Likewise, the indices $n$ and $r$ enumerate the neurons in the input, response, and auxiliary integrating layers, so that $I_n$, $R_n$, and $A_n$ represent the activity of the $n$-th neuron in each of these layers. In Equations~\eqref{eq:ResL}–\eqref{eq:AuxL}, each neuron $R_n$ and $A_n$ receives weighted contributions from all other neurons through the synaptic weights $W^{(\mathrm{IR})}_{n,i}$, $W^{(\mathrm{RR})}_{n,j}$, and $W^{(\mathrm{RA})}_{n,j}$, where the indices $i$ and $j$ are used only as summation variables. Finally, in Equation~\eqref{eq:L4} the index $r$ runs over all units $A_n$ to accumulate their activity in neuron $L_4$, which acts as a global integrator of the obstacle-stimulus intensity.
 
 The matrices $W^{(IR)}$, $W^{(RR)}$, and $W^{(RA)}$ denote connectivity weight matrices (binary or fixed patterns) representing fixed structural inter-neuron connectivity in the Integrating Neural Network (see Figure~\ref{fig:IntLidar}), fixed and uniform in the same sense as the ring-to-integrator weights above.
-
-The time constant $\tau_L$ (s) governs the dynamics of the directional tank neurons $L_0$--$L_4$, while $\tau_{IRA}$ (s) is the shared integration time constant of the input ($I_n$), response ($R_n$), and auxiliary ($A_n$) layers (see Table~\ref{table:LiDAR}).
 
 \subsubsection{Basal Ganglia Module}
 \label{sssec:Basal_Ganglia_Module}
@@ -198,8 +197,7 @@ $\omega_{STN\rightarrow STR}$ & 1.0 \\ \hline
 \label{table:Ganglia}
 \end{table}
 
-In Table~\ref{table:Ganglia}: $\tau_{STN}$, $\tau_{Gpi}$, $\tau_{Gpe}$, and $\tau_{STR}$ (s) are the time constants of the subthalamic nucleus, internal globus pallidus, external globus pallidus, and striatum, respectively (Equations~\eqref{eq:stn}--\eqref{eq:str}).
-Each $\omega_{X\rightarrow Y}$ is the unitless synaptic weight of the projection from nucleus $X$ to nucleus $Y$.
+In Table~\ref{table:Ganglia}, \revblue{the time constants are those defined above, and} each $\omega_{X\rightarrow Y}$ is the unitless synaptic weight of the projection from nucleus $X$ to nucleus $Y$.
 
 The architectural framework of the basal ganglia model adopted here is grounded in canonical arbitration circuits widely validated in computational neuroscience for multi-stimulus action selection \citep{Gurney2001a,Gurney2001b,Prescott2006Robot}. Its decentralized winner-take-all dynamics enable low-latency conflict resolution between competing sensory drives. This is evidenced by the near-instantaneous neural decision dispatch measured across experimental trials --- a deterministic $T_{response} = 0.0$~s in simulation and $184$--$534$~ms of neural processing latency across 15 hardware replicates (Section~\ref{sec:results}) --- well within real-time constraints on resource-constrained embedded hardware, without requiring the training cycles or inference infrastructure associated with deep reinforcement learning or model predictive control frameworks, making interpretability and low runtime overhead intrinsic properties of the proposed design.
 
@@ -290,10 +288,9 @@ $\sigma_{I}\ $ & 1.5 \\ \hline
 \end{table}
 
 In Table~\ref{table:Locom_NN}: $\tau$ (s) is the common time constant of the locomotion decision neurons (Equations~\eqref{eq:Z_5}--\eqref{eq:Z_6}); $\omega_{L\rightarrow X}$ is the synaptic amplification weight from the LiDAR integrator to the locomotion neurons; $\theta_{p}$ (deg) is the initial platform heading; and $HI$ is the dimensionless hunting-instinct baseline drive.
-$\omega_{GpeR}$ is a synaptic weight applied to the GPe\_R channel (value: 2.0).
-$w$ denotes a global inhibitory synaptic weight used consistently in locomotion equations (value: 10.0).
+\revblue{$\omega_{GpeR}$ is the synaptic weight applied to the GPe\_R channel, and $w$ is the global inhibitory synaptic weight shared by the locomotion and gait-decision equations.}
 The terrain-instability thresholds are: $U_{\sigma_{az}}$ (m/s$^2$), $U_{Pitch}$ (deg), and $U_{Roll}$ (deg).
-The Naka--Rushton parameters are: $A$ is the saturation amplitude; $Ar$ is the approach-stop threshold for unit $X_{17}$; and $\sigma_{M}$, $\sigma_{I}$ are the half-saturation constants for the mode-selection and IMU pathways, respectively (Equation~\eqref{eq:Naka}).
+\revblue{$Ar$ is the approach-stop threshold for unit $X_{17}$, and $A$, $\sigma_{M}$, $\sigma_{I}$ are the Naka--Rushton parameters defined with Equation~\eqref{eq:Naka} below.}
 
 The inhibition threshold parameter $Ar = 28.0$ was derived analytically using the pinhole camera model based on the focal geometry of the Logitech C270 camera. For an image resolution of $640 \times 480$, the horizontal focal length $f_x$ is approximately $554$ pixels. Assuming a standard inspection target width of $W_{obj} = 10$ cm, and a designated safe stopping distance of $Z = 31$ cm to prevent collisions, the perceived pixel width $w_{px}$ is calculated as $w_{px} = (f_x \cdot W_{obj}) / Z \approx 179$ pixels. Normalizing this value against the total image width ($W_{img} = 640$) yields $(179 / 640) \times 100 \approx 28.0\%$. Thus, $Ar = 28.0$ represents the critical threshold where the target occupies $28\%$ of the horizontal field of view, at which point the inhibitory visual stimulus successfully balances the forward motor excitation, halting the robot at the optimal inspection distance.
 
@@ -358,7 +355,7 @@ The differential equations~\eqref{eq:Z0}–\eqref{eq:Z16} describing the dynamic
 \end{align}
 
 In Equations~\eqref{eq:Z0}–\eqref{eq:Z16}: $\sigma_{az}$ (m/s$^2$) is the standard deviation of the linear acceleration along the $Z$~axis over the current sensing window; $U_{\sigma_{az}}$, $U_{Roll}$, and $U_{Pitch}$ are the corresponding activation thresholds for terrain-instability detection; and $Roll$ and $Pitch$ (deg) are the roll and pitch angles measured by the IMU.
-The neural pathway signals are: $G_{pe,y}$ is the GPe output of the appetitive behavioral channel; $G_{pi,x}$ and $G_{pi,z}$ are the GPi outputs of the obstacle and aversive channels, respectively; and $w$ is a generic unitless inhibitory synaptic weight.
+The neural pathway signals are: $G_{pe,y}$ is the GPe output of the appetitive behavioral channel; $G_{pi,x}$ and $G_{pi,z}$ are the GPi outputs of the obstacle and aversive channels, respectively; and $w$ is \revblue{the inhibitory weight of Table~\ref{table:Locom_NN}}.
 
 To enhance terrain classification and stagnation detection, a Multi-Layer Perceptron (MLP) was integrated into the sensing pipeline \citep{Grajales_Des_2025} (Figure~\ref{fig:MLP}). The MLP does not replace the physical IMU; rather, it processes raw inertial telemetry ---specifically variations in roll, pitch, and the standard deviation of the Z-axis acceleration--- transforming low-level sensor signals into high-level geometric classifications that inform mode transitions. This network includes two hidden layers of 150 and 80 units, respectively. The integration was motivated by the fact that, in rough-terrain tests, direct thresholding of roll, pitch, and $\sigma_{az}$ was not sufficient for the level of repeatability required by the application; training the MLP on real inertial data from different terrains is expected to enable more reliable terrain-state classification than fixed-threshold heuristics.
 
@@ -435,8 +432,6 @@ $U_{N_{1}}$ & 7.8 \\ \hline
 \label{table:Locom_MLP}
 \end{table}
 
-In Table~\ref{table:Locom_MLP}: $U_{N_0}$ and $U_{N_1}$ are the activation thresholds applied to MLP outputs $N_0$ (flat-terrain probability) and $N_1$ (inclined-terrain probability), respectively, used in Equations~\eqref{eq:Z0V2}--\eqref{eq:Z16V2}.
-
 \subsubsection{Perception-Decision Noise-Robustness Evaluation}
 \label{ssec:NoiseRobustnessEval}
 
@@ -469,13 +464,7 @@ To address the reviewer's request for a finite state machine (FSM) baseline unde
 \subsection{Physical Platform Construction and Experimental Setup}
 \label{ssec:Construction}
 
-Based on the design presented in subsection~\ref{ssec:Platform_Design} and in Figure~\ref{fig:robot}, the physical construction of the robot was carried out following the implementation specifications detailed in \citep{Grajales_Des_2025}. The actuation of the limbs was achieved using N20 motors rated at $104$~RPM, responsible for driving the wheels located at the distal end of the tibia. Joint mobility was provided by MG996R servomotors with a nominal torque of $11~\text{kg·cm}$. 
-
-The ESP32-S3 Zero microcontroller was used as the \revblue{onboard control unit}, responsible for sensor acquisition and actuator control. The latter was intermediated by the PCA9685 servo controller and the mini-L298N module, which regulated the speed of the N20 DC motors. \revblue{The neural circuits themselves run on an external computer, as detailed in Section~\ref{ssec:HardwareSpec}.} 
-
-The network inputs were implemented through an MPU-6050 inertial sensor, an HMC5883L magnetometer, and a Logitech C270 camera, used for capturing sensory stimuli. Power was supplied by a 7.2 V, 3300 mAh nickel-metal hydride (NiMH) battery. 
-
-\revblue{All structural components of the limbs and chassis were manufactured by 3D printing in polylactic acid (PLA).} Additionally, a rubber stopper was incorporated at the end of each limb, at the ground contact point, to increase traction during quadrupedal gait. The fully assembled robot is shown in Figure~\ref{fig:robot_real}. 
+Based on the design presented in subsection~\ref{ssec:Platform_Design} and in Figure~\ref{fig:robot}, the physical construction of the robot was carried out following the implementation specifications detailed in \citep{Grajales_Des_2025}. \revblue{Its actuators, sensors, computing platform, structural material, and power supply are consolidated in Table~\ref{table:HardwareParams} (Section~\ref{ssec:HardwareSpec}).} Additionally, a rubber stopper was incorporated at the end of each limb, at the ground contact point, to increase traction during quadrupedal gait. The fully assembled robot is shown in Figure~\ref{fig:robot_real}.
 
 \begin{figure}[t]
     \centering
@@ -553,7 +542,7 @@ To robustly verify the generality of the proposed method, the irregular terrain 
 \subsection{Low-Torque Actuation Compensation Strategies}
 \label{ssec:ServoCompensation}
 
-The MG996R servomotors driving the leg joints (Section~\ref{ssec:Construction}, nominal torque $11~\text{kg·cm}$) are commanded in open loop, with no torque or current feedback at the joint level. Under the sustained load of quadrupedal support and locomotion, this combination is prone to mechanical compliance ---a deviation between the commanded joint angle and the angle physically achieved--- and to abrupt-command-induced instability if the trajectory generator demands more torque than the actuator can deliver instantaneously. Three complementary strategies, implemented directly in the gait-execution firmware, mitigate these effects without requiring closed-loop torque control.
+The MG996R servomotors driving the leg joints (\revblue{Table~\ref{table:HardwareParams}}) are commanded in open loop, with no torque or current feedback at the joint level. Under the sustained load of quadrupedal support and locomotion, this combination is prone to mechanical compliance ---a deviation between the commanded joint angle and the angle physically achieved--- and to abrupt-command-induced instability if the trajectory generator demands more torque than the actuator can deliver instantaneously. Three complementary strategies, implemented directly in the gait-execution firmware, mitigate these effects without requiring closed-loop torque control.
 
 First, gait stability is addressed at the scheduling level rather than through active balance control. The crawl gait described in Section~\ref{ssec:Gait_Decision_Module} advances exactly one leg at a time, following a fixed diagonal sequence (front-left~$\rightarrow$~rear-right~$\rightarrow$~front-right~$\rightarrow$~rear-left); the remaining three legs stay grounded and fixed throughout each swing phase. This is a structural, not a runtime-computed, guarantee, quantitatively confirmed in Section~\ref{sssec:transition_stability} (Table~\ref{tab:crawl_stability}): because only one leg is ever airborne, this bounds the destabilizing consequence of an individual joint's torque deficit to a single, momentarily unsupported limb rather than to the whole platform.
 
