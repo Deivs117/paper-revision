@@ -414,3 +414,9 @@ REJECT: P-24.
 Confirmed: S-01, S-03, S-04, S-05 (Roll), S-06, S-07, S-08, S-09, S-10. Confirmed text conflict whose
 resolution needs a data/code check: S-02 (variable-topography noise level), S-05 Pitch (source of 6.95°),
 S-06 (actual slope mode / driving unit), S-07 (driver of the physical $Var(z)$ spike).
+
+## Resolution (2026-10-28)
+
+Surviving changes applied as `C-57`. Text-only inconsistencies S-01, S-03, S-04, S-09, S-10 fixed as `C-58`.
+Still open: S-02, S-05, S-06, S-07 (need code/data check), S-08 (Diego, R2b-03), plus every item under "Deferred to owners".
+This doc stays in `intake/pending/` until those are resolved.

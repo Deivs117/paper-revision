@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-28T16:54:16+00:00",
-  "progressLastCommit": "2026-10-28T11:54:08-05:00",
+  "generatedAt": "2026-10-28T16:56:26+00:00",
+  "progressLastCommit": "2026-10-28T11:54:16-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -981,6 +981,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-57-second-pass-simplification.tex"
+    },
+    {
+      "id": "C-58",
+      "reviewer": "—",
+      "requirement": "Text-only fixes for 5 of the inconsistencies found by the C-57 debate (intake/pending/second_pass_simplification_debate.md, S-xx): S-01 removed the \"perfect Heaviside step\" claim contradicted two sentences later; S-03 Limitations' \"not assessed under temporary sensory dropout\" now excepts the simulated camera-detection dropout; S-04 conclusions no longer present the 184--534 ms terrain-transition latency as stimulus-conflict latency (cites the ablation's full-circuit 75.9 ms for conflicts, keeps 184--534 ms correctly attributed); S-09 removed two remaining \"embedded hardware\" claims contradicting R2b-04 (methodology BG justification rewritten with the same correctly attributed numbers, C-15 traceability kept; Limitations); S-10 fig:mode_timeline_complex now cited from prose. Still open (need code/data check, see debate doc): S-02, S-05, S-06, S-07; S-08 is Diego's (R2b-03).",
+      "target": "methodology.tex, results.tex, conclusions.tex",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sebas"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-58-text-only-inconsistency-fixes.tex"
     },
     {
       "id": "R2b-01",
