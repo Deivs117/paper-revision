@@ -1168,26 +1168,26 @@ locomotion phase.
 
 \begin{table}[htbp]
 \centering
-\caption{FSM vs.\ basal-ganglia (Neural) gait arbitration, all seven simulated suites. Complex/FSM has no completed trials (0\% success), so time/Roll RMS are undefined ($-$). One Obstacle/Neural trial with an anomalous roll reading (physically implausible per-timestep values, not a measurement of stable attitude) was excluded from the Roll RMS/task-time statistics below, consistent with Table~\ref{tab:consolidated_simulation_metrics}; its own success/failure verdict is unaffected.}
+\caption{FSM vs.\ basal-ganglia (Neural) gait arbitration, all seven simulated suites. Complex/FSM has no completed trials (0\% success), so time/Roll RMS are undefined ($-$). One Obstacle/Neural trial with an anomalous roll reading (physically implausible per-timestep values, not a measurement of stable attitude) was excluded from the Roll RMS/task-time statistics below, consistent with Table~\ref{tab:consolidated_simulation_metrics}; its own success/failure verdict is unaffected. \revblue{$N$ is the number of independent missions behind each success rate (Appetitive, Aversive, Obstacle, Complex; a mission that first times out is retried until it completes) or of individual attempts (Inspection, Rugged Terrain, Inclined Slope); for Rugged Terrain and Inclined Slope the Neural controller was evaluated only without perturbation, hence its small $N$.}}
 \label{tab:fsm_comparison}
-\begin{tabularx}{\textwidth}{l l >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
+\begin{tabularx}{\textwidth}{l l >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
 \toprule
-\textbf{Family} & \textbf{System} & \textbf{SR (\%)} & \textbf{Task Time (s)} & \textbf{Roll RMS (deg)} & \textbf{$\lambda$} \\
+\textbf{Family} & \textbf{System} & \revblue{\textbf{N}} & \textbf{SR (\%)} & \textbf{Task Time (s)} & \textbf{Roll RMS (deg)} & \textbf{$\lambda$} \\
 \midrule
-Appetitive & Neural & 100.0  & 38.52 $\pm$ 1.20  & 0.536 $\pm$ 0.009 & 0.990 \\
-Appetitive & FSM    & 100.0 & 38.96 $\pm$ 1.77  & 0.525 $\pm$ 0.003 & 0.952 \\
-Aversive   & Neural & 100.0  & 9.98 $\pm$ 2.07   & 1.357 $\pm$ 0.106 & 0.925 \\
-Aversive   & FSM    & 100.0 & 8.32 $\pm$ 1.08   & 1.825 $\pm$ 0.112 & 0.731 \\
-Obstacle   & Neural & 100.0 & 15.72 $\pm$ 2.49  & 1.547 $\pm$ 0.154 & 0.945 \\
-Obstacle   & FSM    & 100.0 & 12.44 $\pm$ 1.09  & 1.499 $\pm$ 0.089 & 0.811 \\
-Complex    & Neural & 100.0 & 24.96 $\pm$ 10.36 & 1.034 $\pm$ 0.349 & 0.976 \\
-Complex    & FSM    & 0.0   & --                & --                & 0.942 \\
-Inspection & Neural & 85.0  & 51.61 $\pm$ 11.96 & 1.302 $\pm$ 0.078 & 1.000 \\
-Inspection & FSM    & 45.0  & 55.13 $\pm$ 14.25 & 1.270 $\pm$ 0.136 & 0.985 \\
-Rugged Terrain & Neural & 50.0  & 54.94 $\pm$ 2.72  & 1.827 $\pm$ 0.033 & 0.909 \\
-Rugged Terrain & FSM    & 60.0  & 55.42 $\pm$ 8.56  & 1.739 $\pm$ 0.140 & 0.891 \\
-Inclined Slope & Neural & 100.0 & 77.02 $\pm$ 1.26  & 6.751 $\pm$ 7.160 & 0.996 \\
-Inclined Slope & FSM    & 71.4  & 64.53 $\pm$ 2.79  & 5.430 $\pm$ 8.209 & 0.993 \\
+Appetitive & Neural & \revblue{15} & 100.0  & 38.52 $\pm$ 1.20  & 0.536 $\pm$ 0.009 & 0.990 \\
+Appetitive & FSM    & \revblue{15} & 100.0 & 38.96 $\pm$ 1.77  & 0.525 $\pm$ 0.003 & 0.952 \\
+Aversive   & Neural & \revblue{15} & 100.0  & 9.98 $\pm$ 2.07   & 1.357 $\pm$ 0.106 & 0.925 \\
+Aversive   & FSM    & \revblue{15} & 100.0 & 8.32 $\pm$ 1.08   & 1.825 $\pm$ 0.112 & 0.731 \\
+Obstacle   & Neural & \revblue{15} & 100.0 & 15.72 $\pm$ 2.49  & 1.547 $\pm$ 0.154 & 0.945 \\
+Obstacle   & FSM    & \revblue{15} & 100.0 & 12.44 $\pm$ 1.09  & 1.499 $\pm$ 0.089 & 0.811 \\
+Complex    & Neural & \revblue{15} & 100.0 & 24.96 $\pm$ 10.36 & 1.034 $\pm$ 0.349 & 0.976 \\
+Complex    & FSM    & \revblue{15} & 0.0   & --                & --                & 0.942 \\
+Inspection & Neural & \revblue{20} & 85.0  & 51.61 $\pm$ 11.96 & 1.302 $\pm$ 0.078 & 1.000 \\
+Inspection & FSM    & \revblue{20} & 45.0  & 55.13 $\pm$ 14.25 & 1.270 $\pm$ 0.136 & 0.985 \\
+Rugged Terrain & Neural & \revblue{6} & 50.0  & 54.94 $\pm$ 2.72  & 1.827 $\pm$ 0.033 & 0.909 \\
+Rugged Terrain & FSM    & \revblue{25} & 60.0  & 55.42 $\pm$ 8.56  & 1.739 $\pm$ 0.140 & 0.891 \\
+Inclined Slope & Neural & \revblue{3} & 100.0 & 77.02 $\pm$ 1.26  & 6.751 $\pm$ 7.160 & 0.996 \\
+Inclined Slope & FSM    & \revblue{21} & 71.4  & 64.53 $\pm$ 2.79  & 5.430 $\pm$ 8.209 & 0.993 \\
 \bottomrule
 \end{tabularx}
 \end{table}
