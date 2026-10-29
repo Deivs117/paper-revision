@@ -34,9 +34,14 @@ Figures in `sections/results.tex` that show measured/simulated data and whose ca
 - Simulation: `experiments/simulation/<familia>/` (one folder per trial; counts per family),
   `experiments/simulation/experiments_config.yaml`, and `experiments/R2-02-fsm-baseline/output/table_master_comparison.csv`
   (n_attempted / n_success; mission vs attempt, see the `tab:fsm_comparison` caption).
-- Physical: `experiments/real/MANIFEST.md` / `manifest.json` have N per scenario: Appetitive 4 (`StimuliB`), Aversive 3
-  (`StimuliR`), Obstacle 3 (`StimuliG`), Complex 3 (`MultiRGB`; `MultiRB` is DISCARDED, never count it),
+- Physical: `experiments/real/MANIFEST.md` / `manifest.json` list folders per scenario: `StimuliB` (Appetitive) t01..t04,
+  `StimuliR` (Aversive) 3, `StimuliG` (Obstacle) 3, `MultiRGB` (Complex) 3 (`MultiRB` is DISCARDED, never count it),
   pitch-latency test 25 trials, morphological energy 16+19 transitions (already in its caption).
+  **CONFLICT TO RESOLVE, DO NOT PICK ONE:** the manuscript already says "three hardware replicates" for the Appetitive
+  physical figure (`results.tex` ~l.875/894), but the repo has FOUR Appetitive folders (t01..t04, all "usable"). Keep the
+  published "three" and list this in your PR description for the author to confirm (was t04 excluded on purpose?).
+- **Several physical captions already state their N** ("three hardware replicates" in the 4 `*_real_compound` captions,
+  ~l.875–971). Read each caption before editing; do not duplicate or contradict it. A `grep` for `n=`/`N=` misses them.
 - Inspection: `experiments/R3-05-inspection/` (data is versioned there); noise robustness and ablation: committed
   `output/` CSVs under `experiments/R3-04-noise-robustness/` and `experiments/R3-02-wta-vs-threshold/`.
   (Their raw `data/` folders are `.gitignore`d; you do not need them — the committed summaries and the numbers
