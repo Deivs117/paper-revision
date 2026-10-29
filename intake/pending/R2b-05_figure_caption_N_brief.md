@@ -1,5 +1,8 @@
 # R2b-05 — trial count N in every experimental figure caption (owner: Sam, reassigned from Deivi 2026-10-28)
 
+**DEADLINE: Thursday 2026-10-29 (end of day), merged into `main`.** R3b-04 (labeling sim vs physical in the same captions) is
+blocked until this lands, and the Overleaf push must happen well before the 2026-11-04 deadline.
+
 Self-contained brief: every number needed is in this repo (no author-private files, no `.gitignore`d data).
 Read first: `OUTLINE.md`, `CLAUDE.md`, `intake/pending/round2_decision_letter_2026-10-25.md` (Reviewer 2, item 5:
 "every experimental figure shows the number of trials N directly inside its caption, not only mentioned inside
