@@ -320,9 +320,9 @@ where $x$ is the net input to the neuron; $x_+ = \max(x,0)$ is the rectified inp
 \tau \frac{dz_0}{dt} &= -z_0 + f_{Imu}(\sigma_{az} - U_{\sigma_{az}})
 \label{eq:Z0}
 \\
-\tau \frac{dz_1}{dt} &= -z_1 +  f_{Imu}( Roll - U_{Roll})
+\tau \frac{dz_1}{dt} &= -z_1 +  f_{Imu}( \revblue{Pitch - U_{Pitch}})
 \\
-\tau \frac{dz_2}{dt} &= -z_2 +  f_{Imu}( Pitch - U_{Pitch})
+\tau \frac{dz_2}{dt} &= -z_2 +  f_{Imu}( \revblue{Roll - U_{Roll}})
 \\
 \tau \frac{dz_{14}}{dt} &= -z_{14} +  f_{Mode}(100 G_{pe,y} - w G_{pi,x}  - w G_{pi,z} - w z_{15} - w z_{16})
 \\
