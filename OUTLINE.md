@@ -44,6 +44,13 @@ by reading each target file in full):
   variant detail (see the full caption text) — verify what's still missing vs. the reviewer's ask
   (brief explanation of each of the 4 variants specifically in the caption) before treating as a
   from-scratch rewrite.
+- **R2b-02 + R3b-03 applied (2026-10-29)**: `results.tex`, 4 spots, all `\revblue{}` — the
+  joint-injection + IMU-drift-only (no white noise) caveat now sits in the `Appetitive Targeting`
+  paragraph right after `fig:noise_robustness_grid` (scoped to all four scenarios of that figure), in
+  the opening paragraph of `sssec:noise_robustness_extra`, and as an `Experimental limitation:`
+  sentence in the captions of both `fig:noise_robustness_grid` and `fig:noise_robustness_extra_combined`.
+  Methods/Limitations already had it and were left alone; the LiDAR-arbitration caveat is unchanged.
+  Still open for this owner: `intake/pending/second_pass_simplification_debate.md` P-10 and P-25.
 - **R2b-02** (noise-isolation caveat in main text) / **R3b-03** (same caveat in the figure caption) —
   `results.tex`'s `sssec:noise_robustness_extra` (already has a caveat in `ssec:Limitations` per the
   R3-04/round-1 work — these two new items ask for it surfaced earlier: main text for R2b-02, the
