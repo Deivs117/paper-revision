@@ -1,0 +1,12 @@
+% R2b-05 (partial) -- per-row N in tab:fsm_comparison (sections/results.tex). Audit copy; the live file is
+% the source of truth. Closes the traceability gap found in the second review
+% (intake/pending/R3b-01_second_review_2026-10-28.md, item 15): the Graphical Abstract's 15/15, 0/15, 17/20
+% and 9/20 were correct but the table never printed its denominators.
+% Values: experiments/R2-02-fsm-baseline/output/table_master_comparison.csv (n_attempted / n_success).
+%   Appetitive/Aversive/Obstacle/Complex: N=15 missions per controller (mission-level SR; Neural needed 19
+%   and 17 attempts for Appetitive/Aversive, which is why the CSV's per-attempt SR reads 78.9/88.2).
+%   Inspection: N=20 per controller (17/20 Neural, 9/20 FSM).
+%   Rugged Terrain: Neural 6, FSM 25. Inclined Slope: Neural 3, FSM 21 (per attempt; the CSV note says
+%   Neural was restricted to the noise-free condition, the only one available).
+% NOTE for the author: Rugged/Inclined Neural rows rest on N=6 and N=3 -- now visible to the reviewer.
+% Added: column N (header + 14 cells) and one caption sentence defining N, all inside \revblue{}.

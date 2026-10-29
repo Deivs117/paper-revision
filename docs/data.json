@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-28T23:19:58+00:00",
-  "progressLastCommit": "2026-10-28T18:12:15-05:00",
+  "generatedAt": "2026-10-29T00:10:07+00:00",
+  "progressLastCommit": "2026-10-28T19:09:40-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1051,7 +1051,7 @@
       "id": "R2b-05",
       "reviewer": "2",
       "requirement": "Every experimental figure's caption must show trial count N directly, not only in main-text prose",
-      "target": "results.tex (all figures and every subfigure caption — the ablation subfigures (a)/(b) lacked N until R3b-02), methodology.tex (any figures)",
+      "target": "[partial 2026-10-28: tab:fsm_comparison now has a per-row N column — patches/r2b-05-fsm-table-n.tex; still open: fig:mode_timeline_inspection and the rest of the figure/subfigure captions] results.tex (all figures and every subfigure caption — the ablation subfigures (a)/(b) lacked N until R3b-02), methodology.tex (any figures)",
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
@@ -1150,6 +1150,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-57-abstract-round1-contributions.tex"
+    },
+    {
+      "id": "C-60",
+      "reviewer": "—",
+      "requirement": "Trim the ablation prose that duplicates the figure captions (R3b-01 second pass, intake/pending/C-60_ablation_prose_trim_brief.md): results.tex success-rate and attitude paragraphs repeat numbers already in the umbrella/sub-captions; cut the prose, keep the captions (R3b-02, R2b-05). Delegated by the author 2026-10-28.",
+      "target": "results.tex (Basal Ganglia Ablation Study, ~l.190–219)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sam"
+      ],
+      "status": "pending",
+      "patchFile": "—"
     }
   ]
 }
