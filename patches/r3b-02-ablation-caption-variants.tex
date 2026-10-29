@@ -1,0 +1,15 @@
+% R3b-02 -- Ablation-study figure caption: brief explanation of the four circuit variants + sample size.
+% Audit copy of the change applied to sections/results.tex (fig:ablation_combined caption). The live
+% file is the source of truth -- this is a record. Sample size (n=12 trials/variant) was already in
+% the caption; only the variant definitions were missing. Wording condensed from methodology.tex's
+% ablation-study paragraph so the figure is self-explanatory.
+\revblue{The four variants are: \emph{intact circuit} (control); \emph{no lateral inhibition} (cross-channel inhibitory terms zeroed); \emph{no STN/STR} (STN and STR layers removed, stimulus routed directly into GPe/GPi); and \emph{threshold only} (circuit replaced by a static fixed-priority threshold over the raw stimulus).}
+
+% Follow-up (same row), after reading the verbatim letter (intake/pending/round2_decision_letter_2026-10-25.md):
+% Reviewer 3 item 2 says "The captions of ablation study figures lack essential experimental information"
+% -- plural. The two ablation PNGs are the two subfigures; the umbrella caption alone left them bare, and
+% fig_ablation_complex_stability.png (b) shows neither n nor what its error bars are (the PNG has no n in
+% its title, unlike (a)). Subfigure captions now self-contained (error bars = 95% CI of the mean, verified
+% in experiments/R3-02-wta-vs-threshold/scripts/plot_ablation.py):
+%   (a) \revblue{ under three-stimulus conflict ($n=12$ trials/variant; Fisher's exact $p$ vs.\ the intact circuit).}
+%   (b) \revblue{: mean per variant, error bars show the 95\% confidence interval ($n=12$ trials/variant; Mann--Whitney $p$ vs.\ the intact circuit).}

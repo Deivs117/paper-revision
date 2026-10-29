@@ -352,6 +352,8 @@ The `R2-xx`/`R3-xx` IDs are fixed at the outset and never renumbered (they're re
 
 #### 6.1 Round 2 — `R2b-xx` / `R3b-xx` (current, open)
 
+**Source of truth: `intake/pending/round2_decision_letter_2026-10-25.md` — the reviewers' verbatim text.** The "Requirement (short)" column below is only a summary; before patching any `R2b-xx`/`R3b-xx` row, read the matching numbered item in that letter and check the patch against its literal wording (e.g. R3b-02 says "captions", plural: every subfigure caption counts, not just the umbrella one). Keep it in `intake/pending/` until round 2 closes.
+
 **Do not confuse these with the round-1 `R2-xx`/`R3-xx` table above — same two reviewers, a later and separate decision letter, fixed list for this round, same "do not renumber" rule:**
 
 | ID | Reviewer | Requirement (short) |
