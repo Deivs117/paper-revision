@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-30T03:03:27+00:00",
-  "progressLastCommit": "2026-10-29T07:49:15-05:00",
+  "generatedAt": "2026-10-30T04:06:31+00:00",
+  "progressLastCommit": "2026-10-29T22:03:27-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1176,6 +1176,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-61-code-checked-inconsistency-fixes.tex"
+    },
+    {
+      "id": "C-63",
+      "reviewer": "—",
+      "requirement": "Fix tab:terrain_sequence rows 1--3 to match the physical run (author-described trajectory + frames 1--4): quadrupedal at the ramp entry, switch to Differential Rolling during the ascent (incline too steep), rolling sustained on the plane; removes the old row-2 trigger (std-dev drop on a flat elevated segment). Resolves the open item of C-61 (table vs fig:FourPanelLatencies prose). Pitch trigger inferred from the slope test, to be confirmed against code/logs.",
+      "target": "results.tex (tab:terrain_sequence)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-63-terrain-sequence-table.tex"
     },
     {
       "id": "C-62",

@@ -1,0 +1,14 @@
+% Patch record for C-63 -- fix tab:terrain_sequence (results.tex) rows 1--3 so the table matches the physical run.
+% Applied 2026-10-30. Source of truth: trajectory described by the author (Deivi) + frames Prueba_Terreno_Parte_1..4.
+% Course: ascending ramp -> horizontal plane -> descending ramp -> rough (Perlin) terrain. The robot starts quadrupedal
+% and switches to differential rolling DURING the ascent (incline too steep to climb quadrupedally), stays rolling on
+% the plane and descent; stagnation on the rough terrain (frames 5--6) is unchanged.
+% Old row 2 trigger ("drop in vertical-IMU acceleration std. dev." at a flat elevated segment) removed: the switch no
+% longer happens on the plane. The pitch trigger is inferred from the slope test (C-61 S-06: X1 -> X16) -- to be
+% confirmed against the code/logs of this 15-trial course. fig:FourPanelLatencies prose already said this; untouched.
+% Still wording only in the intro sentence: "horizontal elevated plane" (l.803) not changed.
+%
+% Rows 1--3 of tab:terrain_sequence, new text:
+% 1 & \revblue{Ramp entry (start)} & Quadrupedal Walking & \revblue{Default gait at the start; static stability and traction priority} \\
+% 2 & \revblue{Double-ramp ascent} & \revblue{Quadrupedal $\rightarrow$ Differential Rolling} & \revblue{Incline too steep for the quadrupedal gait: pitch exceeds the threshold, suppressing quadrupedal salience and disinhibiting the rolling channel} \\
+% 3 & \revblue{Horizontal plane (top of the ramp)} & Differential Rolling (sustained) & Energy-conservative wheeled traversal; rolling channel remains stable \\
