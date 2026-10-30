@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-30T04:32:35+00:00",
-  "progressLastCommit": "2026-10-29T23:18:53-05:00",
+  "generatedAt": "2026-10-30T13:06:57+00:00",
+  "progressLastCommit": "2026-10-29T23:32:35-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1206,15 +1206,15 @@
     {
       "id": "C-64",
       "reviewer": "—",
-      "requirement": "Sebas -- R3b-01 second pass (follow-up row; R3b-01 itself stays applied). Do the points 1--13 under \"For Sebas\" in intake/pending/R3b-01_second_review_2026-10-28.md. Some may already be covered by C-57/C-58/C-61 (point 12 is wording-only and was resolved by C-58): check each against current main, skip the done ones and list what you skipped in the patch record. Point 1 (duplicate ω_GpeR row in Table Locom_NN) must be confirmed in PETER_SIMULATION (red_neuronal.py) before deleting anything. Rules: cut the PROSE, never a caption; do not touch the joint-noise caveat, n=12, N in captions. Due: not set (hard stop for the round 2026-11-04).",
+      "requirement": "Sebas -- R3b-01 second pass (follow-up row; R3b-01 itself stays applied). Do the points 1--13 under \"For Sebas\" in intake/pending/R3b-01_second_review_2026-10-28.md. Some may already be covered by C-57/C-58/C-61 (point 12 is wording-only and was resolved by C-58): check each against current main, skip the done ones and list what you skipped in the patch record. Point 1 (duplicate ω_GpeR row in Table Locom_NN) must be confirmed in PETER_SIMULATION (red_neuronal.py) before deleting anything. Rules: cut the PROSE, never a caption; do not touch the joint-noise caveat, n=12, N in captions. Due: not set (hard stop for the round 2026-11-04). Status 2026-10-30: points 2--8, 11, 12 applied; 9 moved to C-66; 1 done by assumption (duplicate ω_GpeR row merged into ω_{Gpe_R→X_4}; PETER_SIMULATION not accessible, red_neuronal.py still to confirm); 10, 13 deliberately not done (see patch record).",
       "target": "methodology.tex, results.tex, conclusions.tex (as listed in the doc)",
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
         "Sebas"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "drafted",
+      "patchFile": "patches/c-64-r3b01-second-pass.tex"
     },
     {
       "id": "C-65",

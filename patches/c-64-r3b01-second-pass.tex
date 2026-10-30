@@ -1,0 +1,21 @@
+% Patch record for C-64 -- R3b-01 second pass (intake/pending/R3b-01_second_review_2026-10-28.md, "For Sebas" 1--13).
+% Applied 2026-10-30 on branch sebas-c-64. Prose trimmed, captions untouched; joint-noise caveat, n=12, N in captions untouched.
+%
+% DONE
+% 2  methodology rationale paragraph: dropped the numeric values (160.0, 2.0, 1.0, 10.0), kept the why.
+% 3  HI: definition kept only at the equation; removed from the Locom_NN table note; rationale now says what HI does, no value.
+% 4  methodology: sensor roles re-stated at the LiDAR-ring paragraph removed; stimulus->mode arrows in the gait-decision
+%    paragraph removed; inspection-scenario trial count/timeout/noise replaced by a pointer to the sampling rule of tab:inspection_metrics.
+% 5  results: d_final numbers removed from the inspection-pattern prose (kept in the fig:inspection_dfinal_scatter caption).
+% 6  results: "Across all 30 trials the ±1σ envelope never crossed TR = 1.0" removed (caption of fig:stability_profile says it).
+% 7  results: 13.3%, ~0.6 s and 0.9--1.8 ms removed from the T_switch prose (kept in the fig:decision_delay caption).
+% 8  results: "8 tipovers and 4 crashes out of 27" in the prose now points to the caption of fig:noise_robustness_extra_combined.
+% 11 conclusions: paragraph 2 no longer names L_4/X_13; sigma_az dropped from paragraph 4 (neither appears in results).
+% 12 conclusions + methodology: "184--534 ms" reworded as two means (184 ms quad->rolling, 534 ms rolling->quad), per fig:FourPanelLatencies.
+%
+% SKIPPED / NOT DONE
+% 1  Duplicate omega_GpeR row: DONE under an assumption (PETER_SIMULATION not accessible, red_neuronal.py NOT checked). omega_GpeR and omega_{Gpe_R->X_4} are both 2.0 and eq. z4 used only omega_GpeR, so they were treated as one parameter: row omega_GpeR deleted, eq. z4 + the two sentences that cited it now use omega_{Gpe_R->X_4}. TO CONFIRM in red_neuronal.py.
+% 4  sigma_az at l.68 (prose, no symbol) kept: the symbol is defined once at the Gpe/IMU equations.
+% 9  "every retained trial succeeded at all five levels" x4: moved to C-66 (Diego, touches the R2b-02 caveat).
+% 10 11/20 and 93--99% (inspection FSM): kept; the 93--99% figure exists only in the prose, the caption says "nearly the entire duration".
+% 13 Contribution list vs Introduction, limitations/future-work overlap: not done (medium/low, subjective); needs an author decision.
