@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-29T00:19:15+00:00",
-  "progressLastCommit": "2026-10-28T19:10:07-05:00",
+  "generatedAt": "2026-10-30T03:01:54+00:00",
+  "progressLastCommit": "2026-10-29T01:20:12+01:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1051,11 +1051,11 @@
       "id": "R2b-05",
       "reviewer": "2",
       "requirement": "Every experimental figure's caption must show trial count N directly, not only in main-text prose",
-      "target": "[partial 2026-10-28: tab:fsm_comparison now has a per-row N column — patches/r2b-05-fsm-table-n.tex; still open: fig:mode_timeline_inspection and the rest of the figure/subfigure captions] results.tex (all figures and every subfigure caption — the ablation subfigures (a)/(b) lacked N until R3b-02), methodology.tex (any figures)",
+      "target": "[due Thu 2026-10-29] [reassigned Deivi → Sam 2026-10-28, brief: intake/pending/R2b-05_figure_caption_N_brief.md] [partial 2026-10-28: tab:fsm_comparison now has a per-row N column — patches/r2b-05-fsm-table-n.tex; still open: fig:mode_timeline_inspection and the rest of the figure/subfigure captions] results.tex (all figures and every subfigure caption — the ablation subfigures (a)/(b) lacked N until R3b-02), methodology.tex (any figures)",
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
-        "Deivi"
+        "Sam"
       ],
       "status": "pending",
       "patchFile": "—"
