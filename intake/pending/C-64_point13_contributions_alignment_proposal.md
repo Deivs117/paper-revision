@@ -1,6 +1,6 @@
 # C-64 point 13 -- proposal: align Conclusions' contributions with the Introduction (NOT applied)
 
-Source: `R3b-01_second_review_2026-10-28.md`, item 13. Status: proposal for author decision; no `sections/` file touched.
+Status: option A approved by the author 2026-10-30 and APPLIED to `conclusions.tex`; energy claim limited to the measured transition energy.
 
 ## The mismatch
 
