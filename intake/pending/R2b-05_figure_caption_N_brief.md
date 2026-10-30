@@ -1,6 +1,6 @@
 # R2b-05 — trial count N in every experimental figure caption (owner: Sam, reassigned from Deivi 2026-10-28)
 
-**DEADLINE: Thursday 2026-10-29 (end of day), merged into `main`.** R3b-04 (labeling sim vs physical in the same captions) is
+**DEADLINE: Friday 2026-10-30 (end of day), merged into `main`** (moved from Thursday 2026-10-29 by the author). R3b-04 (labeling sim vs physical in the same captions) is
 blocked until this lands, and the Overleaf push must happen well before the 2026-11-04 deadline.
 
 Self-contained brief: every number needed is in this repo (no author-private files, no `.gitignore`d data).
