@@ -1497,9 +1497,9 @@ To further consolidate the physical validation under complex, multi-section topo
 \toprule
 \textbf{Frame} & \textbf{Terrain segment} & \textbf{Mode} & \textbf{Trigger / mechanism} \\
 \midrule
-1 & Double-ramp ascent & Quadrupedal Walking & Static stability \& traction priority; elevated support polygon keeps CoM within bound during climb \\
-2 & Transition to flat elevated segment & $\rightarrow$ Differential Rolling & MLP-detected drop in vertical-IMU acceleration std.\ dev.\ below threshold suppresses quadrupedal salience, disinhibits rolling channel \\
-3 & Horizontal elevated plane & Differential Rolling (sustained) & Energy-conservative wheeled traversal; rolling channel remains stable \\
+1 & \revblue{Ramp entry (start)} & Quadrupedal Walking & \revblue{Default gait at the start; static stability and traction priority} \\
+2 & \revblue{Double-ramp ascent} & \revblue{Quadrupedal $\rightarrow$ Differential Rolling} & \revblue{Incline too steep for the quadrupedal gait: pitch exceeds the threshold, suppressing quadrupedal salience and disinhibiting the rolling channel} \\
+3 & \revblue{Horizontal plane (top of the ramp)} & Differential Rolling (sustained) & Energy-conservative wheeled traversal; rolling channel remains stable \\
 4 & Controlled ramp descent & Differential Rolling (sustained) & Pitch disturbance stays below quadrupedal re-engagement threshold ($\approx 5^{\circ}$) \\
 5 & Perlin-noise rough terrain & Rolling $\rightarrow$ Stagnation & Wheels lose traction on high-variance surface; MLP stagnation channel triggers sustained signal \\
 6 & Rough terrain (recovery) & $\rightarrow$ Quadrupedal Walking & Stagnation triggers reactive disinhibition of quadrupedal channel; limbs redeploy, restoring support polygon \\
