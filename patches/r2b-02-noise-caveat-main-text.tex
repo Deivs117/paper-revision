@@ -1,0 +1,42 @@
+% PATCH: R2b-02
+% Reviewer: 2
+% Target section: sections/results.tex (two places in Simulation Results: the "Appetitive Targeting"
+%   paragraph of Quantitative Validation: Single-Stimuli Simulation Performance, right after
+%   fig:noise_robustness_grid; and the opening paragraph of \subsubsection{Combined-Perturbation
+%   Robustness...}, \label{sssec:noise_robustness_extra})
+% Requirement: Note in the main-text results section (not only in Limitations) that the
+%   noise-robustness test injects IMU drift + LiDAR noise + camera illumination distortion jointly,
+%   never isolated per sensor, and that IMU drift (not IMU white noise) is what is tested. Letter,
+%   Reviewer 2 item 2: "Readers should be immediately aware when reading the noise-robustness figures."
+% Status: applied
+%
+% Notes
+% - Both facts were already stated in methodology.tex (ssec:NoiseRobustnessEval) and in the Limitations
+%   subsection (ssec:Limitations). Neither was touched. What was missing was the same statement where
+%   the figures are first discussed in Results: fig:noise_robustness_grid had it in one sentence
+%   (joint injection only, no IMU drift-vs-white-noise), and fig:noise_robustness_extra_combined had
+%   nothing in the prose around it.
+% - The Appetitive Targeting paragraph is the first paragraph that cites fig:noise_robustness_grid, and
+%   the figure covers all four scenarios, so the new sentence says so explicitly rather than repeating
+%   the caveat in the Aversive/Obstacle/Complex paragraphs (that would be four consecutive restatements,
+%   against R3b-01). The caption of the same figure carries the note again (R3b-03).
+% - The IMU white-noise wording follows methodology.tex ("which the simulated sensor model also
+%   implements but which was held fixed at zero across all five levels") so the three places agree.
+% - This is NOT the LiDAR-to-arbitration caveat (LiDAR noise reaches the reactive evasion pathway but
+%   not the basal-ganglia competition; see the last paragraph of sssec:noise_robustness_extra and
+%   OUTLINE.md "Known cross-references"). Different, more specific claim; left as it was.
+% - Source of the wording: a reviewer-response draft written from the compiled PDF (no LaTeX source).
+%   Adapted here: numbers replaced with \ref{}, no hardcoded Section/Figure numbers, and wording
+%   tightened (joint-injection and "cannot be attributed" said once, not twice).
+
+% --- 1. Appetitive Targeting paragraph: last sentence replaced (previously "This robustness is evaluated
+%        under the combined perturbation --- IMU drift, LiDAR noise, and illumination distortion applied
+%        jointly --- not against any single sensor's contribution in isolation.") ---
+
+\revblue{This robustness is evaluated under the combined perturbation --- IMU drift, LiDAR noise, and illumination distortion injected jointly at every non-zero severity level --- rather than against any single sensor's contribution in isolation, so the trends in Figure~\ref{fig:noise_robustness_grid}, across all four scenarios, cannot be attributed to any single sensing modality. Moreover, the IMU channel is perturbed only through cumulative random-walk drift: additive IMU white noise, although implemented in the simulated sensor model, was held at zero across all five severity levels (Section~\ref{ssec:NoiseRobustnessEval}).}
+
+% --- 2. sssec:noise_robustness_extra, opening paragraph: inserted after "...as the four scenarios above
+%        (Section~\ref{ssec:NoiseRobustnessEval})" (its closing period became the comma below) and before
+%        "This is a separate battery from the unperturbed..." ---
+
+\revblue{, with results reported in Figure~\ref{fig:noise_robustness_extra_combined}. As in those four scenarios, the three perturbation sources are injected jointly at every non-zero severity level rather than in isolation, so the results discussed below cannot be decomposed into each sensor's individual contribution; the IMU channel, as before, is perturbed only through cumulative random-walk drift, with additive white noise held at zero throughout (Section~\ref{ssec:NoiseRobustnessEval}).}

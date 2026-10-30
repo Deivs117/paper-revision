@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-29T00:29:30+00:00",
-  "progressLastCommit": "2026-10-28T19:18:31-05:00",
+  "generatedAt": "2026-10-30T03:01:54+00:00",
+  "progressLastCommit": "2026-10-29T01:20:12+01:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1012,14 +1012,14 @@
       "id": "R2b-02",
       "reviewer": "2",
       "requirement": "Note jointly-injected (never isolated) noise + IMU-drift-not-white-noise caveat in the main-text results section, not only Limitations",
-      "target": "results.tex (sssec:noise_robustness_extra)",
+      "target": "results.tex: the Appetitive Targeting paragraph right after fig:noise_robustness_grid (states the caveat applies to all four scenarios of that figure) + the opening paragraph of sssec:noise_robustness_extra (points at fig:noise_robustness_extra_combined). Methods (ssec:NoiseRobustnessEval) and Limitations (ssec:Limitations) already carried the full statement and were not touched; not repeated in the Aversive/Obstacle/Complex paragraphs (R3b-01). Distinct from the LiDAR-arbitration caveat in the same subsection, which is unchanged. reassemble.py/validate_tex.sh/check_roundtrip.sh pass; not compiled locally (MiKTeX here lacks natbib). Still open under this owner, not part of this row's edit: second_pass_simplification_debate.md P-10 (consolidate the four \"every retained trial\" sentences, reconcile with tab:consolidated_simulation_metrics) and P-25 (dedupe the Limitations noise sentence).",
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
         "Diego"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/r2b-02-noise-caveat-main-text.tex"
     },
     {
       "id": "R2b-03",
@@ -1103,14 +1103,14 @@
       "id": "R3b-03",
       "reviewer": "3",
       "requirement": "Noise-robustness figure caption: note the combined-perturbation test cannot separate individual sensor contributions",
-      "target": "results.tex (sssec:noise_robustness_extra figure caption)",
+      "target": "results.tex: caption of fig:noise_robustness_grid (the original Fig. 20 battery) and umbrella caption of fig:noise_robustness_extra_combined (Fig. 27, which had no note) — \"the corresponding figure caption\" is both, since the same combined sweep is reported in two figures. New self-standing Experimental limitation: sentence in each (joint injection, no per-sensor separation, IMU random-walk drift only). reassemble.py/validate_tex.sh/check_roundtrip.sh pass; not compiled locally (MiKTeX here lacks natbib). Expect a merge conflict with R2b-05/R3b-04 (Deivi) on these two single-line captions.",
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
         "Diego"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/r3b-03-noise-caveat-captions.tex"
     },
     {
       "id": "R3b-04",

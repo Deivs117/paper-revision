@@ -1,0 +1,39 @@
+% PATCH: R3b-03
+% Reviewer: 3
+% Target section: sections/results.tex (caption of fig:noise_robustness_grid; umbrella caption of
+%   fig:noise_robustness_extra_combined)
+% Requirement: The combined-perturbation noise-robustness test cannot separate individual sensor
+%   contributions. Add a short note in the corresponding figure caption to clarify this experimental
+%   limitation. (Letter, Reviewer 3 item 3.)
+% Status: applied
+%
+% Notes
+% - "Corresponding figure caption" is two captions, not one: the combined-perturbation battery is
+%   reported in fig:noise_robustness_grid (four single-/multi-stimulus scenarios) and in
+%   fig:noise_robustness_extra_combined (Rugged Terrain, Inclined Slope, failure modes, camera
+%   dropout). The same note went into both, so neither can be read without it.
+% - fig:noise_robustness_grid previously carried the joint-injection fact only as a parenthetical
+%   ("applied jointly, never in isolation"). That clause was removed from the parenthetical and
+%   promoted to a self-standing "Experimental limitation:" sentence. The Section/Table pointer in
+%   the caption's first line (ssec:NoiseRobustnessEval, table:PerturbationParams) already covers the
+%   reference, so it is not repeated. fig:noise_robustness_extra_combined had no note at all.
+% - Both notes also state the IMU drift-vs-white-noise scope, so the captions reinforce R2b-02 (the
+%   main-text note) rather than leaving that half of the caveat to the prose.
+% - The error-bar, trial-count (three retained trials per point) and per-row Pitch RMS scale text in
+%   fig:noise_robustness_grid is unchanged. Only the inserted sentence is \revblue{}; the removed
+%   parenthetical clause is gone, not recolored.
+% - R2b-05/R3b-04 (Deivi) will also edit these two captions (N, simulation-vs-physical label). Each
+%   caption is a single source line, so expect a textual merge conflict there whichever lands second.
+
+% --- 1. fig:noise_robustness_grid caption. Previously: "...Combined Perturbation Level (index $0$--$4$,
+%        IMU drift + LiDAR range noise + camera illumination distortion applied jointly, never in
+%        isolation --- see Section~\ref{ssec:NoiseRobustnessEval}). Error bars denote..."
+%        Now: "...Combined Perturbation Level (index $0$--$4$). <inserted> Error bars denote..." ---
+
+\revblue{Experimental limitation: at every non-zero level, IMU drift, LiDAR range noise, and camera illumination distortion are injected jointly, not in isolation, so this battery cannot separate or rank each sensor's individual contribution to the observed robustness; in addition, the IMU component reflects cumulative random-walk drift only, not additive white noise.}
+
+% --- 2. fig:noise_robustness_extra_combined umbrella caption. Previously began: "Combined-perturbation
+%        robustness battery. (a) Trial outcome by scenario..."
+%        Now begins: "Combined-perturbation robustness battery<inserted> (a) Trial outcome by scenario..." ---
+
+\revblue{ (Section~\ref{ssec:NoiseRobustnessEval}). Experimental limitation: as in Figure~\ref{fig:noise_robustness_grid}, IMU drift, LiDAR range noise, and camera illumination distortion are injected jointly at every non-zero severity level, which precludes isolating each sensor's individual contribution to the results shown in panels (a)--(c); the IMU channel reflects cumulative random-walk drift only, with additive white noise held at zero.}
