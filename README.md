@@ -620,6 +620,15 @@ A documentation-only version of this section would read fine and still fail the 
 
 ## Repository Setup & Execution Guide
 
+#### 13.4 Where each person's tasks live
+
+One source of truth: the open rows of `PROGRESS.md` (`Status` `pending`/`drafted`) filtered by the `Owner` column.
+Run `python3 scripts/my_tasks.py <Sam|Sebas|Diego|Deivi>` after `git pull origin main`; the same list is on the
+dashboard (`docs/`, filter by owner). Deadlines are written as `Due YYYY-MM-DD` inside the row text; the whole
+round ends 2026-11-04. A follow-up to a row that is already `applied` gets its own new row (never reopen the old
+one). `intake/pending/` briefs explain *how* to do a task; they are not the task list. The rule an agent must follow
+when asked "what are my tasks?" is in `CLAUDE.md`.
+
 ### Current state
 
 The pipeline described in this document is **fully implemented and in active use** (not a spec awaiting implementation):

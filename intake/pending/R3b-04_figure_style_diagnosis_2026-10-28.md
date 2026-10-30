@@ -36,7 +36,7 @@ fig_inspection_dfinal_vs_nlidar, fig2_roc_curve, fig3_training_loss, RES_EST_UNI
    most without. **Effective size in the PDF** varies from ~3.4 pt (`fig_stability_phases`) and ~5 pt
    (`fig_attempts_vs_noise_level`) to ~12–13 pt (`FigA`, `FigC`, ablation) because `figsize` differs by builder.
 4. **Origin mark:** no figure says simulation vs physical except `GRAPH_IMU*` ("(Simulation)"/"(Physical)"),
-   `fig1` ("simulation") and `Terrain_Latencies`. Per the letter this belongs in the **captions** (blocked on R2b-05, due Thu 2026-10-29).
+   `fig1` ("simulation") and `Terrain_Latencies`. Per the letter this belongs in the **captions** (blocked on R2b-05, due Fri 2026-10-30).
 5. **X-axis unit of the physical ECDF `Plot_1`:** (s) for Appetitive/Complex, (ms) for Aversive/Obstacle. ✔ confirmed in
    `real_plot_suite.py:100` (`use_ms` flag chooses per scenario) — a builder choice, not a data error. Unify to one unit.
 
@@ -132,5 +132,5 @@ simulation: `experiments/simulation/`, vectorized: `experiments/_plotting/vector
 4. **Batch 4 (Tier 2) — palette:** orange variance in physical `Plot_3`, blue/orange reuse in `Energy`, `Terrain_Latencies` tab10, `fig4`/`fused`/`stability_phases`
    hardcoded colors → semantic aliases from `style.py`.
 5. **Batch 5 — `RES_*` labels** (after the pilot is approved) and resolution/UI decisions.
-6. **Last:** captions "simulation vs physical" in `results.tex` (needs R2b-05 merged, due Thu 2026-10-29); compile the PDF; only then the Overleaf push (author, token).
+6. **Last:** captions "simulation vs physical" in `results.tex` (needs R2b-05 merged, due Fri 2026-10-30); compile the PDF; only then the Overleaf push (author, token).
 Blocking questions for the author: (a) Appetitive physical N = 3 or 4; (b) what `NEU_IMU2_real` "Locomotion 2 / X17" must show; (c) approve the `RES_*` pilot.

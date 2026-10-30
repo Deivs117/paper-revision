@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-30T04:18:53+00:00",
-  "progressLastCommit": "2026-10-29T23:06:31-05:00",
+  "generatedAt": "2026-10-30T04:32:35+00:00",
+  "progressLastCommit": "2026-10-29T23:18:53-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1050,8 +1050,8 @@
     {
       "id": "R2b-05",
       "reviewer": "2",
-      "requirement": "Every experimental figure's caption must show trial count N directly, not only in main-text prose",
-      "target": "[due Thu 2026-10-29] [reassigned Deivi → Sam 2026-10-28, brief: intake/pending/R2b-05_figure_caption_N_brief.md] [partial 2026-10-28: tab:fsm_comparison now has a per-row N column — patches/r2b-05-fsm-table-n.tex; still open: fig:mode_timeline_inspection and the rest of the figure/subfigure captions] results.tex (all figures and every subfigure caption — the ablation subfigures (a)/(b) lacked N until R3b-02), methodology.tex (any figures)",
+      "requirement": "Every experimental figure's caption must show trial count N directly, not only in main-text prose Due 2026-10-30 (moved from 2026-10-29 by the author). Open question the author must answer before captions are final: Appetitive physical = 3 or 4 trials (manifest/folders say 4, the caption says three).",
+      "target": "[due Fri 2026-10-30] [reassigned Deivi → Sam 2026-10-28, brief: intake/pending/R2b-05_figure_caption_N_brief.md] [partial 2026-10-28: tab:fsm_comparison now has a per-row N column — patches/r2b-05-fsm-table-n.tex; still open: fig:mode_timeline_inspection and the rest of the figure/subfigure captions] results.tex (all figures and every subfigure caption — the ablation subfigures (a)/(b) lacked N until R3b-02), methodology.tex (any figures)",
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
@@ -1154,7 +1154,7 @@
     {
       "id": "C-60",
       "reviewer": "—",
-      "requirement": "Trim the ablation prose that duplicates the figure captions (R3b-01 second pass, intake/pending/C-60_ablation_prose_trim_brief.md): results.tex success-rate and attitude paragraphs repeat numbers already in the umbrella/sub-captions; cut the prose, keep the captions (R3b-02, R2b-05). Delegated by the author 2026-10-28.",
+      "requirement": "Trim the ablation prose that duplicates the figure captions (R3b-01 second pass, intake/pending/C-60_ablation_prose_trim_brief.md): results.tex success-rate and attitude paragraphs repeat numbers already in the umbrella/sub-captions; cut the prose, keep the captions (R3b-02, R2b-05). Delegated by the author 2026-10-28. Due 2026-10-30 (moved from 2026-10-29 by the author).",
       "target": "results.tex (Basal Ganglia Ablation Study, ~l.190–219)",
       "dataSource": "—",
       "category": "Escritura",
@@ -1202,6 +1202,58 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-62-humanizer-pass.tex"
+    },
+    {
+      "id": "C-64",
+      "reviewer": "—",
+      "requirement": "Sebas -- R3b-01 second pass (follow-up row; R3b-01 itself stays applied). Do the points 1--13 under \"For Sebas\" in intake/pending/R3b-01_second_review_2026-10-28.md. Some may already be covered by C-57/C-58/C-61 (point 12 is wording-only and was resolved by C-58): check each against current main, skip the done ones and list what you skipped in the patch record. Point 1 (duplicate ω_GpeR row in Table Locom_NN) must be confirmed in PETER_SIMULATION (red_neuronal.py) before deleting anything. Rules: cut the PROSE, never a caption; do not touch the joint-noise caveat, n=12, N in captions. Due: not set (hard stop for the round 2026-11-04).",
+      "target": "methodology.tex, results.tex, conclusions.tex (as listed in the doc)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sebas"
+      ],
+      "status": "pending",
+      "patchFile": "—"
+    },
+    {
+      "id": "C-65",
+      "reviewer": "—",
+      "requirement": "Sam -- Abstract wording. preamble.tex:85 says the platform \"consistently avoided critical instability\": the phrase is backed by no other section. Replace it with a measured claim from the Roll/Pitch RMS values (largest reported means, C-61 S-05: Roll 1.59 deg, Pitch 2.29 deg) or soften it. Source: item 14 of intake/pending/R3b-01_second_review_2026-10-28.md (the only required item for Sam in that doc). Due 2026-10-30.",
+      "target": "preamble.tex (abstract env)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sam"
+      ],
+      "status": "pending",
+      "patchFile": "—"
+    },
+    {
+      "id": "C-66",
+      "reviewer": "—",
+      "requirement": "Diego -- noise-caveat follow-ups from the C-57 debate (intake/pending/second_pass_simplification_debate.md, \"Deferred to owners\"). P-10: \"every retained trial succeeded at all five levels\" is said four times in the simulation scenario paragraphs of results.tex; consolidate into one sentence (substantive, it touches your R2b-02 caveat, so it is yours). P-25: the Limitations noise sentence says \"jointly, not isolated\" twice. S-08 belongs to R2b-03, not to this row. R2b-02 and R3b-03 are already applied (PR #11), do not redo them. Do R2b-03 first. Due: not set (hard stop for the round 2026-11-04).",
+      "target": "results.tex (simulation scenario paragraphs, ssec:Limitations)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Diego"
+      ],
+      "status": "pending",
+      "patchFile": "—"
+    },
+    {
+      "id": "C-67",
+      "reviewer": "—",
+      "requirement": "Deivi -- caption follow-ups from the C-57 debate (intake/pending/second_pass_simplification_debate.md, \"Deferred to owners\"). P-15: the variable-topography main caption repeats its three subcaptions and ends with a filler sentence; keep the proposed text as a base but drop \"under stochastic variable-topography conditions\" (see S-02). P-07: subcaption clause. P-14: caption trims. P-03: keep that caption as it is. Not part of this row: R3b-04 (own row) and the ablation prose (C-60, Sam). Due: not set (hard stop for the round 2026-11-04).",
+      "target": "results.tex (variable-topography and ablation captions)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "pending",
+      "patchFile": "—"
     }
   ]
 }

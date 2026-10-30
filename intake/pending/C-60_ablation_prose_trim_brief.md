@@ -1,5 +1,7 @@
 # C-60 — Trim the ablation prose that duplicates the figure captions (owner: Sam)
 
+**DEADLINE: Friday 2026-10-30 (end of day), merged into `main`** (moved from 2026-10-29 by the author). Your row: `C-60` in `PROGRESS.md` (`python3 scripts/my_tasks.py Sam` lists all yours).
+
 Self-contained brief: everything needed is in this repo. Nothing from the author's personal files is required.
 Read first: `OUTLINE.md`, `CLAUDE.md` (revblue convention, patch flow, your row stops at `applied`),
 `intake/pending/round2_decision_letter_2026-10-25.md` (R3 item 1 = the redundancy ask; R3 item 2 = captions).

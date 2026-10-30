@@ -67,6 +67,24 @@ access) work directly in this repo, typically by directing an AI agent. Full det
   green + the owner's CODEOWNERS review. Don't tell a collaborator "you must run install_hooks.sh
   first" as if skipping it were unsafe; it only costs them faster local feedback.
 
+## When someone asks "what are my tasks?" (collaborators and their agents: do this first)
+
+Tasks live in exactly one place: the open rows (`Status` = `pending` or `drafted`) of `PROGRESS.md` whose
+`Owner` is that person. Never answer from memory, from `intake/pending/` file names, or from a chat message.
+
+1. `git pull origin main` (a stale `PROGRESS.md` gives a stale answer).
+2. `python3 scripts/my_tasks.py <Sam|Sebas|Diego|Deivi>` (a GitHub login also works: `sammcar`, `sebas2868`,
+   `DiegoACaro`, `Deivs117`). It prints each open task with its deadline, target section and brief file.
+   `--all` prints everyone. If you do not know who the user is, ask, or check `git config user.name`.
+3. Read the brief file the row points to before editing. Rows in `applied` are done: nothing to do.
+4. A person with no open row has no assigned work. If someone says they were given work that is not
+   listed, the row is missing: tell the repo owner (`Deivs117`) instead of inventing the task.
+
+When the owner hands out new work (including "follow-ups" of a row that is already `applied`), always add a
+new `PROGRESS.md` row with `Owner` set and `Status` `pending` (`scripts/next_id.sh C`), and write any deadline as
+`Due YYYY-MM-DD` inside the row text. A task that only exists in a `intake/pending/` document or in chat is
+invisible to this procedure.
+
 ## Hard rules
 
 - **Standing preference, always honored, not just when strictly required:** whenever a task can be done with
