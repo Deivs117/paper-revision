@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-30T04:32:35+00:00",
-  "progressLastCommit": "2026-10-29T23:18:53-05:00",
+  "generatedAt": "2026-10-30T19:12:19+00:00",
+  "progressLastCommit": "2026-10-29T23:32:35-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1161,8 +1161,8 @@
       "owner": [
         "Sam"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/c-60-ablation-prose-trim.tex"
     },
     {
       "id": "C-61",
