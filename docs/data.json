@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-30T04:32:35+00:00",
-  "progressLastCommit": "2026-10-29T23:18:53-05:00",
+  "generatedAt": "2026-10-30T19:10:41+00:00",
+  "progressLastCommit": "2026-10-29T23:32:35-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1051,14 +1051,14 @@
       "id": "R2b-05",
       "reviewer": "2",
       "requirement": "Every experimental figure's caption must show trial count N directly, not only in main-text prose Due 2026-10-30 (moved from 2026-10-29 by the author). Open question the author must answer before captions are final: Appetitive physical = 3 or 4 trials (manifest/folders say 4, the caption says three).",
-      "target": "[due Fri 2026-10-30] [reassigned Deivi → Sam 2026-10-28, brief: intake/pending/R2b-05_figure_caption_N_brief.md] [partial 2026-10-28: tab:fsm_comparison now has a per-row N column — patches/r2b-05-fsm-table-n.tex; still open: fig:mode_timeline_inspection and the rest of the figure/subfigure captions] results.tex (all figures and every subfigure caption — the ablation subfigures (a)/(b) lacked N until R3b-02), methodology.tex (any figures)",
+      "target": "[due Fri 2026-10-30] [reassigned Deivi → Sam 2026-10-28, brief: intake/pending/R2b-05_figure_caption_N_brief.md] [partial 2026-10-28: tab:fsm_comparison now has a per-row N column — patches/r2b-05-fsm-table-n.tex; rest done 2026-10-30 (Sam): 24 captions, patches/r2b-05-figure-caption-n.tex; 3 open author questions listed there and in the PR] results.tex (all figures and every subfigure caption — the ablation subfigures (a)/(b) lacked N until R3b-02), methodology.tex (any figures)",
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
         "Sam"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/r2b-05-fsm-table-n.tex, patches/r2b-05-figure-caption-n.tex"
     },
     {
       "id": "R2b-06",
