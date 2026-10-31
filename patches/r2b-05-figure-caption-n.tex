@@ -1,0 +1,45 @@
+% PATCH: R2b-05 (remaining captions; tab:fsm_comparison was done earlier in patches/r2b-05-fsm-table-n.tex)
+% Reviewer: 2
+% Target section: sections/results.tex (figure and subfigure captions only; no image changed)
+% Requirement: "every experimental figure shows the number of trials N directly inside its caption,
+%   not only mentioned inside main-text paragraphs" (decision letter, Reviewer 2 item 5).
+% Status: applied
+%
+% Rule used: N is written only when it traces to a file in this repo; otherwise the caption states
+% what the figure itself shows (one trial, N=1) and the open question is listed in the PR.
+% No simulation/physical labeling added (R3b-04, Deivi). No dashes in the new text.
+%
+% Added (24 captions, all inside \revblue{}):
+%   "Single trial (N=1)." -- NEU_EST_UNIG, NEU_EST_UNIB, NEU_EST_MUL, RES_EST_MUL, NEU_IMU, NEU_IMU2,
+%       NEU_EST_UNIG_real, NEU_EST_MUL_real, RES_IMU2_real
+%   "Each panel shows a single trial (N=1 per panel)." -- RESPUESTAS_EST_UNI, res_imu_pair,
+%       graph_imu_pair, RESPUESTAS_EST_UNI_real, neu_imu_real_pair, graph_imu_real_pair
+%   micro figures (appetitive/aversive/obstacle/complex): "first by index of the suite's N=15 trials
+%       (three per perturbation level), not selected by outcome" -- test_001 in
+%       experiments/simulation/<familia>/ is trial_index 1, noise_level_idx 0
+%       (suite_execution_manifest.json); 15 missions per suite (Appetitive/Aversive also logged
+%       retried attempts, same mission-level convention as tab:fsm_comparison).
+%   mode_timeline_complex / _inspection: "first trial by index (not hand-picked) of N=15 / N=20
+%       trials per controller" -- experiments/R2-02-fsm-baseline/scripts/build_mode_timelines.py
+%       (_first_trial_dir = sorted(...)[0]); N from table_master_comparison.csv.
+%   stability_phases: N=268 logged samples, one walk sequence (results.tex prose + tab:crawl_stability).
+%   transition_phases: single continuous run, N_total=979 samples (results.tex prose).
+%   classifier_tradeoff (a): 5-fold stratified CV mean on the IMU dataset, n=600 samples
+%       (sssec:mlp_eval prose).
+%
+% Already carried N (unchanged): fig:noise_robustness_grid, fig:noise_robustness_extra_combined,
+%   fig:ablation_combined (+ subfigures), fig:variable_topo_metrics (+ subfigures),
+%   fig:attempts_vs_noise_level, fig:inspection_dfinal_scatter, fig:mlp_eval_grid,
+%   the four *_real_compound figures ("three hardware replicates"), fig:MorphologicalEnergy,
+%   fig:FourPanelLatencies, fig:real_variable_topography_sequence.
+% Out of scope (no N applies): fig:depot_simulation (scene screenshot), fig:robot-6frames and
+%   fig:RES_IMU_real (photo-frame montages), and every figure in methodology.tex (hardware photos,
+%   diagrams, schematics).
+% Open questions for the author (not guessed; see the PR):
+%   1. Appetitive physical: captions say "three hardware replicates", repo has StimuliB_t01..t04.
+%   2. classifier_tradeoff (b): number of samples timed for per-sample latency is not traceable.
+%   3. Which trial (and from which pool) each single-trial figure shows: legacy simulation
+%      figures were vectorized from published PNGs with no surviving source; NEU_EST_UNIG_real /
+%      NEU_EST_MUL_real map to StimuliG / MultiRGB (N=3) in experiments/real/MANIFEST.md but the
+%      trial identity is unverified; NEU_IMU_real / GRAPH_IMU_real sources are "not
+%      content-verified" (D-7).
