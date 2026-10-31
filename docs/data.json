@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-30T04:32:35+00:00",
-  "progressLastCommit": "2026-10-29T23:18:53-05:00",
+  "generatedAt": "2026-10-30T19:03:14+00:00",
+  "progressLastCommit": "2026-10-29T23:32:35-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1219,15 +1219,15 @@
     {
       "id": "C-65",
       "reviewer": "—",
-      "requirement": "Sam -- Abstract wording. preamble.tex:85 says the platform \"consistently avoided critical instability\": the phrase is backed by no other section. Replace it with a measured claim from the Roll/Pitch RMS values (largest reported means, C-61 S-05: Roll 1.59 deg, Pitch 2.29 deg) or soften it. Source: item 14 of intake/pending/R3b-01_second_review_2026-10-28.md (the only required item for Sam in that doc). Due 2026-10-30.",
+      "requirement": "Sam -- Abstract wording. preamble.tex:85 says the platform \"consistently avoided critical instability\": the phrase is backed by no other section. Replace it with a measured claim from the Roll/Pitch RMS values (largest reported means, C-61 S-05: Roll 1.59 deg, Pitch 2.29 deg) or soften it. Source: item 14 of intake/pending/R3b-01_second_review_2026-10-28.md (the only required item for Sam in that doc). Due 2026-10-30. Resolved by softening (option A, author-approved 2026-10-30): the clause was deleted, not replaced with RMS bounds, because 1.59°/2.29° are simulation-only means while the sentence covers real-robot trials too, and tab:fsm_comparison reports Inclined Slope/Neural Roll RMS 6.751° (conflicts with the ≤1.59° bound; flagged to the owner in the PR).",
       "target": "preamble.tex (abstract env)",
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
         "Sam"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/c-65-abstract-instability-claim.tex"
     },
     {
       "id": "C-66",
