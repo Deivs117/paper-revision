@@ -1,0 +1,25 @@
+% PATCH: C-60
+% Reviewer: 3 (item 1, redundancy; follow-up of R3b-01) -- brief: intake/pending/C-60_ablation_prose_trim_brief.md
+% Target section: sections/results.tex (Basal Ganglia Ablation Study prose only; no \caption touched)
+% Requirement: cut the prose that repeats numbers already in fig:ablation_combined's umbrella caption
+%   and subcaptions; keep the captions (R3b-02, R2b-05) and keep n=12 explicit (R2b-01).
+% Status: applied
+%
+% Removed from prose (all still in the captions): success rates 25.0/33.3/83.3 % with Fisher p;
+%   no-conflict 91.7--100 %, p=1.000; Roll RMS +43.6/+45.9/+22.0 % and Pitch RMS +6.4/-11.3/-5.7 %
+%   with Mann--Whitney p.
+% Kept: every interpretation sentence; the decision-latency numbers (81.7/66.6/75.9/109.1 ms, CIs,
+%   p values; in no caption); n=12 in the opening paragraph; in the R2b-01 paragraph, the two
+%   conclusions, the Fisher boundary (>=5 of 12 failures) and the future-work sentences.
+% Deviation from the brief: the brief says to keep the no-conflict numbers because they are "not in
+%   any caption", but the umbrella caption now carries them ("not shown" clause, added by R3b-02).
+%   Kept the finding, dropped the numbers, pointed at Figure fig:ablation_combined.
+% Also dropped the meta clause "directly addressing the reviewer's request ... (R3-01)" from the
+%   rewritten sentence; the untouched "Taken together" paragraph still has (R3-01)/(R3-02) tags.
+% New/rewritten sentences are wrapped in \revblue{}; no dashes in the new text.
+%
+% Paragraphs as they now read:
+
+\revblue{Without stimulus conflict, all four variants perform statistically indistinguishably in the Appetitive Targeting scenario (Figure~\ref{fig:ablation_combined}): removing an ablation target does not break the simple case, as expected when only one channel is ever active.} Under real conflict (Complex Navigation, Figure~\ref{fig:ablation_success_rate}), a clear gradient emerges. \revblue{The two ablations that remove basal-ganglia mechanism itself, \emph{no lateral inhibition} (inhibitory connections) and \emph{no STN/STR} (neural layers), collapse the success rate significantly, which quantifies the consequence of removing inhibitory connections or key neural layers. Replacing the entire circuit with static threshold logic (\emph{threshold only}) degrades success more mildly and not significantly on this metric alone; the case against threshold logic instead rests on the continuous metrics below.}
+Decision latency under conflict is unaffected by removing basal-ganglia mechanism ($81.7$~ms, 95\%~CI $[56.9, 106.4]$, for \emph{no lateral inhibition}, $p=0.34$; $66.6$~ms, 95\%~CI $[41.9, 91.2]$, for \emph{no STN/STR}, $p=0.84$; vs.\ $75.9$~ms, 95\%~CI $[59.3, 92.6]$, for \emph{full}), but is significantly slower under \emph{threshold only} ($109.1$~ms, 95\%~CI $[89.2, 129.0]$, $p=0.014$) --- consistent with a static threshold lacking the anticipatory, continuously-converging dynamics the WTA circuit provides during conflict resolution. \revblue{Roll RMS increases significantly for all three ablations relative to the intact circuit (Figure~\ref{fig:ablation_complex_stability}), indicating that attitude destabilization under conflict is a shared consequence of weakening the arbitration mechanism, regardless of which component is removed. Pitch RMS instead diverges by ablation type: it increases for \emph{threshold only}, consistent with the roll-instability trend, but decreases for \emph{no lateral inhibition} and \emph{no STN/STR}, plausibly a symptom of reduced net locomotor activity in the majority of trials that fail outright under these two ablations rather than improved attitude control.}
+\revblue{The study's sample size supports these two conclusions to different degrees. The first, that removing basal-ganglia mechanisms breaks conflict resolution, is robust to it; the second, that static threshold logic does not match the full circuit, is not yet conclusive. With $n=12$ simulated trials per variant and scenario, Fisher's exact test against the intact circuit's $12/12$ successes reaches $p<0.05$ only when an ablated variant fails in at least five of its twelve trials. The two mechanism-removing ablations fail in eight and nine, well beyond that boundary, so their collapse is not an artifact of the limited sample; \emph{threshold only} fails in two, so its success rate is statistically inconclusive rather than evidence of equivalence with the intact circuit, and its latency and Roll RMS effects, the closest to the significance boundary, should be regarded as provisional until replicated. Larger-scale repeated trials are left as future work to tighten these estimates and confirm the smaller effects. These would include more replicates per condition, a wider range of conflict configurations and noise levels, and an equivalent ablation protocol on the physical platform, which the present study does not include.}
