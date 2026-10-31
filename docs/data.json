@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-31T18:59:14+00:00",
-  "progressLastCommit": "2026-10-31T13:57:39-05:00",
+  "generatedAt": "2026-10-31T20:02:38+00:00",
+  "progressLastCommit": "2026-10-31T13:59:14-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1254,6 +1254,19 @@
       ],
       "status": "pending",
       "patchFile": "—"
+    },
+    {
+      "id": "C-68",
+      "reviewer": "—",
+      "requirement": "Remove the team's internal nomenclature from the manuscript's visible text (author request 2026-10-31): it is our bookkeeping, not the paper's vocabulary. Four spots, all in results.tex: the bare reviewer-item tags (R3-01)/(R3-02) in the \"Taken together\" paragraph (the third tag in that block was already dropped by C-60, which flagged these two as out of scope); the rebuttal voice \"To directly address the reviewer's request for ...\" that introduces the ablation subsection; the internal data-folder names Appetitive_Real/Aversive_Real/Complex_Real/Obstacle_Real in the four physical-experiment captions; and tab:fsm_comparison's column header Family → Suite (what the surrounding prose and tab:consolidated_simulation_metrics already call it). Deliberately not wrapped in \\revblue{}: every change is a deletion or a rewording with zero change of meaning, number, claim or citation. Swept clean: no familia/C1/C2/test_NNN/file-name/round-number string survives in visible text; the surviving \"family\" matches are ordinary English. Internal names inside \\label{}/\\ref{}/\\includegraphics{} are invisible in the PDF and left alone on purpose.",
+      "target": "results.tex (l.192, l.217, tab:fsm_comparison header, 4 physical captions)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-68-internal-nomenclature.tex"
     }
   ]
 }

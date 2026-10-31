@@ -1,0 +1,52 @@
+% Patch record for C-68 -- remove the team's internal nomenclature from the manuscript's visible text.
+% Applied 2026-10-31. Requested by the author: reviewer-item tags and our simulation family names are
+% our own bookkeeping, not the paper's vocabulary, and must not reach the reader.
+%
+% NOT wrapped in \revblue{} on purpose. Every change below is either a deletion or a rewording with no
+% change of meaning or of any claim, number or citation -- the OUTLINE.md "Revision convention" exception
+% for edits with zero meaning change. Marking them blue would point the reviewer at text that answers none
+% of their comments, and three of the four spots are round-1 baseline text that was already accepted.
+%
+% 1) Reviewer-item tags in results.tex (visible to the reader as bare "(R3-01)" / "(R3-02)"):
+%
+%    l.217, "Taken together" paragraph -- both tags deleted, nothing else touched:
+%    before: ... is what resolves genuine multi-stimulus conflict (R3-01); and no simpler substitute,
+%            ... is what the task actually requires (R3-02).
+%    after:  ... is what resolves genuine multi-stimulus conflict; and no simpler substitute,
+%            ... is what the task actually requires.
+%
+%    Note: C-60 (PR #19) already removed a third tag from the sentence it rewrote in this same paragraph
+%    block, and flagged these two as out of its scope. This row closes that.
+%
+% 2) The rebuttal voice in the same subsection (results.tex l.192) -- the ablation was introduced by
+%    announcing it as an answer to the reviewer, which only makes sense inside a response letter:
+%    before: To directly address the reviewer's request for an ablation analysis of the basal-ganglia
+%            arbitration network and a quantitative comparison against simple threshold-based decision
+%            logic, the four-variant ablation ... was evaluated
+%    after:  To isolate the contribution of the basal-ganglia arbitration network and compare it
+%            quantitatively against simple threshold-based decision logic, the four-variant ablation
+%            ... was evaluated
+%    The experiment, its parameters and its conclusions are unchanged; only the motivating clause is.
+%
+% 3) Internal family names in four physical-experiment captions (results.tex l.895, 918, 941, 964).
+%    "Appetitive_Real", "Aversive_Real", "Complex_Real" and "Obstacle_Real" are the names of our data
+%    folders under experiments/real/, meaningless to a reader:
+%    before: Real-world Appetitive Stimulus Scenario (\textit{Appetitive\_Real} family, three hardware replicates).
+%    after:  Real-world Appetitive Stimulus Scenario (three hardware replicates).
+%    Same shape for the other three. The scenario name already in the caption carries the meaning, and the
+%    replicate count (the part R2b-05 cares about) is kept verbatim.
+%
+% 4) tab:fsm_comparison's first column header (results.tex l.489): \textbf{Family} -> \textbf{Suite}.
+%    "Family" is our label for a batch of simulation runs (familia_a_apetitivo, familia_b_compleja,
+%    familia_c1_terreno_rugoso, familia_e_inspeccion ...). "Suite" is what the surrounding prose and
+%    tab:consolidated_simulation_metrics already call the same thing, so this also removes an
+%    inconsistency between the two tables. The row labels needed no change: they already read
+%    "Rugged Terrain" / "Inclined Slope", not the "(C1)"/"(C2)" of the source CSV.
+%
+% Swept and found clean (no change needed): no "familia"/"C1"/"C2"/"test_NNN"/file-name/round-number
+% string survives anywhere in the visible text of sections/*.tex. The remaining matches for "family" are
+% ordinary English ("the ANYmal-on-wheels family", "the same threshold-logic family", "these same metric
+% families") and stay. Internal identifiers that live only in \label{}, \ref{} and \includegraphics{}
+% (fig:failure_by_family, fig_R1_failure_by_family.png, NEU_EST_UNIG.png, ...) are invisible in the
+% compiled PDF and were deliberately left alone: renaming assets would churn assets/ for no reader-facing
+% gain. Asset file names are the one place our naming is still visible to anyone who inspects the source.
