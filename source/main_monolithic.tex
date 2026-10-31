@@ -875,7 +875,7 @@ Regarding the LiDAR-noise component of this evaluation specifically: the perturb
 
 \subsubsection{Basal Ganglia Ablation Study}
 
-To directly address the reviewer's request for an ablation analysis of the basal-ganglia arbitration network and a quantitative comparison against simple threshold-based decision logic, the four-variant ablation described in Section~\ref{sec:methodology} was evaluated across the Appetitive Targeting (no-conflict) and Complex Navigation (three-stimulus conflict) scenarios, reusing the same scenario parameters as Table~\ref{tab:consolidated_simulation_metrics} ($n=12$ trials/variant/scenario, noise level fixed at zero to isolate the structural effect of each ablation from sensory-noise robustness, which is characterized separately, earlier in this section, for the intact circuit). This study is simulation-only; no equivalent ablation was run on the physical platform.
+To isolate the contribution of the basal-ganglia arbitration network and compare it quantitatively against simple threshold-based decision logic, the four-variant ablation described in Section~\ref{sec:methodology} was evaluated across the Appetitive Targeting (no-conflict) and Complex Navigation (three-stimulus conflict) scenarios, reusing the same scenario parameters as Table~\ref{tab:consolidated_simulation_metrics} ($n=12$ trials/variant/scenario, noise level fixed at zero to isolate the structural effect of each ablation from sensory-noise robustness, which is characterized separately, earlier in this section, for the intact circuit). This study is simulation-only; no equivalent ablation was run on the physical platform.
 
 \revblue{Without stimulus conflict, all four variants perform statistically indistinguishably in the Appetitive Targeting scenario (Figure~\ref{fig:ablation_combined}): removing an ablation target does not break the simple case, as expected when only one channel is ever active.} Under real conflict (Complex Navigation, Figure~\ref{fig:ablation_success_rate}), a clear gradient emerges. \revblue{The two ablations that remove basal-ganglia mechanism itself, \emph{no lateral inhibition} (inhibitory connections) and \emph{no STN/STR} (neural layers), collapse the success rate significantly, which quantifies the consequence of removing inhibitory connections or key neural layers. Replacing the entire circuit with static threshold logic (\emph{threshold only}) degrades success more mildly and not significantly on this metric alone; the case against threshold logic instead rests on the continuous metrics below.}
 
@@ -900,7 +900,7 @@ To directly address the reviewer's request for an ablation analysis of the basal
 
 Decision latency under conflict is unaffected by removing basal-ganglia mechanism ($81.7$~ms, 95\%~CI $[56.9, 106.4]$, for \emph{no lateral inhibition}, $p=0.34$; $66.6$~ms, 95\%~CI $[41.9, 91.2]$, for \emph{no STN/STR}, $p=0.84$; vs.\ $75.9$~ms, 95\%~CI $[59.3, 92.6]$, for \emph{full}), but is significantly slower under \emph{threshold only} ($109.1$~ms, 95\%~CI $[89.2, 129.0]$, $p=0.014$) --- consistent with a static threshold lacking the anticipatory, continuously-converging dynamics the WTA circuit provides during conflict resolution. \revblue{Roll RMS increases significantly for all three ablations relative to the intact circuit (Figure~\ref{fig:ablation_complex_stability}), indicating that attitude destabilization under conflict is a shared consequence of weakening the arbitration mechanism, regardless of which component is removed. Pitch RMS instead diverges by ablation type: it increases for \emph{threshold only}, consistent with the roll-instability trend, but decreases for \emph{no lateral inhibition} and \emph{no STN/STR}, plausibly a symptom of reduced net locomotor activity in the majority of trials that fail outright under these two ablations rather than improved attitude control.}
 
-Taken together, these results support the winner-take-all arbitration design on two separable grounds: the basal-ganglia circuit's own mechanism, not merely the presence of \emph{some} priority rule, is what resolves genuine multi-stimulus conflict (R3-01); and no simpler substitute, including the same static-threshold family already used elsewhere in this architecture's Locomotion Module, matches it once continuous, real-time arbitration is what the task actually requires (R3-02).
+Taken together, these results support the winner-take-all arbitration design on two separable grounds: the basal-ganglia circuit's own mechanism, not merely the presence of \emph{some} priority rule, is what resolves genuine multi-stimulus conflict; and no simpler substitute, including the same static-threshold family already used elsewhere in this architecture's Locomotion Module, matches it once continuous, real-time arbitration is what the task actually requires.
 
 \revblue{The study's sample size supports these two conclusions to different degrees. The first, that removing basal-ganglia mechanisms breaks conflict resolution, is robust to it; the second, that static threshold logic does not match the full circuit, is not yet conclusive. With $n=12$ simulated trials per variant and scenario, Fisher's exact test against the intact circuit's $12/12$ successes reaches $p<0.05$ only when an ablated variant fails in at least five of its twelve trials. The two mechanism-removing ablations fail in eight and nine, well beyond that boundary, so their collapse is not an artifact of the limited sample; \emph{threshold only} fails in two, so its success rate is statistically inconclusive rather than evidence of equivalence with the intact circuit, and its latency and Roll RMS effects, the closest to the significance boundary, should be regarded as provisional until replicated. Larger-scale repeated trials are left as future work to tighten these estimates and confirm the smaller effects. These would include more replicates per condition, a wider range of conflict configurations and noise levels, and an equivalent ablation protocol on the physical platform, which the present study does not include.}
 
@@ -1149,12 +1149,16 @@ The steady-state Roll and Pitch RMS bounds reported in
 Figures~\ref{fig:variable_topo_metrics}
 and Table~\ref{tab:consolidated_simulation_metrics}
 characterize the locomotion phases immediately preceding and
-following each transition; \revblue{the mean Roll RMS stays at or
-below $1.59^\circ$ and the mean Pitch RMS at or below $2.29^\circ$
-across these suites and both variable-topography terrains},
+following each transition; \revblue{within those two datasets --- the four
+scenario suites and the variable-topography battery of 15 trials per
+terrain --- the mean Roll RMS stays at or below $1.59^\circ$ and the mean
+Pitch RMS at or below $2.29^\circ$},
 indicating that the mode-switching protocol does not introduce
 roll or pitch instabilities in either the source or target
-locomotion phase.
+locomotion phase. \revblue{The two terrain rows of
+Table~\ref{tab:fsm_comparison} come from an independent re-run of those
+scenarios rather than from this battery, and are not bounded by these
+values; see that table's caption.}
 
 
 %
@@ -1168,11 +1172,11 @@ locomotion phase.
 
 \begin{table}[htbp]
 \centering
-\caption{FSM vs.\ basal-ganglia (Neural) gait arbitration, all seven simulated suites. Complex/FSM has no completed trials (0\% success), so time/Roll RMS are undefined ($-$). One Obstacle/Neural trial with an anomalous roll reading (physically implausible per-timestep values, not a measurement of stable attitude) was excluded from the Roll RMS/task-time statistics below, consistent with Table~\ref{tab:consolidated_simulation_metrics}; its own success/failure verdict is unaffected. \revblue{$N$ is the number of independent missions behind each success rate (Appetitive, Aversive, Obstacle, Complex; a mission that first times out is retried until it completes) or of individual attempts (Inspection, Rugged Terrain, Inclined Slope); for Rugged Terrain and Inclined Slope the Neural controller was evaluated only without perturbation, hence its small $N$.}}
+\caption{FSM vs.\ basal-ganglia (Neural) gait arbitration, all seven simulated suites. Complex/FSM has no completed trials (0\% success), so time/Roll RMS are undefined ($-$). One Obstacle/Neural trial with an anomalous roll reading (physically implausible per-timestep values, not a measurement of stable attitude) was excluded from the Roll RMS/task-time statistics below, consistent with Table~\ref{tab:consolidated_simulation_metrics}; its own success/failure verdict is unaffected. \revblue{$N$ is the number of independent missions behind each success rate (Appetitive, Aversive, Obstacle, Complex; a mission that first times out is retried until it completes) or of individual attempts (Inspection, Rugged Terrain, Inclined Slope); for Rugged Terrain and Inclined Slope the Neural controller was evaluated only without perturbation, hence its small $N$. Those two terrain rows come from an independent re-run of the two scenarios, not from the variable-topography battery of Section~\ref{sssec:variable_topo_quant}, so their Roll RMS is not comparable with the bounds reported there. The Inclined Slope/Neural mean in particular is dominated by one of its three trials, in which the accumulated Roll RMS stays below $1.49^\circ$ for the first $68$~s and then rises abruptly over the final second before the telemetry stops updating; that trial's median Roll RMS, $1.40^\circ$, matches the other two, which is why the standard deviation here exceeds the mean.}}
 \label{tab:fsm_comparison}
 \begin{tabularx}{\textwidth}{l l >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
 \toprule
-\textbf{Family} & \textbf{System} & \revblue{\textbf{N}} & \textbf{SR (\%)} & \textbf{Task Time (s)} & \textbf{Roll RMS (deg)} & \textbf{$\lambda$} \\
+\textbf{Suite} & \textbf{System} & \revblue{\textbf{N}} & \textbf{SR (\%)} & \textbf{Task Time (s)} & \textbf{Roll RMS (deg)} & \textbf{$\lambda$} \\
 \midrule
 Appetitive & Neural & \revblue{15} & 100.0  & 38.52 $\pm$ 1.20  & 0.536 $\pm$ 0.009 & 0.990 \\
 Appetitive & FSM    & \revblue{15} & 100.0 & 38.96 $\pm$ 1.77  & 0.525 $\pm$ 0.003 & 0.952 \\
@@ -1578,7 +1582,7 @@ To further consolidate the physical validation under complex, multi-section topo
     \caption{Pitch/Roll RMS attitude dynamics.}
     \label{fig:appetitive_rms_real}
   \end{subfigure}
-  \caption{Real-world Appetitive Stimulus Scenario (\textit{Appetitive\_Real} family, three hardware replicates). (a) ECDF of locomotion mode-switching latency $T_{switch}$. (b) Coupled neural and kinematic response: (top) temporal evolution of the basal ganglia firing variance $Var(z)$ with red/blue stimulus-presence shading; (bottom) Roll and Pitch RMS attitude profile throughout the trial.}
+  \caption{Real-world Appetitive Stimulus Scenario (three hardware replicates). (a) ECDF of locomotion mode-switching latency $T_{switch}$. (b) Coupled neural and kinematic response: (top) temporal evolution of the basal ganglia firing variance $Var(z)$ with red/blue stimulus-presence shading; (bottom) Roll and Pitch RMS attitude profile throughout the trial.}
   \label{fig:appetitive_real_compound}
 \end{figure*}
 
@@ -1601,7 +1605,7 @@ To further consolidate the physical validation under complex, multi-section topo
     \caption{Pitch/Roll RMS attitude dynamics.}
     \label{fig:aversive_rms_real}
   \end{subfigure}
-  \caption{Real-world Aversive Stimulus Scenario (\textit{Aversive\_Real} family, three hardware replicates). (a) ECDF of mode-switching latency $T_{switch}$ revealing the near-instantaneous emergency reflex. (b) Coupled neural and kinematic response: (top) neural firing variance $Var(z)$ displaying the dual-peak evasion signature, with red/blue stimulus-presence shading; (bottom) chassis attitude micro-dynamics during and after the evasive maneuver.}
+  \caption{Real-world Aversive Stimulus Scenario (three hardware replicates). (a) ECDF of mode-switching latency $T_{switch}$ revealing the near-instantaneous emergency reflex. (b) Coupled neural and kinematic response: (top) neural firing variance $Var(z)$ displaying the dual-peak evasion signature, with red/blue stimulus-presence shading; (bottom) chassis attitude micro-dynamics during and after the evasive maneuver.}
   \label{fig:aversive_real_compound}
 \end{figure*}
 
@@ -1624,7 +1628,7 @@ To further consolidate the physical validation under complex, multi-section topo
     \caption{Pitch/Roll RMS attitude dynamics.}
     \label{fig:complex_rms_real}
   \end{subfigure}
-  \caption{Real-world Complex Multi-Stimulus Scenario (\textit{Complex\_Real} family, three hardware replicates). (a) ECDF of mode-switching latency under chained sequential transformations. (b) Coupled neural and kinematic response: (top) three-phase neural variance profile mapping obstacle avoidance, aversive escape, and appetitive convergence phases, with red/blue stimulus-presence shading; (bottom) step-like attitude excursions during transitions and final stabilization at ${\approx}\,4^{\circ}$.}
+  \caption{Real-world Complex Multi-Stimulus Scenario (three hardware replicates). (a) ECDF of mode-switching latency under chained sequential transformations. (b) Coupled neural and kinematic response: (top) three-phase neural variance profile mapping obstacle avoidance, aversive escape, and appetitive convergence phases, with red/blue stimulus-presence shading; (bottom) step-like attitude excursions during transitions and final stabilization at ${\approx}\,4^{\circ}$.}
   \label{fig:complex_real_compound}
 \end{figure*}
 
@@ -1647,7 +1651,7 @@ To further consolidate the physical validation under complex, multi-section topo
     \caption{Pitch/Roll RMS attitude dynamics.}
     \label{fig:obstacle_rms_real}
   \end{subfigure}
-  \caption{Real-world Static Obstacle Avoidance Scenario (\textit{Obstacle\_Real} family, three hardware replicates). (a) Instantaneous ECDF of mode-switching latency. (b) Coupled neural and kinematic response: (top) massive transient hyper-excitation peak in neural firing variance $Var(z)$ induced by volumetric geometric input (no stimulus-presence shading---this scenario uses a non-chromatic obstacle cue); (bottom) rhythmic Roll RMS expansion during active lateral flanking and post-avoidance stabilization.}
+  \caption{Real-world Static Obstacle Avoidance Scenario (three hardware replicates). (a) Instantaneous ECDF of mode-switching latency. (b) Coupled neural and kinematic response: (top) massive transient hyper-excitation peak in neural firing variance $Var(z)$ induced by volumetric geometric input (no stimulus-presence shading---this scenario uses a non-chromatic obstacle cue); (bottom) rhythmic Roll RMS expansion during active lateral flanking and post-avoidance stabilization.}
   \label{fig:obstacle_real_compound}
 \end{figure*}
 
