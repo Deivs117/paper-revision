@@ -1,0 +1,21 @@
+% PATCH: C-65
+% Reviewer: — (follow-up row; item 14 of intake/pending/R3b-01_second_review_2026-10-28.md)
+% Target section: sections/preamble.tex (abstract environment, closing sentence)
+% Requirement: "consistently avoided critical instability" is backed by no other section; replace it with
+%   a measured claim (Roll/Pitch RMS) or soften it.
+% Status: applied
+% Resolution: softened (clause removed). A measured claim was not used because:
+%   - the 1.59 deg / 2.29 deg bounds (results.tex, C-61 S-05) are simulation-only means, while this
+%     sentence covers "simulated and real-robot trials";
+%   - tab:fsm_comparison reports Inclined Slope / Neural Roll RMS 6.751 +- 7.160 deg (3 zero-noise
+%     trials), which conflicts with the "<= 1.59 deg on both variable-topography terrains" statement;
+%   - the combined-perturbation battery recorded 8 tipovers in 27 Rugged Terrain attempts, so
+%     "avoided critical instability" is not true in general.
+% The 1.59 vs 6.751 inconsistency is outside this row's scope and was reported to the owner in the PR.
+%
+% Before:
+%   Across simulated and real-robot trials, the controller consistently avoided critical instability
+%   and produced terrain-specific, repeatable locomotion signatures, laying the groundwork ...
+% After:
+
+Across simulated and real-robot trials, the controller \revblue{produced} terrain-specific, repeatable locomotion signatures, laying the groundwork for scaling toward robust real-world infrastructure inspection and operation in complex, unstructured environments.
