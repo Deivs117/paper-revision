@@ -1149,12 +1149,16 @@ The steady-state Roll and Pitch RMS bounds reported in
 Figures~\ref{fig:variable_topo_metrics}
 and Table~\ref{tab:consolidated_simulation_metrics}
 characterize the locomotion phases immediately preceding and
-following each transition; \revblue{the mean Roll RMS stays at or
-below $1.59^\circ$ and the mean Pitch RMS at or below $2.29^\circ$
-across these suites and both variable-topography terrains},
+following each transition; \revblue{within those two datasets --- the four
+scenario suites and the variable-topography battery of 15 trials per
+terrain --- the mean Roll RMS stays at or below $1.59^\circ$ and the mean
+Pitch RMS at or below $2.29^\circ$},
 indicating that the mode-switching protocol does not introduce
 roll or pitch instabilities in either the source or target
-locomotion phase.
+locomotion phase. \revblue{The two terrain rows of
+Table~\ref{tab:fsm_comparison} come from an independent re-run of those
+scenarios rather than from this battery, and are not bounded by these
+values; see that table's caption.}
 
 
 %
@@ -1168,7 +1172,7 @@ locomotion phase.
 
 \begin{table}[htbp]
 \centering
-\caption{FSM vs.\ basal-ganglia (Neural) gait arbitration, all seven simulated suites. Complex/FSM has no completed trials (0\% success), so time/Roll RMS are undefined ($-$). One Obstacle/Neural trial with an anomalous roll reading (physically implausible per-timestep values, not a measurement of stable attitude) was excluded from the Roll RMS/task-time statistics below, consistent with Table~\ref{tab:consolidated_simulation_metrics}; its own success/failure verdict is unaffected. \revblue{$N$ is the number of independent missions behind each success rate (Appetitive, Aversive, Obstacle, Complex; a mission that first times out is retried until it completes) or of individual attempts (Inspection, Rugged Terrain, Inclined Slope); for Rugged Terrain and Inclined Slope the Neural controller was evaluated only without perturbation, hence its small $N$.}}
+\caption{FSM vs.\ basal-ganglia (Neural) gait arbitration, all seven simulated suites. Complex/FSM has no completed trials (0\% success), so time/Roll RMS are undefined ($-$). One Obstacle/Neural trial with an anomalous roll reading (physically implausible per-timestep values, not a measurement of stable attitude) was excluded from the Roll RMS/task-time statistics below, consistent with Table~\ref{tab:consolidated_simulation_metrics}; its own success/failure verdict is unaffected. \revblue{$N$ is the number of independent missions behind each success rate (Appetitive, Aversive, Obstacle, Complex; a mission that first times out is retried until it completes) or of individual attempts (Inspection, Rugged Terrain, Inclined Slope); for Rugged Terrain and Inclined Slope the Neural controller was evaluated only without perturbation, hence its small $N$. Those two terrain rows come from an independent re-run of the two scenarios, not from the variable-topography battery of Section~\ref{sssec:variable_topo_quant}, so their Roll RMS is not comparable with the bounds reported there. The Inclined Slope/Neural mean in particular is dominated by one of its three trials, in which the accumulated Roll RMS stays below $1.49^\circ$ for the first $68$~s and then rises abruptly over the final second before the telemetry stops updating; that trial's median Roll RMS, $1.40^\circ$, matches the other two, which is why the standard deviation here exceeds the mean.}}
 \label{tab:fsm_comparison}
 \begin{tabularx}{\textwidth}{l l >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
 \toprule

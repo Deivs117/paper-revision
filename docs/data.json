@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-31T20:02:38+00:00",
-  "progressLastCommit": "2026-10-31T13:59:14-05:00",
+  "generatedAt": "2026-10-31T20:11:35+00:00",
+  "progressLastCommit": "2026-10-31T15:02:38-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1267,6 +1267,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-68-internal-nomenclature.tex"
+    },
+    {
+      "id": "C-69",
+      "reviewer": "—",
+      "requirement": "Resolve the Roll RMS contradiction Sam flagged in PR #17: the prose said the mean Roll RMS stays ≤1.59° \"across both variable-topography terrains\" while tab:fsm_comparison reports Inclined Slope/Neural 6.751 ± 7.160° (N=3). Root cause found in the per-trial logs: two independent batteries of the same two terrain scenarios were being cited as one (experiments/simulation/ → prose and figure, slope mean 1.469 / rugged 1.586; R3-04-noise-robustness/data/ → the table's terrain rows, slope mean 2.997 / rugged 1.784), plus a logging artifact in one trial (familia_c2_pendiente/test_006_SUCCESS: Roll RMS below 1.486° for 67.8 s, median 1.398° like its peers, then a 0.6 s climb to 16.876° after which every telemetry column repeats bit-for-bit for 3.0 s). Note the table's Rugged/Neural row (1.827°) already exceeded the bound with no outlier, so telling the datasets apart was the real fix. Author decision 2026-10-31: scope the claim and explain the table, exclude no data — no number changed, no trial dropped. Still open, not this row: whether to reconcile the two batteries for the final version.",
+      "target": "results.tex (transition-stability paragraph ~l.466, tab:fsm_comparison caption)",
+      "dataSource": "experiments/R3-04-noise-robustness/data/, experiments/simulation/",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-69-roll-rms-contradiction.tex"
     }
   ]
 }

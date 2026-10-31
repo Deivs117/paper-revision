@@ -1,0 +1,76 @@
+% Patch record for C-69 -- resolve the Roll RMS contradiction Sam flagged in PR #17 (C-65).
+% Applied 2026-10-31. Author decision: scope the claim and explain the table, exclude no data.
+%
+% THE CONTRADICTION AS REPORTED
+% results.tex (transition-stability paragraph, written by C-61 S-05) said the mean Roll RMS "stays at
+% or below 1.59 deg ... across these suites and both variable-topography terrains", while
+% tab:fsm_comparison reports Inclined Slope / Neural Roll RMS = 6.751 +/- 7.160 deg (N=3). A reviewer
+% comparing the two reads a contradiction.
+%
+% WHAT THE DATA SHOWS (investigated 2026-10-31, from the archived per-trial logs)
+% There are TWO independent batteries of the same two terrain scenarios, and the manuscript was citing
+% both as if they were one. Roll RMS of the successful trials:
+%
+%   experiments/simulation/              (feeds fig:variable_topo_metrics and the prose bound)
+%       familia_c2_pendiente        n=15  mean 1.469  max 1.657
+%       familia_c1_terreno_rugoso   n=15  mean 1.586  max 3.070
+%   experiments/R3-04-noise-robustness/data/   (feeds tab:fsm_comparison's terrain rows)
+%       familia_c2_pendiente        n=15  mean 2.997  max 16.876
+%       familia_c1_terreno_rugoso   n=15  mean 1.784  max 1.927
+%
+% So the prose bound is exactly right FOR ITS OWN dataset: 1.586 is the rugged mean (the "1.59") and
+% 1.469 the slope mean (the "1.47" in FigC's caption). The table takes only the three noise-level-0
+% trials of the OTHER battery: 1.613, 16.876, 1.764 -> mean 6.751, population SD 7.160 (matches the
+% table exactly, confirming the SD is the population one).
+%
+% Two separate causes, and the second is the structural one:
+%
+% 1) The 16.876 value is a logging artifact, not an attitude measurement. In that trial
+%    (familia_c2_pendiente/test_006_SUCCESS) the accumulated Roll RMS stays below 1.486 deg for the
+%    first 67.8 s -- its median over the whole trial, 1.398, matches its two peers (1.423, 1.388) --
+%    then climbs 1.466 -> 3.257 -> 9.453 -> 14.275 -> 16.876 in 0.6 s, after which EVERY column of
+%    unified_metrics.csv (roll_rms, pitch_rms, Tresponse, Tswitch, latency, lambda) repeats
+%    bit-for-bit for 15 samples / 3.0 s. An accumulated RMS cannot stay bit-identical while new data
+%    arrives, so the series stopped updating. Its two peers end on their own maximum with no
+%    repetition at all (1 identical final sample). The trial also "lasts" 78.6 s vs 75.6 and 76.6 for
+%    the peers -- exactly the frozen tail -- and its stability_log.csv is empty (header only).
+%    NOTE: familia_c2_pendiente/test_015 (noise level 4, roll_rms 8.136) looks like the same artifact.
+%    It reaches no published number, since the table uses only noise level 0, but anyone recomputing
+%    this family should check it.
+%
+% 2) Even with that trial gone the contradiction would survive: the table's Rugged Terrain / Neural
+%    row is 1.827 deg, already above the 1.59 bound, with no outlier involved -- simply because the
+%    R3-04 battery runs higher on that terrain (mean 1.784 vs 1.586). Fixing only the outlier would
+%    not have been enough; the datasets had to be told apart in the text.
+%
+% WHAT CHANGED (both inside existing \revblue{} this round)
+% a) The prose bound is now scoped to the datasets that actually support it, and points the reader at
+%    the table instead of leaving the mismatch for them to find:
+%    before: ...; the mean Roll RMS stays at or below 1.59 deg and the mean Pitch RMS at or below
+%            2.29 deg across these suites and both variable-topography terrains, indicating that ...
+%    after:  ...; within those two datasets -- the four scenario suites and the variable-topography
+%            battery of 15 trials per terrain -- the mean Roll RMS stays at or below 1.59 deg and the
+%            mean Pitch RMS at or below 2.29 deg, indicating that ... locomotion phase. The two
+%            terrain rows of Table~\ref{tab:fsm_comparison} come from an independent re-run of those
+%            scenarios rather than from this battery, and are not bounded by these values; see that
+%            table's caption.
+% b) tab:fsm_comparison's caption gained, after the existing N sentence: the terrain rows are an
+%    independent re-run (not the Section~\ref{sssec:variable_topo_quant} battery), so their Roll RMS
+%    is not comparable with the bounds reported there; and the Inclined Slope/Neural mean is dominated
+%    by one of its three trials, whose accumulated Roll RMS stays below 1.49 deg for the first 68 s
+%    and then rises abruptly over the final second before the telemetry stops updating, that trial's
+%    median (1.40 deg) matching the other two -- which is why the SD here exceeds the mean.
+%
+% The caption describes the observation (value rises, then stops updating), not a diagnosis of the
+% cause, which is inferred and not independently confirmed in Gazebo.
+%
+% NO NUMBER WAS CHANGED AND NO TRIAL WAS EXCLUDED. 6.751 +/- 7.160 still stands in the table, now with
+% the context a reader needs. The alternative considered and rejected by the author was excluding
+% test_006 the way familia_a_obstaculo/test_007_SUCCESS (roll_rms 37.32) already is in
+% build_master_table.py::EXCLUDED_TRIALS: it would drop that row to N=2 (1.689 +/- 0.076) and, unlike
+% the Obstacle case, the spike here sits at the end of an otherwise normal trial, so suppressing it
+% would hide a real event rather than a measurement error.
+%
+% STILL OPEN (not this row): whether the two batteries should be reconciled into one for the final
+% version. That touches several tables and figures, and the table's restriction to noise level 0
+% exists so the Neural side is comparable with the FSM, which ignores noise entirely.
