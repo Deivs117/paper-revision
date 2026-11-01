@@ -115,8 +115,10 @@ def build(real_root: str, output_path: str) -> dict:
                     ha="center", va="bottom", fontsize=9)
     ax.set_ylabel("Transition Energy (J)")
     ax.set_title("Morphological Transition Energy per Direction")
-    fig.text(0.5, 0.01, "Power = |current_A| x 7.2V (fixed NiMH pack voltage); N = real detected"
-              " robot_cmd transitions, not an inferred peak", ha="center", fontsize=7, color="#555555")
+    # R3b-04 batch 3: this footnote named our own log columns ("current_A", "robot_cmd"), which
+    # mean nothing to a reader. Same wording in reader-facing terms; 7 pt raised to 9.
+    fig.text(0.5, 0.01, "Power = |current| x 7.2 V (NiMH pack voltage); N = detected mode"
+              " transitions, not an inferred peak", ha="center", fontsize=9, color="#555555")
     fig.tight_layout(rect=(0, 0.05, 1, 1))
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     fig.savefig(output_path, dpi=DPI)
