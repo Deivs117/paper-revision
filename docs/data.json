@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-01T23:34:40+00:00",
-  "progressLastCommit": "2026-11-01T17:44:25-05:00",
+  "generatedAt": "2026-11-01T23:54:32+00:00",
+  "progressLastCommit": "2026-11-01T18:34:40-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1332,6 +1332,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-73-caption-origin-marks.tex"
+    },
+    {
+      "id": "C-74",
+      "reviewer": "2",
+      "requirement": "Two different standard deviations in one manuscript, undisclosed — needs an author decision, nothing changed yet. Found in a pre-submission numeric consistency audit (intake/pending/pre-submission_numeric_consistency_audit_2026-11-01.md). Recomputing tab:consolidated_simulation_metrics from experiments/simulation/ reproduces all 12 cells exactly — but only with the population SD (÷n); with the sample SD every cell is ~3.5 % larger, the ratio being sqrt(14/15) in every one. tab:fsm_comparison is also population (verified: Inclined Slope/Neural 7.160), while tab:inspection_metrics is sample SD and is the only one that says so (\"mean ± sample SD\", verified: T_task 12.33→12.3). So two conventions coexist and two of the three captions disclose neither. Matters most where n is small, since the factor is sqrt(n/(n−1)): the n=3 row tab:fsm_comparison Inclined Slope/Neural would go 6.751 ± 7.160 → ± 8.769 (+22.5 %); means do not move at all. Relevant because Reviewer 2 opened with a sample-size objection (item 1) and R3b-05 asked for \"statistical rules for experimental samples\" in captions, which only tab:inspection_metrics provides. Options in the doc: (1) disclose and change nothing, (2) unify on sample SD (recommended if there is time — it is what a reader assumes), (3) unify on population SD. Also clean in the same audit, no action needed: every abstract and conclusions figure traces to the body and means the same there (the lone \"2.5\" is \"2.5D maps\", not a measurement). Not checked: tab:mode_steady_state_energy and the physical tables.",
+      "target": "results.tex (tab:consolidated_simulation_metrics, tab:fsm_comparison captions/values)",
+      "dataSource": "experiments/simulation/, experiments/R3-05-inspection/",
+      "category": "Métricas",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "pending",
+      "patchFile": "—"
     }
   ]
 }
