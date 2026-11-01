@@ -52,7 +52,7 @@ def build_graph_imu(csv_path: str, output_path: str, title_suffix: str) -> None:
     ax.set_yticks([0.5, 1.5, 2.5])
     ax.set_yticklabels([ROW_LABELS_F05[r] for r in ROW_ORDER])  # F-05: N0/N1/N2 notation added
     ax.set_xlabel("Time (s)")
-    ax.set_title(f"MLP output states: Flat ($N_0$) / Inclined ($N_1$) / Stuck ($N_2$) --{title_suffix}")
+    ax.set_title(f"MLP output states: Flat ($N_0$) / Inclined ($N_1$) / Stuck ($N_2$) \u2014{title_suffix}")
     fig.tight_layout()
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     fig.savefig(output_path, dpi=DPI)
@@ -85,7 +85,13 @@ def build_neu_imu(csv_path: str, output_path: str, group_letters: dict[str, str]
     group_letters = group_letters or {}
     locomotion_panels = [p for p in panels if p.startswith("Locomotion")]
     decision_panels = [p for p in panels if p.startswith("Decision")]
-    fig, axes_arr = plt.subplots(len(panels), 1, figsize=(8, 2.5 * len(panels)))
+    # R3b-04 batch 1: a fixed 2.5 in per panel made the y labels of a crowded panel overlap
+    # (Locomotion_1 stacks 11 neurons, X3..X13, in the same height a 3-neuron panel gets). Height
+    # now follows each panel's neuron count, with a floor so a small panel stays readable too.
+    counts = [max(len(df[df.panel == p]["neuron"].unique()), 3) for p in panels]
+    heights = [0.26 * c + 1.0 for c in counts]
+    fig, axes_arr = plt.subplots(len(panels), 1, figsize=(8, sum(heights)),
+                                 gridspec_kw={"height_ratios": heights})
     axes = list(np.atleast_1d(axes_arr))
     for ax, p in zip(axes, panels):
         sub = df[df.panel == p]
@@ -111,20 +117,18 @@ def build_neu_imu(csv_path: str, output_path: str, group_letters: dict[str, str]
     # reserves extra vertical space for group_letters (see R02-01-05 §0ter: this collision was
     # found and fixed while restoring the a)/b) letters).
     bottom = 0.08 if group_letters else 0.0
-    h_pad = 6.5 if group_letters else 3.5  # extra room for the letter *and* the next group's
+    h_pad = 6.5  # extra room for the letter *and* the next group's
     # title to both fit in the gap between the locomotion group's last xlabel and the decision
     # group's first title.
     fig.tight_layout(rect=(0, bottom, 1, 0.94), h_pad=h_pad)
-    if group_letters:
-        if locomotion_axes:
-            _place_group_title_above(fig, locomotion_axes[0], "Locomotion Module")
-        if decision_axes:
-            _place_group_title_above(fig, decision_axes[0], "Gait Decision Module")
-    else:
-        # Original fixed positions, kept byte-for-byte unchanged for the no-letters, full-4-panel
-        # case (the already-published NEU_IMU_real/NEU_IMU2_real in __main__ below use this path).
-        fig.text(0.5, 0.975, "Locomotion Module", ha="center", fontsize=11)
-        fig.text(0.5, 0.475, "Gait Decision Module", ha="center", fontsize=11)
+    # R3b-04 batch 1: both paths now anchor the group titles to each group's first rendered panel
+    # title. The no-letters path used to hardcode y=0.975 and y=0.475, which only lined up with the
+    # old fixed-height 4-panel layout: once panel heights follow their neuron count (and once the
+    # X17 panel is dropped), 0.475 lands inside the "Decision 1" panel instead of above it.
+    if locomotion_axes:
+        _place_group_title_above(fig, locomotion_axes[0], "Locomotion Module")
+    if decision_axes:
+        _place_group_title_above(fig, decision_axes[0], "Gait Decision Module")
     # Letter goes below each group's *last* axes' "Time (s)" label, not just below the axes box
     # itself.
     if "Locomotion_1" in group_letters and locomotion_axes:
@@ -233,8 +237,16 @@ if __name__ == "__main__":
 
     build_graph_imu(f"{vec}/graph_imu_real.csv", f"{out}/GRAPH_IMU_real.png", " Rugged Terrain (Physical)")
     build_graph_imu(f"{vec}/graph_imu2_real.csv", f"{out}/GRAPH_IMU2_real.png", " Inclined Slope (Physical)")
-    build_neu_imu(f"{vec}/neu_imu_real.csv", f"{out}/NEU_IMU_real.png")
-    build_neu_imu(f"{vec}/neu_imu2_real.csv", f"{out}/NEU_IMU2_real.png")
+    # R3b-04 batch 1: drop the "Locomotion_2" (X17) panel here too. C-53 already dropped it from the
+    # simulation twins for carrying no interpretable temporal information, and keeping it only on the
+    # physical side is exactly the sim-vs-physical inconsistency Reviewer 3 item 4 is about. In these
+    # two CSVs X17 is flat at ~0 for 729 of its 731 samples; the only two samples above 0.5 are the
+    # very first and the very last of the record (t=0.0 and t=109.36 / t=104.29), i.e. an edge artifact
+    # of the capture, not activity. Rendered, that panel is simply blank, which reads as a broken
+    # figure. Pass the default 4-panel list back here to restore it.
+    three = ["Locomotion_1", "Decision_1", "Decision_2"]
+    build_neu_imu(f"{vec}/neu_imu_real.csv", f"{out}/NEU_IMU_real.png", panels=three)
+    build_neu_imu(f"{vec}/neu_imu2_real.csv", f"{out}/NEU_IMU2_real.png", panels=three)
     build_terrain_latencies(f"{vec}/terrain_latencies.csv", f"{out}/FigReal_Terrain_Latencies_4Panels.png")
 
     # group_letters restores the a)/b)/c)/d) annotations results.tex cites by letter

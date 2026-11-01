@@ -1,0 +1,60 @@
+% Patch record for C-70 -- R3b-04 batch 1: typeface unification (simulation vs physical) and the
+% defects that the regeneration exposed. Applied 2026-11-01. No sections/*.tex text changed: this
+% row only replaces six assets. Captions ("simulation" vs "physical trials") are the LAST step of
+% R3b-04 and are not in this row.
+%
+% Reviewer 3, item 4 (verbatim): "Format styles are inconsistent between simulation and real-robot
+% plots. Unify font and legend styles, and mark clearly whether each plot comes from simulation or
+% physical trials in captions."
+%
+% ROOT CAUSE OF THE SANS-SERIF FIGURES
+% Not a missing style call. `experiments/_plotting/style.py` applies the shared style at import time
+% and `imu_terrain_real.py` imports it, so running the builder today already yields serif. The four
+% physical IMU PNGs in assets/ simply predated style.py and had never been regenerated -- the
+% diagnosis doc listed this as an inference; it is now confirmed, because re-running the builder
+% unchanged altered exactly those four files and left the other three it also writes
+% (FigReal_Terrain_Latencies_4Panels, NEU_EST_UNIG_real, NEU_EST_MUL_real) byte-identical.
+%
+% PROMOTED ASSETS (6, all via scripts/promote_figure.sh --force; file names unchanged, so no
+% \includegraphics in sections/*.tex needed editing)
+%   from experiments/N-02-physical-figure-regeneration/output/:
+%     NEU_IMU_real.png, NEU_IMU2_real.png, GRAPH_IMU_real.png, GRAPH_IMU2_real.png
+%   from experiments/N-01-simulation-figure-regeneration/output/:
+%     NEU_IMU.png, NEU_IMU2.png
+%
+% BUILDER CHANGES (experiments/_plotting/builders/imu_terrain_real.py)
+% 1) Panel height now follows each panel's neuron count --
+%    `heights = [0.26 * max(n_neurons, 3) + 1.0]`, passed as gridspec height_ratios, replacing a flat
+%    2.5 in per panel. The old layout gave an 11-neuron panel (Locomotion_1, X3..X13) the same height
+%    as a 3-neuron one, so its y labels overlapped into an unreadable block -- visible in the old
+%    assets/NEU_IMU.png and listed in the diagnosis under "Real defects". Labels are legible now at
+%    the style's 10 pt without shrinking the font.
+% 2) Group titles ("Locomotion Module" / "Gait Decision Module") now always go through
+%    `_place_group_title_above`, which anchors them to the group's first rendered panel title. The
+%    no-letters path used to hardcode y=0.975 and y=0.475; those constants only matched the old
+%    fixed-height 4-panel layout, and with the new heights 0.475 landed inside the "Decision 1"
+%    panel. Both code paths now share one positioning rule.
+% 3) The literal "--" in the GRAPH_IMU title is now a real em dash (U+2014), with a space on each
+%    side. Listed in the diagnosis as in-image typography to clean up.
+%
+% THE X17 PANEL -- this answers open question (b) of the diagnosis
+% The diagnosis asked what NEU_IMU2_real's "Locomotion 2 / X17" panel should show, since it renders
+% blank. Checked against the vectorized CSVs the builder reads: in BOTH neu_imu_real.csv and
+% neu_imu2_real.csv, X17 is flat at ~0 for 729 of 731 samples, and the only two samples above 0.5 are
+% the FIRST and the LAST of the record (t=0.0 and t=109.36; t=0.0 and t=104.29). That is an edge
+% artifact of the capture, not neural activity, and it renders as two ~1 px lines at the plot borders
+% -- hence a panel that looks empty.
+% The simulation twins already dropped this panel under C-53, for the related reason that X17 there is
+% tonically active near-constant ~0.5 and carries no interpretable temporal variation. Keeping the
+% panel only on the physical side was therefore itself a simulation-vs-physical inconsistency, i.e.
+% exactly what Reviewer 3 item 4 is about. Both physical figures now pass
+% panels=["Locomotion_1", "Decision_1", "Decision_2"], matching the simulation call sites.
+% Reversible in one argument: pass the default 4-panel list to restore it.
+%
+% KNOWN, NOT FIXED HERE (batch 2+)
+% - Effective font size in the compiled PDF. These figures are authored at 8 in wide and placed at
+%   0.5\textwidth, so 10 pt text is scaled down well below 10 pt on the page. Fixing it properly means
+%   choosing an authoring width per figure that matches its final printed width, across all builders
+%   -- a bigger change than this row, and the diagnosis already flags it ("effective size in the PDF"
+%   ranging ~3.4 pt to ~13 pt).
+% - The in-image titles that duplicate the caption, and the remaining palette/jargon items.
