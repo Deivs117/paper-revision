@@ -87,13 +87,16 @@ def build_f03_fused_panel(fig5_csv: str, fig6_csv: str, output_path: str) -> Non
     for i, m in enumerate(metrics):
         vals = [f5[(f5.classifier == c) & (f5.metric == m)]["value"].iloc[0] for c in classifiers]
         axes[0].bar(x + (i - 1.5) * width, vals, width, label=m, color=metric_colors[m])
-    axes[0].set_xticks(x); axes[0].set_xticklabels(classifiers, rotation=20, ha="right", fontsize=7)
+    axes[0].set_xticks(x); axes[0].set_xticklabels(classifiers, rotation=20, ha="right", fontsize=9)
     axes[0].set_ylabel("Score (5-fold CV mean)")
-    axes[0].set_ylim(0, 1.15)  # headroom for the legend so it doesn't sit on top of the bars
+    axes[0].set_ylim(0, 1.35)  # headroom for the legend so it doesn't sit on top of the bars
+    # R3b-04 batch 2: 6.5 pt was the smallest text in the manuscript. At a readable size a
+    # single 4-column row is wider than the panel and spills over the y-axis ticks, so the
+    # legend is now 2x2 with extra headroom above the bars.
     # 2026-09-02 audit fix: default-placed legend ("best" via no loc arg) landed inside the
     # Random Forest bars, indistinguishable from the bar fills it was labeling (flagged in the
     # pixel-level legend/text-occlusion audit). Moved above the axes, outside all bars.
-    axes[0].legend(loc="upper center", bbox_to_anchor=(0.5, 1.0), ncol=4, fontsize=6.5, frameon=False)
+    axes[0].legend(loc="upper center", bbox_to_anchor=(0.5, 1.0), ncol=2, fontsize=9, frameon=False)
     axes[0].set_title("(a) Classification metrics")
 
     # (b) inference latency, log scale

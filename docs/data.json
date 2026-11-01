@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-01T21:58:06+00:00",
-  "progressLastCommit": "2026-10-31T15:11:35-05:00",
+  "generatedAt": "2026-11-01T22:20:46+00:00",
+  "progressLastCommit": "2026-11-01T16:58:06-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1293,6 +1293,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-70-r3b04-batch1-typeface.tex"
+    },
+    {
+      "id": "C-71",
+      "reviewer": "3",
+      "requirement": "R3b-04 batch 2 — in-figure legibility defects. 7 assets regenerated and promoted, no sections/.tex change. fig2__micro (×4): panel B title Chasis→Chassis; panel B legend was pinned to lower right, exactly where the dashed Roll RMS curve settles, so in fig2_Obstacle the data struck through the legend text — now best; panel A legend 8 pt → the style's 10. GRAPH_IMU/GRAPH_IMU2: the U_σaz threshold annotation sat where the σaz trace crosses the threshold and was struck through by it — kept at the right edge (the left is the legend's) with an opaque white backing, so the trace passes behind it; same backing for the legend, which the horizontal threshold line crossed; two literal --- → em dashes; legend 8 pt → 10; removed the dashed grid (the only figure still drawing one against axes.grid False); tab10 blue/orange → the shared Okabe-Ito aliases. fig_classifier_tradeoff_fused: panel (a) legend 6.5 pt (smallest text in the manuscript) and x ticks 7 pt → 9 pt, legend re-laid as 2×2 with headroom since a readable 4-column row overflows the panel. Data verified unchanged against every replaced asset. Trap recorded for whoever regenerates next: the fig2_*_micro come from experiments/R3-04-noise-robustness/data, as that experiment's README documents — regenerating them with generate_all_simulation.py's default root silently produces different curves. Deferred to the next batch: the ECDF x unit and y origin, fig_stability_phases suptitle and CoM marker, the ablation p-label spacing, remaining palette collisions, and in-image titles duplicating captions.",
+      "target": "assets (7 figures), builders/micro_dynamics.py, builders/imu_dual_axis.py, builders/classifier_suite.py",
+      "dataSource": "experiments/R3-04-noise-robustness/, experiments/N-01-simulation-figure-regeneration/, experiments/N-02-physical-figure-regeneration/",
+      "category": "Pruebas",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-71-r3b04-batch2-defects.tex"
     }
   ]
 }
