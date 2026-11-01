@@ -1,0 +1,52 @@
+% Patch record for C-73 -- R3b-04, final step: mark every figure/table caption as simulation,
+% physical or offline-dataset. Applied 2026-11-01. This closes the second half of Reviewer 3's
+% item 4; the first half (unify font and legend styles) was C-70/C-71/C-72.
+%
+% Reviewer 3, item 4 (verbatim): "Format styles are inconsistent between simulation and real-robot
+% plots. Unify font and legend styles, and mark clearly whether each plot comes from simulation or
+% physical trials IN CAPTIONS."
+%
+% SCOPE: top-level captions only, 16 of them. Audited all 86 captioned floats in results.tex:
+% 70 already stated their origin ("Real-world ... Scenario", "in simulation", "in the real robot",
+% "in real test", ...). Subcaptions were deliberately left alone -- they inherit the parent
+% figure's caption, and repeating "Simulation data." inside each sub-panel would be noise, not
+% clarity. After this patch zero top-level captions are unmarked.
+%
+% WORDING: reuses the phrasing already in the manuscript from R3b-05 ("Simulation data (no
+% physical battery)" in tab:inspection_metrics, "Simulation data; same sampling rule as ..." in
+% fig:inspection_dfinal_scatter), so the new marks read as the same convention rather than a new
+% one. All inside \revblue{}.
+%
+% Simulation data. (13)
+%   fig:appetitive_micro, fig:aversive_micro, fig:obstacle_micro, fig:complex_micro,
+%   tab:consolidated_simulation_metrics, fig:noise_robustness_extra_combined,
+%   fig:ablation_combined, fig:variable_topo_metrics, fig:stability_phases,
+%   fig:transition_phases, fig:attempts_vs_noise_level, fig:mode_timeline_complex,
+%   fig:mode_timeline_inspection
+%
+% Physical-robot data. (1)
+%   tab:terrain_sequence  -- the six-frame compound-terrain run.
+%
+% Offline evaluation on the logged IMU dataset, not a locomotion trial. (2)
+%   fig:mlp_eval_grid, fig:classifier_tradeoff
+%   These two are neither a simulation run nor a hardware trial: they evaluate the terrain
+%   classifier offline on the 600-sample IMU dataset (stratified 80/20 split + 5-fold CV).
+%   Calling either "simulation" or "physical" would have been wrong, so they say what they are.
+%   NOTE FOR THE AUTHOR: the prose does not say whether that IMU dataset was recorded on the
+%   physical robot or in simulation. If you know, the mark can be made more specific.
+%
+% EVIDENCE for the two cases that were not obvious from the caption alone:
+%   fig:stability_phases  -- the prose above it says the metrics are "computed frame-by-frame from
+%                            the foot-contact positions logged in simulation".
+%   fig:transition_phases -- its own table's caption says "single continuous simulation run".
+%
+% ALSO CHECKED, NO CHANGE NEEDED: results.tex ~l.807 still describes the physical track as
+% combining "a double-ascent ramp, a horizontal elevated plane, a controlled descent ramp and a
+% rough terrain section". This was left in PROGRESS.md as a loose end of C-63, but re-reading it in
+% context it is correct: it describes the track's four segments, which is not what C-63 changed
+% (C-63 fixed WHERE the mode switch happens -- during the ascent, not on the plane).
+%
+% R3b-04 moves to `applied` with this row: font/legend unification (C-70/71/72) and the caption
+% origin marks (here) are both of what item 4 asks for. The remaining palette work from the
+% diagnosis (Tier 2: the orange-variance collision, blue/orange reuse) is a refinement beyond the
+% item's wording and is not holding the row open.
