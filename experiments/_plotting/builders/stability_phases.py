@@ -106,7 +106,7 @@ def build(csv_path: str, output_path: str) -> None:
     handles, labels = axes.flat[0].get_legend_handles_labels()
     fig.legend(handles, labels, loc="lower center", ncol=len(labels), fontsize=9,
               bbox_to_anchor=(0.5, 0.0))
-    fig.suptitle("PETER Quadruped --- Static Stability Analysis\nMcGhee-Frank (1968) Stability Margin",
+    fig.suptitle("PETER Quadruped\u2014Static Stability Analysis\nMcGhee-Frank (1968) Stability Margin",
                 fontsize=13, fontweight="bold")
     fig.tight_layout(rect=(0, 0.06, 1, 0.93))
     os.makedirs(os.path.dirname(output_path), exist_ok=True)

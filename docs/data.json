@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-01T22:20:46+00:00",
-  "progressLastCommit": "2026-11-01T16:58:06-05:00",
+  "generatedAt": "2026-11-01T22:29:16+00:00",
+  "progressLastCommit": "2026-11-01T17:20:46-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1306,6 +1306,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-71-r3b04-batch2-defects.tex"
+    },
+    {
+      "id": "C-72",
+      "reviewer": "3",
+      "requirement": "R3b-04 batch 3 — one unit across sibling figures, jargon out of the images, last occlusions. 11 assets, no sections/*.tex change. Physical ECDFs: the x unit was picked per scenario (use_ms = x[-1] < 1.0), so four sibling figures shipped in two different units (ms for Aversive/Obstacle, s for Appetitive/Complex) — all four now in ms (delays span 0.4 ms to 13.2 s; ms keeps every axis readable without a log scale); y axis now spans 0–1 instead of starting at 0.25–0.33; (N=…) dropped from the in-image title (it duplicates the caption R2b-05 wrote). Internal trial folder names (StimuliB_t01) were drawn in Plot_2's title and Plot_3's suptitle — removed. B. Chasis→Chassis, the same typo batch 2 fixed in the simulation builder. Energy figure: footnote named our log columns (current_A, robot_cmd) — reworded, 7→9 pt (NiMH stays, it is a real hardware spec R3b-05 asked for). Ablation stability: each panel title repeated its own y-label and the tallest bar's p label touched its (deg) descenders — redundant title dropped, margins(y=0.18) added, p and tick labels 8→9 pt. fig_stability_phases: literal ---→em dash (figsize deliberately untouched per the author's ruling that page sizing is the journal's production stage). Opens nothing new: answers question (a) with data — experiments/real/ has FOUR Appetitive trials with a valid delay (0.876, 0.902, 1.349, 13.200 s) vs three in every other scenario, so the caption's \"three hardware replicates\" does not match, and the fourth is now plainly visible as a 13.2 s step. Author's call: caption becomes four, or t04 is excluded for a written reason and dropped from the figure too.",
+      "target": "assets (11 figures), builders/real_plot_suite.py, builders/energy_transition.py, builders/stability_phases.py, R3-02-wta-vs-threshold/scripts/plot_ablation.py",
+      "dataSource": "experiments/real/, experiments/N-01-…, experiments/N-02-…, experiments/R3-02-…",
+      "category": "Pruebas",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-72-r3b04-batch3-units-jargon.tex"
     }
   ]
 }

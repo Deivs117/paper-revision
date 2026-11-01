@@ -101,11 +101,16 @@ def plot_complex_stability(rows):
         for x, m in zip(xs, VARIANT_ORDER):
             p = sub[m]["p_value_vs_full"]
             if p:
-                ax.text(x, heights[x] + errs[1][x] + 0.03, fmt_p(p), ha="center", va="bottom", fontsize=8)
+                ax.text(x, heights[x] + errs[1][x] + 0.03, fmt_p(p), ha="center", va="bottom", fontsize=9)
         ax.set_xticks(xs)
-        ax.set_xticklabels([VARIANT_LABEL[m] for m in VARIANT_ORDER], fontsize=8)
-        ax.set_title(metric_label[metric], fontsize=10)
+        ax.set_xticklabels([VARIANT_LABEL[m] for m in VARIANT_ORDER], fontsize=9)
+        # R3b-04 batch 3: the panel title used to repeat the y-label verbatim ("Roll RMS (deg)"
+        # twice), and the tallest bar's p label was pressed right against it -- zoomed, the "g"
+        # descender of "(deg)" touched the "p=" text. Dropping the redundant title fixes both at
+        # once; the y-label already names the metric. margins() then keeps the p labels clear of
+        # the top spine.
         ax.set_ylabel(metric_label[metric])
+        ax.margins(y=0.18)
     fig.suptitle("Attitude stability under conflict (Complex Navigation), Mann-Whitney p vs. full", fontsize=10)
     fig.tight_layout()
     out = os.path.join(OUT_DIR, "fig_ablation_complex_stability.png")
