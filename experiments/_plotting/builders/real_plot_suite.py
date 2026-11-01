@@ -93,13 +93,23 @@ def build_ecdf(real_root: str, output_dir: str) -> dict:
         fig, ax = plt.subplots(figsize=(4.6, 3.6))
         if delays:
             x = np.sort(delays)
-            use_ms = x[-1] < 1.0
-            x_plot = x * 1000.0 if use_ms else x
+            # R3b-04 batch 3: the unit used to be picked per scenario (`use_ms = x[-1] < 1.0`), so
+            # these four sibling figures shipped with two different x units -- ms for
+            # Aversive/Obstacle, s for Appetitive/Complex. That is precisely the simulation-vs-real
+            # inconsistency Reviewer 3 item 4 is about, only between panels of the same suite.
+            # Fixed to ms for all four: the delays span 0.4 ms to 13.2 s, and milliseconds keep
+            # every scenario's numbers readable without a log axis.
+            x_plot = x * 1000.0
             y = np.arange(1, len(x) + 1) / len(x)
             ax.step(x_plot, y, where="post", color=SCENARIO_COLORS[scenario], linewidth=2)
-        ax.set_xlabel("Switching delay (ms)" if delays and use_ms else "Switching delay (s)")
+        # An ECDF runs from 0 to 1 by definition; autoscaling started these axes at 0.25-0.33
+        # (1/n of the first step), which reads as a truncated axis.
+        ax.set_ylim(0, 1.02)
+        ax.set_xlabel("Switching delay (ms)")
         ax.set_ylabel("ECDF")
-        ax.set_title(f"{scenario} — Switching Delay ECDF (N={len(delays)})")
+        # N belongs in the caption (R2b-05 put it there); repeating it inside the image is the
+        # duplicated-title problem the diagnosis flags.
+        ax.set_title(f"{scenario}\u2014Switching Delay ECDF")
         fig.tight_layout()
         out = os.path.join(output_dir, f"{scenario}_Real_Plot_1_Switching_Delay_ECDF.png")
         fig.savefig(out, dpi=DPI)
@@ -122,7 +132,7 @@ def build_bg_dynamics(real_root: str, output_dir: str) -> None:
         ax.plot(t, df["firing_variance"], color=SCENARIO_COLORS[scenario], linewidth=1.2)
         ax.set_xlabel("Time (s)")
         ax.set_ylabel("Firing variance")
-        ax.set_title(f"{scenario} — Basal Ganglia Dynamics (trial {os.path.basename(dirs[0])})")
+        ax.set_title(f"{scenario}\u2014Basal Ganglia Dynamics")
         fig.tight_layout()
         out = os.path.join(output_dir, f"{scenario}_Real_Plot_2_Basal_Ganglia_Dynamics.png")
         fig.savefig(out, dpi=DPI)
@@ -188,7 +198,7 @@ def build_rms_dynamics(real_root: str, output_dir: str) -> None:
                   label="Roll RMS")
         ax_b.set_xlabel("Experimental Time (s)")
         ax_b.set_ylabel("Attitude Space RMS (deg)")
-        ax_b.set_title("B. Chasis Kinematic Attitude Stabilization Space")
+        ax_b.set_title("B. Chassis Kinematic Attitude Stabilization Space")
         ax_b.legend(loc="lower right")
 
         # ROUND-3 FIX (2026-08-27, per n02_audit_notes, Obstacle specifically): panel B's
@@ -201,7 +211,9 @@ def build_rms_dynamics(real_root: str, output_dir: str) -> None:
         ax_a.set_xlim(ax_b.get_xlim())
 
         fig.tight_layout(rect=(0, 0, 1, 0.96))
-        fig.suptitle(f"{scenario} (trial {os.path.basename(trial_dir)})", fontsize=10)
+        # The trial folder name (e.g. "StimuliB_t01") is our own bookkeeping, meaningless to a
+        # reader; which trial is shown is stated in the caption instead.
+        fig.suptitle(scenario)
         out = os.path.join(output_dir, f"{scenario}_Real_Plot_3_Temporal_Dynamics_PitchRollRMS.png")
         fig.savefig(out, dpi=DPI)
         plt.close(fig)

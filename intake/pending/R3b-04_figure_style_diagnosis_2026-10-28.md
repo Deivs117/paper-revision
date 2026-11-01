@@ -134,3 +134,30 @@ simulation: `experiments/simulation/`, vectorized: `experiments/_plotting/vector
 5. **Batch 5 — `RES_*` labels** (after the pilot is approved) and resolution/UI decisions.
 6. **Last:** captions "simulation vs physical" in `results.tex` (needs R2b-05 merged, due Fri 2026-10-30); compile the PDF; only then the Overleaf push (author, token).
 Blocking questions for the author: (a) Appetitive physical N = 3 or 4; (b) what `NEU_IMU2_real` "Locomotion 2 / X17" must show; (c) approve the `RES_*` pilot.
+
+---
+
+# DECISIONS 2026-11-01 (author, after re-reading the verbatim letter)
+
+## (c) The `RES_*` label pilot — CLOSED, will NOT be done
+Checked against the verbatim item 4: *"Format styles are inconsistent between simulation and real-robot **plots**.
+Unify font and legend styles, and mark clearly whether each **plot** comes from simulation or physical trials in
+captions."* It says "plots" twice and asks for font **and legend** styles; a photograph has no legend. Re-read all
+five Reviewer 3 items and all six Reviewer 2 items: **none mentions photographs, montages or image labels.** The
+numerals on `RES_IMU2.0_real` are already legible (black on white wall / light plywood), and repainting them would
+mean covering photo pixels for a purely cosmetic gain, with a crisp vector numeral sitting on a 789 px image.
+So: no white-box/serif relabelling, no `experiments/R3b-04-res-labels/`, no pilot. Do not reopen this without a new
+reviewer request.
+**Still owed, and unaffected by the above:** the same item 4 asks to mark simulation vs physical *in the captions*.
+That applies to every figure, photographs included, and is the last step of R3b-04 — it is caption text in
+`results.tex`, never a change to an image.
+**Noted, separate issue, not a style one:** `RES_IMU2.0_real` is 789x297 px, the lowest-resolution asset of the set
+(its siblings are 1348, 1626, 2104 and 5943 px wide). Only fixable from the original photo/video, which the author
+would have to locate. No reviewer has raised it.
+
+## Figure sizing on the page — OUT OF SCOPE for us (author, 2026-11-01)
+The "effective size in the PDF" rows of this diagnosis (figures authored at 8 in and placed at `0.5\textwidth`, so
+10 pt renders smaller on the page) are **not our call**: final figure placement and scaling belong to the journal's
+production stage. Our obligation is to supply figures whose own typography is legible and consistent. Do not spend
+time re-deriving authoring widths per figure; do keep fixing in-figure typography (font family, legend sizes,
+overlaps, occlusions), which is what item 4 actually asks for.

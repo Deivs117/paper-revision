@@ -1,0 +1,61 @@
+% Patch record for C-71 -- R3b-04 batch 2: in-figure legibility defects (occlusions, legend sizes,
+% literal "---", stray grid, tab10 colors). Applied 2026-11-01. No sections/*.tex text changed:
+% this row only replaces 7 assets, all under their existing file names.
+%
+% Reviewer 3, item 4: "Format styles are inconsistent between simulation and real-robot plots.
+% Unify font and legend styles [...]". These are the defects where the figure's own typography was
+% either inconsistent with the shared style or physically unreadable.
+%
+% PROMOTED ASSETS (7, via scripts/promote_figure.sh --force)
+%   fig2_Appetitive/Aversive/Obstacle/Complex_micro_test_001_SUCCESS.png  (micro_dynamics.py)
+%   GRAPH_IMU.png, GRAPH_IMU2.png                                        (imu_dual_axis.py)
+%   fig_classifier_tradeoff_fused.png                                    (classifier_suite.py)
+%
+% micro_dynamics.py (the four fig2_*_micro)
+% - Panel B title said "Chasis"; now "Chassis". The module docstring quoted the typo as design
+%   intent ("same panel titles as the published figure"), so it carries a note not to restore it.
+% - Panel B's legend was pinned to loc="lower right", which is exactly where the dashed Roll RMS
+%   curve settles -- in fig2_Obstacle the data line ran straight through the legend text. Now
+%   loc="best", the same fix panel A received in the 2026-09-02 audit for the same reason.
+% - Panel A's legend hardcoded 8 pt against the shared style's 10 pt.
+%
+% imu_dual_axis.py (GRAPH_IMU, GRAPH_IMU2)
+% - The "U_sigma_az threshold" annotation sat at x = 0.98 * t_max, exactly where the sigma_az trace
+%   oscillates across the threshold, so the curve struck through the text. It stays at the right
+%   edge (the left one is the legend's) but now has an opaque white backing, so the trace passes
+%   behind the label instead of through it, whatever the data does. Moving it to the left edge was
+%   tried first and rejected: it then collided with the legend.
+% - The legend needed the same treatment, for the same reason: the horizontal threshold line at
+%   y=3.7 runs through its text. The shared style's frameon=False is right for figures with nothing
+%   behind the legend; this one has a line there, so it gets an opaque backing.
+% - Two literal "---" strings (the title and the sigma_az legend label) are now real em dashes.
+% - Legend was 8 pt against the style's 10.
+% - ax1.grid(alpha=0.3, linestyle="--") removed: publication.mplstyle sets axes.grid False, and
+%   this was the only figure in the set still drawing a dashed grid.
+% - Hardcoded tab10 "#1f77b4"/"#ff7f0e" replaced by the shared COLOR_BLUE/COLOR_ORANGE
+%   (Okabe-Ito) aliases, same roles. This was the one palette item cheap enough to take here; the
+%   rest stay in the palette batch.
+%
+% classifier_suite.py (fig_classifier_tradeoff_fused)
+% - Panel (a)'s legend was 6.5 pt, the smallest text in the manuscript, and its x tick labels 7 pt.
+%   Both now 9 pt. At a readable size a single 4-column row is wider than the panel and spilled
+%   over the y-axis ticks, so the legend is now 2x2 and ylim gained headroom (1.15 -> 1.35).
+%   9 pt rather than the style's 10 because 10 pt does not fit this panel's width.
+%
+% VERIFIED: DATA UNCHANGED
+% Every figure here was regenerated from the same CSVs it already used, and each was compared
+% against the asset it replaces. One real scare, worth recording: the four fig2_*_micro were first
+% regenerated with --simulation-root experiments/simulation (the default of
+% generate_all_simulation.py) and came out with completely different curves and time ranges. The
+% published figures come from experiments/R3-04-noise-robustness/data, as that experiment's
+% README.md documents. Re-run with the documented root, the only differences are the style ones
+% above. Read the experiment's own README before regenerating anything in it.
+%
+% STILL OPEN IN THIS BATCH (moved to the next one, nothing blocking)
+% - The physical ECDF Plot_1 x unit (s for Appetitive/Complex, ms for Aversive/Obstacle -- the
+%   use_ms flag in real_plot_suite.py:96 picks per scenario) and its y axis starting at 0.25-0.3
+%   instead of 0.
+% - fig_stability_phases: literal "---" in the suptitle, CoM marker peeking at "SM=2.8 cm".
+% - fig_ablation_complex_stability: the p-value labels touch the "(deg)" descenders of the panel
+%   titles (a spacing issue, they do not overprint).
+% - The remaining palette collisions and the in-image titles that duplicate captions.

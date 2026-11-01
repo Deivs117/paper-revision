@@ -7,7 +7,9 @@ Preguntas 2/3):** these 4 figures never had a generator script (verified by exha
 them for the R3-04 noise-robustness dataset is a chance to bring them in line with the physical
 counterpart this pipeline already produces (`real_plot_suite.py::build_rms_dynamics()`), per the
 author's explicit request: same two-panel A/B structure, same fixed colors, same panel titles
-("A. Basal Ganglia Neural Response Dynamics" / "B. Chasis Kinematic Attitude Stabilization Space"),
+("A. Basal Ganglia Neural Response Dynamics" / "B. Chassis Kinematic Attitude Stabilization Space"
+-- panel B read "Chasis" until R3b-04 batch 2 fixed the typo; do not restore it in the name of
+fidelity to the published figure),
 and the same red/blue stimulus-in-view shading on panel A (Appetitive/Aversive/Complex only — NOT
 Obstacle, whose stimulus is green and doesn't fit the red/blue scheme; same rule the physical
 version uses, confirmed applicable here too since `metrics_raw.csv` has no `green_present` column
@@ -108,7 +110,7 @@ def build(simulation_root: str, output_dir: str) -> dict[str, str]:
             # scenarios that spike early (e.g. Appetitive peaks at t~1s, right under the legend
             # box) -- the legend text sat directly on top of the orange line. "best" lets
             # matplotlib place it clear of the plotted line data instead of a hardcoded corner.
-            ax_a.legend(fontsize=8, loc="best")
+            ax_a.legend(loc="best")
         ax_a.plot(t_a, raw["firing_variance"], color=FIRING_VARIANCE_COLOR, linewidth=1.5)
         ax_a.set_ylabel("Firing Variance $Var(z)$")
         ax_a.set_title("A. Basal Ganglia Neural Response Dynamics")
@@ -118,8 +120,12 @@ def build(simulation_root: str, output_dir: str) -> dict[str, str]:
                   label="Roll RMS")
         ax_b.set_xlabel("Experimental Time (s)")
         ax_b.set_ylabel("Attitude Space RMS (deg)")
-        ax_b.set_title("B. Chasis Kinematic Attitude Stabilization Space")
-        ax_b.legend(loc="lower right")
+        ax_b.set_title("B. Chassis Kinematic Attitude Stabilization Space")
+        # R3b-04 batch 2: "lower right" is where the dashed Roll RMS curve settles, so the
+        # data line ran straight through the legend text (Reviewer 3 item 4 -- verified in
+        # assets/fig2_Obstacle_micro_test_001_SUCCESS.png). Same reasoning as panel A above:
+        # let matplotlib place it clear of the plotted data instead of a hardcoded corner.
+        ax_b.legend(loc="best")
 
         # Same defensive NaN-lead-in guard real_plot_suite.py added for Obstacle (round 4):
         # sync panel A's x-range to panel B's autoscaled range in case either series starts with

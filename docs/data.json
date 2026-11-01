@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-01T21:58:06+00:00",
-  "progressLastCommit": "2026-10-31T15:11:35-05:00",
+  "generatedAt": "2026-11-01T22:44:25+00:00",
+  "progressLastCommit": "2026-11-01T17:29:16-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1122,8 +1122,8 @@
       "owner": [
         "Deivi"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/c-70-r3b04-batch1-typeface.tex, patches/c-71-r3b04-batch2-defects.tex, patches/c-72-r3b04-batch3-units-jargon.tex, patches/c-73-caption-origin-marks.tex"
     },
     {
       "id": "R3b-05",
@@ -1293,6 +1293,45 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-70-r3b04-batch1-typeface.tex"
+    },
+    {
+      "id": "C-71",
+      "reviewer": "3",
+      "requirement": "R3b-04 batch 2 — in-figure legibility defects. 7 assets regenerated and promoted, no sections/.tex change. fig2__micro (×4): panel B title Chasis→Chassis; panel B legend was pinned to lower right, exactly where the dashed Roll RMS curve settles, so in fig2_Obstacle the data struck through the legend text — now best; panel A legend 8 pt → the style's 10. GRAPH_IMU/GRAPH_IMU2: the U_σaz threshold annotation sat where the σaz trace crosses the threshold and was struck through by it — kept at the right edge (the left is the legend's) with an opaque white backing, so the trace passes behind it; same backing for the legend, which the horizontal threshold line crossed; two literal --- → em dashes; legend 8 pt → 10; removed the dashed grid (the only figure still drawing one against axes.grid False); tab10 blue/orange → the shared Okabe-Ito aliases. fig_classifier_tradeoff_fused: panel (a) legend 6.5 pt (smallest text in the manuscript) and x ticks 7 pt → 9 pt, legend re-laid as 2×2 with headroom since a readable 4-column row overflows the panel. Data verified unchanged against every replaced asset. Trap recorded for whoever regenerates next: the fig2_*_micro come from experiments/R3-04-noise-robustness/data, as that experiment's README documents — regenerating them with generate_all_simulation.py's default root silently produces different curves. Deferred to the next batch: the ECDF x unit and y origin, fig_stability_phases suptitle and CoM marker, the ablation p-label spacing, remaining palette collisions, and in-image titles duplicating captions.",
+      "target": "assets (7 figures), builders/micro_dynamics.py, builders/imu_dual_axis.py, builders/classifier_suite.py",
+      "dataSource": "experiments/R3-04-noise-robustness/, experiments/N-01-simulation-figure-regeneration/, experiments/N-02-physical-figure-regeneration/",
+      "category": "Pruebas",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-71-r3b04-batch2-defects.tex"
+    },
+    {
+      "id": "C-72",
+      "reviewer": "3",
+      "requirement": "R3b-04 batch 3 — one unit across sibling figures, jargon out of the images, last occlusions. 11 assets, no sections/*.tex change. Physical ECDFs: the x unit was picked per scenario (use_ms = x[-1] < 1.0), so four sibling figures shipped in two different units (ms for Aversive/Obstacle, s for Appetitive/Complex) — all four now in ms (delays span 0.4 ms to 13.2 s; ms keeps every axis readable without a log scale); y axis now spans 0–1 instead of starting at 0.25–0.33; (N=…) dropped from the in-image title (it duplicates the caption R2b-05 wrote). Internal trial folder names (StimuliB_t01) were drawn in Plot_2's title and Plot_3's suptitle — removed. B. Chasis→Chassis, the same typo batch 2 fixed in the simulation builder. Energy figure: footnote named our log columns (current_A, robot_cmd) — reworded, 7→9 pt (NiMH stays, it is a real hardware spec R3b-05 asked for). Ablation stability: each panel title repeated its own y-label and the tallest bar's p label touched its (deg) descenders — redundant title dropped, margins(y=0.18) added, p and tick labels 8→9 pt. fig_stability_phases: literal ---→em dash (figsize deliberately untouched per the author's ruling that page sizing is the journal's production stage). Opens nothing new: answers question (a) with data — experiments/real/ has FOUR Appetitive trials with a valid delay (0.876, 0.902, 1.349, 13.200 s) vs three in every other scenario, so the caption's \"three hardware replicates\" does not match, and the fourth is now plainly visible as a 13.2 s step. Author's call: caption becomes four, or t04 is excluded for a written reason and dropped from the figure too.",
+      "target": "assets (11 figures), builders/real_plot_suite.py, builders/energy_transition.py, builders/stability_phases.py, R3-02-wta-vs-threshold/scripts/plot_ablation.py",
+      "dataSource": "experiments/real/, experiments/N-01-…, experiments/N-02-…, experiments/R3-02-…",
+      "category": "Pruebas",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-72-r3b04-batch3-units-jargon.tex"
+    },
+    {
+      "id": "C-73",
+      "reviewer": "3",
+      "requirement": "R3b-04 final step — every caption states its origin. Closes the second half of item 4 (\"mark clearly whether each plot comes from simulation or physical trials in captions\"); the first half was C-70/C-71/C-72. Audited all 86 captioned floats of results.tex: 70 already stated their origin, 16 did not. Added, inside \\revblue{} and reusing the wording R3b-05 introduced: Simulation data. ×13 (appetitive/aversive/obstacle/complex_micro, tab:consolidated_simulation_metrics, noise_robustness_extra_combined, ablation_combined, variable_topo_metrics, stability_phases, transition_phases, attempts_vs_noise_level, mode_timeline_complex, mode_timeline_inspection); Physical-robot data. ×1 (tab:terrain_sequence); Offline evaluation on the logged IMU dataset, not a locomotion trial. ×2 (mlp_eval_grid, classifier_tradeoff) — ésas dos no son ni corrida de simulación ni ensayo físico, así que afirmar cualquiera de las dos habría sido falso. Subcaptions intactos a propósito: heredan del caption padre y repetir la marca por sub-panel es ruido. Cero captions principales sin marca. Dos casos no obvios resueltos leyendo la prosa, no adivinando: stability_phases (\"logged in simulation\") y transition_phases (\"single continuous simulation run\"). Abierto para el autor: la prosa nunca dice si el dataset IMU de 600 muestras se grabó en el robot o en simulación; si se sabe, esas 2 marcas se pueden afinar. Comprobado y sin cambio necesario: el \"horizontal elevated plane\" de results.tex ~l.807, anotado como cabo suelto de C-63, describe correctamente los segmentos de la pista (C-63 cambió dónde ocurre el switch, no el trazado).",
+      "target": "results.tex (16 captions principales)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-73-caption-origin-marks.tex"
     }
   ]
 }

@@ -66,7 +66,7 @@ The performance of the platform was evaluated under isolated sensory stimuli to 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.75\textwidth]{fig2_Appetitive_micro_test_001_SUCCESS.png}
-    \caption{Neural and kinematic response during a representative Appetitive Targeting trial at the unperturbed baseline (Combined Perturbation Level 0). \revblue{The trial shown is the first by index of the suite's $N=15$ trials (three per perturbation level), not selected by outcome.}}
+    \caption{Neural and kinematic response during a representative Appetitive Targeting trial at the unperturbed baseline (Combined Perturbation Level 0). \revblue{The trial shown is the first by index of the suite's $N=15$ trials (three per perturbation level), not selected by outcome.} \revblue{Simulation data.}}
     \label{fig:appetitive_micro}
 \end{figure}
 
@@ -75,7 +75,7 @@ The performance of the platform was evaluated under isolated sensory stimuli to 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.75\textwidth]{fig2_Aversive_micro_test_001_SUCCESS.png}
-    \caption{Trajectory deflection overdrive phase for a representative Aversive Escape trial at the unperturbed baseline (Combined Perturbation Level 0), showing the immediate computational response of the repulsive network blocks. \revblue{The trial shown is the first by index of the suite's $N=15$ trials (three per perturbation level), not selected by outcome.}}
+    \caption{Trajectory deflection overdrive phase for a representative Aversive Escape trial at the unperturbed baseline (Combined Perturbation Level 0), showing the immediate computational response of the repulsive network blocks. \revblue{The trial shown is the first by index of the suite's $N=15$ trials (three per perturbation level), not selected by outcome.} \revblue{Simulation data.}}
     \label{fig:aversive_micro}
 \end{figure}
 
@@ -84,7 +84,7 @@ The performance of the platform was evaluated under isolated sensory stimuli to 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.75\textwidth]{fig2_Obstacle_micro_test_001_SUCCESS.png}
-    \caption{Time-series synchronization for a representative Obstacle Evasion trial at the unperturbed baseline (Combined Perturbation Level 0), showcasing the sensory-locomotor coupling triggered by LiDAR proximity boundaries. \revblue{The trial shown is the first by index of the suite's $N=15$ trials (three per perturbation level), not selected by outcome.}}
+    \caption{Time-series synchronization for a representative Obstacle Evasion trial at the unperturbed baseline (Combined Perturbation Level 0), showcasing the sensory-locomotor coupling triggered by LiDAR proximity boundaries. \revblue{The trial shown is the first by index of the suite's $N=15$ trials (three per perturbation level), not selected by outcome.} \revblue{Simulation data.}}
     \label{fig:obstacle_micro}
 \end{figure}
 
@@ -121,7 +121,7 @@ The platform reaches the goal in 92~s, sequentially adjusting locomotion mode vi
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.75\textwidth]{fig2_Complex_micro_test_001_SUCCESS.png}
-    \caption{Temporal dynamics for a representative Complex Navigation trial at the unperturbed baseline (Combined Perturbation Level 0), demonstrating decision-making under conflicting sensory modalities. \revblue{The trial shown is the first by index of the suite's $N=15$ trials (three per perturbation level), not selected by outcome.}}
+    \caption{Temporal dynamics for a representative Complex Navigation trial at the unperturbed baseline (Combined Perturbation Level 0), demonstrating decision-making under conflicting sensory modalities. \revblue{The trial shown is the first by index of the suite's $N=15$ trials (three per perturbation level), not selected by outcome.} \revblue{Simulation data.}}
     \label{fig:complex_micro}
 \end{figure}
 
@@ -131,7 +131,7 @@ Table~\ref{tab:consolidated_simulation_metrics} consolidates completion-time and
 
 \begin{table}[htbp]
 \centering
-\caption{Consolidated Quantitative Performance Metrics.}
+\caption{Consolidated Quantitative Performance Metrics. \revblue{Simulation data.}}
 \label{tab:consolidated_simulation_metrics}
 % Definimos columnas centradas en X
 \begin{tabularx}{\textwidth}{l >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
@@ -173,7 +173,7 @@ Two further scenarios --- the Rugged Terrain course and the Inclined Slope, alre
         \caption{Camera-dropout evidence.}
         \label{fig:camera_dropout_evidence}
     \end{subfigure}
-    \caption{Combined-perturbation robustness battery\revblue{ (Section~\ref{ssec:NoiseRobustnessEval}). Experimental limitation: as in Figure~\ref{fig:noise_robustness_grid}, IMU drift, LiDAR range noise, and camera illumination distortion are injected jointly at every non-zero severity level, which precludes isolating each sensor's individual contribution to the results shown in panels (a)--(c); the IMU channel reflects cumulative random-walk drift only, with additive white noise held at zero.} (a) Trial outcome by scenario across all six suites, all severity levels pooled; each bar decomposes total attempts into successful trials retained for analysis and discarded failures by cause (timeout, tipover, crash) --- the Rugged Terrain suite accounts for the large majority of non-timeout failures (8 tipovers, 4 crashes out of 27 attempts), markedly more than any other suite. (b) Chassis Roll RMS and Pitch RMS versus Combined Perturbation Level (index $0$--$4$) for the Rugged Terrain and Inclined Slope suites, successful trials only; Roll RMS on Rugged Terrain remains within a $1.65^\circ$--$1.9^\circ$ band across all severity levels, Pitch RMS on the Inclined Slope ranges $2.3^\circ$--$5.7^\circ$ across the sweep (the perturbation index is left as an unconverted integer rather than a percentage, since no single percentage scale represents all three sensor modalities' differently-defined severity units). (c) Appetitive-stimulus detection fraction over time for a matched pair of Appetitive Targeting attempts under camera illumination distortion: a failed attempt (timeout) and its successful retry at the same severity level --- the failed attempt's detection fraction collapses to $\approx 0.01$ for the majority of the trial, while the successful retry sustains $\approx 0.99$ detection throughout.}
+    \caption{Combined-perturbation robustness battery\revblue{ (Section~\ref{ssec:NoiseRobustnessEval}). Experimental limitation: as in Figure~\ref{fig:noise_robustness_grid}, IMU drift, LiDAR range noise, and camera illumination distortion are injected jointly at every non-zero severity level, which precludes isolating each sensor's individual contribution to the results shown in panels (a)--(c); the IMU channel reflects cumulative random-walk drift only, with additive white noise held at zero.} (a) Trial outcome by scenario across all six suites, all severity levels pooled; each bar decomposes total attempts into successful trials retained for analysis and discarded failures by cause (timeout, tipover, crash) --- the Rugged Terrain suite accounts for the large majority of non-timeout failures (8 tipovers, 4 crashes out of 27 attempts), markedly more than any other suite. (b) Chassis Roll RMS and Pitch RMS versus Combined Perturbation Level (index $0$--$4$) for the Rugged Terrain and Inclined Slope suites, successful trials only; Roll RMS on Rugged Terrain remains within a $1.65^\circ$--$1.9^\circ$ band across all severity levels, Pitch RMS on the Inclined Slope ranges $2.3^\circ$--$5.7^\circ$ across the sweep (the perturbation index is left as an unconverted integer rather than a percentage, since no single percentage scale represents all three sensor modalities' differently-defined severity units). (c) Appetitive-stimulus detection fraction over time for a matched pair of Appetitive Targeting attempts under camera illumination distortion: a failed attempt (timeout) and its successful retry at the same severity level --- the failed attempt's detection fraction collapses to $\approx 0.01$ for the majority of the trial, while the successful retry sustains $\approx 0.99$ detection throughout. \revblue{Simulation data.}}
     \label{fig:noise_robustness_extra_combined}
 \end{figure*}
 
@@ -208,7 +208,7 @@ To isolate the contribution of the basal-ganglia arbitration network and compare
         \caption{Attitude stability (Roll/Pitch RMS)\revblue{: mean per variant, error bars show the 95\% confidence interval ($n=12$ trials/variant; Mann--Whitney $p$ vs.\ the intact circuit).}}
         \label{fig:ablation_complex_stability}
     \end{subfigure}
-    \caption{Basal-ganglia ablation study under real stimulus conflict (Complex Navigation scenario, $n=12$ trials/variant; Fisher's exact / Mann--Whitney $p$ vs.\ the intact circuit). \revblue{The four variants are: \emph{intact circuit} (control); \emph{no lateral inhibition} (cross-channel inhibitory terms zeroed); \emph{no STN/STR} (STN and STR layers removed, stimulus routed directly into GPe/GPi); and \emph{threshold only} (circuit replaced by a static fixed-priority threshold over the raw stimulus).} (a) Success rate: the two ablations that remove basal-ganglia mechanism itself collapse success rate significantly (\emph{no lateral inhibition}: $25.0\%$, $p<0.001$; \emph{no STN/STR}: $33.3\%$, $p=0.001$); replacing the circuit with static threshold logic degrades success more mildly and not significantly at this sample size (\emph{threshold only}: $83.3\%$, $p=0.478$). Under the no-conflict Appetitive Targeting scenario (not shown), all four variants perform statistically indistinguishably ($91.7$--$100\%$, $p=1.000$ for all three comparisons). (b) Attitude stability: Roll RMS increases significantly for all three ablations relative to the intact circuit (\emph{no lateral inhibition}: $+43.6\%$, $p<0.001$; \emph{no STN/STR}: $+45.9\%$, $p<0.001$; \emph{threshold only}: $+22.0\%$, $p=0.017$). Pitch RMS shows a different pattern: it increases for \emph{threshold only} ($+6.4\%$, $p=0.0029$), consistent with the roll-instability trend, but decreases for \emph{no lateral inhibition} and \emph{no STN/STR} ($-11.3\%$ and $-5.7\%$, both $p<0.005$) --- plausibly reflecting reduced net locomotor activity in trials that fail outright rather than improved attitude control.}
+    \caption{Basal-ganglia ablation study under real stimulus conflict (Complex Navigation scenario, $n=12$ trials/variant; Fisher's exact / Mann--Whitney $p$ vs.\ the intact circuit). \revblue{The four variants are: \emph{intact circuit} (control); \emph{no lateral inhibition} (cross-channel inhibitory terms zeroed); \emph{no STN/STR} (STN and STR layers removed, stimulus routed directly into GPe/GPi); and \emph{threshold only} (circuit replaced by a static fixed-priority threshold over the raw stimulus).} (a) Success rate: the two ablations that remove basal-ganglia mechanism itself collapse success rate significantly (\emph{no lateral inhibition}: $25.0\%$, $p<0.001$; \emph{no STN/STR}: $33.3\%$, $p=0.001$); replacing the circuit with static threshold logic degrades success more mildly and not significantly at this sample size (\emph{threshold only}: $83.3\%$, $p=0.478$). Under the no-conflict Appetitive Targeting scenario (not shown), all four variants perform statistically indistinguishably ($91.7$--$100\%$, $p=1.000$ for all three comparisons). (b) Attitude stability: Roll RMS increases significantly for all three ablations relative to the intact circuit (\emph{no lateral inhibition}: $+43.6\%$, $p<0.001$; \emph{no STN/STR}: $+45.9\%$, $p<0.001$; \emph{threshold only}: $+22.0\%$, $p=0.017$). Pitch RMS shows a different pattern: it increases for \emph{threshold only} ($+6.4\%$, $p=0.0029$), consistent with the roll-instability trend, but decreases for \emph{no lateral inhibition} and \emph{no STN/STR} ($-11.3\%$ and $-5.7\%$, both $p<0.005$) --- plausibly reflecting reduced net locomotor activity in trials that fail outright rather than improved attitude control. \revblue{Simulation data.}}
     \label{fig:ablation_combined}
 \end{figure*}
 
@@ -310,7 +310,7 @@ For the second stability test in simulation, the neural activities of the gait-m
         \caption{Kinematic phase-space scatter plot of chassis Roll RMS vs. Pitch RMS for all 30 trials. Blue squares (Rugged Terrain) and orange triangles (Inclined Slope) separate clearly along the Pitch RMS axis, with overlapping Roll RMS ranges, demonstrating that the neural controller synthesizes a distinct, terrain-specialized locomotive signature for each environment. The dashed horizontal line marks the Pitch RMS midpoint ($\approx 1.98^{\circ}$) between the two terrain means, dividing the plot into the labeled Rugged Terrain and Inclined Slope zones — deliberately not drawn on the Roll RMS axis, where the overlap between terrains is itself the evidence of comparably effective lateral stabilization (see accompanying prose).}
         \label{fig:terrain_adaptability}
     \end{subfigure}
-    \caption{Quantitative performance profiles for the variable-topography experimental battery (15 trials each terrain type). (A)~Dynamic Stability and Tipover Risk profile aligned at the mode-switch instant. (B)~Decision Delay via ECDF analysis of mechanical transition time (neural response latency is reported numerically in the text, not plotted — see Section~\ref{sssec:variable_topo_quant}). (C)~Terrain Adaptability Phase Space mapping chassis Roll RMS against Pitch RMS. Together, these three profiles provide the quantitative evidence base for evaluating the bio-inspired controller's safety, speed, and kinematic adaptability under stochastic variable-topography conditions.}
+    \caption{Quantitative performance profiles for the variable-topography experimental battery (15 trials each terrain type). (A)~Dynamic Stability and Tipover Risk profile aligned at the mode-switch instant. (B)~Decision Delay via ECDF analysis of mechanical transition time (neural response latency is reported numerically in the text, not plotted — see Section~\ref{sssec:variable_topo_quant}). (C)~Terrain Adaptability Phase Space mapping chassis Roll RMS against Pitch RMS. Together, these three profiles provide the quantitative evidence base for evaluating the bio-inspired controller's safety, speed, and kinematic adaptability under stochastic variable-topography conditions. \revblue{Simulation data.}}
     \label{fig:variable_topo_metrics}
 \end{figure*}
 
@@ -358,7 +358,7 @@ walk sequence).
         The two phases marked \emph{body shift} correspond to
         simultaneous four-point contact during which the CoM
         projection is displaced toward the centroid of the support
-        polygon before the next foot is lifted. \revblue{Data: $N=268$ logged samples from one complete representative walk sequence (Table~\ref{tab:crawl_stability}).}%
+        polygon before the next foot is lifted. \revblue{Data: $N=268$ logged samples from one complete representative walk sequence (Table~\ref{tab:crawl_stability}).} \revblue{Simulation data.}%
         %
     }
     \label{fig:stability_phases}
@@ -428,7 +428,7 @@ across the complete sequence).
         four readings of a given mode agree closely --- itself the
         empirical evidence that both transition directions are equally
         stable. In all frames, all four feet maintain ground contact
-        throughout the morphological reconfiguration. \revblue{Data: a single continuous run covering all six directed transitions ($N_{\mathrm{total}}=979$ samples).}%
+        throughout the morphological reconfiguration. \revblue{Data: a single continuous run covering all six directed transitions ($N_{\mathrm{total}}=979$ samples).} \revblue{Simulation data.}%
     }
     \label{fig:transition_phases}
 \end{figure}
@@ -515,7 +515,7 @@ In the three single-stimulus suites (Appetitive, Aversive, Obstacle), the FSM's 
 \begin{figure}[t]
     \centering
     \includegraphics[width=\textwidth]{fig_attempts_vs_noise_level.png}
-    \caption{Attempts needed per completed mission vs.\ noise level, single-stimulus suites (not a success-rate metric --- every mission in this dataset eventually succeeds, see Table~\ref{tab:fsm_comparison}; this counts how many attempts, including retries after a timeout, that took). FSM never needs a retry at any level in any of the three panels (flat at $1.0$). Neural needs an occasional retry at intermediate/high noise in Appetitive and Aversive, non-monotonically (each point averages only 3 trials --- read point-to-point zig-zags as sampling variance, not a mechanistic trend). In the Obstacle panel both systems sit at $1.0$ across all five evaluated noise levels --- not a subset --- so the dashed Neural line sits exactly on top of the solid FSM line.}
+    \caption{Attempts needed per completed mission vs.\ noise level, single-stimulus suites (not a success-rate metric --- every mission in this dataset eventually succeeds, see Table~\ref{tab:fsm_comparison}; this counts how many attempts, including retries after a timeout, that took). FSM never needs a retry at any level in any of the three panels (flat at $1.0$). Neural needs an occasional retry at intermediate/high noise in Appetitive and Aversive, non-monotonically (each point averages only 3 trials --- read point-to-point zig-zags as sampling variance, not a mechanistic trend). In the Obstacle panel both systems sit at $1.0$ across all five evaluated noise levels --- not a subset --- so the dashed Neural line sits exactly on top of the solid FSM line. \revblue{Simulation data.}}
     \label{fig:attempts_vs_noise_level}
 \end{figure}
 
@@ -524,7 +524,7 @@ This advantage reverses in the Complex suite, where three stimuli (obstacle, ave
 \begin{figure}[t]
     \centering
     \includegraphics[width=\textwidth]{fig_mode_timeline_complex.png}
-    \caption{Active gait mode over time, Complex suite: a representative successful Neural trial (top) vs.\ a representative failed FSM trial (bottom, timeout). The FSM trace switches abruptly between modes and holds each one flat for tens of seconds at a time, since its fixed-duration persistence timers either hold a mode or release it outright with no intermediate state; the Neural trace shows shorter, more graduated occupancy of each mode, reflecting the continuous decay of the basal ganglia's lateral inhibition rather than a hard timer. \revblue{Each trace is the first trial by index (not hand-picked) of $N=15$ trials per controller.}}
+    \caption{Active gait mode over time, Complex suite: a representative successful Neural trial (top) vs.\ a representative failed FSM trial (bottom, timeout). The FSM trace switches abruptly between modes and holds each one flat for tens of seconds at a time, since its fixed-duration persistence timers either hold a mode or release it outright with no intermediate state; the Neural trace shows shorter, more graduated occupancy of each mode, reflecting the continuous decay of the basal ganglia's lateral inhibition rather than a hard timer. \revblue{Each trace is the first trial by index (not hand-picked) of $N=15$ trials per controller.} \revblue{Simulation data.}}
     \label{fig:mode_timeline_complex}
 \end{figure}
 
@@ -582,7 +582,7 @@ Under the FSM baseline (Section~\ref{ssec:FSMBaseline}) on this same scenario, s
 \begin{figure}[t]
     \centering
     \includegraphics[width=\textwidth]{fig_mode_timeline_inspection.png}
-    \caption{Active gait mode over time, Reactive Inspection Task: a representative successful Neural trial (top) vs.\ a representative successful FSM trial (bottom) --- shown here for a case where the FSM does escape avoidance mode; in its 11 failing trials the lower trace instead stays flat in avoidance for nearly the entire duration. Same qualitative pattern as Figure~\ref{fig:mode_timeline_complex}, reproduced here for this suite. \revblue{Each trace is the first trial by index (not hand-picked) of $N=20$ trials per controller.}}
+    \caption{Active gait mode over time, Reactive Inspection Task: a representative successful Neural trial (top) vs.\ a representative successful FSM trial (bottom) --- shown here for a case where the FSM does escape avoidance mode; in its 11 failing trials the lower trace instead stays flat in avoidance for nearly the entire duration. Same qualitative pattern as Figure~\ref{fig:mode_timeline_complex}, reproduced here for this suite. \revblue{Each trace is the first trial by index (not hand-picked) of $N=20$ trials per controller.} \revblue{Simulation data.}}
     \label{fig:mode_timeline_inspection}
 \end{figure}
 
@@ -701,7 +701,7 @@ Figure~\ref{fig:mlp_eval_grid}c illustrates the training convergence behavior, s
         \includegraphics[width=\linewidth]{fig4_architecture_ablation.png}
         \caption{Architecture ablation (F1-score).}
     \end{subfigure}
-    \caption{MLP-based terrain classifier evaluation, final configuration (150--80 hidden units). (a) Confusion matrix on the held-out test set ($n=120$). (b) ROC curve (AUC = 0.864). (c) Training-loss convergence across epochs. (d) F1-score comparison across the four tested hidden-layer architectures, motivating the 150--80 choice.}
+    \caption{MLP-based terrain classifier evaluation, final configuration (150--80 hidden units). (a) Confusion matrix on the held-out test set ($n=120$). (b) ROC curve (AUC = 0.864). (c) Training-loss convergence across epochs. (d) F1-score comparison across the four tested hidden-layer architectures, motivating the 150--80 choice. \revblue{Offline evaluation on the logged IMU dataset, not a locomotion trial.}}
     \label{fig:mlp_eval_grid}
 \end{figure*}
 
@@ -712,7 +712,7 @@ The MLP was further benchmarked against alternative classifiers (Logistic Regres
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{fig_classifier_tradeoff_fused.png}
-    \caption{Classification/deployment trade-off across baseline classifiers (Logistic Regression, SVM-RBF, Random Forest, and MLP). (a) Accuracy, precision, recall, and F1-score\revblue{, mean of 5-fold stratified cross-validation on the IMU dataset ($n=600$ samples)}. (b) Per-sample inference latency. (c) Model size (parameters/tree nodes).}
+    \caption{Classification/deployment trade-off across baseline classifiers (Logistic Regression, SVM-RBF, Random Forest, and MLP). (a) Accuracy, precision, recall, and F1-score\revblue{, mean of 5-fold stratified cross-validation on the IMU dataset ($n=600$ samples)}. (b) Per-sample inference latency. (c) Model size (parameters/tree nodes). \revblue{Offline evaluation on the logged IMU dataset, not a locomotion trial.}}
     \label{fig:classifier_tradeoff}
 \end{figure}
 
@@ -808,7 +808,7 @@ To further consolidate the physical validation under complex, multi-section topo
 
 \begin{table}[htbp]
 \centering
-\caption{Gait-mode transitions across the six-frame compound-terrain sequence (Figure~\ref{fig:real_variable_topography_sequence}), replicated across 15 continuous trials.}
+\caption{Gait-mode transitions across the six-frame compound-terrain sequence (Figure~\ref{fig:real_variable_topography_sequence}), replicated across 15 continuous trials. \revblue{Physical-robot data.}}
 \label{tab:terrain_sequence}
 \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}p{0.08\textwidth} >{\raggedright\arraybackslash}p{0.19\textwidth} >{\raggedright\arraybackslash}p{0.19\textwidth} >{\raggedright\arraybackslash}X}
 \toprule

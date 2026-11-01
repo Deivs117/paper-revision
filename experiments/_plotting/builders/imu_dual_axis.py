@@ -17,7 +17,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from style import DPI  # noqa: E402
+from style import DPI, COLOR_BLUE, COLOR_ORANGE  # noqa: E402
 
 U_SIGMA_AZ = 3.7  # methodology.tex:275/354, cited (undrawn) in the original by results.tex:199
 
@@ -30,23 +30,31 @@ def build(csv_path: str, output_path: str, title_suffix: str) -> None:
     fig, ax1 = plt.subplots(figsize=(9, 4.5))
     ax2 = ax1.twinx()
 
-    l1, = ax1.plot(accel.time_s, accel.value, color="#1f77b4", linewidth=1.2,
-                   label=r"$\sigma_{az}$ --- Std. dev. accel. Z")
-    ax1.axhline(U_SIGMA_AZ, color="#1f77b4", linestyle="--", linewidth=1.2, alpha=0.7)
+    l1, = ax1.plot(accel.time_s, accel.value, color=COLOR_BLUE, linewidth=1.2,
+                   label="$\\sigma_{az}$\u2014Std. dev. accel. Z")
+    ax1.axhline(U_SIGMA_AZ, color=COLOR_BLUE, linestyle="--", linewidth=1.2, alpha=0.7)
+    # R3b-04 batch 2: the sigma_az trace oscillates across the threshold at the right edge, so the
+    # curve used to strike through this label (Reviewer 3 item 4). Kept at the right edge -- the left
+    # one is taken by the legend -- and given an opaque white backing, so the trace now passes behind
+    # the text instead of through it, whatever the data does.
     ax1.annotate(r"$U_{\sigma_{az}}$ threshold", xy=(accel.time_s.max() * 0.98, U_SIGMA_AZ),
-                ha="right", va="bottom", fontsize=8, color="#1f77b4")
-    l2, = ax2.plot(pitch.time_s, pitch.value, color="#ff7f0e", linewidth=1.2, label="Pitch (deg)")
+                ha="right", va="bottom", color=COLOR_BLUE,
+                bbox=dict(facecolor="white", edgecolor="none", pad=1.5))
+    l2, = ax2.plot(pitch.time_s, pitch.value, color=COLOR_ORANGE, linewidth=1.2, label="Pitch (deg)")
 
     ax1.set_xlabel("Time (s)")
-    ax1.set_ylabel(r"Std. dev. acceleration, Z axis (m/s$^2$)", color="#1f77b4")
-    ax2.set_ylabel("Pitch angle (deg)", color="#ff7f0e")
-    ax1.tick_params(axis="y", labelcolor="#1f77b4")
-    ax2.tick_params(axis="y", labelcolor="#ff7f0e")
+    ax1.set_ylabel(r"Std. dev. acceleration, Z axis (m/s$^2$)", color=COLOR_BLUE)
+    ax2.set_ylabel("Pitch angle (deg)", color=COLOR_ORANGE)
+    ax1.tick_params(axis="y", labelcolor=COLOR_BLUE)
+    ax2.tick_params(axis="y", labelcolor=COLOR_ORANGE)
     ax1.set_ylim(bottom=0)
     ax2.set_ylim(bottom=0)
-    ax1.grid(alpha=0.3, linestyle="--")
-    ax1.set_title(f"IMU activity --- {title_suffix} (Simulation)")
-    ax1.legend(handles=[l1, l2], loc="upper left", fontsize=8)
+    ax1.set_title(f"IMU activity\u2014{title_suffix} (Simulation)")
+    # Opaque backing for the same reason as the annotation above: the horizontal threshold line
+    # runs at y=3.7 straight through this legend's text. The shared style sets frameon False,
+    # which is right for figures with nothing behind the legend; here there is.
+    ax1.legend(handles=[l1, l2], loc="upper left", frameon=True, facecolor="white",
+               edgecolor="none", framealpha=1.0)
 
     fig.tight_layout()
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
