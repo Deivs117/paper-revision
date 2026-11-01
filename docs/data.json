@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-31T20:11:35+00:00",
-  "progressLastCommit": "2026-10-31T15:02:38-05:00",
+  "generatedAt": "2026-11-01T21:58:06+00:00",
+  "progressLastCommit": "2026-10-31T15:11:35-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1280,6 +1280,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-69-roll-rms-contradiction.tex"
+    },
+    {
+      "id": "C-70",
+      "reviewer": "3",
+      "requirement": "R3b-04 batch 1 — typeface unification (simulation vs physical). Regenerated and promoted 6 assets: NEU_IMU_real, NEU_IMU2_real, GRAPH_IMU_real, GRAPH_IMU2_real (were sans-serif, the only four left that way) plus their simulation twins NEU_IMU, NEU_IMU2, which the same builder change touches. Root cause confirmed, not inferred: the builder already applies style.py at import, so those four PNGs simply predated it and had never been regenerated — re-running the builder unchanged altered exactly those four and left the other three it writes byte-identical. Builder fixes the regeneration exposed: panel height now follows each panel's neuron count (an 11-neuron panel used to get the same height as a 3-neuron one, making the X3..X13 labels an unreadable block), group titles now always anchored to the rendered panel title instead of the hardcoded y=0.975/0.475 that only fitted the old layout, and the literal -- in the GRAPH title is now a real em dash. Answers open question (b) of the diagnosis: the Locomotion 2 / X17 panel is blank because X17 is flat at ~0 for 729 of 731 samples and its only two samples above 0.5 are the first and the last of the record (an edge artifact of the capture, not activity); the simulation twins already dropped that panel under C-53, so keeping it only on the physical side was itself a sim-vs-physical inconsistency. Dropped on both, reversible in one argument. No sections/*.tex text changed (file names unchanged); captions are the last step of R3b-04. Not fixed here: effective font size in the compiled PDF (these are authored 8 in wide and placed at 0.5\\textwidth), in-image titles duplicating captions, palette and jargon items.",
+      "target": "assets (6 figures), experiments/_plotting/builders/imu_terrain_real.py",
+      "dataSource": "experiments/N-01-simulation-figure-regeneration/, experiments/N-02-physical-figure-regeneration/",
+      "category": "Pruebas",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-70-r3b04-batch1-typeface.tex"
     }
   ]
 }
