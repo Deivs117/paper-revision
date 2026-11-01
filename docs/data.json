@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-01T22:44:25+00:00",
-  "progressLastCommit": "2026-11-01T17:29:16-05:00",
+  "generatedAt": "2026-11-01T23:34:40+00:00",
+  "progressLastCommit": "2026-11-01T17:44:25-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1245,15 +1245,15 @@
     {
       "id": "C-67",
       "reviewer": "—",
-      "requirement": "Deivi -- caption follow-ups from the C-57 debate (intake/pending/second_pass_simplification_debate.md, \"Deferred to owners\"). P-15: the variable-topography main caption repeats its three subcaptions and ends with a filler sentence; keep the proposed text as a base but drop \"under stochastic variable-topography conditions\" (see S-02). P-07: subcaption clause. P-14: caption trims. P-03: keep that caption as it is. Not part of this row: R3b-04 (own row) and the ablation prose (C-60, Sam). Due: not set (hard stop for the round 2026-11-04).",
+      "requirement": "Deivi -- caption follow-ups from the C-57 debate (intake/pending/second_pass_simplification_debate.md, \"Deferred to owners\"). P-15: the variable-topography main caption repeats its three subcaptions and ends with a filler sentence; keep the proposed text as a base but drop \"under stochastic variable-topography conditions\" (see S-02). P-07: subcaption clause. P-14: caption trims. P-03: keep that caption as it is. Not part of this row: R3b-04 (own row) and the ablation prose (C-60, Sam). Due: not set (hard stop for the round 2026-11-04). Done 2026-11-01: P-15 replaced (brief's text minus \"under stochastic variable-topography conditions\" per S-02; the new \"(simulation, 15 trials per terrain)\" opening made C-73's trailing \"Simulation data.\" redundant on this one caption, so it went with it — the figure still states its origin, once); P-07 subcaption clause dropped; P-14 interpretation removed from the two physical compound captions, panel descriptions kept; P-03 deliberately left as is. Prose halves of P-07/P-14 are other owners'. Net: results.tex 12,705 → 12,627 words, manuscript 104 → 103 pages, compile clean.",
       "target": "results.tex (variable-topography and ablation captions)",
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
         "Deivi"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/c-67-caption-followups.tex"
     },
     {
       "id": "C-68",

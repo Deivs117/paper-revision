@@ -1,0 +1,47 @@
+% Patch record for C-67 -- caption follow-ups deferred to the owners in the C-57 simplification
+% debate (intake/pending/second_pass_simplification_debate.md, "Deferred to owners").
+% Applied 2026-11-01. Captions only: the prose halves of P-07 and P-14 belong to other rows and
+% were NOT touched here.
+%
+% P-15 -- fig:variable_topo_metrics main caption (replaced)
+%   before: "Quantitative performance profiles for the variable-topography experimental battery
+%            (15 trials each terrain type). (A) Dynamic Stability and Tipover Risk profile aligned
+%            at the mode-switch instant. (B) Decision Delay via ECDF analysis of mechanical
+%            transition time (neural response latency is reported numerically in the text, not
+%            plotted -- see Section ...). (C) Terrain Adaptability Phase Space mapping chassis Roll
+%            RMS against Pitch RMS. Together, these three profiles provide the quantitative
+%            evidence base for evaluating the bio-inspired controller's safety, speed, and
+%            kinematic adaptability under stochastic variable-topography conditions."
+%   after:  "Quantitative performance profiles for the variable-topography battery (simulation,
+%            15 trials per terrain): (A) tipover risk aligned at the mode-switch instant; (B) ECDF
+%            of mechanical transition time; (C) Roll RMS vs. Pitch RMS phase space."
+%   The brief's proposed text, minus "under stochastic variable-topography conditions" per the
+%   author's instruction (see S-02). What was dropped is not lost: the "not plotted" clause repeats
+%   subcaption (b), which still says it, and the closing "Together, these three profiles ..."
+%   sentence carries no information. N = 15 is kept, as the row requires.
+%   NOTE: the new opening says "(simulation, ...)", which makes the trailing "Simulation data."
+%   that C-73 had just added to this same caption redundant, so it was removed with it. The figure
+%   still states its origin -- now once instead of twice.
+%
+% P-07 -- fig:terrain_adaptability subcaption (clause removed)
+%   dropped ", demonstrating that the neural controller synthesizes a distinct, terrain-specialized
+%   locomotive signature for each environment" after "with overlapping Roll RMS ranges".
+%   Safe: the same caption already ends by explaining that the Roll-RMS overlap "is itself the
+%   evidence of comparably effective lateral stabilization", and the prose states the
+%   terrain-specialized conclusion. Only the caption clause was in this row; the paragraph's final
+%   sentence and its opening (also P-07) are prose and belong to Sebas.
+%
+% P-14 -- two physical compound captions (interpretation out, panels described)
+%   fig:aversive_real_compound: "(a) ECDF of mode-switching latency $T_{switch}$ revealing the
+%     near-instantaneous emergency reflex." -> "(a) ECDF of mode-switching latency $T_{switch}$."
+%   fig:obstacle_real_compound: "(top) massive transient hyper-excitation peak in neural firing
+%     variance $Var(z)$ induced by volumetric geometric input (...)" -> "(top) transient peak in
+%     neural firing variance $Var(z)$ (...)" -- the parenthetical about the non-chromatic obstacle
+%     cue is kept, since it explains why there is no shading.
+%   Safe: both interpretations are given in the prose paragraphs next to the figures, and the
+%   magnitudes are in tab:consolidated_physical_metrics. The prose rewrites of P-14 are Sebas's.
+%
+% P-03 -- deliberately NOT done: the row says to keep that caption as it is.
+%
+% EFFECT: results.tex goes from 12,705 to 12,627 words (-78), and the compiled manuscript from 104
+% to 103 pages. Full latexmk run: 0 errors, 0 undefined references, 0 missing figures.
