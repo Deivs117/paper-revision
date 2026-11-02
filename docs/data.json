@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-02T00:38:13+00:00",
-  "progressLastCommit": "2026-11-01T19:28:51-05:00",
+  "generatedAt": "2026-11-02T00:45:26+00:00",
+  "progressLastCommit": "2026-11-01T19:42:53-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1232,15 +1232,15 @@
     {
       "id": "C-66",
       "reviewer": "—",
-      "requirement": "Diego -- noise-caveat follow-ups from the C-57 debate (intake/pending/second_pass_simplification_debate.md, \"Deferred to owners\"). P-10: \"every retained trial succeeded at all five levels\" is said four times in the simulation scenario paragraphs of results.tex; consolidate into one sentence (substantive, it touches your R2b-02 caveat, so it is yours). P-25: the Limitations noise sentence says \"jointly, not isolated\" twice. S-08 belongs to R2b-03, not to this row. R2b-02 and R3b-03 are already applied (PR #11), do not redo them. Do R2b-03 first. Due: not set (hard stop for the round 2026-11-04).",
+      "requirement": "Diego -- noise-caveat follow-ups from the C-57 debate (intake/pending/second_pass_simplification_debate.md, \"Deferred to owners\"). P-10: \"every retained trial succeeded at all five levels\" is said four times in the simulation scenario paragraphs of results.tex; consolidate into one sentence (substantive, it touches your R2b-02 caveat, so it is yours). P-25: the Limitations noise sentence says \"jointly, not isolated\" twice. S-08 belongs to R2b-03, not to this row. R2b-02 and R3b-03 are already applied (PR #11), do not redo them. Do R2b-03 first. Due: not set (hard stop for the round 2026-11-04). Done 2026-11-02 by the repo owner, not by the assignee (Diego landed R2b-03/C-75 but not this row, and the deadline is 2026-11-04; his work was not altered). P-10: the four per-scenario restatements of \"every retained trial succeeded at all five levels\" replaced by one sentence after the ssec:QuantSim opener — as written it was close to tautological (retained trials are by construction the successful ones) and four repetitions read as a 100 % robustness claim; the new sentence states the sampling rule and points at where the discarded attempts are analysed. The Appetitive joint-perturbation caveat (R2b-02's answer) kept word for word. The three filler phrases the brief lists were already gone, removed by C-62/C-64. P-25: the Limitations sentence said \"jointly, not isolated\" twice; now once. Its second half (the Rugged Terrain clause) left alone — it carries the \"no trend toward instability\" finding, not a duplicate. results.tex 12,901 → 12,858 words; compile clean.",
       "target": "results.tex (simulation scenario paragraphs, ssec:Limitations)",
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
         "Diego"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/c-66-redundancy-consolidation.tex"
     },
     {
       "id": "C-67",
