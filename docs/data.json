@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-02T00:55:11+00:00",
-  "progressLastCommit": "2026-11-01T19:52:14-05:00",
+  "generatedAt": "2026-11-02T01:08:21+00:00",
+  "progressLastCommit": "2026-11-01T19:55:11-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1358,6 +1358,19 @@
       ],
       "status": "synced-to-overleaf",
       "patchFile": "patches/c-75-restore-fig20-r304-grid.tex"
+    },
+    {
+      "id": "C-76",
+      "reviewer": "—",
+      "requirement": "Remove every em dash from the manuscript prose (author request 2026-11-02, optional polish after the reviewer work closed: the em dash reads as AI-written prose). Not a find-and-replace — each of the 63 (59 --- plus 4 literal —) was read in context and the sentence repunctuated or reworded so nothing it carried is lost or made ambiguous. Four patterns, chosen per case: parentheses when the aside has its own commas, is a full clause, or sits between two members of a parallel construction; commas for a short appositive with no internal punctuation; colon when the dash introduced an explanation or consequence; semicolon when it joined two independent statements. Reworded rather than repunctuated where punctuation alone failed: the GPR-model sentence in introduction.tex (three comma groups before the verb), two lists whose items already had commas (now semicolon-separated inside parentheses), the comparison-table row tagging this work, and the future-work gerund clause in conclusions.tex. Explicitly untouched: the 46 en dashes --, which are correct typography, not AI style — two-author names (Naka--Rushton, Mann--Whitney, McGhee--Frank), numeric/unit ranges, equation and panel ranges, CRediT roles, compounds and empty table cells; verified results.tex still has exactly 28, the same as before. The 15 --- in preamble.tex are Elsevier template comment rules, not prose. Reviewer-weighted wording checked, not assumed: R2b-02's joint-perturbation caveat keeps its full force (aside became parentheses, no words changed). Zero em dashes remain in any sections/*.tex. Compile clean: 104 pages, 0 errors, 0 undefined references.",
+      "target": "all sections (introduction, methodology, results, conclusions, preamble abstract)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-76-remove-em-dashes.tex"
     }
   ]
 }
