@@ -74,15 +74,35 @@ Es el que menos ojos ha tenido. Repásalo con atención específica:
 ## 2. 🆕 Verifica contra los datos, no solo leyendo
 
 La lección más importante de esta ronda: **los hallazgos que valieron algo salieron de recomputar,
-no de leer.** Para cualquier cifra que te resulte dudosa, recomputa desde la fuente:
+no de leer.** Pero ojo con qué datos tienes: **no todo `experiments/` está versionado.**
+
+### Lo que SÍ puedes recomputar (está en el repo, te llega con `git pull`)
+
+| Fuente | Qué respalda |
+|---|---|
+| `experiments/simulation/*/test_*/trial_summary.json` (96 ensayos) | `tab:consolidated_simulation_metrics` y las 4 filas de suite de `tab:fsm_comparison` |
+| `experiments/real/` (56 ficheros) | las tablas y figuras del robot físico |
+| `experiments/R3-05-inspection/data/` (101 ficheros) | `tab:inspection_metrics` y la tarea de inspección |
+| `experiments/_plotting/vectorized/*.csv` | los rasters de neuronas y las series IMU |
+| `experiments/R2-02-fsm-baseline/output/table_master_comparison.csv` | los agregados de `tab:fsm_comparison` |
 
 ```
 cd paper-revision
-experiments/.venv_plotting/bin/python   # tiene numpy/pandas/matplotlib
+experiments/.venv_plotting/bin/python      # trae numpy/pandas/matplotlib
 ```
-Los datos por ensayo están en `experiments/simulation/*/test_*/trial_summary.json`,
-`experiments/R3-04-noise-robustness/data/`, `experiments/real/` y
-`experiments/R2-02-fsm-baseline/output/table_master_comparison.csv`.
+Si no tienes el venv: `cd experiments && uv venv .venv_plotting && uv pip install numpy pandas matplotlib`.
+
+### Lo que NO tienes (gitignored, solo en la máquina de Deivi)
+
+- `experiments/R3-04-noise-robustness/data/` — batería de perturbación combinada y familias de
+  terreno C1/C2.
+- `experiments/R2-02-fsm-baseline/data/` — los ensayos crudos del FSM.
+
+La regla es `experiments/*/data/`; por eso `simulation/` y `real/` sí están (cuelgan directamente de
+`experiments/`) y estas dos no. **Si tu duda cae sobre una cifra que sale de ahí, repórtala igual**,
+marcada como *"requiere verificación con datos no versionados"*, y Deivi la recomputa. No la
+descartes por no poder comprobarla: el problema del Roll RMS (`C-69`) vivía justo en una de esas
+dos carpetas.
 
 ⚠️ **Trampa documentada:** hay familias con el mismo nombre en carpetas distintas
 (`experiments/simulation/familia_c2_pendiente` ≠
@@ -90,7 +110,8 @@ Los datos por ensayo están en `experiments/simulation/*/test_*/trial_summary.js
 `README.md` del experimento antes de recomputar nada suyo.
 
 Cada hallazgo de la categoría 1.1 debe decir **cómo lo verificaste**. "Me parece inconsistente" no
-es un hallazgo; "recomputé X desde Y y da Z, el paper dice W" sí lo es.
+es un hallazgo; "recomputé X desde Y y da Z, el paper dice W" sí lo es. Si no pudiste verificarlo,
+dilo con esas palabras.
 
 ## 3. 🆕 Lo que NO es un hallazgo
 
