@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-02T00:45:26+00:00",
-  "progressLastCommit": "2026-11-01T19:42:53-05:00",
+  "generatedAt": "2026-11-02T00:52:14+00:00",
+  "progressLastCommit": "2026-11-01T19:45:26-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1336,15 +1336,15 @@
     {
       "id": "C-74",
       "reviewer": "2",
-      "requirement": "Two different standard deviations in one manuscript, undisclosed — needs an author decision, nothing changed yet. Found in a pre-submission numeric consistency audit (intake/pending/pre-submission_numeric_consistency_audit_2026-11-01.md). Recomputing tab:consolidated_simulation_metrics from experiments/simulation/ reproduces all 12 cells exactly — but only with the population SD (÷n); with the sample SD every cell is ~3.5 % larger, the ratio being sqrt(14/15) in every one. tab:fsm_comparison is also population (verified: Inclined Slope/Neural 7.160), while tab:inspection_metrics is sample SD and is the only one that says so (\"mean ± sample SD\", verified: T_task 12.33→12.3). So two conventions coexist and two of the three captions disclose neither. Matters most where n is small, since the factor is sqrt(n/(n−1)): the n=3 row tab:fsm_comparison Inclined Slope/Neural would go 6.751 ± 7.160 → ± 8.769 (+22.5 %); means do not move at all. Relevant because Reviewer 2 opened with a sample-size objection (item 1) and R3b-05 asked for \"statistical rules for experimental samples\" in captions, which only tab:inspection_metrics provides. Options in the doc: (1) disclose and change nothing, (2) unify on sample SD (recommended if there is time — it is what a reader assumes), (3) unify on population SD. Also clean in the same audit, no action needed: every abstract and conclusions figure traces to the body and means the same there (the lone \"2.5\" is \"2.5D maps\", not a measurement). Not checked: tab:mode_steady_state_energy and the physical tables.",
-      "target": "results.tex (tab:consolidated_simulation_metrics, tab:fsm_comparison captions/values)",
+      "requirement": "Two different standard deviations in one manuscript, undisclosed — needs an author decision, nothing changed yet. Found in a pre-submission numeric consistency audit (intake/pending/pre-submission_numeric_consistency_audit_2026-11-01.md). Recomputing tab:consolidated_simulation_metrics from experiments/simulation/ reproduces all 12 cells exactly — but only with the population SD (÷n); with the sample SD every cell is ~3.5 % larger, the ratio being sqrt(14/15) in every one. tab:fsm_comparison is also population (verified: Inclined Slope/Neural 7.160), while tab:inspection_metrics is sample SD and is the only one that says so (\"mean ± sample SD\", verified: T_task 12.33→12.3). So two conventions coexist and two of the three captions disclose neither. Matters most where n is small, since the factor is sqrt(n/(n−1)): the n=3 row tab:fsm_comparison Inclined Slope/Neural would go 6.751 ± 7.160 → ± 8.769 (+22.5 %); means do not move at all. Relevant because Reviewer 2 opened with a sample-size objection (item 1) and R3b-05 asked for \"statistical rules for experimental samples\" in captions, which only tab:inspection_metrics provides. Options in the doc: (1) disclose and change nothing, (2) unify on sample SD (recommended if there is time — it is what a reader assumes), (3) unify on population SD. Also clean in the same audit, no action needed: every abstract and conclusions figure traces to the body and means the same there (the lone \"2.5\" is \"2.5D maps\", not a measurement). Not checked: tab:mode_steady_state_energy and the physical tables. Resolved 2026-11-02, option 1 (disclose, change nothing): both silent captions now state the convention — tab:consolidated_simulation_metrics says \"mean ± population standard deviation over each suite's successful trials ($n=15$; $n=14$ for Obstacle Evasion)\", and tab:fsm_comparison adds \"all ± values ... are population standard deviations over each row's $N$ trials\". No number changed. tab:inspection_metrics keeps its sample SD and its accurate caption, so the two conventions still differ — but now visibly, which is the part that was actually wrong. Option 2 (unify on sample SD, moving the n=3 row from ±7.160 to ±8.769) remains the better end state and is deliberately not taken two days before the deadline; means are unaffected either way. tab:mode_steady_state_energy left alone: its caption already states what mean and SD are taken over, which is what R3b-05 required.",
+      "target": "results.tex (tab:consolidated_simulation_metrics, tab:fsm_comparison captions)",
       "dataSource": "experiments/simulation/, experiments/R3-05-inspection/",
       "category": "Métricas",
       "owner": [
         "Deivi"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/c-74-declare-sd-convention.tex"
     },
     {
       "id": "C-75",
