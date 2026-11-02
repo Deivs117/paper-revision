@@ -1,9 +1,9 @@
-# C-74 — Figura 20 restaurada a R3-04 + auditoría de procedencia del ruido en `experiments/simulation/` (2026-11-01)
+# C-75 — Figura 20 restaurada a R3-04 + auditoría de procedencia del ruido en `experiments/simulation/` (2026-11-01)
 
 Autor: Diego (agente). Decisión del autor: restaurar la Fig. 20 de R3-04 (no adaptar el texto a la figura de C-22).
-Fila: `C-74` (`PROGRESS.md`). Patch: `patches/c-74-restore-fig20-r304-grid.tex`.
+Fila: `C-75` (`PROGRESS.md`). Patch: `patches/c-75-restore-fig20-r304-grid.tex`.
 
-## 1. Qué se corrigió (C-74)
+## 1. Qué se corrigió (C-75)
 
 - **Regresión de asset.** `C-22` (`5e92625`, 2026-09-01) sobrescribió `assets/fig1_noise_robustness_grid.png`
   con la salida de N-01 (`macro_robustness.py` sobre `experiments/simulation/`, sha1 `d4eaff59`, 3000x3300:
@@ -50,7 +50,7 @@ Fila: `C-74` (`PROGRESS.md`). Patch: `patches/c-74-restore-fig20-r304-grid.tex`.
 - §3.1.10: Fig. 36 (`fig:attempts_vs_noise_level`, línea Neural = estos ensayos) y su prosa ("at the noisiest levels
   tested"); filas Neural A/B de `tab:fsm_comparison`; §2.3.6 "under matching ... noise levels". El lado FSM no está
   en el repo (`data/` gitignored): hay que comprobar si sus corridas sí recibieron `nl`.
-- Tabla 9: tras C-74 ya no afirma nada sobre ruido ("separate archived simulation battery"). Si se confirma σ = 0,
+- Tabla 9: tras C-75 ya no afirma nada sobre ruido ("separate archived simulation battery"). Si se confirma σ = 0,
   conviene decirlo explícitamente.
 
 **Siguiente paso sugerido:** Sam revisa los logs de arranque de esas corridas (`[ROBUSTEZ] Nivel de ruido activo:

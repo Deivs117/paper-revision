@@ -993,10 +993,10 @@ For the second stability test in simulation, the neural activities of the gait-m
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{FigC_Terrain_Adaptability.png}
-        \caption{Kinematic phase-space scatter plot of chassis Roll RMS vs. Pitch RMS for all 30 trials. Blue squares (Rugged Terrain) and orange triangles (Inclined Slope) separate clearly along the Pitch RMS axis, with overlapping Roll RMS ranges, demonstrating that the neural controller synthesizes a distinct, terrain-specialized locomotive signature for each environment. The dashed horizontal line marks the Pitch RMS midpoint ($\approx 1.98^{\circ}$) between the two terrain means, dividing the plot into the labeled Rugged Terrain and Inclined Slope zones — deliberately not drawn on the Roll RMS axis, where the overlap between terrains is itself the evidence of comparably effective lateral stabilization (see accompanying prose).}
+        \caption{Kinematic phase-space scatter plot of chassis Roll RMS vs. Pitch RMS for all 30 trials. Blue squares (Rugged Terrain) and orange triangles (Inclined Slope) separate clearly along the Pitch RMS axis, with overlapping Roll RMS ranges. The dashed horizontal line marks the Pitch RMS midpoint ($\approx 1.98^{\circ}$) between the two terrain means, dividing the plot into the labeled Rugged Terrain and Inclined Slope zones — deliberately not drawn on the Roll RMS axis, where the overlap between terrains is itself the evidence of comparably effective lateral stabilization (see accompanying prose).}
         \label{fig:terrain_adaptability}
     \end{subfigure}
-    \caption{Quantitative performance profiles for the variable-topography experimental battery (15 trials each terrain type). (A)~Dynamic Stability and Tipover Risk profile aligned at the mode-switch instant. (B)~Decision Delay via ECDF analysis of mechanical transition time (neural response latency is reported numerically in the text, not plotted — see Section~\ref{sssec:variable_topo_quant}). (C)~Terrain Adaptability Phase Space mapping chassis Roll RMS against Pitch RMS. Together, these three profiles provide the quantitative evidence base for evaluating the bio-inspired controller's safety, speed, and kinematic adaptability under stochastic variable-topography conditions. \revblue{Simulation data.}}
+    \caption{Quantitative performance profiles for the variable-topography battery (simulation, 15 trials per terrain): (A)~tipover risk aligned at the mode-switch instant; (B)~ECDF of mechanical transition time; (C)~Roll RMS vs.\ Pitch RMS phase space.}
     \label{fig:variable_topo_metrics}
 \end{figure*}
 
@@ -1605,7 +1605,7 @@ To further consolidate the physical validation under complex, multi-section topo
     \caption{Pitch/Roll RMS attitude dynamics.}
     \label{fig:aversive_rms_real}
   \end{subfigure}
-  \caption{Real-world Aversive Stimulus Scenario (three hardware replicates). (a) ECDF of mode-switching latency $T_{switch}$ revealing the near-instantaneous emergency reflex. (b) Coupled neural and kinematic response: (top) neural firing variance $Var(z)$ displaying the dual-peak evasion signature, with red/blue stimulus-presence shading; (bottom) chassis attitude micro-dynamics during and after the evasive maneuver.}
+  \caption{Real-world Aversive Stimulus Scenario (three hardware replicates). (a) ECDF of mode-switching latency $T_{switch}$. (b) Coupled neural and kinematic response: (top) neural firing variance $Var(z)$ displaying the dual-peak evasion signature, with red/blue stimulus-presence shading; (bottom) chassis attitude micro-dynamics during and after the evasive maneuver.}
   \label{fig:aversive_real_compound}
 \end{figure*}
 
@@ -1651,7 +1651,7 @@ To further consolidate the physical validation under complex, multi-section topo
     \caption{Pitch/Roll RMS attitude dynamics.}
     \label{fig:obstacle_rms_real}
   \end{subfigure}
-  \caption{Real-world Static Obstacle Avoidance Scenario (three hardware replicates). (a) Instantaneous ECDF of mode-switching latency. (b) Coupled neural and kinematic response: (top) massive transient hyper-excitation peak in neural firing variance $Var(z)$ induced by volumetric geometric input (no stimulus-presence shading---this scenario uses a non-chromatic obstacle cue); (bottom) rhythmic Roll RMS expansion during active lateral flanking and post-avoidance stabilization.}
+  \caption{Real-world Static Obstacle Avoidance Scenario (three hardware replicates). (a) Instantaneous ECDF of mode-switching latency. (b) Coupled neural and kinematic response: (top) transient peak in neural firing variance $Var(z)$ (no stimulus-presence shading---this scenario uses a non-chromatic obstacle cue); (bottom) rhythmic Roll RMS expansion during active lateral flanking and post-avoidance stabilization.}
   \label{fig:obstacle_real_compound}
 \end{figure*}
 
