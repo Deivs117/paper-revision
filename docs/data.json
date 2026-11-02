@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-02T01:08:21+00:00",
-  "progressLastCommit": "2026-11-01T19:55:11-05:00",
+  "generatedAt": "2026-11-02T01:14:26+00:00",
+  "progressLastCommit": "2026-11-01T20:12:42-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1369,7 +1369,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-76-remove-em-dashes.tex"
     }
   ]
