@@ -1,0 +1,68 @@
+% Patch record for C-76 -- remove every em dash from the manuscript prose.
+% Applied 2026-11-02. Author's request: the em dash reads as AI-written prose and should go. This
+% was NOT a find-and-replace: each one was read in context and the sentence repunctuated, or
+% reworded, so that nothing it was carrying is lost or made ambiguous.
+%
+% SCOPE: 63 em dashes in prose (59 LaTeX "---" plus 4 literal "—"). Zero remain in any
+% sections/*.tex. The 15 "---" inside preamble.tex are Elsevier template comment rules, not prose,
+% and were left alone.
+%
+% EXPLICITLY NOT TOUCHED: the 46 en dashes ("--"). They are correct typography, not AI style:
+%   - two-author names: Naka--Rushton, Mann--Whitney, McGhee--Frank
+%   - numeric and unit ranges: $0.2$--$0.7$, 25--33\%, $0$--$4^\circ$, 93--99\%, levels 0--4
+%   - equation and panel ranges: \eqref{eq:stn}--\eqref{eq:str}, (a)--(c), $L_0$--$L_3$
+%   - CRediT roles: "Writing--original draft", "Writing--review \& editing"
+%   - compounds and empty table cells: virtual--physical, min--max, "-- & --"
+% Verified after the pass: results.tex still has exactly 28 en dashes, the same count as before.
+%
+% THE FOUR PATTERNS USED, and why each was chosen rather than a blanket substitution:
+%
+% 1. PARENTHESES, when the aside contains its own commas, so that commas alone would blur where
+%    the aside starts and ends. E.g. "between locomotion modes ---quadrupedal walking, differential
+%    rolling, and omnidirectional motion--- when facing" -> "(quadrupedal walking, differential
+%    rolling, and omnidirectional motion)". Also used when the aside is a full clause
+%    ("reactive navigation without spatial memory can fail ...") or when it sits between two
+%    members of a parallel construction, where commas would break the parallel: "prone to
+%    mechanical compliance (a deviation between the commanded and achieved joint angle) and to
+%    abrupt-command-induced instability".
+%
+% 2. COMMAS, for a short appositive with no internal punctuation: "at the instant of morphological
+%    switching itself, the moment all four feet share ground contact for maximum support, the
+%    Normalized Stability Margin reached ...". Also for trailing appositions that close a sentence:
+%    "..., a distinction relevant to how this suite's robustness should be characterized".
+%
+% 3. COLON, when the dash introduced the explanation or consequence of what precedes it, which is
+%    what a colon is for: "well-matched to the task: one stimulus is active at a time";
+%    "already combines all three simultaneously: no configuration isolates a single sensor's
+%    contribution"; "(not a success-rate metric: every mission in this dataset eventually
+%    succeeds".
+%
+% 4. SEMICOLON, when the dash joined two statements that each stand alone: "rarely met in practice
+%    across these trials; this is a limitation of the metric's present instrumentation";
+%    "no dispersion to display; see the accompanying prose for that result".
+%
+% CASES THAT NEEDED REWORDING, not just repunctuation:
+%  - introduction.tex: "The computational model of basal ganglia (BG) ---the GPR model--- proposed
+%    by \citet{...} reformulates" became "The GPR computational model of the basal ganglia (BG),
+%    proposed by \citet{...}, reformulates". Commas alone would have produced three consecutive
+%    comma-delimited groups before the verb; folding the model's name into the noun phrase keeps
+%    one.
+%  - results.tex: two lists whose items already contained commas ("approach (a, appetitive),
+%    evasion (b, obstacle), and escape (c, aversive)" and the three locomotion modes) were switched
+%    to semicolon-separated items inside the parentheses, so the item boundaries stay readable.
+%  - introduction.tex, comparison table: the row "Basal ganglia (WTA disinhibition) --- \emph{this
+%    work}" used the dash to tag the row as ours; it is now a comma, since inside a table cell the
+%    dash was doing no grammatical work.
+%  - conclusions.tex: the future-work list ended "...aligned with current standards ---evolving the
+%    platform from a functional prototype into a practical autonomous inspection tool." The list
+%    uses semicolons between items, so a comma before the gerund clause reads cleanly and keeps it
+%    attached to the whole list rather than to the last item only.
+%
+% MEANING CHECKED, NOT ASSUMED, in the two places where it carries reviewer weight:
+%  - R2b-02's joint-perturbation caveat ("evaluated under the combined perturbation ... rather than
+%    against any single sensor's contribution in isolation") keeps its full force: the aside became
+%    parentheses, no words changed.
+%  - R2b-03's fairness caveat and the C-69 battery separation were not in any dash, and are
+%    untouched.
+%
+% Full latexmk run after the pass: 104 pages, 0 errors, 0 undefined references, 0 missing figures.
