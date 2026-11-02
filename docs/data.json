@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-02T00:52:14+00:00",
-  "progressLastCommit": "2026-11-01T19:45:26-05:00",
+  "generatedAt": "2026-11-02T00:55:11+00:00",
+  "progressLastCommit": "2026-11-01T19:52:14-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -979,7 +979,7 @@
       "owner": [
         "Sebas"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-57-second-pass-simplification.tex"
     },
     {
@@ -992,7 +992,7 @@
       "owner": [
         "Sebas"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-58-text-only-inconsistency-fixes.tex"
     },
     {
@@ -1005,7 +1005,7 @@
       "owner": [
         "Sam"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/r2b-01-ablation-sample-size.tex"
     },
     {
@@ -1018,7 +1018,7 @@
       "owner": [
         "Diego"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/r2b-02-noise-caveat-main-text.tex"
     },
     {
@@ -1031,7 +1031,7 @@
       "owner": [
         "Diego"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/r2b-03-fsm-timing-fairness-captions.tex"
     },
     {
@@ -1044,7 +1044,7 @@
       "owner": [
         "Sebas"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/r2b-04-hardware-spec.tex"
     },
     {
@@ -1057,7 +1057,7 @@
       "owner": [
         "Sam"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/r2b-05-fsm-table-n.tex, patches/r2b-05-figure-caption-n.tex"
     },
     {
@@ -1070,7 +1070,7 @@
       "owner": [
         "Sam"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/r2b-06-graphical-abstract-highlights.tex"
     },
     {
@@ -1083,7 +1083,7 @@
       "owner": [
         "Sebas"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/r3b-01-condense-redundant-definitions.tex"
     },
     {
@@ -1096,7 +1096,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "—"
     },
     {
@@ -1109,7 +1109,7 @@
       "owner": [
         "Diego"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/r3b-03-noise-caveat-captions.tex"
     },
     {
@@ -1122,7 +1122,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-70-r3b04-batch1-typeface.tex, patches/c-71-r3b04-batch2-defects.tex, patches/c-72-r3b04-batch3-units-jargon.tex, patches/c-73-caption-origin-marks.tex"
     },
     {
@@ -1135,7 +1135,7 @@
       "owner": [
         "Sebas"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/r3b-05-battery-spec-sampling-rule.tex"
     },
     {
@@ -1148,7 +1148,7 @@
       "owner": [
         "Sam"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-57-abstract-round1-contributions.tex"
     },
     {
@@ -1161,7 +1161,7 @@
       "owner": [
         "Sam"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-60-ablation-prose-trim.tex"
     },
     {
@@ -1174,7 +1174,7 @@
       "owner": [
         "Sebas"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-61-code-checked-inconsistency-fixes.tex"
     },
     {
@@ -1187,7 +1187,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-63-terrain-sequence-table.tex"
     },
     {
@@ -1200,7 +1200,7 @@
       "owner": [
         "Sebas"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-62-humanizer-pass.tex"
     },
     {
@@ -1213,7 +1213,7 @@
       "owner": [
         "Sebas"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-64-r3b01-second-pass.tex"
     },
     {
@@ -1226,7 +1226,7 @@
       "owner": [
         "Sam"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-65-abstract-instability-claim.tex"
     },
     {
@@ -1239,7 +1239,7 @@
       "owner": [
         "Diego"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-66-redundancy-consolidation.tex"
     },
     {
@@ -1252,7 +1252,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-67-caption-followups.tex"
     },
     {
@@ -1265,7 +1265,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-68-internal-nomenclature.tex"
     },
     {
@@ -1278,7 +1278,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-69-roll-rms-contradiction.tex"
     },
     {
@@ -1291,7 +1291,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-70-r3b04-batch1-typeface.tex"
     },
     {
@@ -1304,7 +1304,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-71-r3b04-batch2-defects.tex"
     },
     {
@@ -1317,7 +1317,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-72-r3b04-batch3-units-jargon.tex"
     },
     {
@@ -1330,7 +1330,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-73-caption-origin-marks.tex"
     },
     {
@@ -1343,7 +1343,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-74-declare-sd-convention.tex"
     },
     {
@@ -1356,7 +1356,7 @@
       "owner": [
         "Diego"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-75-restore-fig20-r304-grid.tex"
     }
   ]
