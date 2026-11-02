@@ -1,0 +1,48 @@
+% Patch record for C-66 -- P-10 and P-25 from the C-57 simplification debate
+% (intake/pending/second_pass_simplification_debate.md, "Deferred to owners").
+% Applied 2026-11-02 by the repo owner, not by the row's assignee: Diego had landed R2b-03 and
+% C-75 but not this one, and with the deadline on 2026-11-04 it was closed from this side. His
+% work was not altered.
+%
+% P-10 -- "every retained trial succeeded at all five levels", said four times
+% One sentence now carries it, placed right after the paragraph opener of
+% ssec:QuantSim, as the brief proposes:
+%   "In all four scenarios, three successful trials were retained at every combined-perturbation
+%    level (Figure~\ref{fig:noise_robustness_grid}); attempts discarded before reaching that count
+%    are analyzed in Section~\ref{sssec:noise_robustness_extra}."
+% and the four per-scenario restatements are gone:
+%   Appetitive -- ": every retained trial reaches the target regardless of severity level (see
+%     Figure ... trends)." -> " (see Figure ... trends)."
+%   Aversive   -- ", with every retained trial across all five severity levels resolving the threat
+%     successfully (Figure ...)." -> " (Figure ...)."
+%   Obstacle   -- "Every retained trial across all five combined-perturbation levels completed
+%     evasion successfully (Figure ...)." -> deleted outright.
+%   Complex    -- "Every retained trial ... resolves this three-stimulus encounter successfully
+%     (Figure ...), evidencing that the arbitration network does not suffer ..." -> "The
+%     arbitration network does not suffer ...", kept as its own sentence per the brief.
+% Why this is an improvement and not just a cut: as written, "every *retained* trial succeeded" was
+% close to tautological, since retained trials are by construction the successful ones
+% (ssec:NoiseRobustnessEval: "retaining three successful replicates per severity level"). Four
+% repetitions of it read as a 100 %-robustness claim. One sentence that states the sampling rule
+% honestly, and points at where the discarded attempts are analysed, is both shorter and more
+% accurate.
+% The brief also listed three filler phrases to delete ("demonstrating the efficiency of the neural
+% gating mechanism", "The sensory-locomotor coupling is precise:", "The complex navigation suite
+% culminates the simulation validation,"). None of them is in the file any more -- an earlier pass
+% (C-62/C-64) already removed them. Nothing to do.
+% KEPT WORD FOR WORD, as the brief requires: the Appetitive paragraph's joint-perturbation caveat
+% ("This robustness is evaluated under the combined perturbation ... not against any single
+% sensor's contribution in isolation"), which is R2b-02's answer and must not be weakened.
+%
+% P-25 -- the Limitations sentence said "jointly, not isolated" twice
+%   before: "...perturbation, evaluated jointly rather than isolated per sensor --- no
+%            configuration in this evaluation exercises a single sensor's degradation in isolation
+%            from the other two."
+%   after:  "...perturbation, applied jointly: no configuration isolates a single sensor's
+%            degradation."
+% The caveat survives once and stays explicit. The IMU white-noise caveat and the 8/4/27 failure
+% numbers were not touched. The brief's second half (shortening the Rugged Terrain clause) was left
+% alone: that clause carries the "no trend toward instability" finding, which is not a duplicate.
+%
+% EFFECT: results.tex 12,901 -> 12,858 words. Full latexmk run: 104 pages, 0 errors, 0 undefined
+% references, 0 missing figures.
