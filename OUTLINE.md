@@ -57,10 +57,12 @@ by reading each target file in full):
   actual figure caption for R3b-03). Note the **LiDAR-noise arbitration-channel caveat** already
   documented below ("Known cross-references") is a *different*, more specific caveat — don't conflate
   the two when writing this.
-- **R2b-03** (FSM timing-fairness caveat into the comparison table's caption) — `results.tex`, the
-  existing fairness-caveat prose is at the paragraph starting "On the two terrain suites..." (~line
-  559); the target caption is `tab:fsm_comparison`'s own caption (~line 517, currently does not carry
-  this caveat — only the Complex-suite 0%-success note).
+- **R2b-03 drafted (2026-11-02, not committed yet)**: the FSM timing-fairness caveat, until now only
+  in the `sssec:fsm_baseline_comparison` prose paragraph starting "On the two terrain suites..." (~line
+  531, the source of truth, unchanged), is now also in the `tab:fsm_comparison` caption (full version)
+  and, as one identical short note, in the captions of `fig:attempts_vs_noise_level`,
+  `fig:mode_timeline_complex` and `fig:mode_timeline_inspection`, all `\revblue{}`. `ssec:FSMBaseline`
+  (methodology.tex) no longer contradicts it (S-08 of the debate doc). See "Known cross-references".
 - **R2b-04** (hardware-parameter subsection) — `methodology.tex`, `\subsection{Physical Platform
   Construction...}` (`ssec:Construction`, ~line 472). Params already stated but scattered across this
   subsection's prose (N20 motor RPM, MG996R torque, ESP32-S3 implied but not named as the onboard
@@ -335,3 +337,17 @@ disclosure) — these aren't split out separately since `split_sections.py` only
   write "LiDAR noise robustness demonstrated at the arbitration level" anywhere without this
   qualifier — see `sections/results.tex`'s `sssec:noise_robustness_extra` for the as-written
   caveat and `intake/pending/R3-04_audit_and_plan.md` §4 for the full code-archaeology finding.
+- **Two different simulation batteries, do not merge them (`C-74`, 2026-11-01):** Fig. 20
+  (`fig:noise_robustness_grid`) and Fig. 27 are the R3-04 combined-perturbation sweep (IMU drift +
+  LiDAR + illumination, Table 7). Table 9 (`tab:consolidated_simulation_metrics`), the Neural rows of
+  `tab:fsm_comparison`, the Neural line of `fig:attempts_vs_noise_level` and the §3.1.8 terrain
+  battery come from the older `experiments/simulation/` runs instead. Those runs log controller noise
+  index 0 in every trial, so any prose calling them "noisy" is unverified — see
+  `intake/pending/C-74_fig20_restore_and_simulation_noise_audit_2026-11-01.md`. Fig. 20's asset was
+  overwritten by `C-22` and restored by `C-74`; never promote N-01's `fig1_noise_robustness_grid.png`.
+- **The FSM timing-fairness caveat lives in six places (`R2b-03`, 2026-11-02):** the source-of-truth
+  prose in `sssec:fsm_baseline_comparison` ("On the two terrain suites..."), the `tab:fsm_comparison`
+  caption, the captions of `fig:attempts_vs_noise_level`, `fig:mode_timeline_complex` and
+  `fig:mode_timeline_inspection`, and `ssec:FSMBaseline` in methodology.tex. If the caveat ever
+  changes, update all six. It covers only $T_{switch}$/$T_{response}$ on Rugged Terrain and Inclined
+  Slope; never widen it into "the two controllers are not comparable".

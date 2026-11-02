@@ -120,7 +120,7 @@ experiments/.venv_plotting/bin/python experiments/R3-04-noise-robustness/scripts
 | `fig2_Aversive_micro_test_001_SUCCESS.png` | ídem | no | reemplazaría `assets/fig2_Aversive_micro_test_005_SUCCESS.png`, `\label{fig:aversive_micro}` |
 | `fig2_Obstacle_micro_test_001_SUCCESS.png` | ídem | no | reemplazaría `assets/fig2_Obstacle_micro_test_005_SUCCESS.png`, `\label{fig:obstacle_micro}` |
 | `fig2_Complex_micro_test_001_SUCCESS.png` | ídem | no | reemplazaría `assets/fig2_Complex_micro_test_005_SUCCESS.png`, `\label{fig:complex_micro}` |
-| `fig1_noise_robustness_grid.png` | `experiments/_plotting/builders/noise_sweep_grid.py` (nuevo módulo — no toca `macro_robustness.py`) | no | reemplazaría `assets/fig1_noise_robustness_grid.png`, `\label{fig:noise_robustness_grid}` |
+| `fig1_noise_robustness_grid.png` | `experiments/_plotting/builders/noise_sweep_grid.py` (nuevo módulo — no toca `macro_robustness.py`) | sí — `assets/fig1_noise_robustness_grid.png` (R3-04, 2026-08-31; `C-22` la sobrescribió por error el 2026-09-01 con la salida de N-01, mismo nombre de archivo; re-promovida por `C-74`, 2026-11-01) | `\label{fig:noise_robustness_grid}` (Figura 20) |
 | `fig_R2_terrain_stability_vs_noise.png` | `experiments/_plotting/builders/terrain_noise_sweep.py` | no | figura nueva, sin label todavía |
 | `fig_R3_camera_dropout_evidence.png` | `experiments/R3-04-noise-robustness/scripts/build_camera_dropout_evidence.py` | no | figura nueva, sin label todavía |
 | `fig_R1_failure_by_family.png` | `experiments/R3-04-noise-robustness/scripts/build_tables.py` | no | reemplaza la Tabla R1 (barras apiladas, no tabla — decisión de auditoría 2026-09-01) |

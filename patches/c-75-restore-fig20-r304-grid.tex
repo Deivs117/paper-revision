@@ -1,0 +1,32 @@
+% PATCH: C-75
+% Reviewer: — (correction; keeps R2b-02/R3b-03 coherent)
+% Target section: sections/results.tex (fig:noise_robustness_grid caption; paragraph introducing
+%   tab:consolidated_simulation_metrics) + assets/fig1_noise_robustness_grid.png
+% Requirement: Figure 20, its caption, Section 2.3.5, the Section 3.1.2 results and Table 9 must describe
+%   the same experiment. Author decision (2026-11-01): restore the R3-04 combined-perturbation grid that
+%   C-22 overwrote, instead of adapting the text to the C-22 image.
+% Status: drafted
+%
+% Asset (via scripts/promote_figure.sh --force, source experiments/R3-04-noise-robustness/output/):
+%   before: sha1 d4eaff59 3000x3300 -- N-01 build of experiments/simulation/ (C-22, 5e92625, 2026-09-01)
+%   after:  sha1 0957b3df 3900x3300 -- R3-04 build (noise_sweep_grid.py, first promoted in 6a79328)
+% Unchanged and already coherent with the restored figure: Section 2.3.5, the Appetitive/Aversive/
+%   Obstacle/Complex paragraphs, the R2b-02/R3b-03 caveats, the fig:noise_robustness_extra_combined caption.
+% Evidence and the open noise finding: intake/pending/C-74_fig20_restore_and_simulation_noise_audit_2026-11-01.md
+
+% --- 1. fig:noise_robustness_grid caption, last sentence. Previously: "The Pitch RMS column uses a
+%        per-row scale (ceiling at $1.1\times$ that row's maximum) rather than a fixed $0$--$4^\circ$ range,
+%        so that rows with little variation remain readable without losing cross-scenario magnitude
+%        comparability." noise_sweep_grid.py computes one ceiling for all rows. ---
+
+\revblue{The Pitch RMS column uses one scale shared by all four rows (ceiling at $1.1\times$ the largest mean $+1\sigma$ across rows) rather than a fixed $0$--$4^\circ$ range, so that rows with little variation remain readable while magnitudes stay comparable across scenarios.}
+
+% --- 2. Paragraph before tab:consolidated_simulation_metrics. Replaced "; per-severity-level trends of
+%        these same metric families under the combined IMU-drift/LiDAR-noise/illumination-distortion
+%        perturbation (Section~\ref{ssec:NoiseRobustnessEval}) are reported separately in
+%        Figure~\ref{fig:noise_robustness_grid}" with the clause below. Recomputation: all 24 Table 9
+%        values equal the experiments/simulation/ SUCCESS trials (Obstacle test_007 excluded).
+%        The separating space sits before \revblue, not inside it: \color ends with \ignorespaces, so
+%        a leading space in the argument was swallowed (the 2026-11-02 build rendered "scenariosfor"). ---
+
+\revblue{for a separate archived simulation battery (15 successful trials per scenario, the same trials as the basal-ganglia rows of Table~\ref{tab:fsm_comparison}), not for the combined-perturbation sweep of Figure~\ref{fig:noise_robustness_grid}; its pooled values are therefore not a summary of that figure's per-level trends}

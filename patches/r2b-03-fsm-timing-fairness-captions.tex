@@ -1,0 +1,71 @@
+% PATCH: R2b-03
+% Reviewer: 2
+% Target section: sections/results.tex (\subsubsection{FSM Gait Arbitration Baseline Comparison},
+%   \label{sssec:fsm_baseline_comparison}: the caption of tab:fsm_comparison and the captions of
+%   fig:attempts_vs_noise_level and fig:mode_timeline_complex; \subsubsection{Reactive Inspection
+%   Task}: the caption of fig:mode_timeline_inspection) + sections/methodology.tex
+%   (\subsubsection{FSM Gait Arbitration Baseline}, \label{ssec:FSMBaseline})
+% Requirement: Duplicate the FSM-vs-basal-ganglia timing-fairness caveat, until now only in the prose
+%   of sssec:fsm_baseline_comparison, into the captions of the FSM comparison table and plots. Letter,
+%   Reviewer 2 item 3 (verbatim): "The authors mention that some timing metrics cannot be fairly
+%   compared between the basal‑ganglia controller and FSM baseline due to internal parameter
+%   mismatches. This important fairness caveat is currently only in the main text prose. Please
+%   duplicate this note inside the "figure caption of FSM comparison plots", since reviewers/readers
+%   tend to read figure captions first."
+%   Also resolves S-08 of intake/pending/second_pass_simplification_debate.md (deferred to Diego
+%   under R2b-03): ssec:FSMBaseline claimed identical conditions, byte-for-byte sharing, exclusive
+%   attribution and matching trial counts, which the caveat and Table 11 contradict.
+% Status: drafted
+%
+% Notes
+% - Source of truth: the existing prose paragraph of sssec:fsm_baseline_comparison that starts "On the
+%   two terrain suites (Rugged Terrain, Inclined Slope)..." (unchanged). Every new sentence restates
+%   it: the same two metrics ($T_{switch}$, $T_{response}$), the same two suites, the same three
+%   configuration differences, the same "not comparable under strictly identical conditions".
+% - Scope kept narrow on purpose: no sentence says the two controllers are incomparable in general.
+%   The table caption says the caveat is limited to the two timing metrics and that success rate,
+%   task time and Roll RMS are reported for both terrain suites. No value, trial count, experiment or
+%   conclusion changed.
+% - tab:fsm_comparison has no T_switch/T_response column for any suite, so its caption says "not
+%   reported in this table" (true for all seven suites) and gives the documented reason for the two
+%   terrain suites only; it does not invent a reason for the other five.
+% - The three figure captions get one identical, shorter note that points to the table and to the
+%   section. None of the three figures shows a terrain suite; the note is there because the letter
+%   asks for it in the "FSM comparison plots" and readers read captions first.
+% - Collaborators' recent caption text is kept verbatim: "Each trace is the first trial by index ..."
+%   (PR #18) and the "Simulation data." origin marks (C-73, PR #26). The note sits between them, so
+%   the origin mark stays last, as C-73 established.
+% - ssec:FSMBaseline: "identical" -> "matched" (the abstract's own wording for this comparison); the
+%   "byte-for-byte ... attributable exclusively ..." sentence now names the three differences and its
+%   one exception ("exclusively" and "or experimental configuration" dropped, since a configuration
+%   difference is exactly that exception); "matching trial counts" now excludes the two terrain
+%   suites (tab:fsm_comparison: Neural 6 vs FSM 25 on Rugged Terrain, 3 vs 21 on Inclined Slope, as
+%   the results prose already says). "noise levels" left as it was: the results prose says the Neural
+%   terrain trials were "restricted to the zero-noise condition to match the FSM runs". The separate
+%   open question of whether controller noise was active at all in experiments/simulation/ is tracked
+%   by C-74, not here.
+% - Not touched: the abstract's "under matched conditions" (it only concerns the Complex and
+%   Inspection success rates, which this caveat does not affect), fig:inspection_dfinal_scatter
+%   (Neural only, not an FSM comparison plot), and every other caption.
+%
+% ---------------------------------------------------------------------------------------------------
+% results.tex, tab:fsm_comparison caption: new \revblue block appended at the end of the caption.
+\revblue{Fairness caveat on timing metrics: $T_{switch}$ and $T_{response}$ are not reported in this table. On the two terrain suites (Rugged Terrain, Inclined Slope), three configuration differences between the two controllers' terrain-transition logic (the pitch-instability threshold, a transition timing offset, and the switching-time formula's margin term) make those two specific metrics not comparable under strictly identical conditions without re-running both controllers with matched parameters, which was out of scope for this comparison (Section~\ref{sssec:fsm_baseline_comparison}). The caveat is limited to these two timing metrics: success rate, task time, and Roll RMS are reported for both terrain suites.}
+%
+% results.tex, captions of fig:attempts_vs_noise_level, fig:mode_timeline_complex and
+% fig:mode_timeline_inspection: the same block in all three, inserted just before
+% \revblue{Simulation data.}
+\revblue{Fairness caveat on timing metrics: $T_{switch}$ and $T_{response}$ are not compared between the two controllers; on the two terrain suites (Rugged Terrain, Inclined Slope), three configuration differences in their terrain-transition logic make these two metrics not comparable under strictly identical conditions (Table~\ref{tab:fsm_comparison}; Section~\ref{sssec:fsm_baseline_comparison}).}
+%
+% methodology.tex, ssec:FSMBaseline, three spots:
+% (1) inside the existing \revblue{} opening clause, "identical" -> "matched":
+\revblue{To provide a finite state machine (FSM) baseline under matched experimental conditions,}
+% (2) replaces "Because every other component is shared byte-for-byte between the two controllers,
+%     any behavioral difference between them is attributable exclusively to this mode-selection
+%     mechanism, not to differences in perception, low-level navigation, or experimental
+%     configuration.":
+\revblue{Every other component is shared byte-for-byte between the two controllers, except for three configuration differences in the terrain-transition logic (the pitch-instability threshold, a transition timing offset, and the switching-time formula's margin term). Behavioral differences between the two controllers are therefore attributable to this mode-selection mechanism rather than to differences in perception or low-level navigation, with one exception: on the two terrain suites (Rugged Terrain, Inclined Slope), those three differences make $T_{switch}$ and $T_{response}$ not comparable under strictly identical conditions, so these two metrics are not compared (Section~\ref{sssec:fsm_baseline_comparison}).}
+% (3) inserted after "under matching trial counts", with the separating space outside the macro:
+%     \revblue is \textcolor{blue}{#1}, and \color ends with \ignorespaces, so a space placed first
+%     inside the argument is swallowed (the first build rendered "counts(except").
+\revblue{(except on the two terrain suites, where the Neural sample is substantially smaller; Table~\ref{tab:fsm_comparison})}
