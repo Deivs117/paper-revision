@@ -72,6 +72,10 @@ complete, evidence-backed list to hand off before the re-run.
 ## Output
 
 - `output/fig1_noise_robustness_grid.png` — fused 4x3 grid replacing the 4 `fig1_*_macro.png`.
+  **Do not promote it again.** Since R3-04 (2026-08-31) the published Figure 20 is
+  `experiments/R3-04-noise-robustness/output/fig1_noise_robustness_grid.png` (4x4, combined
+  perturbation level). `C-22` promoted this 4x3 file over it by mistake (same filename);
+  `C-74` (2026-11-01) restored the R3-04 version.
 - `output/FigA_Stability_Profile.png`, `output/FigB_Decision_Delay.png`,
   `output/FigC_Terrain_Adaptability.png` — regenerated from `experiments/simulation/familia_c1_terreno_rugoso`
   / `familia_c2_pendiente`, visually consistent with the currently published versions (spot-checked

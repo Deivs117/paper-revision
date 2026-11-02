@@ -419,5 +419,6 @@ S-06 (actual slope mode / driving unit), S-07 (driver of the physical $Var(z)$ s
 
 Surviving changes applied as `C-57`. Text-only inconsistencies S-01, S-03, S-04, S-09, S-10 fixed as `C-58`.
 S-02, S-05, S-06, S-07 checked against `PETER_SIMULATION` code, the simulation logs and the rasters, and fixed as `C-61` (2026-10-29); evidence in `patches/c-61-code-checked-inconsistency-fixes.tex`. One S-06 side point stays with the authors: `tab:terrain_sequence` Frame 1 mode on the ramp. S-02: the noise trials were run (author, 2026-10-29); noise phrases kept, noise setup stated and "unperturbed" corrected.
-Still open: S-08 (Diego, R2b-03), plus every item under "Deferred to owners".
+S-08 fixed under `R2b-03` (Diego, 2026-11-02, status `drafted` until committed): `ssec:FSMBaseline` now names the three terrain-transition configuration differences, limits the exception to $T_{switch}$/$T_{response}$ on the two terrain suites, and no longer claims matching trial counts there; evidence in `patches/r2b-03-fsm-timing-fairness-captions.tex`.
+Still open: every item under "Deferred to owners".
 This doc stays in `intake/pending/` until those are resolved.
