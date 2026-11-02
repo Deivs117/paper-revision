@@ -1,0 +1,41 @@
+% Patch record for C-74 -- disclose which standard deviation the tables report.
+% Applied 2026-11-02. Option 1 of the three costed in
+% intake/pending/pre-submission_numeric_consistency_audit_2026-11-01.md.
+% NO NUMBER WAS CHANGED. Two captions gained a sentence; that is the whole patch.
+%
+% THE PROBLEM
+% The audit recomputed tab:consolidated_simulation_metrics from the archived per-trial logs and
+% reproduced all 12 cells exactly -- but only with the POPULATION standard deviation (/n). With the
+% sample SD (/n-1) every cell is ~3.5 % larger, the ratio being sqrt(14/15) in every one.
+% tab:fsm_comparison is population too (verified: Inclined Slope/Neural 7.160), while
+% tab:inspection_metrics is sample SD and was the only table that said which it used.
+% So two conventions coexisted and two of the three captions disclosed neither. The undisclosed
+% part is the only thing that was actually wrong; the numbers themselves are correct and
+% reproducible.
+%
+% WHAT CHANGED
+% tab:consolidated_simulation_metrics:
+%   "... \revblue{Simulation data.}" ->
+%   "... \revblue{Simulation data. Values are mean $\pm$ population standard deviation over each
+%    suite's successful trials ($n=15$; $n=14$ for Obstacle Evasion, after the exclusion noted
+%    above).}"
+%   The per-suite n is stated because it is not 15 everywhere -- the excluded Obstacle trial makes
+%   that suite 14, and the caption previously left the reader to infer it.
+% tab:fsm_comparison, appended to the existing N sentence:
+%   "All $\pm$ values in this table are population standard deviations over each row's $N$ trials,
+%    as in Table~\ref{tab:consolidated_simulation_metrics}."
+%   This table already carries a per-row N column, so pointing at it is enough.
+%
+% NOT TOUCHED, AND WHY
+% tab:inspection_metrics already says "mean ± sample SD" and that is accurate for it (verified:
+% T_task 12.33 -> 12.3). It keeps a different convention from the other two. That remains a real
+% inconsistency, now a disclosed one: a reader can see which is which instead of assuming they
+% match. Unifying on the sample SD (option 2 of the audit) is still the better end state and would
+% move the n=3 row of tab:fsm_comparison from +-7.160 to +-8.769; the author chose not to move
+% published numbers two days before the deadline, which is a defensible call -- the means do not
+% change under either option, only the spread.
+% tab:mode_steady_state_energy was left alone: its caption already states what the mean and SD are
+% taken over ("all individual samples pooled across the segments of each mode"), which is what
+% R3b-05 asked for; its sample-vs-population choice was not re-derived in the audit.
+%
+% Full latexmk run after the change: 104 pages, 0 errors, 0 undefined references, 0 missing figures.
