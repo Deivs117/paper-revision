@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-03T22:50:21+00:00",
-  "progressLastCommit": "2026-11-03T10:49:49-05:00",
+  "generatedAt": "2026-11-03T22:51:45+00:00",
+  "progressLastCommit": "2026-11-03T16:50:06-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1423,6 +1423,19 @@
       ],
       "status": "applied",
       "patchFile": "intake/pending/final_audit_r2_sebas_2026-11-03.md"
+    },
+    {
+      "id": "C-81",
+      "reviewer": "2, 3",
+      "requirement": "Sam — Response to Reviewers de la ronda 2 (docs/Response_to_Reviewers_R2.docx). Carta de respuesta punto por punto a los 11 comentarios del letter del 2026-10-25 (Reviewer #2: 2.1–2.6; Reviewer #3: 3.1–3.5) más la nota del editor, con el mismo formato y estilos que la carta de la ronda 1. Cada respuesta se redactó desde los patches/ y las filas de PROGRESS.md de R2b-01..06 / R3b-01..05 (y C-59, C-60, C-65, C-70..C-74), no de memoria. No toca sections/. Pendiente del autor: confirmar el identificador del manuscrito del encabezado (R2 vs. R3).",
+      "target": "— (documento de envío, no texto del manuscrito)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sam"
+      ],
+      "status": "applied",
+      "patchFile": "—"
     }
   ]
 }
