@@ -285,7 +285,7 @@ In Table~\ref{table:LiDAR}, the time constants are: $\tau_{Z}$ (s) governs the r
 The synaptic parameters are: \revblue{$\sigma_{Z}$ is the tuning width defined with Equation~\eqref{eq:ring};} $\omega_{Z\rightarrow L}$ and $\omega_{L\rightarrow L}$ are the unitless weights from the sensory ring to the integrator neurons and within the integrator, respectively. These weights are fixed uniform values derived from the basal-ganglia inspired architecture \citep{sarvestani2013computational}.
 The inter-layer synaptic weight matrices $W_{Z\rightarrow I}$, $W_{I\rightarrow R}$, $W_{R\rightarrow A}$, and $W_{A\rightarrow L_4}$ connect the ring, input, response, auxiliary, and accumulator layers.
 
-The activations of the sensory ring are processed by three integrator layers: input, response, and auxiliary (Figure~\ref{fig:IntLidar}). Cross-connections between the input and response layers encode the direction of the evasive movement, while the backward excitatory projections between the response and auxiliary layers define the intensity of the obstacle-related stimulus. These layers determine the predominance of the evasive action, information that is stored in the accumulator neuron $L_4$. In the following equations, the subscript $(\cdot)_+$ denotes a rectifying operator (positive-part function): for any scalar $x$, $(x)_+ = \max(x,0)$. The dynamics of this system are described by differential equations (Equations~\eqref{eq:L0}–\eqref{eq:L4}) shown below. 
+The activations of the sensory ring are processed by three integrator layers: input, response, and auxiliary (Figure~\ref{fig:IntLidar}). Cross-connections between the input and response layers encode the direction of the evasive movement, while the backward excitatory projections between the response and auxiliary layers define the intensity of the obstacle-related stimulus. These layers determine the predominance of the evasive action, information that is stored in the accumulator neuron $L_4$. \revblue{Throughout this paper, $(\cdot)_+$ denotes the rectifying operator} (positive-part function): for any scalar $x$, $(x)_+ = \max(x,0)$. The dynamics of this system are described by differential equations (Equations~\eqref{eq:L0}–\eqref{eq:L4}) shown below. 
 
 \begin{align}
 \frac{d\, \text{L}_0}{dt} &= \frac{1}{\tau_{L}} \left( -\text{L}_0 + \left( \sum_{i=0}^{3} Z_i + \sum_{i=12}^{15} Z_i - \text{L}_1 \right)_+ \right)\label{eq:L0}\\
@@ -460,11 +460,11 @@ The gait-decision module, implemented in the simulation (see graph in Figure~\re
 Units $z_0$--$z_2$ and $z_{14}$--$z_{16}$ use a second-order Naka--Rushton nonlinearity to transform their net input into a bounded activation. The general form is given in Equation~\eqref{eq:Naka}.
 
 \begin{equation}
-f(x;\sigma) = \frac{A x_+^2}{\sigma^2 + x_+^2}
+f(x;\sigma) = \frac{A\,(x)_+^2}{\sigma^2 + (x)_+^2}
 \label{eq:Naka}
 \end{equation}
 
-where $x$ is the net input to the neuron; $x_+ = \max(x,0)$ is the rectified input; $A$ is the saturation amplitude of the function; and $\sigma$ is the half-saturation constant controlling the sensitivity of the nonlinearity (see Table~\ref{table:Locom_NN}).
+where $x$ is the net input to the neuron; $A$ is the saturation amplitude of the function; and $\sigma$ is the half-saturation constant controlling the sensitivity of the nonlinearity (see Table~\ref{table:Locom_NN}).
 
 \revblue{Two instantiations of Equation~\eqref{eq:Naka} are used, $f_{\mathrm{Imu}}(x) = f(x;\sigma_I)$ and $f_{\mathrm{Mode}}(x) = f(x;\sigma_M)$, whose different half-saturation constants match the dynamic range of the IMU and mode-selection pathways.} 
 

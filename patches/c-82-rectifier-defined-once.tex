@@ -1,0 +1,44 @@
+% PATCH: C-82
+% Reviewer: — (correction; the professor's comment on the compiled PDF, 2026-11-04)
+% Target section: sections/methodology.tex (\subsubsection{Obstacle Sensory Module}: the sentence right
+%   before Equations~\eqref{eq:L0}--\eqref{eq:L4}; \subsubsection{Gait Decision Module},
+%   \label{ssec:Gait_Decision_Module}: Equation~\eqref{eq:Naka} and its where-clause)
+% Requirement: the rectifier (.)_+ is defined once. The professor's remark (paraphrased from Spanish): the
+%   operator is already defined where it is first used ("(.)_+ denotes a rectifying operator (positive-part
+%   function): for any scalar x, (x)_+ = max(x,0). The dynamics ... (Equations (2)-(9)) shown below"), so
+%   repeating "x_+ = max(x,0) is the rectified input" in the where-clause of the Naka-Rushton function
+%   (Equation (26), "see Table 4") is not necessary. The PDF numbers match the source: eq:L0 = (2),
+%   eq:L4 = (9), eq:Naka = (26), table:Locom_NN = Table 4.
+% Status: applied
+%
+% Notes
+% - Both texts come from the Overleaf baseline (95f35be, 2026-08-24), not from this round.
+% - The same repetition was already flagged by the C-57 debate (P-27, intake/pending/
+%   second_pass_simplification_debate.md). C-57 removed the "(.)_+ denotes the rectified (positive-part)
+%   operator" lead-in of the Gait Decision paragraph but kept the where-clause item, because its notation
+%   differed (x_+ vs (x)_+). The item is removed now, and change 2 removes that notation objection.
+% - Stays in the where-clause: x, A and sigma. The Table 4 text (methodology.tex, "A, sigma_M, sigma_I are
+%   the Naka--Rushton parameters defined with Equation~\eqref{eq:Naka} below") points to them, and this
+%   where-clause is the only place that defines them.
+% - Change 2: Equation~\eqref{eq:Naka} now writes (x)_+ like every other rectified term of the Methodology
+%   (Equations (2)--(9) and the locomotion-module equations); it was the only equation written with x_+.
+% - Change 3: the definition is now the only one and the locomotion and gait-decision modules rely on it,
+%   so its lead-in no longer says "In the following equations, the subscript" (it is an operator, not a
+%   subscript). Checked: no other section uses _+ (results, introduction, conclusions, closing, preamble),
+%   so "Throughout this paper" is accurate.
+% - Changes 1 and 2 are not in \revblue: a deletion and a notation change with no change of meaning (CLAUDE.md
+%   revision convention). Change 3 is, because it widens the scope of a sentence.
+% - No value, result, equation number, table number or cross-reference changes.
+
+% --- 1. where-clause of eq:Naka: the item "$x_+ = \max(x,0)$ is the rectified input;" is removed ---
+% before: where $x$ is the net input to the neuron; $x_+ = \max(x,0)$ is the rectified input; $A$ is the saturation amplitude ...
+% after:  where $x$ is the net input to the neuron; $A$ is the saturation amplitude ...
+
+% --- 2. eq:Naka uses the notation defined in the Obstacle Sensory Module ---
+% before: f(x;\sigma) = \frac{A x_+^2}{\sigma^2 + x_+^2}
+% after:  f(x;\sigma) = \frac{A\,(x)_+^2}{\sigma^2 + (x)_+^2}
+
+% --- 3. Obstacle Sensory Module, sentence before the equations. Previously: "In the following equations, the
+%        subscript $(\cdot)_+$ denotes a rectifying operator (positive-part function): ..." ---
+
+\revblue{Throughout this paper, $(\cdot)_+$ denotes the rectifying operator}
