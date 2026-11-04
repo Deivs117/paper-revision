@@ -1,0 +1,21 @@
+% PATCH: C-91
+% Reviewer: - (follow-ups from the review of PR #45)
+% Target section: sections/results.tex, sections/methodology.tex, sections/introduction.tex
+% Status: applied
+%
+% 1. results.tex: "under the same cross-validation protocol" -> "in a separate cross-validation run"
+%    (the 150-80 MLP is F1 0.771 in fig4_architecture_ablation and 0.734 in fig_classifier_tradeoff_fused).
+% 2. methodology.tex: BG outputs unified in RGB: G_{pe,y}->Gpe_G, G_{pi,x}->Gpi_R, G_{pi,z}->Gpi_B
+%    (red_neuronal.py: Gpe[1] obstacle; z[14] uses Gpi[0] aversive and Gpi[2] appetitive).
+%    C-83 had G_{pi,x}, G_{pi,z} reversed (appetitive/aversive).
+% 3. methodology.tex: neuron notation unified as X_n (author decision): all 80 z_{N} -> X_{N}
+%    (z_0..z_17); 0 residual z_{digit} in any section. Capital Z_n of eq:InputL (sensory layer) untouched.
+% 4. Mode names: removed "(articulated mode)", "differential-drive" -> "differential rolling",
+%    "hybrid morphological transformation" -> "morphological transformation".
+% 5. methodology.tex, table:Locom_NN: removed the row omega_{Gpe -> X_1} = 1.0. X_1 is the pitch unit
+%    (red_neuronal.py z[1] = pitch vs Upitch, no Gpe input), the locomotion graph (Decisiones_Locomotoras.png)
+%    has no GPe -> X1 arrow, and no text cites the weight. Legacy row from the Overleaf baseline.
+% 6. methodology.tex: X_3 and X_4 were crossed in the quadruped/differential equations. Both graphs
+%    (Modos_Locomocion.png, Modos_LocomocionV2.png), red_neuronal.py (z[15] uses z[4]; z[16] uses z[3]),
+%    the Methodology prose and Results agree: X_15 (Quadruped) <- X_4, X_16 (Differential) <- X_3.
+%    Fixed: eq. X_15 "2X_3" -> "2X_4"; eq. X_16 (main and V2) "X_4" -> "X_3". Coefficients untouched.
