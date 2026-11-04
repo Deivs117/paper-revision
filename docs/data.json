@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-04T01:06:46+00:00",
-  "progressLastCommit": "2026-11-03T20:03:24-05:00",
+  "generatedAt": "2026-11-04T03:08:18+00:00",
+  "progressLastCommit": "2026-11-03T22:06:44-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1462,8 +1462,8 @@
         "Sebas",
         "Diego"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/c-83-methodology-final.tex"
     },
     {
       "id": "C-84",
@@ -1477,8 +1477,8 @@
         "Sebas",
         "Diego"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/c-84-front-intro-conclusions-final.tex"
     },
     {
       "id": "C-85",
@@ -1492,8 +1492,8 @@
         "Sebas",
         "Diego"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/c-85-simulation-results-final.tex"
     },
     {
       "id": "C-86",
@@ -1507,8 +1507,8 @@
         "Sebas",
         "Diego"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/c-86-fsm-table-inspection-stability.tex"
     },
     {
       "id": "C-87",
@@ -1522,8 +1522,8 @@
         "Sebas",
         "Diego"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/c-87-physical-results-mlp-final.tex"
     },
     {
       "id": "C-88",
@@ -1537,8 +1537,8 @@
         "Sebas",
         "Diego"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/c-88-physical-quant-energy-limitations-final.tex"
     },
     {
       "id": "C-89",
