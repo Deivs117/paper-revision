@@ -115,3 +115,28 @@ Pistas globales (aparecen en varias zonas, aplica en la tuya): `stimuli of diffe
 
 "During the writing of this manuscript and its revisions, we used AI-based tools, including ChatGPT (OpenAI) and Claude (Anthropic), as editorial support to improve grammar, clarity, tone and coherence, and Claude (Anthropic) as a coding assistant to maintain the manuscript source and to run the analysis and plotting scripts that regenerate figures and tables from the experimental data. These tools were not used to design the experiments, collect the data, or draw the scientific conclusions. The authors critically reviewed, edited and approved all content, verified the outputs of the scripts, and take full responsibility for the accuracy and integrity of the manuscript."
 
+
+
+---
+
+## ADENDA 2026-11-04 — Delta de la auditoría de Diego (C-78, `final_audit_r2_diego_2026-11-04.md`, PR #42)
+
+Mismas reglas que arriba. Las decisiones del autor de esta tanda (todas con la opción recomendada salvo D-17):
+
+| Punto | Decisión | Qué se hace | Fila |
+|---|---|---|---|
+| **D-69 (ALTA, hacer primero)**: `tab:fsm_comparison` no cabe en su página ("Float too large for page by 398 pt") y las 6 filas de Inspection/Rugged/Slope **no salen en el PDF** | **Solo formato, caption intacto** | `results.tex` l.478-502: `\small`, `\setlength{\tabcolsep}{4pt}`, `tabular{l l c c c c c}` en vez de `tabularx`, una línea por fila; las 14 filas y el caption completo. No cambia ningún valor. **Compilar y comprobar que las 14 filas salen en el PDF** | C-86 |
+| D-13 + D-16: "no simpler substitute … matches it" (l.217) vs "not yet conclusive" (l.219); "150-80 confirms … most favorable trade-off" (l.666, ΔF1 0.005, SD 0.033) | **Moderar las dos** | l.217: "the static-threshold substitute is slower and less attitude-stable, although its success rate is not statistically distinguishable at n = 12". l.666: "150-80 is statistically indistinguishable from the 100-unit and 200-100-50 variants and was retained for its …" y "single-layer 50- and 100-unit". (l.666 va además alineada con `fig4_architecture_ablation.png` y con B.3) | C-85 (l.217), C-87 (l.666) |
+| D-17: "no sufre bloqueos computacionales" (l.128) sin su respaldo tras C-66 | **Acotarla a los ensayos retenidos** | "in none of the retained trials did the network stall (attempts discarded before retention are analyzed in Section 3.1.5)", frase entera en `\revblue` | C-85 |
+| D-18: Conclusiones afirman "minimal deviations from the optimal path", "consistent safety distance", "significantly reduced … oscillation amplitudes", "fewer undesired oscillations" sin medida en Resultados | **Pasar a descripción cualitativa** | Quitar "minimal", "significantly", "consistent safety distance"; apoyar la frase en las figuras ("the trajectories in Figures X-Y show …") | C-84 |
+| D-22: `results.tex` l.504 ("at the noisiest levels") y caption l.509 ("intermediate/high noise") vs la propia Fig. 36 (1.33, 1.0, 1.33, 1.67, 1.0 en los niveles 0-4) | **Alinear el texto con la figura** | "Neural needs up to 1.67× as many attempts in Appetitive (level 3; 1.33× already at level 0) and 1.33× in Aversive (levels 3-4)". No abre datos ni toca C-75 §2 | C-86 |
+| D-47 (GPR): `introduction.tex` l.32 | **Expandir** | "the Gurney–Prescott–Redgrave (GPR) computational model of the basal ganglia" | C-84 |
+| D-29: encabezado del resumen gráfico dice "outperforms" | **Acotar** | "Neural arbitration outperforms the FSM under stimulus conflict and in inspection"; regenerar `GRAPHICAL_ABSTRACT.pdf` | **C-90** (fila nueva) |
+
+**Mecánicos añadidos por defecto (sin decisión):**
+- C-87: D-70, ancho de las cuatro imágenes de `fig:robot-6frames` (`results.tex` l.624-655) de 0.48 a ≈ 0.45 de línea (o ≈ 8 % menos de alto) para que su pie no quede pisado por el número de página ("Float too large for page by 52 pt").
+- C-86: D-46, "Figures 33 and Table 9" (`results.tex` l.455-457).
+- C-83: D-26, `methodology.tex` l.526 remite el crawl a `ssec:Gait_Decision_Module`; debe ser `sssec:transition_stability`. D-27, `methodology.tex` l.417 borrar "already used elsewhere in this section's obstacle-sensory formulation". D-55, `methodology.tex` l.266 `θ_p` = 90.0 "initial value of θ_p".
+- C-83 y C-85: D-47 (nombres de neuronas), un solo término para `L_0`-`L_4` ("integrator neurons", `L_4` "accumulator"); `results.tex` l.36 dice "the sensory ring, whose unit L_4", y `L_4` no es del anillo.
+
+**No se hace (reglas del autor):** D-42 y D-43 (acortar captions de `tab:fsm_comparison` y Fig. 28), D-38, D-39, D-40 y D-41 (fusionar o quitar tablas y figuras), D-09 resto (ecuaciones vs. código: fuera del criterio), D-72, D-73, D-74 (figuras que el paper no contradice), D-03, D-06, D-21, D-22 de la sección C, y cualquier cita del máximo de energía.

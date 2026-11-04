@@ -170,3 +170,7 @@ Solo se regeneran las que el propio paper contradice. Cada una pasa por `experim
 
 ## Estado de la aplicación (2026-11-03)
 **Ninguna corrección se ha aplicado a `sections/`.** El autor indicó que no se aplica nada hasta que lo ordene. El parche C-82 de Diego (PR #38) ya está en `main`; no interfiere con las ediciones planeadas.
+
+
+## Delta de Diego (C-78) y decisiones (2026-11-04)
+Diego entregó `final_audit_r2_diego_2026-11-04.md` (PR #42): 73 hallazgos (8 alta, 23 media, 42 baja). Casi todo ya estaba cubierto por este consolidado; su propio delta lo detalla. Lo nuevo y decidido por el autor está en la **Adenda** de `final_corrections_round2_2026-11-04.md`: D-69 (la Tabla 11 pierde 6 filas en el PDF; solo formato), D-13/D-16, D-17, D-18, D-22, D-47 (GPR), D-29 (resumen gráfico, fila C-90) y seis mecánicos (D-70, D-46, D-26, D-27, D-55, nombres de neuronas L_0-L_4).
