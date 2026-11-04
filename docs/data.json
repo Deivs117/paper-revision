@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-04T03:01:49+00:00",
-  "progressLastCommit": "2026-11-03T22:00:09-05:00",
+  "generatedAt": "2026-11-04T03:03:18+00:00",
+  "progressLastCommit": "2026-11-03T22:01:49-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1522,8 +1522,8 @@
         "Sebas",
         "Diego"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/c-87-physical-results-mlp-final.tex"
     },
     {
       "id": "C-88",

@@ -1262,10 +1262,10 @@ Under the FSM baseline (Section~\ref{ssec:FSMBaseline}) on this same scenario, s
 
 \subsection{Physical Implementation Results}
 
-Complementarily, the experiments with the physical platform reproduced the same conditions as those used in simulation. Stability tests were conducted on inclined and irregular terrains, as described in subsection~\ref{ssec:Construction}. 
+In addition, the experiments with the physical platform reproduced the same conditions as those used in simulation. Stability tests were conducted on inclined and irregular terrains, as described in Section~\ref{ssec:Construction}. 
 
 \subsubsection{Single Stimulus Response}
-The same protocol was replicated on the physical robot; Figure~\ref{fig:RESPUESTAS_EST_UNI_real} summarizes the resulting trajectories for the three stimuli (approach, a, appetitive; evasion, b, obstacle; and escape, c, aversive), all consistent with the simulation results.
+The same protocol was replicated on the physical robot; Figure~\ref{fig:RESPUESTAS_EST_UNI_real} summarizes the resulting trajectories for the three stimuli ((a) appetitive approach; (b) obstacle evasion; (c) aversive escape), all consistent with the simulation results.
 
 \begin{figure}[t]
     \centering
@@ -1275,7 +1275,7 @@ The same protocol was replicated on the physical robot; Figure~\ref{fig:RESPUEST
 \end{figure}
 
 
-In the obstacle-evasion response (Figure~\ref{fig:NEU_EST_UNIG_real}a), input-layer neurons $X_{15}$/$X_{16}$ activate first, indicating the obstacle on the front-right side; $L_{4}$ reaches maximum activity after $\approx35$~s, and Figure~\ref{fig:NEU_EST_UNIG_real}c shows unit $X_{14}$ engaging omnidirectional gait for the leftward evasive maneuver.
+In the obstacle-evasion response (Figure~\ref{fig:NEU_EST_UNIG_real}a), input-layer neurons \revblue{$I_{15}$/$I_{16}$} activate first, indicating the obstacle on the front-right side; \revblue{$L_{4}$ activates at $\approx35$~s and peaks at $\approx44$~s}, and Figure~\ref{fig:NEU_EST_UNIG_real}c shows unit $X_{14}$ engaging omnidirectional gait for the leftward evasive maneuver.
 
 \begin{figure}[t]
     \centering
@@ -1284,33 +1284,33 @@ In the obstacle-evasion response (Figure~\ref{fig:NEU_EST_UNIG_real}a), input-la
     \label{fig:NEU_EST_UNIG_real}
 \end{figure}
 
-During the 5~s locomotion-mode change (differential drive $\rightarrow$ omnidirectional), $X_{15}$/$X_{16}$ remain nearly constant (no displacement); after $\approx40$~s their activity decreases and shifts to neighboring neurons, marking successful completion of the maneuver.
+During the 5~s locomotion-mode change (differential drive $\rightarrow$ omnidirectional), \revblue{$I_{15}$/$I_{16}$} remain nearly constant (no displacement); after $\approx40$~s their activity decreases and shifts to neighboring neurons, marking successful completion of the maneuver.
 
-For the appetitive stimulus, the physical robot exhibits a frontal-approach behavior: at $\approx23$~s, neurons $X_5$/$X_7$ (Figure~\ref{fig:NEU_EST_UNIG_real}b) drive a leftward orientation correction via $X_{11}$ to center the target. This differs from simulation (Figure~\ref{fig:NEU_EST_UNIB}), where $X_{12}$'s peak activity at the trial's start reflects an immediate rightward rotation, since the appetitive stimulus was laterally positioned in simulation but directly in front of the robot in the physical trial.
+For the appetitive stimulus, the physical robot exhibits a frontal-approach behavior\revblue{, which} differs from simulation (Figure~\ref{fig:NEU_EST_UNIB}), where $X_{12}$'s peak activity at the trial's start reflects an immediate rightward rotation, since the appetitive stimulus was laterally positioned in simulation but directly in front of the robot in the physical trial.
 
 
-\subsubsection{Response to Multiple Stimuli of Different Natures}
+\subsubsection{Response to Multiple Stimuli of Different Types}
 
 In the physical experiment (Figure~\ref{fig:robot-6frames}), the input layer (Figure~\ref{fig:NEU_EST_MUL_real}b) shows simultaneous left-side activation from a LiDAR-detected object; since it is farther than the right-side obstacle, response/auxiliary-layer activity decreases progressively and the network disregards it, with unit $L_2$ only mildly activated, attenuated by $L_3$ inhibition.
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=1.0\textwidth]{NEU_EST_MUL_real.png}
-    \caption{Raster plot of neural activations for multiple stimuli of diverse nature in real robot. \revblue{Single trial ($N=1$).}}
+    \caption{Raster plot of neural activations for multiple stimuli of different types in real robot. \revblue{Single trial ($N=1$).}}
     \label{fig:NEU_EST_MUL_real}
 \end{figure}
 
-A simultaneous $X_{15}$/$X_{16}$ activation (Figure~\ref{fig:NEU_EST_MUL_real}d), from the constant hunting-instinct stimulus, keeps $X_{16}$ active and uninhibited by $X_{15}$, the no-motor-action state shown in Figure~\ref{fig:frames-c}.
+A simultaneous $X_{15}$/$X_{16}$ activation (Figure~\ref{fig:NEU_EST_MUL_real}d), from the constant hunting-instinct stimulus, keeps $X_{16}$ active and uninhibited by $X_{15}$; this is the no-motor-action state shown in Figure~\ref{fig:frames-c}.
 
 \begin{figure}[t]
   \centering
-  \begin{subfigure}[t]{0.48\textwidth}
+  \begin{subfigure}[t]{0.41\textwidth}
     \centering
     \includegraphics[width=\linewidth]{D1.png}
     \caption{Initial state: all three stimulus classes in view.}
     \label{fig:frames-a}
   \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.48\textwidth}
+  \begin{subfigure}[t]{0.41\textwidth}
     \centering
     \includegraphics[width=\linewidth]{D3.png}
     \caption{Indecisive hold ($X_{16}$ active, uninhibited).}
@@ -1319,32 +1319,32 @@ A simultaneous $X_{15}$/$X_{16}$ activation (Figure~\ref{fig:NEU_EST_MUL_real}d)
 
   \vspace{0.6em}
 
-  \begin{subfigure}[t]{0.48\textwidth}
+  \begin{subfigure}[t]{0.41\textwidth}
     \centering
     \includegraphics[width=\linewidth]{D5.png}
     \caption{Evasive dispatch, $\approx46$~s.}
     \label{fig:frames-e}
   \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.48\textwidth}
+  \begin{subfigure}[t]{0.41\textwidth}
     \centering
     \includegraphics[width=\linewidth]{D6.png}
     \caption{Goal approach and stop, $\approx50$--$90$~s.}
     \label{fig:frames-f}
   \end{subfigure}
-  \caption{Four representative frames from the real-robot experiment facing visual stimuli of different nature: (a)–(d) show the temporal evolution across the trial, detailed in the accompanying text.}
+  \caption{Four representative frames from the real-robot experiment facing visual stimuli of different types: (a)--(d) show the temporal evolution across the trial, detailed in the accompanying text.}
   \label{fig:robot-6frames}
 \end{figure}
 
 Following the aversive globus pallidus's peak activation at $\approx46$~s, the robot exits the indecisive state into quadrupedal mode, with rightward-directionality neurons $X_8$/$X_{12}$ reaching maximum amplitude (Figure~\ref{fig:NEU_EST_MUL_real}c); the resulting evasive maneuver reveals the appetitive stimulus after $\approx50$~s, triggering approach. A leftward correction centers the stimulus (neurons $X_7$/$X_{11}$), followed by a final rightward readjustment; the robot then holds a straight trajectory, stopping at $\approx90$~s when $X_{17}$ fully inhibits movement.
 
-\subsubsection{Evaluation of the MLP-based terrain classifier}
+\subsubsection{Evaluation of the MLP-Based Terrain Classifier}
 \label{sssec:mlp_eval}
 
-To complement the qualitative description of the terrain-classification module (Section~\ref{ssec:Gait_Decision_Module}), the MLP (150–80 hidden units, LeakyReLU with negative slope $0.01$, Adam optimizer) was evaluated on the IMU dataset ($n = 600$ samples, 135-dimensional input, binary labels: 0 = flat terrain, 1 = inclined terrain) using a stratified 80/20 train–test split and 5-fold stratified cross-validation.
+To complement the qualitative description of the terrain-classification module (Section~\ref{ssec:Gait_Decision_Module}), the MLP (150--80 hidden units, LeakyReLU with negative slope $0.01$, Adam optimizer) was evaluated on the IMU dataset ($n = 600$ samples, 135-dimensional input, binary labels: 0 = flat terrain, 1 = inclined terrain) using a stratified 80/20 train--test split and 5-fold stratified cross-validation.
 
 Across the 5-fold cross-validation, the model achieved an accuracy of $0.767 \pm 0.028$, precision of $0.764 \pm 0.024$, recall of $0.779 \pm 0.048$, and an F1-score of $0.771 \pm 0.033$. On the held-out test set ($n = 120$\revblue{; confusion matrix in Figure~\ref{fig:mlp_eval_grid}a}), the model reached an accuracy of 0.800, precision of 0.747, recall of 0.918, F1-score of 0.824, and an ROC-AUC of 0.864, confirming that the network reliably discriminates between flat and inclined terrain, with a recall bias toward the inclined-terrain class that minimizes the safety-critical risk of missed inclines. \revblue{The ROC curve (Figure~\ref{fig:mlp_eval_grid}b) stays well above the chance diagonal across the operating range.}
 
-Figure~\ref{fig:mlp_eval_grid}c illustrates the training convergence behavior, showing the evolution of the learning loss across epochs and confirming stable optimization of the selected configuration. To justify the choice of architecture, an ablation study compared the proposed 150–80 configuration against simpler (50, 100) and deeper (200, 100, 50) topologies. As shown in Figure~\ref{fig:mlp_eval_grid}d, the 150–80 configuration achieved the highest F1-score among all tested architectures ($\text{F1} = 0.771$), outperforming the shallower (50: $\text{F1} = 0.747$; 100: $\text{F1} = 0.766$) and deeper (200-100-50: $\text{F1} = 0.766$) variants. This confirms that 150–80 represents the most favorable trade-off between model capacity and generalization for this classification task, while remaining computationally inexpensive for onboard deployment.
+Figure~\ref{fig:mlp_eval_grid}c illustrates the training convergence behavior, showing the evolution of the learning loss across epochs and confirming stable optimization of the selected configuration. To justify the choice of architecture, an ablation study compared the proposed 150--80 configuration against two single-hidden-layer networks (50 and 100 units) and a deeper 200--100--50 network. As shown in Figure~\ref{fig:mlp_eval_grid}d, the 150--80 configuration achieved the highest F1-score among all tested architectures ($\text{F1} = 0.771$), \revblue{ahead of the single-layer 50- and 100-unit networks ($\text{F1} = 0.747$ and $0.766$) and the 200--100--50 network ($\text{F1} = 0.766$). Given a cross-validation SD of $0.033$, 150--80 is statistically indistinguishable from the 100-unit and 200--100--50 variants; it was retained as the final configuration, at a computational cost still compatible with onboard deployment.}
 
 \begin{figure*}[t]
     \centering
@@ -1377,9 +1377,9 @@ Figure~\ref{fig:mlp_eval_grid}c illustrates the training convergence behavior, s
     \label{fig:mlp_eval_grid}
 \end{figure*}
 
-The MLP was further benchmarked against alternative classifiers (Logistic Regression, SVM with RBF kernel, and Random Forest) under the same cross-validation protocol. Logistic Regression underperformed ($\text{F1} = 0.692$), reflecting the non-linear separability of the IMU features, while SVM-RBF ($\text{F1} = 0.857$) and Random Forest ($\text{F1} = 0.947$) achieved higher raw scores (Figure~\ref{fig:classifier_tradeoff}a).
+The MLP was further benchmarked against alternative classifiers (Logistic Regression, SVM with RBF kernel, and Random Forest) under the same cross-validation protocol. \revblue{In that benchmark (Figure~\ref{fig:classifier_tradeoff}a), Logistic Regression underperformed ($\text{F1} = 0.659$), reflecting the non-linear separability of the IMU features, and the MLP reached $\text{F1} = 0.734$,} while SVM-RBF ($\text{F1} = 0.857$) and Random Forest ($\text{F1} = 0.947$) achieved higher raw scores.
 
-\revblue{Per-sample inference latency (Figure~\ref{fig:classifier_tradeoff}b) explains why the MLP was nonetheless selected: it requires only} $1.64\,\mu\text{s}$ per sample, approximately $14\times$ faster than the SVM-RBF ($23.5\,\mu\text{s}$) and $25\times$ faster than the Random Forest ($41.0\,\mu\text{s}$)\revblue{, while Logistic Regression, at a comparable $0.54\,\mu\text{s}$, is markedly less accurate}. \revblue{Given the real-time constraints of the neural-arbitration pipeline and the prospect of deploying the classifier on a resource-constrained embedded microcontroller,} the MLP (150–80) was therefore selected as the configuration offering the best accuracy-to-latency trade-off for terrain classification, rather than the configuration with the highest raw classification score. Figure~\ref{fig:classifier_tradeoff}c additionally reports model size (parameters/tree nodes) for the same four classifiers\revblue{, relevant for embedded deployment}. The $1.64\,\mu\text{s}$ figure above was measured on a host PC (PyTorch)\revblue{, the external laptop described in Section~\ref{ssec:HardwareSpec}}; the same forward pass was additionally re-implemented in C and benchmarked on the target ESP32-S3 microcontroller ($N=1000$ repeated inferences), yielding a mean on-device latency of $8.81\,\text{ms}$ ($\text{SD}=2.67\,\mu\text{s}$) and a memory footprint of 24{,}140~B RAM (7.4\% of 320~KB) and 397{,}829~B flash (30.4\% of the board's 4~MB partition, almost entirely the $\sim$47k-parameter model itself). The on-device number is markedly higher than the host figure, consistent with a straightforward, non-vectorized scalar implementation reading weights from flash rather than from a host CPU's cache hierarchy.
+\revblue{Per-sample inference latency (Figure~\ref{fig:classifier_tradeoff}b) explains why the MLP was nonetheless selected: it requires only} $1.64\,\mu\text{s}$ per sample, approximately $14\times$ faster than the SVM-RBF ($23.5\,\mu\text{s}$) and $25\times$ faster than the Random Forest ($41.0\,\mu\text{s}$)\revblue{, while Logistic Regression, at a comparable $0.54\,\mu\text{s}$, is markedly less accurate}. \revblue{Given the real-time constraints of the neural-arbitration pipeline and the prospect of deploying the classifier on a resource-constrained embedded microcontroller,} the MLP (150--80) was therefore selected as the configuration offering the best accuracy-to-latency trade-off for terrain classification, rather than the configuration with the highest raw classification score. Figure~\ref{fig:classifier_tradeoff}c additionally reports model size (parameters/tree nodes) for the same four classifiers\revblue{, relevant for embedded deployment}. The $1.64\,\mu\text{s}$ figure above was measured on a host PC (PyTorch)\revblue{, the external laptop described in Section~\ref{ssec:HardwareSpec}}; the same forward pass was additionally re-implemented in C and benchmarked on the target ESP32-S3 microcontroller ($N=1000$ repeated inferences), yielding a mean on-device latency of $8.81\,\text{ms}$ ($\text{SD}=2.67\,\mu\text{s}$) and a memory footprint of 24{,}140~B RAM (7.4\% of 320~KB) and 397{,}829~B flash (30.4\% of the board's 4~MB partition, almost entirely the \revblue{$\approx$32.5k}-parameter model itself). The on-device number is markedly higher than the host figure, consistent with a straightforward, non-vectorized scalar implementation reading weights from flash rather than from a host CPU's cache hierarchy.
 
 \begin{figure}[htbp]
     \centering
@@ -1391,7 +1391,7 @@ The MLP was further benchmarked against alternative classifiers (Logistic Regres
 
 \subsubsection{Response to Variable Topographies}
 
-In the real implementation (Figure~\ref{fig:RES_IMU_real}), images were captured every 21 seconds. Initially, the robot advances over a region with minimal irregularities (less than 1.2cm) which it overcomes during the first 13 seconds. At this point, a stagnation condition is detected that persists for the next 10 seconds. When this stagnation signal reaches its maximum sustained amplitude, the transition to the quadrupedal mode is triggered. In this state, the robot traverses the rough terrain and, around second 86, when the activity of unit $X_{0}$ ceases (Figure~\ref{fig:NEU_IMU_real}), the platform transitions back to the differential rolling mode.
+In the real implementation (Figure~\ref{fig:RES_IMU_real}), images were captured every 21 seconds. Initially, the robot advances over a region with minimal irregularities (less than 1.2~cm), which it overcomes during the first 13 seconds. At this point, a stagnation condition is detected that persists for the next 10 seconds. When this stagnation signal reaches its maximum sustained amplitude, the transition to the quadrupedal mode is triggered. In this state, the robot traverses the rough terrain and, at $t \approx 86$~s, when the activity of unit $X_{0}$ ceases (Figure~\ref{fig:NEU_IMU_real}), the platform transitions back to the differential rolling mode.
 
 \begin{figure}[t]
   \centering
@@ -1423,7 +1423,7 @@ In the real implementation (Figure~\ref{fig:RES_IMU_real}), images were captured
     \label{fig:frames-f2}
   \end{subfigure}
 
-  \caption{Four representative frames from the real-robot experiment facing an irregular terrain: (a)–(d) show the temporal evolution across the trial, detailed in the accompanying text.}
+  \caption{Four representative frames from the real-robot experiment facing irregular terrain: (a)--(d) show the temporal evolution across the trial, detailed in the accompanying text.}
   \label{fig:RES_IMU_real}
 \end{figure}
 
@@ -1431,12 +1431,12 @@ In the real implementation (Figure~\ref{fig:RES_IMU_real}), images were captured
 
 % GRAPH_IMU_real merged with GRAPH_IMU2_real below, after the second-scenario prose (see fig:graph_imu_real_pair).
 
-A similar behavior is observed in the experiment with the physical robot (Figure~\ref{fig:RES_IMU2_real}). However, in the real robot's gait-decision network, the inclined terrain is detected before second 46 (Figure~\ref{fig:NEU_IMU2_real}, Locomotion Module panel); consequently, a transient response emerges, increasing the activity of neuron \revblue{$X_{16}$}, which commands the robot to climb the ramp using the differential rolling mode; this mode remains active even after clearing the slope. \revblue{MLP outputs and stagnation state for both scenarios are shown in Figures~\ref{fig:GRAPH_IMU_real} and~\ref{fig:GRAPH_IMU2_real}.}
+A similar behavior is observed in the experiment with the physical robot (Figure~\ref{fig:RES_IMU2_real}). However, in the real robot's gait-decision network, the inclined terrain is detected before $t \approx 46$~s (Figure~\ref{fig:NEU_IMU2_real}, Locomotion Module panel); consequently, a transient response emerges, increasing the activity of neuron \revblue{$X_{16}$}, which commands the robot to climb the ramp using the differential rolling mode; this mode remains active even after clearing the slope. \revblue{MLP outputs and stagnation state for both scenarios are shown in Figures~\ref{fig:GRAPH_IMU_real} and~\ref{fig:GRAPH_IMU2_real}.}
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=1.0\textwidth]{RES_IMU2.0_real.png}
-    \caption{Trajectory in a terrain with elevation in real test. The poses were taken every 14 seconds. \revblue{Single trial ($N=1$).}}
+    \caption{Trajectory on elevated terrain in a real test. The poses were taken every 14 seconds. \revblue{Single trial ($N=1$).}}
     \label{fig:RES_IMU2_real}
 \end{figure}
 
@@ -1489,14 +1489,14 @@ To further consolidate the physical validation under complex, multi-section topo
 1 & \revblue{Ramp entry (start)} & Quadrupedal Walking & \revblue{Default gait at the start; static stability and traction priority} \\
 2 & \revblue{Double-ramp ascent} & \revblue{Quadrupedal $\rightarrow$ Differential Rolling} & \revblue{Incline too steep for the quadrupedal gait: pitch exceeds the threshold, suppressing quadrupedal salience and disinhibiting the rolling channel} \\
 3 & \revblue{Horizontal plane (top of the ramp)} & Differential Rolling (sustained) & Energy-conservative wheeled traversal; rolling channel remains stable \\
-4 & Controlled ramp descent & Differential Rolling (sustained) & Pitch disturbance stays below quadrupedal re-engagement threshold ($\approx 5^{\circ}$) \\
+4 & Controlled ramp descent & Differential Rolling (sustained) & Pitch disturbance stays below the quadrupedal re-engagement threshold \\
 5 & Perlin-noise rough terrain & Rolling $\rightarrow$ Stagnation & Wheels lose traction on high-variance surface; MLP stagnation channel triggers sustained signal \\
 6 & Rough terrain (recovery) & $\rightarrow$ Quadrupedal Walking & Stagnation triggers reactive disinhibition of quadrupedal channel; limbs redeploy, restoring support polygon \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-\revblue{The arbitration network runs through this sequence without operator input.} The critical event occurs in Frames 5--6: rolling-mode wheel slip on the stochastic rough segment triggers a sustained stagnation signal, resolved by reactively redeploying the quadrupedal gait, which restores the support polygon and completes traversal. This closed-loop reactive switching was observed across all 15 trials, demonstrating reliable, autonomous failure detection and gait recovery under stochastic, non-structured terrain conditions.
+\revblue{The arbitration network runs through this sequence without operator input.} The critical event occurs in Frames 5--6: rolling-mode wheel slip on the stochastic rough segment triggers a sustained stagnation signal, resolved by reactively redeploying the quadrupedal gait, which restores the support polygon and completes traversal. This closed-loop reactive switching was observed across all 15 trials, demonstrating reliable, autonomous failure detection and gait recovery under stochastic, unstructured terrain conditions.
 
 \begin{figure*}[t]
   \centering
