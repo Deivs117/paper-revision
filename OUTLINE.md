@@ -301,6 +301,9 @@ disclosure) — these aren't split out separately since `split_sections.py` only
   (methodology.tex) — likely relevant context if R3-02's threshold-logic comparison references it
 - `TR` (Tipover Risk), `SM` (Normalised Stability Margin) — stability metrics already defined and
   used in results.tex's transition-stability analysis
+- `(\cdot)_+` = positive-part (rectifier) operator, defined once in methodology.tex's Obstacle Sensory
+  Module ("Throughout this paper, ...", right before Eqs. (2)–(9)). Every later use, including the
+  Naka–Rushton Eq. (26), relies on that single definition: do not define it again (`C-82`, 2026-11-04).
 
 ## Known cross-references
 - results.tex's "Limitations" subsection explicitly defers energy characterisation of locomotion
