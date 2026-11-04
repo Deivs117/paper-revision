@@ -43,8 +43,8 @@ Secciones: **A** corregir ahora · **B** decisión del autor (solo contradiccion
 | B.15 Robustez por sensor (S-25) + postura (D-14) | **Reescribir las dos, afirmando menos** | Conclusiones: "retained task-level performance under the combined perturbation in most scenarios (failures concentrated in Appetitive timeouts and Rugged Terrain tipovers), evaluated jointly rather than per sensor". `results.tex:182`: acotar a Roll RMS en Rugged y Pitch RMS en Slope, y decir que el Pitch RMS sube con la severidad |
 | B.16 "Energy-aware" en la Introducción (S-38 = M-19) | **Alinear la Introducción con Conclusiones** | Quitar "energy-aware" de la contribución (iii) |
 | S-22 "instantaneous step response" | Pasa a A.2 | "a tightly clustered response (≈184 ms)" |
-| B.17a Nombres de autor (S-33 = M-18 = L-13) | **Forma de la portada** (guiones y tildes, mismo orden); estándar Elsevier: debe coincidir con el registro del sistema de envío | CRediT (`conclusions.tex:26–31`) corrige apellidos y orden; conserva los nombres de pila completos. **Pendiente del autor: confirmar que coincide con el registro en Editorial Manager/ORCID** |
-| B.17b AI disclosure (B-13) | **Reflejar lo que se usó de verdad** | Añadir Claude (Anthropic) y reescribir "not used to generate … analyses". **Texto propuesto, por aprobar por el autor y los coautores** (ver abajo) |
+| B.17a Nombres de autor (S-33 = M-18 = L-13) | **Forma de la portada** (guiones y tildes, mismo orden); estándar Elsevier: debe coincidir con el registro del sistema de envío | CRediT (`conclusions.tex:26–31`) corrige apellidos y orden; conserva los nombres de pila completos. **Confirmado por el autor (2026-11-03): usar la forma de la portada** |
+| B.17b AI disclosure (B-13) | **Reflejar lo que se usó de verdad** | Añadir Claude (Anthropic) y reescribir "not used to generate … analyses". **Aprobado por el autor (2026-11-03): añadir Claude**; texto en la sección "Texto propuesto del AI disclosure" (ajustable al aplicar) |
 | B.17c Sensor "onboard INA" (L-01) | **INA219** | Fila "Current sensor: INA219" en `table:HardwareParams`; captions de `results.tex:986`/`:997` dicen "onboard INA219 current sensor" |
 | B.18 Recortes de redundancia | **Solo lo que no toca captions pedidos** | Recortar la prosa de `results.tex:522` (repite el caption de `tab:fsm_comparison`) y `:152` (repite `:73`); captions y tablas de B.8 se quedan; R-17 no se hace |
 | Por defecto en A.2/A.1 | M-10, L-09, L-23 | L-09: quitar "Normalized" a $SM$ (es una magnitud en metros) · L-23: notación de las arquitecturas del MLP · M-10 (valor 0.30 repetido en los niveles 3–4): sin cambio, pasa a C |
@@ -164,6 +164,9 @@ Solo se regeneran las que el propio paper contradice. Cada una pasa por `experim
 - Diego (C-78): sin entregable; cerrar la fila o recibir un delta solo sobre `methodology.tex`.
 - Cada fila nueva en `PROGRESS.md` necesita `Owner` y `Category`; la edición de `sections/` pasa por `sections/` + `PROGRESS.md` + `patches/`.
 
-## Texto propuesto del AI disclosure (por aprobar)
+## Texto propuesto del AI disclosure (autor aprobó añadir Claude; redacción final al aplicar)
 
 "During the writing of this manuscript and its revisions, we used AI-based tools, including ChatGPT (OpenAI) and Claude (Anthropic), as editorial support to improve grammar, clarity, tone and coherence, and Claude (Anthropic) as a coding assistant to maintain the manuscript source and to run the analysis and plotting scripts that regenerate figures and tables from the experimental data. These tools were not used to design the experiments, collect the data, or draw the scientific conclusions. The authors critically reviewed, edited and approved all content, verified the outputs of the scripts, and take full responsibility for the accuracy and integrity of the manuscript."
+
+## Estado de la aplicación (2026-11-03)
+**Ninguna corrección se ha aplicado a `sections/`.** El autor indicó que no se aplica nada hasta que lo ordene. El parche C-82 de Diego (PR #38) ya está en `main`; no interfiere con las ediciones planeadas.
