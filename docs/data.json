@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-04T01:01:39+00:00",
-  "progressLastCommit": "2026-11-03T19:37:33-05:00",
+  "generatedAt": "2026-11-04T01:03:24+00:00",
+  "progressLastCommit": "2026-11-03T20:01:39-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1388,15 +1388,15 @@
     {
       "id": "C-78",
       "reviewer": "—",
-      "requirement": "Diego — auditoría final multi-autor de la ronda 2 (brief completo: intake/pending/final_audit_round2_2026-11-02.md). Réplica mejorada de la auditoría de 4 autores de la ronda 1 (intake/processed/redundancy_closing_audit.md). Los cuatro leen el paper entero, no se reparten secciones: el solape es deseable, un hallazgo que encuentran dos queda confirmado. Pasada de hallazgos, no de corrección: no editar sections/.tex. Seis categorías: 1.1 inconsistencias de datos (la de mayor rendimiento, verificar recomputando desde experiments/, no solo leyendo — pero ojo: experiments//data/ está gitignored, así que simulation/, real/, R3-05-inspection/data/, _plotting/vectorized/ y los output/*.csv sí los tienes, y R3-04-noise-robustness/data/ y R2-02-fsm-baseline/data/ no; si tu duda cae ahí, repórtala marcada como \"requiere verificación con datos no versionados\" y Deivi la recomputa), 1.2 redundancia, 1.3 candidatos a acortar, 1.4 ortografía y convenciones académicas, 1.5 calcos del español e inglés no idiomático (categoría nueva: el paper lo escribimos hispanohablantes), 1.6 texto tocado en las últimas 48 h (sobre todo C-76, que repuntuó 63 frases al quitar los em dashes). Empezar por methodology.tex, luego las seis secciones completas. Cada hallazgo lleva ubicación exacta, prioridad (alta/media/baja), cómo se verificó (obligatorio en 1.1) y corrección sugerida sin aplicar. Leer la sección 3 del brief antes de empezar: lista de lo que NO es hallazgo, para no reabrir decisiones ya cerradas (en dash, nombres internos en \\label{}, tamaño de figuras, las dos baterías de C-69, la SD declarada de C-74). Entregable: intake/pending/final_audit_r2_diego_2026-11-XX.md. Due: antes del envío.",
+      "requirement": "Diego — auditoría final multi-autor de la ronda 2 (brief completo: intake/pending/final_audit_round2_2026-11-02.md). Réplica mejorada de la auditoría de 4 autores de la ronda 1 (intake/processed/redundancy_closing_audit.md). Los cuatro leen el paper entero, no se reparten secciones: el solape es deseable, un hallazgo que encuentran dos queda confirmado. Pasada de hallazgos, no de corrección: no editar sections/.tex. Seis categorías: 1.1 inconsistencias de datos (la de mayor rendimiento, verificar recomputando desde experiments/, no solo leyendo — pero ojo: experiments//data/ está gitignored, así que simulation/, real/, R3-05-inspection/data/, _plotting/vectorized/ y los output/*.csv sí los tienes, y R3-04-noise-robustness/data/ y R2-02-fsm-baseline/data/ no; si tu duda cae ahí, repórtala marcada como \"requiere verificación con datos no versionados\" y Deivi la recomputa), 1.2 redundancia, 1.3 candidatos a acortar, 1.4 ortografía y convenciones académicas, 1.5 calcos del español e inglés no idiomático (categoría nueva: el paper lo escribimos hispanohablantes), 1.6 texto tocado en las últimas 48 h (sobre todo C-76, que repuntuó 63 frases al quitar los em dashes). Empezar por methodology.tex, luego las seis secciones completas. Cada hallazgo lleva ubicación exacta, prioridad (alta/media/baja), cómo se verificó (obligatorio en 1.1) y corrección sugerida sin aplicar. Leer la sección 3 del brief antes de empezar: lista de lo que NO es hallazgo, para no reabrir decisiones ya cerradas (en dash, nombres internos en \\label{}, tamaño de figuras, las dos baterías de C-69, la SD declarada de C-74). Entregable: intake/pending/final_audit_r2_diego_2026-11-XX.md. Due: antes del envío. Hecho 2026-11-04: entregable intake/pending/final_audit_r2_diego_2026-11-04.md, orden de lectura methodology.tex primero. 73 hallazgos (8 alta / 23 media / 42 baja) más 1 ya resuelto (D-32, C-82); recomputó desde experiments/ las Tablas 9, 10, 11, 14, la batería de terreno, los p de Fisher de la ablación y la energía de transición, comparó las ecuaciones con red_neuronal.py y revisó las 25 figuras regeneradas. Lo más urgente: D-01 (colores Blue/Green de los canales BG), D-69 (la Tabla 11 pierde 6 filas en el PDF), D-02, D-03, D-04 y D-05 (cuatro afirmaciones de Resultados que los datos contradicen), D-07 (CPG sin descripción en la Metodología) y D-06 (= C-75 §2, noise_idx = 0). Incluye una sección de delta frente al consolidado del dueño (lo escrito antes de leerlo está intacto): lo nuevo más relevante es D-69, que ninguno de los cinco informes recoge. Sin edición de sections/.",
       "target": "todas las secciones (pasada de lectura, sin editar)",
       "dataSource": "—",
       "category": "Escritura",
       "owner": [
         "Diego"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "intake/pending/final_audit_r2_diego_2026-11-04.md"
     },
     {
       "id": "C-79",
