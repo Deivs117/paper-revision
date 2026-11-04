@@ -15,3 +15,7 @@
 % 5. methodology.tex, table:Locom_NN: removed the row omega_{Gpe -> X_1} = 1.0. X_1 is the pitch unit
 %    (red_neuronal.py z[1] = pitch vs Upitch, no Gpe input), the locomotion graph (Decisiones_Locomotoras.png)
 %    has no GPe -> X1 arrow, and no text cites the weight. Legacy row from the Overleaf baseline.
+% 6. methodology.tex: X_3 and X_4 were crossed in the quadruped/differential equations. Both graphs
+%    (Modos_Locomocion.png, Modos_LocomocionV2.png), red_neuronal.py (z[15] uses z[4]; z[16] uses z[3]),
+%    the Methodology prose and Results agree: X_15 (Quadruped) <- X_4, X_16 (Differential) <- X_3.
+%    Fixed: eq. X_15 "2X_3" -> "2X_4"; eq. X_16 (main and V2) "X_4" -> "X_3". Coefficients untouched.

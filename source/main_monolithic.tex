@@ -477,10 +477,10 @@ where $x$ is the net input to the neuron; $A$ is the saturation amplitude of the
 \\
 \tau \frac{dX_{14}}{dt} &= -X_{14} +  f_{Mode}(100 Gpe_G - w Gpi_R  - w Gpi_B - w X_{15} - w X_{16})
 \\
-\tau \frac{dX_{15}}{dt} &= -X_{15} +f_{Mode}( -Gpe_G - 0.5HI + 2X_3 \notag\\
+\tau \frac{dX_{15}}{dt} &= -X_{15} +f_{Mode}( -Gpe_G - 0.5HI + 2X_4 \notag\\
 &\hspace*{6cm}+ 20X_0 - 1.5wX_{14} - wX_{16})
 \\
-\tau \frac{dX_{16}}{dt} &= -X_{16} +  f_{Mode}( X_4 - wGpe_G - 1.5wX_{14}\notag\\
+\tau \frac{dX_{16}}{dt} &= -X_{16} +  f_{Mode}( X_3 - wGpe_G - 1.5wX_{14}\notag\\
 &\hspace{5cm}+ 0.7X_1 + 0.7X_2 - 1.5wX_{15} + HI)
 \label{eq:Z16}
 \end{align}
@@ -543,7 +543,7 @@ This information is amplified through a synaptic weight and limited by a thresho
 \\
 \tau \frac{dX_1}{dt} &= -X_1 +  f_{Imu}(8 N_{1} - U_{N_{1}})
 \\
-\tau \frac{dX_{16}}{dt} &= -X_{16} +  f_{Mode}( X_4 - wGpe_G - 1.5wX_{14}  + 0.7X_1 - 1.5wX_{15} + HI)
+\tau \frac{dX_{16}}{dt} &= -X_{16} +  f_{Mode}( X_3 - wGpe_G - 1.5wX_{14}  + 0.7X_1 - 1.5wX_{15} + HI)
 \label{eq:Z16V2}
 \end{align}
 
