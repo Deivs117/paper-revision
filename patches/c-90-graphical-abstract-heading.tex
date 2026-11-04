@@ -1,0 +1,10 @@
+% Patch record for C-90 -- final round-2 corrections, graphical abstract. Applied 2026-11-04. 1 asset
+% replaced under its existing name; no sections/*.tex text changed.
+%
+% build_graphical_abstract.py -> GRAPHICAL_ABSTRACT.pdf (and .png in experiments/.../output)
+% - Panel 4 ("FSM baseline & inspection") heading: "Neural arbitration outperforms a priority-rule FSM
+%   baseline" -> "Neural arbitration outperforms the FSM under stimulus conflict and in inspection".
+%   The panel only shows the two cases where Neural wins; Table `tab:fsm_comparison` gives the FSM as
+%   faster in Aversive and Obstacle, so the old heading generalised past what the panel (and the abstract
+%   and highlights, already scoped) show. Audit D-29 (Diego, C-78), author decision 2026-11-04.
+% - Nothing else changed: every plotted number comes from config.json and is untouched.
