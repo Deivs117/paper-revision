@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-04T03:04:38+00:00",
-  "progressLastCommit": "2026-11-03T22:03:18-05:00",
+  "generatedAt": "2026-11-04T03:06:43+00:00",
+  "progressLastCommit": "2026-11-03T22:04:38-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1462,8 +1462,8 @@
         "Sebas",
         "Diego"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/c-83-methodology-final.tex"
     },
     {
       "id": "C-84",
