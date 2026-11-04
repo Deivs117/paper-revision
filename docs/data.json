@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-04T03:08:18+00:00",
-  "progressLastCommit": "2026-11-03T22:06:44-05:00",
+  "generatedAt": "2026-11-04T03:40:31+00:00",
+  "progressLastCommit": "2026-11-03T22:11:06-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1565,6 +1565,19 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-90-graphical-abstract-heading.tex"
+    },
+    {
+      "id": "C-91",
+      "reviewer": "—",
+      "requirement": "Cierre de cabos de la revisión del PR #45 (Deivi, 2026-11-04). (1) results.tex (benchmark de clasificadores): \"under the same cross-validation protocol\" → \"in a separate cross-validation run\", porque el MLP 150-80 sale con F1 0.771 en fig4_architecture_ablation y 0.734 en fig_classifier_tradeoff_fused, dos corridas distintas. (2) methodology.tex (ecuaciones de gait-decision): los subíndices x/y/z de $G_{pe}$/$G_{pi}$ se explicitan como índices 0/1/2 = aversivo (R), obstáculo (G), apetitivo (B), verificado en PETER_SIMULATION/ros2_ws/src/peter_robot/src/red_neuronal.py (Gpe[1]=obstáculo; en z[14], Gpi[0]=aversivo, Gpi[2]=apetitivo); la frase de C-83 tenía $G_{pi,x}$/$G_{pi,z}$ al revés. (3) Una frase de equivalencia $z_n$ ≡ $X_n$ (B-8). (4) M-20 mínimo: fuera \"(articulated mode)\", \"differential-drive\"→\"differential rolling\", \"hybrid morphological transformation\"→\"morphological transformation\". Brief: intake/pending/final_corrections_round2_2026-11-04.md. Due 2026-11-04.",
+      "target": "sections/methodology.tex, results.tex, introduction.tex",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Deivi"
+      ],
+      "status": "applied",
+      "patchFile": "patches/c-91-pr45-followups.tex"
     }
   ]
 }

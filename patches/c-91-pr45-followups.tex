@@ -1,0 +1,13 @@
+% PATCH: C-91
+% Reviewer: - (follow-ups from the review of PR #45)
+% Target section: sections/results.tex, sections/methodology.tex, sections/introduction.tex
+% Status: applied
+%
+% 1. results.tex: "under the same cross-validation protocol" -> "in a separate cross-validation run"
+%    (the 150-80 MLP is F1 0.771 in fig4_architecture_ablation and 0.734 in fig_classifier_tradeoff_fused).
+% 2. methodology.tex: x/y/z subscripts = channel index 0/1/2 = aversive/obstacle/appetitive
+%    (red_neuronal.py: Gpe[1] obstacle; z[14] uses Gpi[0] aversive and Gpi[2] appetitive).
+%    G_{pi,x}, G_{pi,z} are now "aversive and appetitive" (C-83 had them reversed).
+% 3. methodology.tex: sentence stating z_n (equations) = X_n (diagrams, Results).
+% 4. Mode names: removed "(articulated mode)", "differential-drive" -> "differential rolling",
+%    "hybrid morphological transformation" -> "morphological transformation".

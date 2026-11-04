@@ -1,7 +1,7 @@
 \section{Methodology}
 \label{sec:methodology}
 
-\revblue{The work comprised four stages: designing a morphology that transforms among quadrupedal, differential-drive, and omnidirectional modes (Section~\ref{ssec:Platform_Design}); simulating it with its sensors in Gazebo (Section~\ref{ssec:Gazebo_Simulation}); developing the neural control circuits for LiDAR obstacle detection, motion direction, and locomotion-mode selection, complemented by a multilayer perceptron (MLP) terrain-instability detector; and building the physical robot (Section~\ref{ssec:Construction}). Fabrication drew on the prior engineering development of \citet{Grajales_Des_2025}, but the simulation design was kept as the morphological baseline to ensure virtual--physical consistency.} 
+\revblue{The work comprised four stages: designing a morphology that transforms among quadrupedal, differential rolling, and omnidirectional modes (Section~\ref{ssec:Platform_Design}); simulating it with its sensors in Gazebo (Section~\ref{ssec:Gazebo_Simulation}); developing the neural control circuits for LiDAR obstacle detection, motion direction, and locomotion-mode selection, complemented by a multilayer perceptron (MLP) terrain-instability detector; and building the physical robot (Section~\ref{ssec:Construction}). Fabrication drew on the prior engineering development of \citet{Grajales_Des_2025}, but the simulation design was kept as the morphological baseline to ensure virtual--physical consistency.} 
 
 \subsection{Platform Design}
 \label{ssec:Platform_Design}
@@ -241,7 +241,7 @@ In Equation~\eqref{eq:Z_13}, $HI$ denotes an intrinsic hunting instinct that pro
 \tau \frac{dz_{17}}{dt} =& -z_{17} + (Gpe_{B} - Ar)_+\label{eq:Z_17}
 \end{align}
 
-In Equations~\eqref{eq:Z_3}--\eqref{eq:Z_17}: $Gpe_B$, $Gpe_G$, and $Gpe_R$ are the external globus pallidus outputs for the \revblue{appetitive (Blue), obstacle (Green)}, and aversive (Red) behavioral channels, respectively ($\omega_{Gpe_R \rightarrow X_4}$, $w$, and $Ar$ are defined below Table~\ref{table:Locom_NN}).
+In Equations~\eqref{eq:Z_3}--\eqref{eq:Z_17}: $Gpe_B$, $Gpe_G$, and $Gpe_R$ are the external globus pallidus outputs for the \revblue{appetitive (Blue), obstacle (Green)}, and aversive (Red) behavioral channels, respectively ($\omega_{Gpe_R \rightarrow X_4}$, $w$, and $Ar$ are defined below Table~\ref{table:Locom_NN}). \revblue{Throughout, the state variable $z_n$ in the equations denotes neuron $X_n$ of the network diagrams and of Section~\ref{sec:results}.}
 
 \begin{table}[t]
 \centering
@@ -334,7 +334,7 @@ where $x$ is the net input to the neuron; $A$ is the saturation amplitude of the
 \end{align}
 
 In Equations~\eqref{eq:Z0}--\eqref{eq:Z16}: $\sigma_{az}$ (m/s$^2$) is the standard deviation of the linear acceleration along the $Z$~axis over the current sensing window; $U_{\sigma_{az}}$, $U_{Roll}$, and $U_{Pitch}$ are the corresponding activation thresholds for terrain-instability detection; and $Roll$ and $Pitch$ (deg) are the roll and pitch angles measured by the IMU.
-The neural pathway signals are: $G_{pe,y}$ is the GPe output of the \revblue{obstacle} behavioral channel; $G_{pi,x}$ and $G_{pi,z}$ are the GPi outputs of the \revblue{appetitive} and aversive channels, respectively; and $w$ is \revblue{the inhibitory weight of Table~\ref{table:Locom_NN}}.
+The neural pathway signals are: \revblue{the subscripts $x$, $y$, and $z$ index the aversive (red), obstacle (green), and appetitive (blue) channels, respectively; hence} $G_{pe,y}$ is the GPe output of the obstacle behavioral channel; $G_{pi,x}$ and $G_{pi,z}$ are the GPi outputs of the \revblue{aversive and appetitive} channels, respectively; and $w$ is \revblue{the inhibitory weight of Table~\ref{table:Locom_NN}}.
 
 To enhance terrain classification and stagnation detection, an MLP was integrated into the sensing pipeline \citep{Grajales_Des_2025} (Figure~\ref{fig:MLP}). The MLP does not replace the physical IMU; rather, it processes raw inertial telemetry \revblue{(linear accelerations and angular rates, together with the motion state; see the input vector below)}, transforming low-level sensor signals into high-level geometric classifications that inform mode transitions. This network includes two hidden layers of 150 and 80 units, respectively. The integration was motivated by the fact that, in rough-terrain tests, direct thresholding of roll, pitch, and $\sigma_{az}$ was not sufficient for the level of repeatability required by the application; training the MLP on real inertial data from different terrains is expected to enable more reliable terrain-state classification than fixed-threshold heuristics.
 
