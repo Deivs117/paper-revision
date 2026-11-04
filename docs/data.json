@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-03T23:50:50+00:00",
-  "progressLastCommit": "2026-11-03T17:51:45-05:00",
+  "generatedAt": "2026-11-04T00:33:46+00:00",
+  "progressLastCommit": "2026-11-04T00:54:02+01:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1449,6 +1449,111 @@
       ],
       "status": "applied",
       "patchFile": "patches/c-82-rectifier-defined-once.tex"
+    },
+    {
+      "id": "C-83",
+      "reviewer": "—",
+      "requirement": "Correcciones finales de la ronda 2 — sections/methodology.tex (entero). Brief autocontenido: intake/pending/final_corrections_round2_2026-11-04.md (reglas, decisiones del autor, qué aplicar y qué no). Cualquiera de Sam, Sebas o Diego puede tomarla: antes de empezar mira gh pr list --state open para que no la tome dos veces. Solo este archivo/rango. Due 2026-11-04.",
+      "target": "methodology.tex",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sam",
+        "Sebas",
+        "Diego"
+      ],
+      "status": "pending",
+      "patchFile": "—"
+    },
+    {
+      "id": "C-84",
+      "reviewer": "—",
+      "requirement": "Correcciones finales de la ronda 2 — sections/introduction.tex, conclusions.tex, preamble.tex, closing.tex. Brief autocontenido: intake/pending/final_corrections_round2_2026-11-04.md (reglas, decisiones del autor, qué aplicar y qué no). Cualquiera de Sam, Sebas o Diego puede tomarla: antes de empezar mira gh pr list --state open para que no la tome dos veces. Solo este archivo/rango. Due 2026-11-04.",
+      "target": "introduction.tex, conclusions.tex, preamble.tex, closing.tex",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sam",
+        "Sebas",
+        "Diego"
+      ],
+      "status": "pending",
+      "patchFile": "—"
+    },
+    {
+      "id": "C-85",
+      "reviewer": "—",
+      "requirement": "Correcciones finales de la ronda 2 — sections/results.tex líneas 1–323 (Simulation Results hasta Variable Topographies). Brief autocontenido: intake/pending/final_corrections_round2_2026-11-04.md (reglas, decisiones del autor, qué aplicar y qué no). Cualquiera de Sam, Sebas o Diego puede tomarla: antes de empezar mira gh pr list --state open para que no la tome dos veces. Solo este archivo/rango. Due 2026-11-04.",
+      "target": "results.tex (1–323)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sam",
+        "Sebas",
+        "Diego"
+      ],
+      "status": "pending",
+      "patchFile": "—"
+    },
+    {
+      "id": "C-86",
+      "reviewer": "—",
+      "requirement": "Correcciones finales de la ronda 2 — sections/results.tex líneas 324–581 (estabilidad de transiciones, FSM baseline, inspección). Brief autocontenido: intake/pending/final_corrections_round2_2026-11-04.md (reglas, decisiones del autor, qué aplicar y qué no). Cualquiera de Sam, Sebas o Diego puede tomarla: antes de empezar mira gh pr list --state open para que no la tome dos veces. Solo este archivo/rango. Due 2026-11-04.",
+      "target": "results.tex (324–581)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sam",
+        "Sebas",
+        "Diego"
+      ],
+      "status": "pending",
+      "patchFile": "—"
+    },
+    {
+      "id": "C-87",
+      "reviewer": "—",
+      "requirement": "Correcciones finales de la ronda 2 — sections/results.tex líneas 582–867 (resultados físicos, MLP, topografías físicas). Brief autocontenido: intake/pending/final_corrections_round2_2026-11-04.md (reglas, decisiones del autor, qué aplicar y qué no). Cualquiera de Sam, Sebas o Diego puede tomarla: antes de empezar mira gh pr list --state open para que no la tome dos veces. Solo este archivo/rango. Due 2026-11-04.",
+      "target": "results.tex (582–867)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sam",
+        "Sebas",
+        "Diego"
+      ],
+      "status": "pending",
+      "patchFile": "—"
+    },
+    {
+      "id": "C-88",
+      "reviewer": "—",
+      "requirement": "Correcciones finales de la ronda 2 — sections/results.tex líneas 868–1055 (desempeño físico cuantitativo, energía, Limitations). Brief autocontenido: intake/pending/final_corrections_round2_2026-11-04.md (reglas, decisiones del autor, qué aplicar y qué no). Cualquiera de Sam, Sebas o Diego puede tomarla: antes de empezar mira gh pr list --state open para que no la tome dos veces. Solo este archivo/rango. Due 2026-11-04.",
+      "target": "results.tex (868–1055)",
+      "dataSource": "—",
+      "category": "Escritura",
+      "owner": [
+        "Sam",
+        "Sebas",
+        "Diego"
+      ],
+      "status": "pending",
+      "patchFile": "—"
+    },
+    {
+      "id": "C-89",
+      "reviewer": "—",
+      "requirement": "Correcciones finales de la ronda 2 — figuras. Regenerar FigReal_Terrain_Latencies_4Panels.png y FigReal_Morphological_Transition_Energy.png (etiquetas \"Differential Mobile\" → \"Differential Rolling\"; pie cortado en la de energía) por experiments/ + scripts/promote_figure.sh. Brief autocontenido: intake/pending/final_corrections_round2_2026-11-04.md. Cualquiera de Sam, Sebas o Diego puede tomarla (mira gh pr list --state open antes). Due 2026-11-04.",
+      "target": "assets/ (2 figuras)",
+      "dataSource": "experiments/_plotting/",
+      "category": "Métricas",
+      "owner": [
+        "Sam",
+        "Sebas",
+        "Diego"
+      ],
+      "status": "pending",
+      "patchFile": "—"
     }
   ]
 }
