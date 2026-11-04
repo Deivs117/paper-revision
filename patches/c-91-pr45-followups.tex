@@ -5,9 +5,10 @@
 %
 % 1. results.tex: "under the same cross-validation protocol" -> "in a separate cross-validation run"
 %    (the 150-80 MLP is F1 0.771 in fig4_architecture_ablation and 0.734 in fig_classifier_tradeoff_fused).
-% 2. methodology.tex: x/y/z subscripts = channel index 0/1/2 = aversive/obstacle/appetitive
+% 2. methodology.tex: BG outputs unified in RGB: G_{pe,y}->Gpe_G, G_{pi,x}->Gpi_R, G_{pi,z}->Gpi_B
 %    (red_neuronal.py: Gpe[1] obstacle; z[14] uses Gpi[0] aversive and Gpi[2] appetitive).
-%    G_{pi,x}, G_{pi,z} are now "aversive and appetitive" (C-83 had them reversed).
-% 3. methodology.tex: sentence stating z_n (equations) = X_n (diagrams, Results).
+%    C-83 had G_{pi,x}, G_{pi,z} reversed (appetitive/aversive).
+% 3. methodology.tex: neuron notation unified as X_n (author decision): all 80 z_{N} -> X_{N}
+%    (z_0..z_17); 0 residual z_{digit} in any section. Capital Z_n of eq:InputL (sensory layer) untouched.
 % 4. Mode names: removed "(articulated mode)", "differential-drive" -> "differential rolling",
 %    "hybrid morphological transformation" -> "morphological transformation".

@@ -204,11 +204,11 @@ This module determines the robot's movement direction by considering both the na
 The sensory layer processes all inputs derived from visual stimuli and their direction (represented as $\theta_s$ and platform orientation $\theta_p$ in Figure~\ref{fig:Decisiones_Locomotoras}), allowing the system to determine both the nature and relative location of the stimuli with respect to the robot. The thresholds used in units $X_5$ and $X_6$ imply that the robot considers an object to be in front when it lies within twenty degrees of the center of the visual field. This is shown in Equations~\eqref{eq:Z_5} and~\eqref{eq:Z_6} as inhibitory thresholds on the activation of those neurons.
 
 \begin{align}
-\tau \frac{dz_5}{dt} &= -z_5 +
+\tau \frac{dX_5}{dt} &= -X_5 +
 \left(\; \omega_{L \rightarrow X}   \text{L}_{2} +
 {L}_{4}   \big[\theta_s - \theta_p - 20\big] \right)_+
 \label{eq:Z_5}\\
-\tau \frac{dz_6}{dt} &= -z_6 +
+\tau \frac{dX_6}{dt} &= -X_6 +
 \left(\; \omega_{L \rightarrow X}   \text{L}_{3} +
 {L}_{4}   \big[\theta_p - \theta_s - 20\big] \right)_+
 \label{eq:Z_6}
@@ -227,21 +227,21 @@ The integrative layer processes the outputs of the sensory layer, producing a pr
 In Equation~\eqref{eq:Z_13}, $HI$ denotes an intrinsic hunting instinct that provides a baseline forward/exploratory motivation, allowing the platform to keep moving and exploring even in the absence of external stimuli.
 
 \begin{align}
-\tau \frac{dz_3}{dt} =& -z_3 + (Gpe_{B})_+\label{eq:Z_3}\\
-\tau \frac{dz_4}{dt} =& -z_4 + (Gpe_{G} + \revblue{\omega_{Gpe_R \rightarrow X_4}}   Gpe_{R})_+\\
-\tau \frac{dz_7}{dt} =& -z_7 + (z_5 + z_3 - w   z_4)_+\\
-\tau \frac{dz_8}{dt} =& -z_8 + (z_5 + z_4 - w   z_3)_+\\
-\tau \frac{dz_9}{dt} =& -z_9 + (z_4 + z_6 - w   z_3)_+\\
-\tau \frac{dz_{10}}{dt} =& -z_{10} + (z_3 + z_6 - w   z_4)_+
+\tau \frac{dX_3}{dt} =& -X_3 + (Gpe_{B})_+\label{eq:Z_3}\\
+\tau \frac{dX_4}{dt} =& -X_4 + (Gpe_{G} + \revblue{\omega_{Gpe_R \rightarrow X_4}}   Gpe_{R})_+\\
+\tau \frac{dX_7}{dt} =& -X_7 + (X_5 + X_3 - w   X_4)_+\\
+\tau \frac{dX_8}{dt} =& -X_8 + (X_5 + X_4 - w   X_3)_+\\
+\tau \frac{dX_9}{dt} =& -X_9 + (X_4 + X_6 - w   X_3)_+\\
+\tau \frac{dX_{10}}{dt} =& -X_{10} + (X_3 + X_6 - w   X_4)_+
 \end{align}
 \begin{align}
-\tau \frac{dz_{11}}{dt} =& -z_{11} + (z_7 + z_9)_+\\
-\tau \frac{dz_{12}}{dt} =& -z_{12} + (z_{10} + z_8)_+\\
-\tau \frac{dz_{13}}{dt} =& -z_{13} + (-w z_{11} - w z_{12}- w z_{17} + HI + Gpe_{B} )_+\label{eq:Z_13}\\
-\tau \frac{dz_{17}}{dt} =& -z_{17} + (Gpe_{B} - Ar)_+\label{eq:Z_17}
+\tau \frac{dX_{11}}{dt} =& -X_{11} + (X_7 + X_9)_+\\
+\tau \frac{dX_{12}}{dt} =& -X_{12} + (X_{10} + X_8)_+\\
+\tau \frac{dX_{13}}{dt} =& -X_{13} + (-w X_{11} - w X_{12}- w X_{17} + HI + Gpe_{B} )_+\label{eq:Z_13}\\
+\tau \frac{dX_{17}}{dt} =& -X_{17} + (Gpe_{B} - Ar)_+\label{eq:Z_17}
 \end{align}
 
-In Equations~\eqref{eq:Z_3}--\eqref{eq:Z_17}: $Gpe_B$, $Gpe_G$, and $Gpe_R$ are the external globus pallidus outputs for the \revblue{appetitive (Blue), obstacle (Green)}, and aversive (Red) behavioral channels, respectively ($\omega_{Gpe_R \rightarrow X_4}$, $w$, and $Ar$ are defined below Table~\ref{table:Locom_NN}). \revblue{Throughout, the state variable $z_n$ in the equations denotes neuron $X_n$ of the network diagrams and of Section~\ref{sec:results}.}
+In Equations~\eqref{eq:Z_3}--\eqref{eq:Z_17}: $Gpe_B$, $Gpe_G$, and $Gpe_R$ are the external globus pallidus outputs for the \revblue{appetitive (Blue), obstacle (Green)}, and aversive (Red) behavioral channels, respectively ($\omega_{Gpe_R \rightarrow X_4}$, $w$, and $Ar$ are defined below Table~\ref{table:Locom_NN}).
 
 \begin{table}[t]
 \centering
@@ -304,7 +304,7 @@ Regarding the design rationale for key numerical parameters: \revblue{the high L
 
 The gait-decision module, implemented in the simulation (see graph in Figure~\ref{fig:Modos_Locomocion}), processes signals from the GPi and GPe together with IMU outputs to select the locomotion mode \revblue{following the stimulus-mode correspondence introduced above, additionally overriding the stimulus-driven mode when terrain instability is detected: quadrupedal on rough terrain (high $\sigma_{az}$), differential rolling on steep tilt (pitch or roll above threshold)}.
 
-Units $z_0$--$z_2$ and $z_{14}$--$z_{16}$ use a second-order Naka--Rushton nonlinearity to transform their net input into a bounded activation. The general form is given in Equation~\eqref{eq:Naka}.
+Units $X_0$--$X_2$ and $X_{14}$--$X_{16}$ use a second-order Naka--Rushton nonlinearity to transform their net input into a bounded activation. The general form is given in Equation~\eqref{eq:Naka}.
 
 \begin{equation}
 f(x;\sigma) = \frac{A\,(x)_+^2}{\sigma^2 + (x)_+^2}
@@ -316,25 +316,25 @@ where $x$ is the net input to the neuron; $A$ is the saturation amplitude of the
 \revblue{Two instantiations of Equation~\eqref{eq:Naka} are used, $f_{\mathrm{Imu}}(x) = f(x;\sigma_I)$ and $f_{\mathrm{Mode}}(x) = f(x;\sigma_M)$, whose different half-saturation constants match the dynamic range of the IMU and mode-selection pathways.} 
 
 \begin{align}
-\tau \frac{dz_0}{dt} &= -z_0 + f_{Imu}(\sigma_{az} - U_{\sigma_{az}})
+\tau \frac{dX_0}{dt} &= -X_0 + f_{Imu}(\sigma_{az} - U_{\sigma_{az}})
 \label{eq:Z0}
 \\
-\tau \frac{dz_1}{dt} &= -z_1 +  f_{Imu}( \revblue{Pitch - U_{Pitch}})
+\tau \frac{dX_1}{dt} &= -X_1 +  f_{Imu}( \revblue{Pitch - U_{Pitch}})
 \\
-\tau \frac{dz_2}{dt} &= -z_2 +  f_{Imu}( \revblue{Roll - U_{Roll}})
+\tau \frac{dX_2}{dt} &= -X_2 +  f_{Imu}( \revblue{Roll - U_{Roll}})
 \\
-\tau \frac{dz_{14}}{dt} &= -z_{14} +  f_{Mode}(100 G_{pe,y} - w G_{pi,x}  - w G_{pi,z} - w z_{15} - w z_{16})
+\tau \frac{dX_{14}}{dt} &= -X_{14} +  f_{Mode}(100 Gpe_G - w Gpi_R  - w Gpi_B - w X_{15} - w X_{16})
 \\
-\tau \frac{dz_{15}}{dt} &= -z_{15} +f_{Mode}( -G_{pe,y} - 0.5HI + 2z_3 \notag\\
-&\hspace*{6cm}+ 20z_0 - 1.5wz_{14} - wz_{16})
+\tau \frac{dX_{15}}{dt} &= -X_{15} +f_{Mode}( -Gpe_G - 0.5HI + 2X_3 \notag\\
+&\hspace*{6cm}+ 20X_0 - 1.5wX_{14} - wX_{16})
 \\
-\tau \frac{dz_{16}}{dt} &= -z_{16} +  f_{Mode}( z_4 - wG_{pe,y} - 1.5wz_{14}\notag\\
-&\hspace{5cm}+ 0.7z_1 + 0.7z_2 - 1.5wz_{15} + HI)
+\tau \frac{dX_{16}}{dt} &= -X_{16} +  f_{Mode}( X_4 - wGpe_G - 1.5wX_{14}\notag\\
+&\hspace{5cm}+ 0.7X_1 + 0.7X_2 - 1.5wX_{15} + HI)
 \label{eq:Z16}
 \end{align}
 
 In Equations~\eqref{eq:Z0}--\eqref{eq:Z16}: $\sigma_{az}$ (m/s$^2$) is the standard deviation of the linear acceleration along the $Z$~axis over the current sensing window; $U_{\sigma_{az}}$, $U_{Roll}$, and $U_{Pitch}$ are the corresponding activation thresholds for terrain-instability detection; and $Roll$ and $Pitch$ (deg) are the roll and pitch angles measured by the IMU.
-The neural pathway signals are: \revblue{the subscripts $x$, $y$, and $z$ index the aversive (red), obstacle (green), and appetitive (blue) channels, respectively; hence} $G_{pe,y}$ is the GPe output of the obstacle behavioral channel; $G_{pi,x}$ and $G_{pi,z}$ are the GPi outputs of the \revblue{aversive and appetitive} channels, respectively; and $w$ is \revblue{the inhibitory weight of Table~\ref{table:Locom_NN}}.
+The neural pathway signals are: $Gpe_G$ is the GPe output of the \revblue{obstacle (green)} behavioral channel; $Gpi_R$ and $Gpi_B$ are the GPi outputs of the \revblue{aversive (red) and appetitive (blue)} channels, respectively; and $w$ is \revblue{the inhibitory weight of Table~\ref{table:Locom_NN}}.
 
 To enhance terrain classification and stagnation detection, an MLP was integrated into the sensing pipeline \citep{Grajales_Des_2025} (Figure~\ref{fig:MLP}). The MLP does not replace the physical IMU; rather, it processes raw inertial telemetry \revblue{(linear accelerations and angular rates, together with the motion state; see the input vector below)}, transforming low-level sensor signals into high-level geometric classifications that inform mode transitions. This network includes two hidden layers of 150 and 80 units, respectively. The integration was motivated by the fact that, in rough-terrain tests, direct thresholding of roll, pitch, and $\sigma_{az}$ was not sufficient for the level of repeatability required by the application; training the MLP on real inertial data from different terrains is expected to enable more reliable terrain-state classification than fixed-threshold heuristics.
 
@@ -386,12 +386,12 @@ This information is amplified through a synaptic weight and limited by a thresho
 \revblue{Equations~\eqref{eq:Z0V2}--\eqref{eq:Z16V2} give the modified units.} 
 
 \begin{align}
-\tau \frac{dz_0}{dt} &= -z_0 + f_{Imu}(9 N_{0} N_{2} - U_{N_{0}})
+\tau \frac{dX_0}{dt} &= -X_0 + f_{Imu}(9 N_{0} N_{2} - U_{N_{0}})
 \label{eq:Z0V2}
 \\
-\tau \frac{dz_1}{dt} &= -z_1 +  f_{Imu}(8 N_{1} - U_{N_{1}})
+\tau \frac{dX_1}{dt} &= -X_1 +  f_{Imu}(8 N_{1} - U_{N_{1}})
 \\
-\tau \frac{dz_{16}}{dt} &= -z_{16} +  f_{Mode}( z_4 - wG_{pe,y} - 1.5wz_{14}  + 0.7z_1 - 1.5wz_{15} + HI)
+\tau \frac{dX_{16}}{dt} &= -X_{16} +  f_{Mode}( X_4 - wGpe_G - 1.5wX_{14}  + 0.7X_1 - 1.5wX_{15} + HI)
 \label{eq:Z16V2}
 \end{align}
 

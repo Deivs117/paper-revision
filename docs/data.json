@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-04T03:40:31+00:00",
-  "progressLastCommit": "2026-11-03T22:11:06-05:00",
+  "generatedAt": "2026-11-04T03:47:37+00:00",
+  "progressLastCommit": "2026-11-03T22:40:31-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1569,7 +1569,7 @@
     {
       "id": "C-91",
       "reviewer": "—",
-      "requirement": "Cierre de cabos de la revisión del PR #45 (Deivi, 2026-11-04). (1) results.tex (benchmark de clasificadores): \"under the same cross-validation protocol\" → \"in a separate cross-validation run\", porque el MLP 150-80 sale con F1 0.771 en fig4_architecture_ablation y 0.734 en fig_classifier_tradeoff_fused, dos corridas distintas. (2) methodology.tex (ecuaciones de gait-decision): los subíndices x/y/z de $G_{pe}$/$G_{pi}$ se explicitan como índices 0/1/2 = aversivo (R), obstáculo (G), apetitivo (B), verificado en PETER_SIMULATION/ros2_ws/src/peter_robot/src/red_neuronal.py (Gpe[1]=obstáculo; en z[14], Gpi[0]=aversivo, Gpi[2]=apetitivo); la frase de C-83 tenía $G_{pi,x}$/$G_{pi,z}$ al revés. (3) Una frase de equivalencia $z_n$ ≡ $X_n$ (B-8). (4) M-20 mínimo: fuera \"(articulated mode)\", \"differential-drive\"→\"differential rolling\", \"hybrid morphological transformation\"→\"morphological transformation\". Brief: intake/pending/final_corrections_round2_2026-11-04.md. Due 2026-11-04.",
+      "requirement": "Cierre de cabos de la revisión del PR #45 (Deivi, 2026-11-04). (1) results.tex (benchmark de clasificadores): \"under the same cross-validation protocol\" → \"in a separate cross-validation run\", porque el MLP 150-80 sale con F1 0.771 en fig4_architecture_ablation y 0.734 en fig_classifier_tradeoff_fused, dos corridas distintas. (2) methodology.tex: salidas de ganglios basales unificadas en RGB (G_{pe,y}→Gpe_G, G_{pi,x}→Gpi_R, G_{pi,z}→Gpi_B); la frase de C-83 tenía x/z al revés, verificado en PETER_SIMULATION/ros2_ws/src/peter_robot/src/red_neuronal.py (Gpe[1]=obstáculo; en z[14], Gpi[0]=aversivo, Gpi[2]=apetitivo). (3) Notación de neuronas unificada en $X_n$ (decisión del autor; B-8): las 80 apariciones de $z_n$ de methodology.tex pasan a $X_n$, sin residuos en ninguna sección. (4) M-20 mínimo: fuera \"(articulated mode)\", \"differential-drive\"→\"differential rolling\", \"hybrid morphological transformation\"→\"morphological transformation\". Brief: intake/pending/final_corrections_round2_2026-11-04.md. Due 2026-11-04.",
       "target": "sections/methodology.tex, results.tex, introduction.tex",
       "dataSource": "—",
       "category": "Escritura",
