@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T04:06:02+00:00",
+  "generatedAt": "2026-11-04T04:06:15+00:00",
   "progressLastCommit": "2026-11-03T23:00:40-05:00",
   "tasks": [
     {
@@ -1447,7 +1447,7 @@
       "owner": [
         "Diego"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-82-rectifier-defined-once.tex"
     },
     {
@@ -1462,7 +1462,7 @@
         "Sebas",
         "Diego"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-83-methodology-final.tex"
     },
     {
@@ -1477,7 +1477,7 @@
         "Sebas",
         "Diego"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-84-front-intro-conclusions-final.tex"
     },
     {
@@ -1492,7 +1492,7 @@
         "Sebas",
         "Diego"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-85-simulation-results-final.tex"
     },
     {
@@ -1507,7 +1507,7 @@
         "Sebas",
         "Diego"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-86-fsm-table-inspection-stability.tex"
     },
     {
@@ -1522,7 +1522,7 @@
         "Sebas",
         "Diego"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-87-physical-results-mlp-final.tex"
     },
     {
@@ -1537,7 +1537,7 @@
         "Sebas",
         "Diego"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-88-physical-quant-energy-limitations-final.tex"
     },
     {
@@ -1550,7 +1550,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-89-figure-label-rolling.tex"
     },
     {
@@ -1563,7 +1563,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-90-graphical-abstract-heading.tex"
     },
     {
@@ -1576,7 +1576,7 @@
       "owner": [
         "Deivi"
       ],
-      "status": "applied",
+      "status": "synced-to-overleaf",
       "patchFile": "patches/c-91-pr45-followups.tex"
     }
   ]
