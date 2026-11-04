@@ -203,7 +203,7 @@ def ablation(fig, cfg, x, w, y0, h):
 def baseline_comparison(fig, cfg, x, w, y0, h):
     f = cfg["fsm"]
     top = panel_frame(fig, x, w, y0, h, "FSM baseline & inspection",
-                      "Neural arbitration outperforms a\npriority-rule FSM baseline")
+                      "Neural arbitration outperforms the FSM\nunder stimulus conflict and in inspection")  # C-90 / D-29
     card_y = y0 + 0.09
     chart_card(fig, x, w, card_y, top, "Success rate")
     # Legend as colored words under the metric title — no separate legend box to decode.

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-04T01:03:24+00:00",
-  "progressLastCommit": "2026-11-03T20:01:39-05:00",
+  "generatedAt": "2026-11-04T01:06:46+00:00",
+  "progressLastCommit": "2026-11-03T20:03:24-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1556,17 +1556,15 @@
     {
       "id": "C-90",
       "reviewer": "—",
-      "requirement": "Correcciones finales de la ronda 2 — resumen gráfico. Acotar el encabezado del panel \"FSM baseline & inspection\" de GRAPHICAL_ABSTRACT.pdf a \"Neural arbitration outperforms the FSM under stimulus conflict and in inspection\" (auditoría de Diego, D-29; decisión del autor 2026-11-04). Regenerar con experiments/R2b-06-graphical-abstract/scripts/build_graphical_abstract.py y promover con scripts/promote_figure.sh --force GRAPHICAL_ABSTRACT.pdf (ruta relativa a assets/). Brief: intake/pending/final_corrections_round2_2026-11-04.md (Adenda). Cualquiera de Sam, Sebas o Diego puede tomarla (mira gh pr list --state open antes). Due 2026-11-04.",
+      "requirement": "Correcciones finales de la ronda 2 — resumen gráfico. Acotar el encabezado del panel \"FSM baseline & inspection\" de GRAPHICAL_ABSTRACT.pdf a \"Neural arbitration outperforms the FSM under stimulus conflict and in inspection\" (auditoría de Diego, D-29; decisión del autor 2026-11-04). Regenerar con experiments/R2b-06-graphical-abstract/scripts/build_graphical_abstract.py y promover con scripts/promote_figure.sh --force GRAPHICAL_ABSTRACT.pdf (ruta relativa a assets/). Brief: intake/pending/final_corrections_round2_2026-11-04.md (Adenda). Cualquiera de Sam, Sebas o Diego puede tomarla (mira gh pr list --state open antes). Due 2026-11-04. Hecho 2026-11-04 (Deivi): encabezado acotado, resto sin cambios; regenerado con build_graphical_abstract.py y promovido con promote_figure.sh --force.",
       "target": "assets/GRAPHICAL_ABSTRACT.pdf",
       "dataSource": "experiments/R2b-06-graphical-abstract/",
       "category": "Métricas",
       "owner": [
-        "Sam",
-        "Sebas",
-        "Diego"
+        "Deivi"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/c-90-graphical-abstract-heading.tex"
     }
   ]
 }
