@@ -144,13 +144,13 @@ def build_terrain_latencies(csv_path: str, output_path: str) -> None:
     df = pd.read_csv(csv_path)
     panel_specs = [
         ("A_Tresponse_Quad2Diff", "#1f77b4", "A. Neural Processing Latency ($T_{response}$)\n"
-         "[Quadrupedal $\\to$ Differential Mobile]", "Time Delay (s)"),
+         "[Quadrupedal $\\to$ Differential Rolling]", "Time Delay (s)"),
         ("B_Tresponse_Diff2Quad", "#ff7f0e", "B. Neural Processing Latency ($T_{response}$)\n"
-         "[Differential Mobile $\\to$ Quadrupedal]", "Time Delay (s)"),
+         "[Differential Rolling $\\to$ Quadrupedal]", "Time Delay (s)"),
         ("C_Tswitch_Quad2Diff", "#2ca089", "C. Electromechanical Coupling Latency ($T_{switch}$)\n"
-         "[Quadrupedal $\\to$ Differential Mobile]", "Settling Time (s)"),
+         "[Quadrupedal $\\to$ Differential Rolling]", "Settling Time (s)"),
         ("D_Tswitch_Diff2Quad", "#d2691e", "D. Electromechanical Coupling Latency ($T_{switch}$)\n"
-         "[Differential Mobile $\\to$ Quadrupedal]", "Settling Time (s)"),
+         "[Differential Rolling $\\to$ Quadrupedal]", "Settling Time (s)"),
     ]
     fig, axes = plt.subplots(2, 2, figsize=(11, 8.5))
     for ax, (panel, color, title, xlabel) in zip(axes.flat, panel_specs):

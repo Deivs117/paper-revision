@@ -1,0 +1,19 @@
+% Patch record for C-89 -- final round-2 corrections, figures. Applied 2026-11-04. 2 assets replaced
+% under their existing names; no sections/*.tex text changed.
+%
+% energy_transition.py -> FigReal_Morphological_Transition_Energy.png
+% - x labels "Differential Mobile" -> "Differential Rolling": the manuscript text and tables always say
+%   "Differential Rolling" (audit S-34 = M-20).
+% - The one-line footnote was wider than the 6 in figure and was cut at both edges ("wer = |current| ...
+%   not an inferred pe"). Same wording, now two lines; bottom margin rect 0.05 -> 0.08.
+% - Values unchanged: 35 transitions, Q->DR N=16 mean 5.059 J, DR->Q N=19 mean 4.132 J; error bars are
+%   still the population SD already declared by C-74 (not reopened).
+%
+% imu_terrain_real.py (build_terrain_latencies) -> FigReal_Terrain_Latencies_4Panels.png
+% - The four panel titles "[... Differential Mobile ...]" -> "Differential Rolling". Data unchanged
+%   (experiments/_plotting/vectorized/terrain_latencies.csv).
+% - NOT touched on purpose (author decision 2026-11-03): the "Hardware Replicates (reconstructed)" legend
+%   and the number of steps per panel; the origin of the 184/534 ms latencies is parked as a known risk.
+%
+% Not regenerated: classifier panel (a) (text aligned to the figure instead), optional low-priority
+% items (ECDF title em dash, inspection timeline axis, decision-delay axis).
