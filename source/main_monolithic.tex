@@ -1011,21 +1011,20 @@ To quantify the computational efficiency and temporal determinism of the propose
 \label{sssec:transition_stability}
 
 %
-\revblue{This subsubsection quantifies static stability for the Quadrupedal Walking gait and all six pairwise transitions among the three locomotion modes, using the Normalized Stability Margin ($SM$) and Tipover Risk ($TR$) of Section~\ref{sssec:variable_topo_quant}, computed frame-by-frame from the foot-contact positions logged in simulation.}
+\revblue{This section quantifies static stability for the Quadrupedal Walking gait and all six pairwise transitions among the three locomotion modes, using the stability margin ($SM$, in m), its normalized form $SM_{\mathrm{norm}}$, and the Tipover Risk ($TR$) of Section~\ref{sssec:variable_topo_quant}, computed frame-by-frame from the foot-contact positions logged in simulation.}
 
 
 \paragraph{Quadrupedal Walking gait stability.}
 
 %
 The Quadrupedal Walking gait is intrinsically
-static-stable by construction: at every instant, at least three feet
-maintain ground contact, guaranteeing a non-degenerate
-support polygon throughout the full cycle.
+statically stable by construction: at every instant, at least three feet
+maintain ground contact, \revblue{so a support polygon exists throughout the full cycle, contracting to its minimum at the farthest swing position (Table~\ref{tab:crawl_stability})}.
 Figure~\ref{fig:stability_phases} illustrates the six-phase
-structure: two transfer sub-phases per limb in which one foot is
-lifted, interleaved with body-shift sub-phases in which all four
+structure: \revblue{four transfer sub-phases (one per limb)} in which one foot is
+lifted, interleaved with \revblue{two} body-shift sub-phases in which all four
 feet remain grounded.
-Table~\ref{tab:crawl_stability} summarises the stability metrics
+Table~\ref{tab:crawl_stability} summarizes the stability metrics
 recorded over $N = 268$ logged samples (one complete representative
 walk sequence).
 
@@ -1039,8 +1038,8 @@ walk sequence).
         Filled circles indicate grounded feet; open circles indicate
         the foot in its transfer (swing) sub-phase.
         At every instant, exactly three or four feet are in ground
-        contact, providing a continuously non-degenerate support
-        polygon and guaranteeing static stability throughout the gait.
+        contact, providing a continuous support
+        polygon \revblue{and static stability except at the brief transfer-phase extremes reported in Table~\ref{tab:crawl_stability}}.
         The two phases marked \emph{body shift} correspond to
         simultaneous four-point contact during which the CoM
         projection is displaced toward the centroid of the support
@@ -1053,7 +1052,7 @@ walk sequence).
 \begin{table}[t]
 \centering
 \caption{%
-    Normalized Stability Margin ($SM$), Tipover Risk ($TR$), and
+    \revblue{Stability margin ($SM$) and its normalized form ($SM_{\mathrm{norm}}$)}, Tipover Risk ($TR$), and
     support-polygon inradius during Quadrupedal Walking
     ($N = 268$ logged samples).
     Negative $SM$ values and $TR > 1$ correspond exclusively to the
@@ -1079,11 +1078,11 @@ Inradius (m)   & 0.054 & 0.049 & $\approx 0$ & 0.101 \\
 The mean normalized margin ($SM_{\mathrm{norm}} = 0.561 \pm 0.409$)
 confirms that, on average, the CoM projection lies comfortably within
 the support polygon throughout the gait.
-The transient excursions above $TR = 1$ are an artefact of the
+The transient excursions above $TR = 1$ are an artifact of the
 three-point polygon contracting to its minimum area at the instant
 the lifted foot reaches its farthest swing position; the low inertia
 of the slow gait cadence ensures that these short-duration events
-do not result in actual tip-over events.
+do not result in actual tipover events.
 
 
 \paragraph{Mode-transition stability.}
@@ -1108,9 +1107,7 @@ across the complete sequence).
         across the original six directed transitions (e.g. mode $C$'s
         geometry recurs as the onset of $C\to H$, the final pose of
         $X\to C$, the onset of $C\to X$, and the final pose of
-        $H\to C$) rather than as a single value per direction, since all
-        four readings of a given mode agree closely, itself the empirical evidence that both transition directions are equally
-        stable. In all frames, all four feet maintain ground contact
+        $H\to C$). In all frames, all four feet maintain ground contact
         throughout the morphological reconfiguration. \revblue{Data: a single continuous run covering all six directed transitions ($N_{\mathrm{total}}=979$ samples).} \revblue{Simulation data.}%
     }
     \label{fig:transition_phases}
@@ -1127,7 +1124,7 @@ immediately upon completion of the limb reconfiguration, without an
 intermediate stop phase.
 Across all six pairwise transitions ($C \to H$, $H \to X$, $X \to C$, $C \to X$, $X \to H$, and $H \to C$) and all logged samples, every transition completed
 successfully, yielding a transition success rate of $6/6$ ($100\%$).
-At the instant of morphological switching itself, the moment all four feet share ground contact for maximum support, the Normalized Stability Margin reached its platform-geometry maximum
+At the instant of morphological switching itself, the moment all four feet share ground contact for maximum support, \revblue{the stability margin} reached its platform-geometry maximum
 ($SM = 0.050\,\text{m}$, $SM_{\mathrm{norm}} = 1.000$) and the
 Tipover Risk index reached $TR = 0.000$, without exception; this
 instantaneous reading does not describe the full $N_{\mathrm{total}} =
@@ -1139,10 +1136,10 @@ Figure~\ref{fig:transition_phases}'s reported per-mode ranges).
 %
 \revblue{Because reconfiguration is performed with all four feet in contact, no abrupt postural discontinuity is introduced at the switching instant.}
 The steady-state Roll and Pitch RMS bounds reported in
-Figures~\ref{fig:variable_topo_metrics}
+Figure~\ref{fig:variable_topo_metrics}
 and Table~\ref{tab:consolidated_simulation_metrics}
 characterize the locomotion phases immediately preceding and
-following each transition; \revblue{within those two datasets (the four scenario suites and the variable-topography battery of 15 trials per terrain) the mean Roll RMS stays at or below $1.59^\circ$ and the mean
+following each transition; \revblue{within those two datasets (the four scenario suites and the variable-topography battery of 15 trials per terrain), the mean Roll RMS stays at or below $1.59^\circ$ and the mean
 Pitch RMS at or below $2.29^\circ$},
 indicating that the mode-switching protocol does not introduce
 roll or pitch instabilities in either the source or target
@@ -1159,15 +1156,17 @@ values; see that table's caption.}
 \subsubsection{FSM Gait Arbitration Baseline Comparison}
 \label{sssec:fsm_baseline_comparison}
 
-\revblue{Table~\ref{tab:fsm_comparison} compares the FSM controller of Section~\ref{ssec:FSMBaseline} with the basal-ganglia network on all seven simulated suites, reporting success rate, task completion time, Roll RMS, and $\lambda$, a motor-command clarity ratio (commanded-velocity magnitude relative to neural activity norm; higher indicates more decisive output).}
+\revblue{Table~\ref{tab:fsm_comparison} compares the FSM controller of Section~\ref{ssec:FSMBaseline} with the basal-ganglia network on all seven simulated suites, reporting success rate, task completion time, Roll RMS, and $\lambda_{trial}$, a per-trial motor-command clarity ratio (commanded-velocity magnitude relative to neural activity norm; higher indicates more decisive output).}
 
 \begin{table}[htbp]
 \centering
 \caption{FSM vs.\ basal-ganglia (Neural) gait arbitration, all seven simulated suites. Complex/FSM has no completed trials (0\% success), so time/Roll RMS are undefined ($-$). One Obstacle/Neural trial with an anomalous roll reading (physically implausible per-timestep values, not a measurement of stable attitude) was excluded from the Roll RMS/task-time statistics below, consistent with Table~\ref{tab:consolidated_simulation_metrics}; its own success/failure verdict is unaffected. \revblue{$N$ is the number of independent missions behind each success rate (Appetitive, Aversive, Obstacle, Complex; a mission that first times out is retried until it completes) or of individual attempts (Inspection, Rugged Terrain, Inclined Slope); for Rugged Terrain and Inclined Slope the Neural controller was evaluated only without perturbation, hence its small $N$. All $\pm$ values in this table are population standard deviations over each row's $N$ trials, as in Table~\ref{tab:consolidated_simulation_metrics}. Those two terrain rows come from an independent re-run of the two scenarios, not from the variable-topography battery of Section~\ref{sssec:variable_topo_quant}, so their Roll RMS is not comparable with the bounds reported there. The Inclined Slope/Neural mean in particular is dominated by one of its three trials, in which the accumulated Roll RMS stays below $1.49^\circ$ for the first $68$~s and then rises abruptly over the final second before the telemetry stops updating; that trial's median Roll RMS, $1.40^\circ$, matches the other two, which is why the standard deviation here exceeds the mean.} \revblue{Fairness caveat on timing metrics: $T_{switch}$ and $T_{response}$ are not reported in this table. On the two terrain suites (Rugged Terrain, Inclined Slope), three configuration differences between the two controllers' terrain-transition logic (the pitch-instability threshold, a transition timing offset, and the switching-time formula's margin term) make those two specific metrics not comparable under strictly identical conditions without re-running both controllers with matched parameters, which was out of scope for this comparison (Section~\ref{sssec:fsm_baseline_comparison}). The caveat is limited to these two timing metrics: success rate, task time, and Roll RMS are reported for both terrain suites.}}
 \label{tab:fsm_comparison}
-\begin{tabularx}{\textwidth}{l l >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{l l c c c c c}
 \toprule
-\textbf{Suite} & \textbf{System} & \revblue{\textbf{N}} & \textbf{SR (\%)} & \textbf{Task Time (s)} & \textbf{Roll RMS (deg)} & \textbf{$\lambda$} \\
+\textbf{Suite} & \textbf{System} & \revblue{\textbf{N}} & \textbf{SR (\%)} & \textbf{Task Time (s)} & \textbf{Roll RMS (deg)} & \textbf{$\lambda_{trial}$} \\
 \midrule
 Appetitive & Neural & \revblue{15} & 100.0  & 38.52 $\pm$ 1.20  & 0.536 $\pm$ 0.009 & 0.990 \\
 Appetitive & FSM    & \revblue{15} & 100.0 & 38.96 $\pm$ 1.77  & 0.525 $\pm$ 0.003 & 0.952 \\
@@ -1184,15 +1183,15 @@ Rugged Terrain & FSM    & \revblue{25} & 60.0  & 55.42 $\pm$ 8.56  & 1.739 $\pm$
 Inclined Slope & Neural & \revblue{3} & 100.0 & 77.02 $\pm$ 1.26  & 6.751 $\pm$ 7.160 & 0.996 \\
 Inclined Slope & FSM    & \revblue{21} & 71.4  & 64.53 $\pm$ 2.79  & 5.430 $\pm$ 8.209 & 0.993 \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 \end{table}
 
-In the three single-stimulus suites (Appetitive, Aversive, Obstacle), the FSM's fixed priority rule is structurally well-matched to the task: one stimulus is active at a time, so a static hierarchy resolves it immediately and deterministically. Both controllers eventually complete every mission in all three suites (100\% mission-level success in Table~\ref{tab:fsm_comparison}, i.e.\ a trial that first times out and is then retried still counts as a success once it lands, and this is the only sense in which "success rate" is used anywhere in this paper). \revblue{The two controllers diverge, however, in how often that retry is needed (Figure~\ref{fig:attempts_vs_noise_level}; attempts needed per completed mission, not a success rate):} Neural needs up to $1.67\times$ as many attempts on average in Appetitive and $1.33\times$ in Aversive at the noisiest levels tested, non-monotonically given the small per-level sample, while FSM stays at exactly one attempt throughout.
+In the three single-stimulus suites (Appetitive, Aversive, Obstacle), the FSM's fixed priority rule is structurally well-matched to the task: one stimulus is active at a time, so a static hierarchy resolves it immediately and deterministically. Both controllers eventually complete every mission in all three suites (100\% mission-level success in Table~\ref{tab:fsm_comparison}, i.e.\ a trial that first times out and is then retried still counts as a success once it lands\revblue{; for Inspection and the two terrain suites, success rate is instead counted per attempt, as stated in that table's caption}). \revblue{The two controllers diverge, however, in how often that retry is needed (Figure~\ref{fig:attempts_vs_noise_level}; attempts needed per completed mission, not a success rate):} \revblue{Neural needs up to $1.67\times$ as many attempts in Appetitive (level 3; $1.33\times$ already at level 0) and $1.33\times$ in Aversive (levels 3--4)}, while FSM stays at exactly one attempt throughout.
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=\textwidth]{fig_attempts_vs_noise_level.png}
-    \caption{Attempts needed per completed mission vs.\ noise level, single-stimulus suites (not a success-rate metric: every mission in this dataset eventually succeeds, see Table~\ref{tab:fsm_comparison}; this counts how many attempts, including retries after a timeout, that took). FSM never needs a retry at any level in any of the three panels (flat at $1.0$). Neural needs an occasional retry at intermediate/high noise in Appetitive and Aversive, non-monotonically (each point averages only 3 trials: read point-to-point zig-zags as sampling variance, not a mechanistic trend). In the Obstacle panel both systems sit at $1.0$ across all five evaluated noise levels, not a subset, so the dashed Neural line sits exactly on top of the solid FSM line. \revblue{Fairness caveat on timing metrics: $T_{switch}$ and $T_{response}$ are not compared between the two controllers; on the two terrain suites (Rugged Terrain, Inclined Slope), three configuration differences in their terrain-transition logic make these two metrics not comparable under strictly identical conditions (Table~\ref{tab:fsm_comparison}; Section~\ref{sssec:fsm_baseline_comparison}).} \revblue{Simulation data.}}
+    \caption{Attempts needed per completed mission vs.\ noise level, single-stimulus suites (not a success-rate metric: every mission eventually succeeds, Table~\ref{tab:fsm_comparison}; it counts the attempts, including retries after a timeout, each mission needed). FSM never needs a retry at any level in any of the three panels (flat at $1.0$). Neural needs an occasional retry \revblue{in Appetitive (levels 0, 2 and 3) and Aversive (levels 3--4)}, non-monotonically (each point averages only 3 trials: read point-to-point zig-zags as sampling variance, not a mechanistic trend). In the Obstacle panel both systems sit at $1.0$ at all five noise levels, so the dashed Neural line sits exactly on top of the solid FSM line. \revblue{Fairness caveat on timing metrics: $T_{switch}$ and $T_{response}$ are not compared between the two controllers; on the two terrain suites (Rugged Terrain, Inclined Slope), three configuration differences in their terrain-transition logic make these two metrics not comparable, since the two controllers were not run under strictly identical terrain-transition settings (Table~\ref{tab:fsm_comparison}; Section~\ref{sssec:fsm_baseline_comparison}).} \revblue{Simulation data.}}
     \label{fig:attempts_vs_noise_level}
 \end{figure}
 
@@ -1201,13 +1200,11 @@ This advantage reverses in the Complex suite, where three stimuli (obstacle, ave
 \begin{figure}[t]
     \centering
     \includegraphics[width=\textwidth]{fig_mode_timeline_complex.png}
-    \caption{Active gait mode over time, Complex suite: a representative successful Neural trial (top) vs.\ a representative failed FSM trial (bottom, timeout). The FSM trace switches abruptly between modes and holds each one flat for tens of seconds at a time, since its fixed-duration persistence timers either hold a mode or release it outright with no intermediate state; the Neural trace shows shorter, more graduated occupancy of each mode, reflecting the continuous decay of the basal ganglia's lateral inhibition rather than a hard timer. \revblue{Each trace is the first trial by index (not hand-picked) of $N=15$ trials per controller.} \revblue{Fairness caveat on timing metrics: $T_{switch}$ and $T_{response}$ are not compared between the two controllers; on the two terrain suites (Rugged Terrain, Inclined Slope), three configuration differences in their terrain-transition logic make these two metrics not comparable under strictly identical conditions (Table~\ref{tab:fsm_comparison}; Section~\ref{sssec:fsm_baseline_comparison}).} \revblue{Simulation data.}}
+    \caption{Active gait mode over time, Complex suite: a representative successful Neural trial (top) vs.\ a representative failed FSM trial (bottom, timeout). The FSM trace switches abruptly between modes and holds each one flat for tens of seconds at a time, since its fixed-duration persistence timers either hold a mode or release it outright with no intermediate state; the Neural trace shows shorter, more graduated occupancy of each mode, reflecting the continuous decay of the basal ganglia's lateral inhibition rather than a hard timer. \revblue{Each trace is the first trial by index (not hand-picked) of $N=15$ trials per controller.} \revblue{Fairness caveat on timing metrics: $T_{switch}$ and $T_{response}$ are not compared between the two controllers; on the two terrain suites (Rugged Terrain, Inclined Slope), three configuration differences in their terrain-transition logic make these two metrics not comparable, since the two controllers were not run under strictly identical terrain-transition settings (Table~\ref{tab:fsm_comparison}; Section~\ref{sssec:fsm_baseline_comparison}).} \revblue{Simulation data.}}
     \label{fig:mode_timeline_complex}
 \end{figure}
 
-On the two terrain suites (Rugged Terrain, Inclined Slope), success rate, task time, and Roll RMS are reported in Table~\ref{tab:fsm_comparison}, but $T_{switch}$/$T_{response}$ are deliberately omitted: the team that ran the FSM terrain trials identified three configuration differences from the basal-ganglia code's terrain-transition logic (the pitch-instability threshold, a transition timing offset, and the switching-time formula's margin term) that make those two specific metrics not comparable under strictly identical conditions without re-running both controllers with matched parameters, which was out of scope for this comparison. The Neural side of this comparison also draws on a substantially smaller sample (six Rugged Terrain trials, three Inclined Slope trials, restricted to the zero-noise condition to match the FSM runs) than the FSM side (25 and 21 trials respectively); the apparent tipover-rate difference on the Inclined Slope (zero tipovers in the small Neural sample vs.\ six of 21 FSM trials) is reported as an observation rather than a statistically supported finding given this sample-size imbalance.
-
-\revblue{The Neural-side values for the Appetitive, Aversive, Obstacle, and Complex suites are recomputed from the raw trial logs and match Table~\ref{tab:consolidated_simulation_metrics} on every reported statistic, under the single success-rate definition given above.}
+\revblue{On the two terrain suites (Rugged Terrain, Inclined Slope), $T_{switch}$/$T_{response}$ are omitted for the reasons given in the caption of Table~\ref{tab:fsm_comparison}.} The Neural side of this comparison also draws on a substantially smaller sample (six Rugged Terrain trials, three Inclined Slope trials, restricted to the zero-noise condition to match the FSM runs) than the FSM side (25 and 21 trials respectively); the apparent tipover-rate difference on the Inclined Slope (zero tipovers in the small Neural sample vs.\ six of 21 FSM trials) is reported as an observation rather than a statistically supported finding given this sample-size imbalance.
 
 \FloatBarrier
 
@@ -1237,11 +1234,9 @@ $T_{acquisition}$ (s)        & 32.2 $\pm$ 14.1   & 20.7  & 70.8  \\
 $T_{task}$ (s)               & 51.6 $\pm$ 12.3   & 42.8  & 86.8  \\
 \bottomrule
 \end{tabularx}
-\\[2pt]
-{\footnotesize Success rate: 17/20 (85\%); three timeouts at 90~s (trials 7, 11, 17), analyzed below.}
 \end{table}
 
-The 17 successful trials separate into two navigation patterns distinguished by $N_{ev}^{LiDAR}$: a clean pattern ($n=12$, $N_{ev}^{LiDAR} = 4$--$7$, close to one detection per capsule\revblue{; $d_{final}$ in Figure~\ref{fig:inspection_dfinal_scatter}}) and an elevated-evasion pattern ($n=5$, $N_{ev}^{LiDAR} = 11$--$28$, additional evasive maneuvering before finding a route toward the target\revblue{; $d_{final}$ in Figure~\ref{fig:inspection_dfinal_scatter}}). Despite the substantially messier routes, the elevated-evasion group converges at least as tightly on the stopping point as the clean group (Figure~\ref{fig:inspection_dfinal_scatter}); if anything, more tightly, though the small elevated-group sample ($n=5$) cautions against over-reading that difference. The three timeouts are extreme cases of the elevated pattern ($N_{ev}^{LiDAR} = 18$, $27$, $33$): in all three, the target was visually detected ($T_{acquisition}$ non-null) but the appetitive channel never accumulated sufficient sustained activation to trigger $X_{17}$ before the deadline, as competing obstacle-channel activation persisted throughout. This is consistent with the architecture's known limitation (reactive navigation without spatial memory can fail under unfavorable dynamic configurations) rather than a failure of the inspection-stop mechanism itself.
+The 17 successful trials separate into two navigation patterns distinguished by $N_{ev}^{LiDAR}$: a clean pattern ($n=12$, $N_{ev}^{LiDAR} = 4$--$7$, close to one detection per capsule) and an elevated-evasion pattern ($n=5$, $N_{ev}^{LiDAR} = 11$--$28$, additional evasive maneuvering before finding a route toward the target). Despite the substantially messier routes, the elevated-evasion group converges at least as tightly on the stopping point as the clean group (Figure~\ref{fig:inspection_dfinal_scatter}); if anything, more tightly, though the small elevated-group sample ($n=5$) cautions against over-reading that difference. The three timeouts are extreme cases of the elevated pattern ($N_{ev}^{LiDAR} = 18$, $27$, $33$): in all three, the target was visually detected ($T_{acquisition}$ non-null) but the appetitive channel never accumulated sufficient sustained activation to trigger $X_{17}$ before the deadline, as competing obstacle-channel activation persisted throughout. This is consistent with the architecture's known limitation (reactive navigation without spatial memory can fail under unfavorable dynamic configurations) rather than a failure of the inspection-stop mechanism itself.
 
 \begin{figure}[t]
     \centering
@@ -1250,16 +1245,16 @@ The 17 successful trials separate into two navigation patterns distinguished by 
     \label{fig:inspection_dfinal_scatter}
 \end{figure}
 
-\revblue{This experiment also quantifies re-routing after obstacle blockage:} \revblue{behavioral mode changes ($N_{ev}^{X}$) were $\approx 2.3\times$ fewer than the sensory-level obstacle detections ($N_{ev}^{LiDAR}$) that triggered them (Table~\ref{tab:inspection_metrics})}, in every one of the 17 successful trials without exception. This demonstrates that the WTA arbitration converts repeated raw sensory fluctuations into a smaller number of sustained behavioral commitments, avoiding the mode-dithering a simple threshold-triggered controller would exhibit, the mechanism underlying the reactive re-routing observed in this task.
+\revblue{This experiment also quantifies re-routing after obstacle blockage:} \revblue{behavioral mode changes ($N_{ev}^{X}$) were $\approx 2.3\times$ fewer than the sensory-level obstacle detections ($N_{ev}^{LiDAR}$) that triggered them (Table~\ref{tab:inspection_metrics})}, in every one of the 17 successful trials without exception. This demonstrates that the WTA arbitration converts repeated raw sensory fluctuations into a smaller number of sustained behavioral commitments, avoiding the mode-dithering a simple threshold-triggered controller would exhibit\revblue{; this conversion is the mechanism underlying the reactive re-routing observed in this task}.
 
-\revblue{$T_{acquisition}$ (Table~\ref{tab:inspection_metrics})} is a first-acquisition metric, not re-acquisition, since the target is not visible from the initial pose in this scenario. Visual pursuit is itself conditioned on the absence of a frontal obstacle: during evasion it is suspended, resuming automatically once the obstacle clears, the system's re-acquisition-like behavior. The robot remained in the wheeled/differential locomotion mode (H) throughout all 20 trials, so no gait-transition stability data applies to this experiment.
+\revblue{$T_{acquisition}$ (Table~\ref{tab:inspection_metrics})} is a first-acquisition metric, not re-acquisition, since the target is not visible from the initial pose in this scenario. Visual pursuit is itself conditioned on the absence of a frontal obstacle: during evasion it is suspended, resuming automatically once the obstacle clears\revblue{; this resumption is the system's re-acquisition-like behavior. The robot alternated between differential rolling (H) and omnidirectional (X) modes in every trial ($N_{ev}^{X}$ in Table~\ref{tab:inspection_metrics}), so the quadrupedal transitions analyzed in Section~\ref{sssec:transition_stability} do not apply to this experiment}.
 
 Under the FSM baseline (Section~\ref{ssec:FSMBaseline}) on this same scenario, success rate drops to 45\% (9/20) against the Neural system's 85\% (Table~\ref{tab:fsm_comparison}). The obstacle-avoidance rule's fixed persistence timer re-triggers whenever the FSM re-detects an obstacle after leaving avoidance mode, and in 11 of 20 trials the robot remains oriented such that it keeps re-entering avoidance, occupying that mode 93--99\% of trial time and never visually detecting the target at all, a qualitative coverage failure, distinct from the Neural system's occasional timing-based misses (every Neural trial detects the target at least once). Figure~\ref{fig:mode_timeline_inspection} contrasts the resulting mode traces; the FSM's abrupt, timer-driven switching follows the same pattern described for the Complex suite (Section~\ref{sssec:fsm_baseline_comparison}).
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=\textwidth]{fig_mode_timeline_inspection.png}
-    \caption{Active gait mode over time, Reactive Inspection Task: a representative successful Neural trial (top) vs.\ a representative successful FSM trial (bottom), shown here for a case where the FSM does escape avoidance mode; in its 11 failing trials the lower trace instead stays flat in avoidance for nearly the entire duration. Same qualitative pattern as Figure~\ref{fig:mode_timeline_complex}, reproduced here for this suite. \revblue{Each trace is the first trial by index (not hand-picked) of $N=20$ trials per controller.} \revblue{Fairness caveat on timing metrics: $T_{switch}$ and $T_{response}$ are not compared between the two controllers; on the two terrain suites (Rugged Terrain, Inclined Slope), three configuration differences in their terrain-transition logic make these two metrics not comparable under strictly identical conditions (Table~\ref{tab:fsm_comparison}; Section~\ref{sssec:fsm_baseline_comparison}).} \revblue{Simulation data.}}
+    \caption{Active gait mode over time, Reactive Inspection Task: a representative successful Neural trial (top) vs.\ a representative successful FSM trial (bottom), shown here for a case where the FSM does escape avoidance mode; in its 11 failing trials the lower trace instead stays flat in avoidance for nearly the entire duration. Same qualitative pattern as Figure~\ref{fig:mode_timeline_complex}, reproduced here for this suite. \revblue{Each trace is the first trial by index (not hand-picked) of $N=20$ trials per controller.} \revblue{Fairness caveat on timing metrics: $T_{switch}$ and $T_{response}$ are not compared between the two controllers; on the two terrain suites (Rugged Terrain, Inclined Slope), three configuration differences in their terrain-transition logic make these two metrics not comparable, since the two controllers were not run under strictly identical terrain-transition settings (Table~\ref{tab:fsm_comparison}; Section~\ref{sssec:fsm_baseline_comparison}).} \revblue{Simulation data.}}
     \label{fig:mode_timeline_inspection}
 \end{figure}
 

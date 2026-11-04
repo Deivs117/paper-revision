@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-04T01:06:46+00:00",
-  "progressLastCommit": "2026-11-03T20:03:24-05:00",
+  "generatedAt": "2026-11-04T03:00:09+00:00",
+  "progressLastCommit": "2026-11-03T20:06:46-05:00",
   "tasks": [
     {
       "id": "R2-01",
@@ -1507,8 +1507,8 @@
         "Sebas",
         "Diego"
       ],
-      "status": "pending",
-      "patchFile": "—"
+      "status": "applied",
+      "patchFile": "patches/c-86-fsm-table-inspection-stability.tex"
     },
     {
       "id": "C-87",
