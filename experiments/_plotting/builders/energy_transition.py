@@ -47,8 +47,8 @@ TEST_DIRS = [
 # command -> (mode name, window duration in seconds) -- durations match
 # FigReal_Terrain_Latencies_4Panels's published panels C/D exactly (author-supplied).
 WINDOW_S = {"z": 2.92, "c": 1.56}  # 'x' excluded: N=1, no calibrated window supplied
-DIRECTION_LABEL = {("c", "z"): "Quadrupedal -> Differential Mobile",
-                    ("z", "c"): "Differential Mobile -> Quadrupedal"}
+DIRECTION_LABEL = {("c", "z"): "Quadrupedal -> Differential Rolling",
+                    ("z", "c"): "Differential Rolling -> Quadrupedal"}
 
 
 def find_transitions(real_root: str) -> list[dict]:
@@ -97,12 +97,12 @@ def build(real_root: str, output_path: str) -> dict:
     for e in events:
         e["energy_J_uncalibrated"] = integrate_energy(real_root, e)
 
-    by_direction = {"Quadrupedal -> Differential Mobile": [], "Differential Mobile -> Quadrupedal": []}
+    by_direction = {"Quadrupedal -> Differential Rolling": [], "Differential Rolling -> Quadrupedal": []}
     for e in events:
         if e["direction"] in by_direction and not np.isnan(e["energy_J_uncalibrated"]):
             by_direction[e["direction"]].append(e["energy_J_uncalibrated"])
 
-    labels = ["Quadrupedal $\\to$\nDifferential Mobile", "Differential Mobile\n$\\to$ Quadrupedal"]
+    labels = ["Quadrupedal $\\to$\nDifferential Rolling", "Differential Rolling\n$\\to$ Quadrupedal"]
     means = [np.mean(v) for v in by_direction.values()]
     sds = [np.std(v) for v in by_direction.values()]
     ns = [len(v) for v in by_direction.values()]
@@ -117,9 +117,12 @@ def build(real_root: str, output_path: str) -> dict:
     ax.set_title("Morphological Transition Energy per Direction")
     # R3b-04 batch 3: this footnote named our own log columns ("current_A", "robot_cmd"), which
     # mean nothing to a reader. Same wording in reader-facing terms; 7 pt raised to 9.
-    fig.text(0.5, 0.01, "Power = |current| x 7.2 V (NiMH pack voltage); N = detected mode"
-              " transitions, not an inferred peak", ha="center", fontsize=9, color="#555555")
-    fig.tight_layout(rect=(0, 0.05, 1, 1))
+    # C-89: the one-line footnote was wider than the 6 in figure and got cut at both edges; two
+    # lines, same wording, room reserved at the bottom.
+    fig.text(0.5, 0.01, "Power = |current| x 7.2 V (NiMH pack voltage);\n"
+              "N = detected mode transitions, not an inferred peak",
+              ha="center", fontsize=9, color="#555555")
+    fig.tight_layout(rect=(0, 0.08, 1, 1))
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     fig.savefig(output_path, dpi=DPI)
     plt.close(fig)
